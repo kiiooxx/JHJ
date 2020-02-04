@@ -46,16 +46,16 @@ public class LoginDAO {
 			
 			if(rs.next()) {
 				member = new Member();
-				member.setUSER_ID(id);
-				member.setUSER_PW(rs.getString("USER_PW"));
-				member.setUSER_NAME(rs.getString("USER_NAME"));
-				member.setBIRTH(rs.getString("BIRTH"));
-				member.setJOINDATE(rs.getString("JOINDATE"));
-				member.setSEX(rs.getString("SEX"));
-				member.setEMAIL(rs.getString("EMAIL"));
-				member.setGRADE(rs.getString("GRADE"));
-				member.setADDR1(rs.getString("ADDR1"));
-				member.setADDR2(rs.getString("ADDR2"));
+				member.setUser_id(id);
+				member.setUser_pw(rs.getString("USER_PW"));
+				member.setUser_name(rs.getString("USER_NAME"));
+				member.setBirth(rs.getString("BIRTH"));
+				member.setJoindate(rs.getString("JOINDATE"));
+				member.setSex(rs.getString("SEX"));
+				member.setEmail(rs.getString("EMAIL"));
+				member.setGrade(rs.getString("GRADE"));
+				member.setAddr1(rs.getString("ADDR1"));
+				member.setAddr2(rs.getString("ADDR2"));
 				
 			
 			}

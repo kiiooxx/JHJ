@@ -30,7 +30,7 @@ public class LoginAction implements Action {
 			out.println("history.back()");
 			out.println("</script>");
 		}else {
-			if(!member.getUSER_PW().equals(request.getParameter("pass"))) {
+			if(!member.getUser_pw().equals(request.getParameter("pass"))) {
 				response.setContentType("text/html;charset=UTF-8");
 				PrintWriter out = response.getWriter();
 				out.println("<script>");

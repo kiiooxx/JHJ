@@ -1,93 +1,91 @@
 package vo;
 
 public class Member {
-	private String USER_ID;
-	private String USER_PW;
-	private String USER_NAME;
-	private String SEX;
-	private String TEL;
-	private String POSTCODE;
-	private String ADDR1;
-	private String ADDR2;
-	private String EMAIL;
-	private String BIRTH;
-	private String JOINDATE;
-	private String GRADE;
-	
-	
-	public String getUSER_ID() {
-		return USER_ID;
+	private String user_id;
+	private String user_pw;
+	private String user_name;
+	private String sex;
+	private String tel;
+	private String postcode;
+	private String addr1;
+	private String addr2;
+	private String email;
+	private String birth;
+	private String joindate;
+	private String grade;
+	public String getUser_id() {
+		return user_id;
 	}
-	public void setUSER_ID(String User_id) {
-		USER_ID = User_id;
+	public void setUser_id(String user_id) {
+		this.user_id = user_id;
 	}
-	public String getUSER_PW() {
-		return USER_PW;
+	public String getUser_pw() {
+		return user_pw;
 	}
-	public void setUSER_PW(String User_pw) {
-		USER_PW = User_pw;
+	public void setUser_pw(String user_pw) {
+		this.user_pw = user_pw;
 	}
-	public String getUSER_NAME() {
-		return USER_NAME;
+	public String getUser_name() {
+		return user_name;
 	}
-	public void setUSER_NAME(String User_name) {
-		USER_NAME =User_name;
+	public void setUser_name(String user_name) {
+		this.user_name = user_name;
 	}
-	public String getSEX() {
-		return SEX;
+	public String getSex() {
+		return sex;
 	}
-	public void setSEX(String Sex) {
-		SEX = Sex;
+	public void setSex(String sex) {
+		this.sex = sex;
 	}
-	public String getTEL() {
-		return TEL;
+	public String getTel() {
+		return tel;
 	}
-	public void setTEL(String Tel) {
-		TEL = Tel;
+	public void setTel(String tel) {
+		this.tel = tel;
 	}
-	public String getPOSTCODE() {
-		return POSTCODE;
+	public String getPostcode() {
+		return postcode;
 	}
-	public void setPOSTCODE(String Postcode) {
-		POSTCODE = Postcode;
+	public void setPostcode(String postcode) {
+		this.postcode = postcode;
 	}
-	public String getADDR1() {
-		return ADDR1;
+	public String getAddr1() {
+		return addr1;
 	}
-	public void setADDR1(String Addr1) {
-		ADDR1 = Addr1;
+	public void setAddr1(String addr1) {
+		this.addr1 = addr1;
 	}
-	public String getADDR2() {
-		return ADDR2;
+	public String getAddr2() {
+		return addr2;
 	}
-	public void setADDR2(String Addr2) {
-		ADDR2 = Addr2;
+	public void setAddr2(String addr2) {
+		this.addr2 = addr2;
 	}
-	public String getEMAIL() {
-		return EMAIL;
+	public String getEmail() {
+		return email;
 	}
-	public void setEMAIL(String Email) {
-		EMAIL = Email;
+	public void setEmail(String email) {
+		this.email = email;
 	}
-	public String getBIRTH() {
-		return BIRTH;
+	public String getBirth() {
+		return birth;
 	}
-	public void setBIRTH(String Birth) {
-		BIRTH = Birth;
+	public void setBirth(String birth) {
+		this.birth = birth;
 	}
-	public String getJOINDATE() {
-		return JOINDATE;
+	public String getJoindate() {
+		return joindate;
 	}
-	public void setJOINDATE(String Joindate) {
-		JOINDATE = Joindate;
+	public void setJoindate(String joindate) {
+		this.joindate = joindate;
 	}
-	public String getGRADE() {
-		return GRADE;
+	public String getGrade() {
+		return grade;
 	}
-	public void setGRADE(String Grade) {
-		GRADE = Grade;
+	public void setGrade(String grade) {
+		this.grade = grade;
 	}
-	
-	
-	
+
+
+
 }
