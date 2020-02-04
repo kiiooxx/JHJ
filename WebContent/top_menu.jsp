@@ -29,7 +29,7 @@
 			</c:choose>
 		</li>
 		<li>
-			<a href="#">JOIN</a>
+			<a href="joinForm.mem">JOIN</a>
 		</li>
 		<li>
 			<a href="#">ACCOUNT</a>
