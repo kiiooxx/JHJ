@@ -1,0 +1,579 @@
+@charset "UTF-8";
+
+ul {
+	list-style : none;
+}
+a {
+	color : #B58B8D;
+	text-decoration : none;
+}
+li {
+	height : 20px;
+	line-height : 20px;
+}
+h3 {
+	height : 20px;
+	line-height : 20px;
+}
+
+div {
+	display : block;
+}
+
+/* 템플릿 */
+#template {
+	margin : 0 auto;
+	padding-left : 5px;
+	padding-right : 5px;
+	position : relative;
+	width : 1360px;	
+}
+
+#header {
+	margin-top : 40px;
+	text-align : right;
+	text-transform : uppercase;
+	height : 50px;
+}
+
+#wrap {
+	position: relative;
+    width: 100%;
+    margin: 0px 0 0;
+}
+
+#wleft {
+	float : left;
+	width : 300px;
+}
+
+#container {
+	float: right;
+    width: 1050px;
+    margin: 0px 0 0px;
+    padding: 0px 0 0;
+}
+
+#footer {
+	overflow: hidden;
+    position: relative;
+    text-transform: uppercase;
+    clear: both;
+    width: 100%;
+    margin: 0 0 70px;
+    padding: 0;
+    text-align: right;
+    line-height: 180%;
+    font-size: 10px;
+}
+
+/*탑 메뉴*/
+.top {
+}
+
+.top>ul {
+	display: block;
+    list-style-type: disc;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    padding-inline-start: 40px;
+}
+
+.top>ul>li {
+	display : inline-block;
+	margin-left : 20px;
+	/* position : relative; */
+}
+
+.top>ul>li>a {
+	text-align : center;
+	color : #B58B8D;
+}
+
+.top ul li a:hover {
+	color : #E8D4D3;
+}
+
+/* 경로 */
+.path {
+	overflow : hidden;
+	height: 50px;
+    line-height: 19px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 10px;
+    font-family: arial,Arimo;
+    margin: 0px 0 0;
+}
+
+.path ol {
+	float: right;
+    margin: 0 0 0 0px;
+}
+
+.path li {
+	float: left;
+    padding: 0 0 0 12px;
+    margin: 0 0 0 8px;
+}
+
+
+/*블랭크*/
+.blank {
+	height : 231px;
+}
+
+#contents {
+	width: 100%;
+    padding: 0px 0 0;
+    margin: 0px 0 0;
+}
+
+/* 사이드바_사진 */
+.main_photo {
+	margin : 0 0 40px;
+}
+
+/* 사이드바 _ 카테고리 */
+.wleft {
+	margin : 0 0 0 10px;
+}
+
+.main_title {
+	font-size : 14px;
+	letter-spacing : 2px;
+	margin : 0 0 30px;
+}
+
+.category_clothes, .category_board, .category_call {
+	margin : 0 0 30px;
+	line-height : 170%;
+}
+
+.category_clothes a:hover .category_board a:hover {
+	color : #E8D4D3;
+}
+
+
+/* 푸터 */
+#down {
+	margin : 110px 0px 0;
+	
+}
+
+
+/* 상품 목록 */
+.product_list {
+	clear: both;
+    /* overflow: hidden; */
+    margin: 0px 0 80px 0;
+    height : 533px;
+}
+
+.product_list h2 {
+	text-align: center;
+    text-transform: uppercase;
+    font-weight: normal;
+    line-height: 20px;
+    font-size: 12px;
+    letter-spacing: 2px;
+    margin: 0 0 20px 2px;
+}
+
+.prdList {
+	float : left;
+	display: table;
+    margin: 0px 0 0 -18px;
+    font-size: 0;
+    line-height: 0;
+    position : relative;
+    height : 100%;
+}
+
+.prdList>li {
+	display: inline-block;
+    margin: 0px 0 35px 18px;
+	vertical-align: top;
+	width : 338px;
+	position : relative;
+}
+
+.thumbnail {
+	float : left;
+	position: relative;
+    margin: 0 0px 10px;
+    text-align: center;
+    border : 1px solid black;
+}
+
+.thumbnail a {
+	outline: none;
+}
+
+.thumbnail>a>img {
+	width: 100%;
+    box-sizing: border-box;
+    vertical-align: middle;
+}
+
+.description {
+	margin: 0;
+    padding: 0 2px;
+    font-size: 11px;
+    line-height: 150%;
+    text-align: center;
+}
+
+.description .name {
+    text-align: center;
+}
+
+/* 상품 상세 페이지 */
+#product_detail {
+	float : left;
+	display : block;
+	clear : both;
+}
+
+.img_Area {
+	float : left;
+	display : block;
+	width : 580px;
+	text-align : center;
+}
+
+.img_Area img {
+	width : 300px;
+	border : 1px solid black;
+}
+
+.info_Area {
+	text-align : left;
+	line-height : 160%;
+	float : left;
+	width : 450px;
+}
+
+.info_Area>table tr{
+	padding : 50px;
+}
+
+
+
+
+/* 서브 카테고리 */
+.sub_category {
+	margin : 0 0 20px;
+}
+
+.sub_category>ul {
+	text-align : center;
+	heigth : 36px;
+	padding : 0;
+}
+
+.sub_category>ul>li {
+	display : inline-block;
+	width : 70px;
+	position : relative;
+}
+
+.sub_category>ul>li>a {
+	display : block;
+	width : 100%;
+	height : 100%;
+	text-align : center;
+}
+
+.sub_category ul li a:hover {
+	color : #E8D4D3;
+}
+
+
+/* 진열 순서 */
+.pro_display_seq {
+	margin : 0 0 20px;
+}
+
+.pro_display_seq>ul {
+	text-align : right;
+	heigth : 36px;
+	padding : 0;
+}
+
+.pro_display_seq>ul>li {
+	display : inline-block;
+	width : 60px;
+	position : relative;
+}
+
+.pro_display_seq>ul>li>a {
+	display : block;
+	text-align : center;
+}
+
+.pro_display_seq ul li a:hover {
+	color : #E8D4D3;
+}
+
+
+
+
+
+/* 로그인폼 */
+.login {
+	margin: 0 0 0px 0;
+    padding: 60px 0 20px;
+}
+
+.login fieldset {
+	position: relative;
+    width: 300px;
+    margin: 0 auto;
+}
+
+.nna {
+	text-align : left;
+	text-transform: uppercase;
+    font-family: arial,Arimo,dotum;
+    letter-spacing: 1px;
+    font-size: 9px;
+    height: 20px;
+}
+
+.id, .pass {
+	overflow: hidden;
+    display: block;
+    width: 300px;
+    margin: 0 0 20px;
+    border: 0;
+    border: 1px solid #ddd;
+    border-radius: 0px;
+}
+
+.id input, .pass input {
+	width: 95%;
+    height: 26px;
+    line-height: 26px;
+    padding: 0px 3px;
+    border: 0 none;
+}
+
+.idsave {
+	text-align : left;
+	padding: 0 0 0 0px;
+    margin: 10px 0 30px;
+    font-size: 9px;
+    text-transform: uppercase;
+}
+
+.btx {
+	margin: 0 0 30px;
+}
+
+.btx a {
+	display: inline-block;
+    padding: 0px;
+    width: 100%;
+    height: 42px;
+    border-radius: 2px;
+    line-height: 42px;
+    margin: 0 0px 5px 0;
+    text-align: center;
+}
+
+.login_btn {
+    background: #000;
+    border: 1px solid #222;
+    color: #fff;
+    text-transform: uppercase;
+    font-size: 10px;
+    letter-spacing: 2px;
+}
+
+.join_btn {
+	background: #fff;
+    border: 1px solid #ddd;
+    color: #000;
+    font-size: 10px;
+    letter-spacing: 1px;
+    height: 32px;
+    line-height: 32px;
+}
+
+.forget {
+	overflow: hidden;
+    padding: 20px 0 0;
+    margin: 0 0 30px;
+    border: 0;
+    border-top: 1px solid #ddd;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 10px;
+    line-height: 20px;
+}
+
+
+/* 회원가입 폼 */
+#join_form {
+	width : ;
+	margin : 0 auto;
+}
+
+.join_title {
+	padding: 50px 0 0px;
+    font-size: 12px;
+    color: #777;
+}
+
+.join_table table {
+	position: relative;
+    margin: 10px 0 0;
+    border: 1px solid #d7d5d5;
+    border-top-color: #fff;
+    line-height: 1.5;
+    width: 100%;
+}
+
+.join_table tbody {
+	display: table-row-group;
+    vertical-align: middle;
+    border-color: inherit;
+    
+}
+
+.join_table tr {
+	display: table-row;
+    vertical-align: inherit;
+    border-color: inherit;
+}
+
+.join_table th {
+	width: 100px;
+	padding: 11px 0 10px 18px;
+    border: 1px solid #dfdfdf;
+    border-bottom-width: 0;
+    border-right-width: 0;
+    text-align: left;
+    font-weight: normal;
+    background-color: #fff;
+    vertical-align: top;
+}
+
+.join_table td {
+	padding: 8px 10px 7px;
+	border-top: 1px solid #dfdfdf;
+    vertical-align: middle;
+}
+
+#addr1, #addr2 {
+	width: 280px;
+    margin: 5px 0 0;
+}
+
+#birth1 {
+	width : 60px;
+	margin: 0 4px 0 0;
+}
+
+#birth2, #birth3 {
+	width: 30px;
+    margin: 0 4px 0 0;
+}
+.req {
+	color : red;	
+}
+
+.agree_Area {
+	border-width: 1px;
+    border-color: #d7d5d5;
+    background-color: #fff;
+    margin: 40px 0 -41px;
+    line-height: 20px;
+    
+    padding: 20px;
+    border: 1px solid #e8e8e8;
+    color: #404040;
+}
+.join_table input {
+	border : 1px solid #ddd;
+}
+.terms {
+	overflow: auto;
+    height: 100px;
+    padding: 15px 10px;
+    border: 0px solid #e6e6e6;
+    background: #fff;
+}
+
+.check {
+	padding: 30px 0 0 10px;
+    letter-spacing: 0px;
+    font-weight: bold;
+    font-size: 12px;
+    text-align: right;
+}
+
+.jo_btn{
+	width: 300px;
+    padding: 70px 0 0;
+    float: right;
+    display: block;
+    text-align : center;
+}
+
+.jo_btn a {
+	font-size: 10px;
+    letter-spacing: 1px;
+    height: 32px;
+    line-height: 32px;
+    
+    display: inline-block;
+    margin: 0px 0 0 0px;
+    padding: 0px;
+    width: 100%;
+    border-radius: 2px;
+    background: #000;
+    border: 1px solid #222;
+    color: #fff;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+
+/* 관리자 */
+/* 카테고리 설정 */
+#categoryArea {
+	padding: 20px 20px 20px 390px;
+    border-radius: 2px;
+    border: 1px solid #ddd;
+    background: #fff;
+    height : 500px;
+}
+#categoryList {
+	float: left;
+    width: 350px;
+    margin: 0 0 0 -370px;
+    height : 400px;
+}
+
+.cate_list {
+	position: relative;
+    overflow: auto;
+    height : 400px;
+    padding: 7px;
+    border: 1px solid #dedede;
+}
+
+.cate_bottom {
+	margin : 10px;
+	text-align : left;
+}
+
+#setTable {
+	float: left;
+    width: 100%;
+}

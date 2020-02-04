@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+	<Resource name="jdbc/mySQLDB"
+	auth="Container"
+	type="javax.sql.DataSource"
+	username="java5ylj"
+	password="java5ylj"
+	driverClassName="com.mysql.cj.jdbc.Driver"
+	factory="org.apache.tomcat.dbcp.dbcp2.BasicDataSourceFactory"
+	url="jdbc:mySQL://118.131.179.138:3306/java5ylj?serverTimezone=UTC"
+	maxActive="500"
+	maxIdle="100"/>
+</Context>
