@@ -24,7 +24,7 @@
 					<a href="logout.log">LOGOUT</a>
 				</c:when>
 				<c:otherwise>
-					<a href="loginForm.jsp">LOGIN</a>
+					<a href="loginForm.log">LOGIN</a>
 				</c:otherwise>
 			</c:choose>
 		</li>
