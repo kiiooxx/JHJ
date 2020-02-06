@@ -29,7 +29,7 @@
 			</c:choose>
 		</li>
 		<li>
-			<a href="#">JOIN</a>
+			<a href="joinForm.mem">JOIN</a>
 		</li>
 		<li>
 			<a href="#">ACCOUNT</a>
@@ -40,8 +40,9 @@
 		<li>
 			<a href="#">CART</a>
 		</li>
+		<!-- 관리자일때만 admin메뉴 보이게 -->
 		<li>
-			<a href="categoryManagement.pro">ADMIN</a>
+			<a href="productManagement.pro">ADMIN</a>
 		</li>
 	</ul>
 </div>

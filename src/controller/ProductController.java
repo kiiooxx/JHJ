@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import action.Action;
 import product.action.CategoryAddAction;
 import product.action.CategoryManagementFormAction;
+import product.action.ProducRegistAction;
+import product.action.ProductManagementFormAction;
 import vo.ActionForward;
 
 /**
@@ -61,7 +63,23 @@ public class ProductController extends HttpServlet {
 			}catch(Exception e) {
 				e.printStackTrace();
 			}
-		}
+		}else if(command.equals("/productManagement.pro")) {
+			action = new ProductManagementFormAction();
+			//프로젝트명+기능+형태(?)
+			try {
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+    	}else if(command.equals("/productRegistAction.pro")) {
+			action = new ProducRegistAction();
+			//프로젝트명+기능+형태(?)
+			try {
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+    	}
 		
 		//3.포워딩
 		if(forward != null) {

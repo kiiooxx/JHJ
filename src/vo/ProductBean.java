@@ -4,12 +4,13 @@ public class ProductBean {
 	private String pro_num;
 	private String pro_detail;
 	private String pro_name;
-	private String category;
-	private String sub_category;
+	private int cate_num;
 	private int pro_price;
 	private char main_nb;
 	private char active;
 	private String pro_date;
+	private String pro_content;
+	private String pro_photo;
 	
 	public String getPro_num() {
 		return pro_num;
@@ -29,17 +30,12 @@ public class ProductBean {
 	public void setPro_name(String pro_name) {
 		this.pro_name = pro_name;
 	}
-	public String getCategory() {
-		return category;
+	
+	public int getCate_num() {
+		return cate_num;
 	}
-	public void setCategory(String category) {
-		this.category = category;
-	}
-	public String getSub_category() {
-		return sub_category;
-	}
-	public void setSub_category(String sub_category) {
-		this.sub_category = sub_category;
+	public void setCate_num(int cate_num) {
+		this.cate_num = cate_num;
 	}
 	public int getPro_price() {
 		return pro_price;
@@ -65,5 +61,19 @@ public class ProductBean {
 	public void setPro_date(String pro_date) {
 		this.pro_date = pro_date;
 	}
+	public String getPro_content() {
+		return pro_content;
+	}
+	public void setPro_content(String pro_content) {
+		this.pro_content = pro_content;
+	}
+	public String getPro_photo() {
+		return pro_photo;
+	}
+	public void setPro_photo(String pro_photo) {
+		this.pro_photo = pro_photo;
+	}
+	
+	
 	
 }
