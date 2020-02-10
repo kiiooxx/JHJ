@@ -43,7 +43,6 @@ public class summernotePhotoUpload extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("들어 왔니??");
 		String uploadPath = request.getSession().getServletContext().getRealPath("/upload");
 		int size = 10*1024*1024;
 		
@@ -61,7 +60,7 @@ public class summernotePhotoUpload extends HttpServlet {
 		}
 		
 		// 업로드된 경로와 파일명을 통해 이미지의 경로를 생성
-		uploadPath = request.getSession().getServletContext().getRealPath("/upload/") + fileName;
+		uploadPath = request.getContextPath() + "/upload/";
 	    // 생성된 경로를 JSON 형식으로 보내주기 위한 설정
 		JSONObject jobj = new JSONObject();
 		jobj.put("url", uploadPath);

@@ -1,20 +1,24 @@
-package product.action;
+package admin.action;
 
 import java.io.PrintWriter;
+import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import action.Action;
-import product.svc.CategoryManagementFormService;
+import admin.svc.CategoryAddService;
+import admin.svc.CategoryListService;
 import vo.ActionForward;
+import vo.CategoryBean;
 
 public class CategoryAddAction implements Action {
 
 	@Override
 	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		// TODO Auto-generated method stub
-		CategoryManagementFormService categoryManagementFormService = new CategoryManagementFormService();
+		CategoryAddService categoryAddService = new CategoryAddService();
 		String cate_large = null;
 		String cate_name = null;
 		boolean addSuccess = false;
@@ -27,10 +31,10 @@ public class CategoryAddAction implements Action {
 
 			//소분류 등록일때
 			if(request.getParameter("cate_large") != null) {
-				addSuccess = categoryManagementFormService.addCategory(cate_large, cate_name, 1, 1);
+				addSuccess = categoryAddService.addCategory(cate_large, cate_name, 1, 1);
 			//대분류 등록일때
 			}else {
-				addSuccess = categoryManagementFormService.addCategory(cate_large, cate_name, 0, 0);
+				addSuccess = categoryAddService.addCategory(cate_large, cate_name, 0, 0);
 			}
 			
 			if(!addSuccess) {
@@ -43,7 +47,7 @@ public class CategoryAddAction implements Action {
 			}
 		}
 		
-		ActionForward forward = new ActionForward("categoryManagement.pro", true);
+		ActionForward forward = new ActionForward("categoryManagement.ad", true);
 		return forward;
 	}
 

@@ -18,7 +18,7 @@ public class LogoutAction implements Action{
 		HttpSession session = request.getSession();
 		session.invalidate();
 		
-		request.setAttribute("pagefile", "loginForm.jsp");
+		request.setAttribute("pagefile", "/member/loginForm.jsp");
 		ActionForward forward = new ActionForward("/template.jsp", false);
 		
 		return forward;

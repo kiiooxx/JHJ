@@ -6,14 +6,6 @@ public class CategoryBean {
 	private int ca_lev;
 	private int ca_ref;
 	private int ca_seq;
-	
-	public CategoryBean(int cate_num, String category, int ca_ref, int ca_lev, int ca_seq) {
-		this.cate_num = cate_num;
-		this.category = category;
-		this.ca_ref = ca_ref;
-		this.ca_lev = ca_lev;
-		this.ca_seq = ca_seq;
-	}
 
 
 	public int getCate_num() {

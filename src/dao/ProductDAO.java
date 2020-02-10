@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import vo.CategoryBean;
+import vo.ProDetBean;
 import vo.ProductBean;
 
 
@@ -36,187 +37,133 @@ public class ProductDAO {
 		return productDAO;
 	}
 
-	//카테고리 리스트 불러오기
-	public ArrayList<CategoryBean> selectCategoryList() {
+	//상품 리스트의 갯수 구하기
+	public int selectListCount(int cate_num) {
+		// TODO Auto-generated method stub
+		int listCount = 0;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			//상품 관련 카테고리가 cate_num 인 값의 count 구하기
+			pstmt = con.prepareStatement("select count(*) from category where ca_ref=?");
+			pstmt.setInt(1, cate_num);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				listCount = rs.getInt(1);
+			}
+		}catch(Exception e) {
+			System.out.println("getListCount 에러 : " + e);
+		}finally {
+			close(rs);
+			close(pstmt);
+		}
+		return listCount;
+	}
+
+	//상품 리스트
+	public ArrayList<ProductBean> selectProductList(int cate_num, int page, int limit) {
 		// TODO Auto-generated method stub
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		ArrayList<CategoryBean> categoryList = new ArrayList<>();
+		String sql = "select * from pro_info p inner join category c on p.cate_num = c.cate_num where c.ca_ref=? order by p.pro_date desc limit ?,?";
+		ArrayList<ProductBean> prdList = new ArrayList<ProductBean>();
+		ProductBean prd = null;
+		int startrow = (page-1)*limit;	//읽기 시작할 row 번호
 		
-		
-		try {
-			pstmt = con.prepareStatement("select * from category order by ca_ref, ca_seq asc");
+		try {	
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, cate_num);
+			pstmt.setInt(2, startrow);
+			pstmt.setInt(3, limit);
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
-				categoryList.add(new CategoryBean(
-							rs.getInt("cate_num"),
-							rs.getString("category"),
-							rs.getInt("ca_ref"),
-							rs.getInt("ca_lev"),
-							rs.getInt("ca_seq")));
+				prd = new ProductBean();
+				prd.setPro_num(rs.getInt("pro_num"));
+				prd.setPro_name(rs.getString("pro_name"));
+				prd.setPro_price(rs.getInt("pro_price"));
+				prd.setPro_detail(rs.getString("pro_detail"));
+				prd.setPro_content(rs.getString("pro_content"));
+				prd.setPro_photo(rs.getString("pro_photo"));
+				System.out.println(rs.getString("pro_photo"));
+				prd.setCategory(rs.getString("category"));
+				prd.setMain_nb(rs.getString("main_nb").charAt(0));
+				prd.setActive(rs.getString("active").charAt(0));
+				prd.setPro_date(rs.getString("pro_date"));
+				prdList.add(prd);
 			}
-		}catch(SQLException e) {
-			System.out.println("categoryList_select 에러 " + e);
+		}catch(Exception e) {
+			System.out.println("getProductList 에러 : " + e);
 		}finally {
 			close(rs);
 			close(pstmt);
 		}
 		
-		return categoryList;
+		return prdList;
 	}
 
-	
-	//카테고리 추가
-	public int insertCategory(String cate_large, String cate_name, int i, int j) {
+	//상품 정보 불러오기
+	public ProductBean selectProduct(int pro_num) {
 		// TODO Auto-generated method stub
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		int cate_num = 0;
-		int insertCount = 0;
-		int ca_ref = 0;
-		String sql = "insert into category values (?, ?, ?, ?, ?)";
+		ProductBean prd = null;
 		
 		try {
-			//카테고리 번호 불러오기
-			pstmt = con.prepareStatement("select max(cate_num) from category");
+			pstmt = con.prepareStatement("select * from pro_info where pro_num = ?");
+			pstmt.setInt(1, pro_num);
 			rs = pstmt.executeQuery();
+			
 			if(rs.next()) {
-				cate_num = rs.getInt(1) + 1;
-			}else {
-				cate_num = 1;
+				prd = new ProductBean();
+				prd.setPro_num(pro_num);
+				prd.setPro_name(rs.getString("pro_name"));
+				prd.setPro_price(rs.getInt("pro_price"));
+				prd.setPro_detail(rs.getString("pro_detail"));
+				prd.setPro_content(rs.getString("pro_content"));
+				prd.setPro_photo(rs.getString("pro_photo"));
+				prd.setCate_num(rs.getInt("cate_num"));
+				prd.setActive(rs.getString("active").charAt(0));
+				prd.setMain_nb(rs.getString("main_nb").charAt(0));
+				prd.setPro_date(rs.getString("pro_date"));
 			}
-			
-			//등록된 카테고리가 없거나, 대분류 카테고리를 등록할시에
-			if(cate_num == 1 || i == 0) {
-				//카테고리 관련글번호를 등록할 카테고리 번호랑 똑같이 바꿔주고
-				ca_ref = cate_num;
-			}else {
-				//소분류 카테고리를 등록할때는 대분류 카테고리 번호를 받아서 관련글번호로 지정한다.
-				ca_ref = Integer.parseInt(cate_large);
-			}
-			
-			pstmt = con.prepareStatement(sql);
-			pstmt.setInt(1, cate_num);
-			pstmt.setString(2, cate_name);
-			pstmt.setInt(3, ca_ref);
-			pstmt.setInt(4, i);
-			pstmt.setInt(5, j);
-			
-			insertCount = pstmt.executeUpdate();
-			
-		}catch(SQLException e) {
-			System.out.println("카테고리 추가 에러 " + e);
+		}catch(Exception e) {
+			System.out.println("selectProduct 에러 : " + e);
 		}finally {
 			close(rs);
 			close(pstmt);
 		}
-		
-		return insertCount;
+		return prd;
 	}
 
-	
-	// 상품 정보 등록
-	public int insertProduct(ProductBean productBean) {
+	public ArrayList<ProDetBean> selectProductDetail(int pro_num) {
 		// TODO Auto-generated method stub
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		int insertCount = 0;
-		int num = 0;
-		String sql = "";
-		
+		ProDetBean prdDet = null;
+		ArrayList<ProDetBean> prdDetList = new ArrayList<>();
 		try {
-			pstmt = con.prepareStatement("select max(pro_num) from pro_info2");
+			pstmt = con.prepareStatement("select * from pro_det where pro_num = ?");
+			pstmt.setInt(1, pro_num);
 			rs = pstmt.executeQuery();
 			
-			if(rs.next()) {
-				num = rs.getInt(1) + 1;
-				
-				sql = "insert into pro_info2 values (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())";
-				pstmt = con.prepareStatement(sql);
-				pstmt.setInt(1, num);
-				pstmt.setString(2, productBean.getPro_name());	//상품 이름
-				pstmt.setInt(3, productBean.getPro_price());	//상품 가격
-				pstmt.setString(4, productBean.getPro_detail());	//상품 설명
-				pstmt.setString(5, productBean.getPro_content());	//상품 내용
-				pstmt.setString(6, productBean.getPro_photo());		//상품 사진
-				pstmt.setInt(7, productBean.getCate_num());	//카테고리 번호
-				pstmt.setString(8, String.valueOf(productBean.getMain_nb()));	//메인진열 N(NEW),B(BEST)
-				pstmt.setString(9, String.valueOf(productBean.getActive()));	//활성화 여부 Y,N
-				
-				insertCount = pstmt.executeUpdate();
-				
-				if(insertCount == 0) {
-					num = 0;
-				}
+			while(rs.next()) {
+				prdDet = new ProDetBean();
+				prdDet.setPro_det_num(rs.getString("pro_det_num"));
+				prdDet.setPro_num(pro_num);
+				prdDet.setPro_size(rs.getString("pro_size"));
+				prdDet.setColor(rs.getString("color"));
+				prdDetList.add(prdDet);
 			}
-		}catch(SQLException e) {
-			System.out.println("상품 등록 에러 " + e);
+		}catch(Exception e) {
+			System.out.println("selectProductDetail 에러 : " + e);
 		}finally {
+			close(rs);
 			close(pstmt);
 		}
-		return num;
-	}
-
-	//상품 상세 등록 + 처음 재고 설정
-	public int insertPro_Det(int pro_num, String color, String size, int stock, int cnt) {
-		// TODO Auto-generated method stub
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		int insertCount = 0;
-		
-		//재고 번호 등록하기 위해 날짜 형식 저장
-		SimpleDateFormat format1 = new SimpleDateFormat ( "yyyyMMdd");
-		Date time = new Date();
-		String time1 = format1.format(time);
-		
-		// 재고번호 카운트
-		int stock_cnt = 0;
-		
-		// 상품상세코드 상품번호 + 색상순서 + 사이즈
-		String num = String.format("%04d", pro_num);
-		String color_num = String.format("%02d", cnt);
-		String pro_det_num = num + color_num + size;
-
-		try {
-			// 상품상세정보를 등록할 sql문
-			pstmt = con.prepareStatement("insert into pro_det values(?, ?, ?, ?)");
-			pstmt.setString(1, pro_det_num);	//상품 상세 코드
-			pstmt.setInt(2, pro_num);	//상품 번호
-			pstmt.setString(3, size);
-			pstmt.setString(4, color);
-			
-			insertCount = pstmt.executeUpdate();
-			
-			// 성공적으로 등록이 되면
-			if(insertCount > 0) {
-				// 오늘 등록한 재고 번호의 갯수 구함.
-				pstmt = con.prepareStatement("SELECT count(if(stock_num like '" + time1 + "%', stock_num, null)) FROM stock");
-				rs = pstmt.executeQuery();
-				
-				if(rs.next()) {
-					// 재고 갯수를 stock_cnt 변수에 저장하고 +1
-					stock_cnt = rs.getInt(1) + 1;
-					String stock_num = time1 + String.format("%04d", stock_cnt);
-					
-					// 재고 테이블 등록
-					pstmt = con.prepareStatement("insert into stock values(?,?,?,'IN',NOW())");
-					pstmt.setString(1, stock_num);
-					pstmt.setString(2, pro_det_num);
-					pstmt.setInt(3, stock);
-
-					insertCount = pstmt.executeUpdate();
-				}else {
-					insertCount = 0;
-				}
-				
-			}
-		}catch(SQLException e) {
-			System.out.println("상품 상세 등록 에러 " + e);
-		}finally {
-			close(pstmt);
-		}
-		return insertCount;
+		return prdDetList;
 	}
 
 }

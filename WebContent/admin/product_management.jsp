@@ -6,6 +6,8 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="vo.CategoryBean" %>
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,21 +22,25 @@
     
 <script type="text/javascript">
 $(document).ready(function() {
-	$('#summernote').summernote({
-        height : 400,
-        onImageUpload: function(files, editor, welEditable) {
-            for (var i = files.length - 1; i >= 0; i--) {
-            	sendFile(files[i], editor, welEditable);
-            }
+	$('#summernote').summernote({ // summernote를 사용하기 위한 선언
+		width : 900,
+        height: 400,
+        callbacks : {
+			onImageUpload: function(files, editor, welEditable) {
+				for (var i = files.length - 1; i >= 0; i--) {
+					sendFile(files[i], this);
+		        }
+	        }
         }
-    });
+	});
 });
 
-function sendFile(file, editor, welEditable) {
+function sendFile(file, editor) {
       var data = new FormData();
-      data.append("uploadFile", file);
-      alert(file);
+      data.append("file", file, file.name);
+      alert(file.name);
       $.ajax({
+    	dataType : 'jSON',
         data: data,
         type: "POST",
         url: '<%=request.getContextPath()%>/summernotePhotoUpload',
@@ -43,9 +49,8 @@ function sendFile(file, editor, welEditable) {
         enctype: 'multipart/form-data',
         processData: false,
         success: function(data) {
-        	alert(data.url);
-        	editor.insertImage(welEditable, data.url);
-        	$('#summernote').append('<img src="'+data.url+'" width="480" height="auto"/>');
+        	$('#summernote').summernote('insertImage', data.url, file.name);
+        	$('#summernote').summernote('pasteHTML', '<img src="' + data.url + file.name + '"/>');
         },
         error: function() {
         	alert('error');
@@ -87,21 +92,21 @@ $(document).ready(function(){
 		//클릭한 소분류의 값..
 		var txt = $('#'+id).text().trim();
 		
-		//클릭한 대분류의 값
-		var lg = $('#'+id+'>#lg').val();
+		var ref = $('#ref'+num).val();
 		
 		//클릭한 카테고리의 카테고리 번호 값.
 		var index = $('#'+id+'>#cate_index').val();
 		
 		//대분류 값을 클릭한 경우,,
-		if(lg == "" || lg == null || lg == undefined) {
+		if(ref == "" || ref == null || ref == undefined) {
 			$('#cate_large').val(txt);
 			$('#cate_sub').val('');
 		}else {
 			$('#cate_sub').val(txt);
-			$('#cate_large').val(lg);
+			$('#cate_large').val(ref);
 		}
-		$('#cate_hidden').val(index);
+		
+		$('#cate_num').val(num);
 		return false;
 	});
 	
@@ -144,7 +149,7 @@ $(document).ready(function(){
 			html += '<tr>';
 			html += '<td>' + list[key].color + '</td>';
 			html += '<td>' + list[key].size + '</td>';
-			html += '<td>' + '<input type="number" name="stock" id="stock" required/></td>';
+			html += '<td>' + '<input type="number" min="0" name="stock" id="stock" required/></td>';
 			html += '</tr>';
 			
 			html2 += '<input type="hidden" name="pro_color" id="pro_color" value="'+ list[key].color +'"/>';
@@ -194,21 +199,12 @@ function chkForm(f) {
         return false;
     }
     
-    if(f.cate_larege.value.trim() == ""){
+    if(f.cate_large.value.trim() == ""){
     	alert("카테고리를 선택해주세요.");
-    	f.cate_larege.focus();
-    	return false;
-    }
-    
-    
-    if(f.stock.value.trim() == ""){
-    	alert("재고를 입력하세요.");
-    	f.stock.focus();
+    	f.cate_large.focus();
     	return false;
     }
 
-    
-    
     if(f.optionChk.value.trim() != "1"){
     	alert("옵션품목 만들기 버튼을 눌러주세요");
     	return false;
@@ -235,7 +231,7 @@ ul {
 	<h1>상품 등록</h1>
 </div>
 
-<form action="productRegistAction.pro" name="f" method="post" enctype="multipart/form-data">
+<form action="productRegistAction.ad" name="f" method="post" enctype="multipart/form-data">
 <div class="contentArea">
 	<div class="prdAddForm">
 		
@@ -299,30 +295,21 @@ ul {
 										<!-- 대분류 -->
 										<li class="menu">
 											<span>
-												<a href="#" id="img${i.index }"><img src="layout_image/cate_default.png"></a>
-												<a href="#" class="large" id="index${i.index }">
-													<input type="hidden" id="cate_index" value="${list.cate_num }"/>
-													<!-- 대분류 값을 저장한다.. -->
-													<c:set var="large" value="${i.index }"/>
-													<c:set var="large_name" value="${list.category }"/>
-													${list.category }
-												</a>
+												<a href="#" id="img${list.cate_num }"><img src="layout_image/cate_default.png"></a>
+												<a href="#" class="large" id="index${list.cate_num }">${list.category }</a>
+												<c:set var="ref" value="${list.category }"/>
 											</span>			
 										</li>
 									</c:when>
 									
 									<c:otherwise>
 										<!-- 소분류 -->
-										<!-- 안보이다가 대분류 클릭하면 보여지게/ 저장한 대분류 index값 쓴다 -->
-										<ul class="hide${large }">
+										<ul class="hide${list.ca_ref }">
 											<li>
 												<span>
 													<img src="layout_image/cate_folder.png">
-													<a href="#" class="sub" id="index${i.index }">
-														<!-- 저장한 대분류값을 불러온다 -->
-														<input type="hidden" id="lg" value="${large_name }"/>
-														<input type="hidden" id="cate_index" value="${list.cate_num }"/>
-														<input type="hidden" id="sb" value="${list.category }"/>
+													<a href="#" class="sub" id="index${list.cate_num }">
+														<input type="hidden" id="ref${list.cate_num }" value="${ref }"/>
 														${list.category }
 													</a>
 												</span>
@@ -332,9 +319,9 @@ ul {
 								</c:choose>
 							</c:forEach>
 					</ul>
-					대분류 <input type="text" name="cate_larege" id="cate_large" readonly/>
+					대분류 <input type="text" name="cate_large" id="cate_large" readonly/>
 					소분류 <input type="text" name="cate_sub" id="cate_sub" readonly/>
-					<input type="hidden" name="cate_hidden" id="cate_hidden"/>
+					<input type="hidden" name="cate_num" id="cate_num"/>
 					</td>
 				</tr>
 				

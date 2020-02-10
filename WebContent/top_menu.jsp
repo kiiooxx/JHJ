@@ -24,7 +24,7 @@
 					<a href="logout.log">LOGOUT</a>
 				</c:when>
 				<c:otherwise>
-					<a href="loginForm.jsp">LOGIN</a>
+					<a href="loginForm.log">LOGIN</a>
 				</c:otherwise>
 			</c:choose>
 		</li>
@@ -42,7 +42,7 @@
 		</li>
 		<!-- 관리자일때만 admin메뉴 보이게 -->
 		<li>
-			<a href="productManagement.pro">ADMIN</a>
+			<a href="adminPage.ad">ADMIN</a>
 		</li>
 	</ul>
 </div>

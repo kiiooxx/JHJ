@@ -1,21 +1,29 @@
 package vo;
 
-public class ProductBean {
-	private String pro_num;
-	private String pro_detail;
+public class ProductBean extends CategoryBean{
+	private int pro_num;
 	private String pro_name;
-	private int cate_num;
 	private int pro_price;
-	private char main_nb;
-	private char active;
-	private String pro_date;
+	private String pro_detail;
 	private String pro_content;
 	private String pro_photo;
+	private int cate_num;
+	private char active;
+	private char main_nb;
+	private String pro_date;
 	
-	public String getPro_num() {
+	
+	
+	public int getCate_num() {
+		return cate_num;
+	}
+	public void setCate_num(int cate_num) {
+		this.cate_num = cate_num;
+	}
+	public int getPro_num() {
 		return pro_num;
 	}
-	public void setPro_num(String pro_num) {
+	public void setPro_num(int pro_num) {
 		this.pro_num = pro_num;
 	}
 	public String getPro_detail() {
@@ -29,13 +37,6 @@ public class ProductBean {
 	}
 	public void setPro_name(String pro_name) {
 		this.pro_name = pro_name;
-	}
-	
-	public int getCate_num() {
-		return cate_num;
-	}
-	public void setCate_num(int cate_num) {
-		this.cate_num = cate_num;
 	}
 	public int getPro_price() {
 		return pro_price;

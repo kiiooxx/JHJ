@@ -20,34 +20,16 @@
 
 <div class="wleft">
 	<!-- 쇼핑몰 이름 -->
-	<h1 class="main_title"><a href="#">JHJ</a></h1>
+	<h1 class="main_title"><a href="#">관리자</a></h1>
 	
 	<div class="category_clothes">
 		<ul>
-		<c:forEach var="list" items="${categoryList }" varStatus="i">
-			<c:if test="${list.ca_lev == 0}">
-			<li><a href="productList.pro?cate_num=${list.cate_num }&category=${list.category}">${list.category }</a></li>
-			</c:if>
-		</c:forEach>
+			<li><a href="categoryManagement.ad">카테고리관리</a></li>
+			<li><a href="productManagement.ad">상품등록</a></li>
+			<li><a href="#">상품관리</a></li>
+			<li><a href="#">재고관리</a></li>
 		</ul>
 	</div>
-	
-	<div class="category_board">
-		<ul>
-			<li><a href="#">NOTICE</a></li>
-			<li><a href="#">Q & A</a></li>
-			<li><a href="#">REVIEW</a></li>
-		</ul>
-	</div>
-	
-	<div class="category_call">
-		<ul>
-			<li>010.XXXX.XXXX</li>
-			<li>AM 10:00 ~ PM 05:00</li>
-			<li>SAT, SUN, HOLIDAY OFF</li>
-		</ul>
-	</div>
-	
 </div>
 </body>
 </html>

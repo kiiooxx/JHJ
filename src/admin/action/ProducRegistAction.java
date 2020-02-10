@@ -1,4 +1,4 @@
-package product.action;
+package admin.action;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -9,9 +9,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
+import com.sun.org.apache.xml.internal.security.utils.Base64;
 
 import action.Action;
-import product.svc.ProductRegistService;
+import admin.svc.ProductRegistService;
 import vo.ActionForward;
 import vo.ProDetBean;
 import vo.ProductBean;
@@ -32,17 +33,17 @@ public class ProducRegistAction implements Action {
 		ServletContext context = request.getServletContext();
 		realFolder = context.getRealPath(saveFolder);
 		MultipartRequest multi = new MultipartRequest(request, realFolder, fileSize, "UTF-8", new DefaultFileRenamePolicy());
-		String image = multi.getFilesystemName("image");
-		
+		String image = multi.getFilesystemName("photo");
+		System.out.println("이미지 " + image);
 		productBean = new ProductBean();
 		productBean.setPro_name(multi.getParameter("pro_name"));
 		productBean.setPro_price(Integer.parseInt(multi.getParameter("pro_price")));
 		productBean.setPro_detail(multi.getParameter("pro_detail"));
 		productBean.setPro_content(multi.getParameter("pro_content"));
-		productBean.setPro_photo(multi.getFilesystemName("photo"));
+		productBean.setPro_photo(image);
 		productBean.setActive(multi.getParameter("active").charAt(0));
 		productBean.setMain_nb(multi.getParameter("main_nb").charAt(0));
-		productBean.setCate_num(Integer.parseInt(multi.getParameter("cate_hidden")));
+		productBean.setCate_num(Integer.parseInt(multi.getParameter("cate_num")));
 		
 		System.out.println(multi.getParameter("pro_content"));
 		System.out.println(multi.getFilesystemName("photo"));
@@ -71,7 +72,7 @@ public class ProducRegistAction implements Action {
 		boolean isRegistSuccess = productRegistService.registProduct(productBean, proDetInfo);
 		
 		if(isRegistSuccess) {
-			forward = new ActionForward("productManagement.pro", true);
+			forward = new ActionForward("productManagement.ad", true);
 		}else {
 			response.setContentType("text/html;charset=UTF-8");
 			PrintWriter out = response.getWriter();

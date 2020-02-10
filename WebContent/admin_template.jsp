@@ -11,7 +11,6 @@
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body>
-<jsp:include page="/common/categoryCheck.jsp"/>
 <div id="template">
 	<!-- 헤더 -->
 	<div id="header">
@@ -22,7 +21,7 @@
 	
 		<!-- 왼쪽 사이드 바 -->
 		<div id="wleft">
-			<jsp:include page="sidebar.jsp"></jsp:include>
+			<jsp:include page="admin_sidebar.jsp"></jsp:include>
 		</div>
 		
 		<!-- 내용 -->
