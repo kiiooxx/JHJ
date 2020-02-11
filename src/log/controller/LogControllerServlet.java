@@ -12,8 +12,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import action.Action;
 import log.action.LoginAction;
-import log.action.LoginFormAction;
 import log.action.LogoutAction;
+import log.action.pwfindAction;
+import log.action.IdfindAction;
+
 import log.svc.LoginSvc;
 import vo.ActionForward;
 import vo.Member;
@@ -40,16 +42,14 @@ public class LogControllerServlet extends HttpServlet {
     	String command = RequestURI.substring(contextPath.length());
     	ActionForward forward = null;
     	Action action = null;
+    	
+	
     	System.out.println(command);
     	
     	
 		if(command.equals("/loginForm.log")) {
-    		action = new LoginFormAction();
-    		try {
-    			forward = action.execute(request, response);
-    		}catch(Exception e) {
-    			e.printStackTrace();
-    		}	
+    		request.setAttribute("pagefile", "/member/loginForm.jsp");
+    		forward = new ActionForward("/template.jsp", false);
     	}else if(command.equals("/login.log")) {
     		action = new LoginAction();
     		try {
@@ -64,6 +64,39 @@ public class LogControllerServlet extends HttpServlet {
     		}catch(Exception e) {
     			e.printStackTrace();
     		}	
+    	
+    	}if(command.equals("/idfind.log")) {
+    		request.setAttribute("pagefile", "/member/idfind.jsp");
+    		forward = new ActionForward("/template.jsp", false);
+    	}else if(command.equals("/idfindAction.log")) {
+    		action = new IdfindAction();
+    	
+    		try {
+    			forward = action.execute(request, response);
+    		}catch(Exception e) {
+    			e.printStackTrace();
+    		}	
+    		
+    		
+    	}if(command.equals("/pwfind.log")) {
+    		request.setAttribute("pagefile", "/member/pwfind.jsp");
+    		forward = new ActionForward("/template.jsp", false);
+    	}else if(command.equals("/pwfindAction.log")) {
+    		action = new pwfindAction();
+    	
+    		try {
+    			forward = action.execute(request, response);
+    		}catch(Exception e) {
+    			e.printStackTrace();
+    		}	
+    		
+    		
+    		
+    		
+ 
+    	
+    		
+    	
     	}
     	
     	if(forward != null) {
@@ -76,40 +109,6 @@ public class LogControllerServlet extends HttpServlet {
     	
 		
 		
-			Cookie[] cookieArray = request.getCookies();
-	    	String id = "";
-	    	String passwd = "";
-	    	
-	    	if(cookieArray != null ) {
-	    		
-	    		for (int i = 0; i<cookieArray.length; i++) {
-	    			if(cookieArray[i].getName().equals("passwd")) {
-	    				passwd = cookieArray[i].getValue();
-	    			}
-	    			else if(cookieArray[i].getName().equals("id")) {
-	    				id = cookieArray[i].getValue();
-	    			}
-	    			
-	    		}
-	    	
-	    		LoginSvc loginService = new LoginSvc();
-	    		Member loginMember = loginService. memberLogin(id );
-	    		
-	    		
-	    		
-	    		if(loginMember !=null) {
-	    			RequestDispatcher dispatcher = request.getRequestDispatcher("loginSuccess.jsp");
-	    			request.setAttribute("loginMember", loginMember);
-	    			dispatcher.forward(request, response);
-	    		}
-	    		else {
-	    			RequestDispatcher dispatcher =
-	    			request.getRequestDispatcher("loginForm.jsp");
-	    			dispatcher.forward(request, response);
-	    		
-	    	
-	    		}
-	    	}
     	}
     }
     
@@ -135,40 +134,10 @@ public class LogControllerServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doProcess(request,response);
-		 String id = request.getParameter("id");
-		    String passwd = request.getParameter("passwd");
-		    String useCookie = request.getParameter("useCookie");
-		    LoginSvc loginService = new LoginSvc();
-		    Member loginMember = loginService.memberLogin(id);
-		    
-		    
-		    
-		    if(useCookie != null) {
+		
 		    	
-		    	Cookie idCookie = new Cookie("id", id);
-		    	idCookie.setMaxAge(60*60*24);
-		    	Cookie passwdCookie = new Cookie("passwd",passwd);
-		    	passwdCookie.setMaxAge(60*60*24);
-		    	response.addCookie(idCookie);
-		    	response.addCookie(passwdCookie);
-		    	
-		    }
-		    
-		    	if(loginMember != null) {
-		    	
-		    		RequestDispatcher dispatcher = request.getRequestDispatcher("template.jsp");
-		    		request.setAttribute("loginMember",loginMember);
-		    		dispatcher.forward(request, response);
-		    	
-		    	
-		    	}
-		    	else {
-		    		
-		    		RequestDispatcher dispatcher = request.getRequestDispatcher("template.jsp");
-		    		request.setAttribute("loginMember",loginMember);
-		    		dispatcher.forward(request, response);
-		    	}
 	
 		    
 	}
 }
+

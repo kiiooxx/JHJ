@@ -27,6 +27,7 @@
 		<div id="container">
 			<div id="contents">
 				<jsp:include page='${pagefile }'></jsp:include>
+			
 				<%-- <jsp:include page="admin/category_management.jsp"></jsp:include> --%>
 			</div>
 		</div>
@@ -37,7 +38,14 @@
 		</div>
 	</div>
 
-</div>
 
+
+
+
+
+</div>
 </body>
 </html>
+
+
+
