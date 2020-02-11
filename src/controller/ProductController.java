@@ -10,8 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import action.Action;
-import product.action.CategoryAddAction;
-import product.action.CategoryManagementFormAction;
+import admin.action.CategoryListAction;
+import product.action.ProductDetailAction;
+import product.action.ProductListAction;
 import vo.ActionForward;
 
 /**
@@ -45,23 +46,23 @@ public class ProductController extends HttpServlet {
 		ActionForward forward = null;
 		
 		//2. 각 요청별로 비즈니스 로직 호출
-		if(command.equals("/categoryManagement.pro")) {
-			action = new CategoryManagementFormAction();
+		if(command.equals("/productList.pro")) {
+			action = new ProductListAction();
 			//프로젝트명+기능+형태(?)
 			try {
 				forward = action.execute(request, response);
 			}catch(Exception e) {
 				e.printStackTrace();
 			}
-		}else if(command.equals("/categoryAddAction.pro")) {
-			action = new CategoryAddAction();
+    	}else if(command.equals("/productDetail.pro")) {
+			action = new ProductDetailAction();
 			//프로젝트명+기능+형태(?)
 			try {
 				forward = action.execute(request, response);
 			}catch(Exception e) {
 				e.printStackTrace();
 			}
-		}
+    	}
 		
 		//3.포워딩
 		if(forward != null) {

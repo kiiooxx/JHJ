@@ -1,20 +1,29 @@
 package vo;
 
-public class ProductBean {
-	private String pro_num;
-	private String pro_detail;
+public class ProductBean extends CategoryBean{
+	private int pro_num;
 	private String pro_name;
-	private String category;
-	private String sub_category;
 	private int pro_price;
-	private char main_nb;
+	private String pro_detail;
+	private String pro_content;
+	private String pro_photo;
+	private int cate_num;
 	private char active;
+	private char main_nb;
 	private String pro_date;
 	
-	public String getPro_num() {
+	
+	
+	public int getCate_num() {
+		return cate_num;
+	}
+	public void setCate_num(int cate_num) {
+		this.cate_num = cate_num;
+	}
+	public int getPro_num() {
 		return pro_num;
 	}
-	public void setPro_num(String pro_num) {
+	public void setPro_num(int pro_num) {
 		this.pro_num = pro_num;
 	}
 	public String getPro_detail() {
@@ -28,18 +37,6 @@ public class ProductBean {
 	}
 	public void setPro_name(String pro_name) {
 		this.pro_name = pro_name;
-	}
-	public String getCategory() {
-		return category;
-	}
-	public void setCategory(String category) {
-		this.category = category;
-	}
-	public String getSub_category() {
-		return sub_category;
-	}
-	public void setSub_category(String sub_category) {
-		this.sub_category = sub_category;
 	}
 	public int getPro_price() {
 		return pro_price;
@@ -65,5 +62,19 @@ public class ProductBean {
 	public void setPro_date(String pro_date) {
 		this.pro_date = pro_date;
 	}
+	public String getPro_content() {
+		return pro_content;
+	}
+	public void setPro_content(String pro_content) {
+		this.pro_content = pro_content;
+	}
+	public String getPro_photo() {
+		return pro_photo;
+	}
+	public void setPro_photo(String pro_photo) {
+		this.pro_photo = pro_photo;
+	}
+	
+	
 	
 }

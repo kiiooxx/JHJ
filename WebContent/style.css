@@ -20,6 +20,10 @@ div {
 	display : block;
 }
 
+table {
+	width : 100%;
+}
+
 /* 템플릿 */
 #template {
 	margin : 0 auto;
@@ -205,7 +209,6 @@ div {
 	position: relative;
     margin: 0 0px 10px;
     text-align: center;
-    border : 1px solid black;
 }
 
 .thumbnail a {
@@ -232,36 +235,180 @@ div {
 
 /* 상품 상세 페이지 */
 #product_detail {
-	float : left;
-	display : block;
 	clear : both;
+	position: relative;
+    margin: 0 auto;
+    padding: 0px 0 90px;
 }
 
+.detailArea {
+	
+}
 .img_Area {
-	float : left;
-	display : block;
-	width : 580px;
-	text-align : center;
-}
-
-.img_Area img {
-	width : 300px;
-	border : 1px solid black;
+	float: left;
+    width: 580px;
+    text-align: center;
+    margin: 0px 0px 50px 0px;
 }
 
 .info_Area {
+	float: left;
+    width: 450px;
+    margin: -6px 0px 0;
+    line-height: 160%;
+}
+
+.info_Area>table {
+	border: 0;
+    font-size: 11px;
+    margin: 0px 0 0;
+}
+
+.info_Area td {
+	padding: 7px 6px 8px 0;
+    vertical-align: middle;
+}
+
+.info_table tr, th {
+	padding: 7px 0 7px 0px;
+    vertical-align: top;
+}
+.info_table tr, #totalPrice tr{
+	width: 90px;
 	text-align : left;
-	line-height : 160%;
-	float : left;
-	width : 450px;
+}
+.info_table th{
+	padding-top: 40px;
 }
 
-.info_Area>table tr{
-	padding : 50px;
+.info_table td{
+	padding-top: 30px;
+	vertical-align : bottom;
+}
+
+.info_table td select {
+	font-size : 10px;
+	padding: 5px 7px;
+    height: 27px;
+    margin: 0px 0 0;
+}
+
+#optionProduct td{
+	border-top: 1px solid #eee;
+	padding: 9px 0;
+    font-size: 10px;
+    border-bottom: 1px solid #eee;
+    line-height: 18px;
+    vertical-align: middle;
+    word-wrap: break-word;
+    word-break: break-all;
+}
+
+[id^=qnt_] {
+	width: 35px;
+}
+
+.right {
+	padding-right: 0px;
+    font-weight: normal;
+    font-size: 12px;
+    text-align: right;
+}
+.product {
+	padding: 0 10px 0 0;
+    font-weight: normal;
+    line-height: 21px;
+}
+
+#totalPrice {
+	margin: 20px 0 0;
+}
+
+#totalPrice td {
+	padding: 20px 0px 10px;
+    font-size: 12px;
+    vertical-align: middle;
+}
+
+
+#pageList {
+	display: block;
+	width : 100%;
+	clear:both;
+	float:left;
+	margin: 30px 0;
+    text-align: center;
+    font-size: 0;
+    line-height: 0;
+    font-family: verdana;
+}
+
+#pageList ol {
+	display: inline-block;
+    font-size: 0;
+    line-height: 0;
+    vertical-align: top;
+	width : 100%;
+}
+
+#pageList li {
+	display: inline-block;
+    margin: 0 3px 0 -1px;
+    font-size: 11px;
+    color: #757575;
+    vertical-align: top;
+}
+
+#btnArea {
+	width: 100%;
+    padding: 25px 0 0px;
+}
+
+#btnArea li {
+	float: left;
+    margin: 0 7px 5px 0;
+    width: 145px;
+    height : 42px;
+}
+#btnArea li a {
+	display: inline-block;
+    width: 100%;
+    border-radius: 2px;
+    height: 40px;
+    line-height: 40px;
+    text-transform: uppercase;
+    text-align: center;
+}
+.btn_w {
+	background: #fff;
+    border: 1px solid #ddd;
+    color: #000;
+    font-size: 10px;
+    letter-spacing: 1px;
+}
+
+.btn_b {
+	background: #000;
+	border: 1px solid #222;
+	color: #fff;
+	font-size: 11px;
+	letter-spacing: 2px;
 }
 
 
 
+#prdContent {
+	clear: both;
+	width : 100%;
+}
+
+
+.cont {
+	padding: 0px 0px 90px 0px;
+    text-align: center;
+    line-height: 190%;
+    font-size: 12px;
+}
 
 /* 서브 카테고리 */
 .sub_category {
@@ -547,6 +694,7 @@ div {
 /* 관리자 */
 /* 카테고리 설정 */
 #categoryArea {
+	margin-top : 30px;
 	padding: 20px 20px 20px 390px;
     border-radius: 2px;
     border: 1px solid #ddd;
@@ -576,4 +724,69 @@ div {
 #setTable {
 	float: left;
     width: 100%;
+}
+
+.menu a{cursor:pointer;}
+[class*='hide']{display:none; margin-left:15px;}
+#large_hidden {display :none;}
+#sub_hidden {display :none;}
+#info_hidden {display:none;}
+
+[id^=del_icon] {
+	display : none;
+	padding : 0px 2px;
+	background : #B58B8D;
+	color : white;
+}
+
+/*상품등록 폼*/
+.contentArea {
+	
+}
+
+.contentArea .prdAddForm {
+	
+}
+
+.formTitle {
+	margin : 50px 0 0px;
+    font-size: 12px;
+    color: #777;
+}
+
+.prdAddForm table {
+	position: relative;
+    margin: 10px 0 0;
+    border: 1px solid #d7d5d5;
+    border-top-color: #fff;
+    line-height: 1.5;
+    width: 100%;
+}
+
+.prdAddForm tr {
+	display: table-row;
+    vertical-align: inherit;
+    border-color: inherit;
+}
+
+.prdAddForm th {
+	width: 100px;
+	padding: 11px 0 10px 18px;
+    border: 1px solid #dfdfdf;
+    border-bottom-width: 0;
+    border-right-width: 0;
+    text-align: left;
+    font-weight: normal;
+    background-color: #fff;
+    vertical-align: top;
+}
+
+.prdAddForm td {
+	padding: 8px 10px 7px;
+	border-top: 1px solid #dfdfdf;
+    vertical-align: middle;
+}
+
+#pro_detail {
+	width : 100%;
 }

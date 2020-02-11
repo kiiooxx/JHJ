@@ -133,13 +133,15 @@
 
 			<table width="380px" height="70px" align="center" border="0"
 				style="font-size: 16px;">
-				<br>
-				<br>
-				<br>
-				<br>
-				<br>
-				<br>
+				
 				<tr>
+				<br>
+				<br>
+				<br>
+				<br>
+				<br>
+				<br>
+				
 					<td>이름</td>
 					<td><input type="text" name="name"></td>
 				</tr>                              
@@ -184,6 +186,12 @@
 					style="font-size: 16px;">
 					<tr>
 						
+						<br>
+				<br>
+				<br>
+				<br>
+				<br>
+				<br>
 							<td>이름</td>
 							<td><input type="text" name="name2"></td>
 					</tr>

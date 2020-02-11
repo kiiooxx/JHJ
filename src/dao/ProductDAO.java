@@ -6,9 +6,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import vo.CategoryBean;
+import vo.ProDetBean;
 import vo.ProductBean;
 
 
@@ -34,83 +37,133 @@ public class ProductDAO {
 		return productDAO;
 	}
 
-	//카테고리 리스트 불러오기
-	public ArrayList<CategoryBean> selectCategoryList() {
+	//상품 리스트의 갯수 구하기
+	public int selectListCount(int cate_num) {
+		// TODO Auto-generated method stub
+		int listCount = 0;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			//상품 관련 카테고리가 cate_num 인 값의 count 구하기
+			pstmt = con.prepareStatement("select count(*) from category where ca_ref=?");
+			pstmt.setInt(1, cate_num);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				listCount = rs.getInt(1);
+			}
+		}catch(Exception e) {
+			System.out.println("getListCount 에러 : " + e);
+		}finally {
+			close(rs);
+			close(pstmt);
+		}
+		return listCount;
+	}
+
+	//상품 리스트
+	public ArrayList<ProductBean> selectProductList(int cate_num, int page, int limit) {
 		// TODO Auto-generated method stub
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		ArrayList<CategoryBean> categoryList = new ArrayList<>();
+		String sql = "select * from pro_info p inner join category c on p.cate_num = c.cate_num where c.ca_ref=? order by p.pro_date desc limit ?,?";
+		ArrayList<ProductBean> prdList = new ArrayList<ProductBean>();
+		ProductBean prd = null;
+		int startrow = (page-1)*limit;	//읽기 시작할 row 번호
 		
-		
-		try {
-			pstmt = con.prepareStatement("select * from category order by ca_ref, ca_seq asc");
+		try {	
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, cate_num);
+			pstmt.setInt(2, startrow);
+			pstmt.setInt(3, limit);
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
-				categoryList.add(new CategoryBean(
-							rs.getInt("cate_num"),
-							rs.getString("category"),
-							rs.getInt("ca_ref"),
-							rs.getInt("ca_lev"),
-							rs.getInt("ca_seq")));
+				prd = new ProductBean();
+				prd.setPro_num(rs.getInt("pro_num"));
+				prd.setPro_name(rs.getString("pro_name"));
+				prd.setPro_price(rs.getInt("pro_price"));
+				prd.setPro_detail(rs.getString("pro_detail"));
+				prd.setPro_content(rs.getString("pro_content"));
+				prd.setPro_photo(rs.getString("pro_photo"));
+				System.out.println(rs.getString("pro_photo"));
+				prd.setCategory(rs.getString("category"));
+				prd.setMain_nb(rs.getString("main_nb").charAt(0));
+				prd.setActive(rs.getString("active").charAt(0));
+				prd.setPro_date(rs.getString("pro_date"));
+				prdList.add(prd);
 			}
-		}catch(SQLException e) {
-			System.out.println("categoryList_select 에러 " + e);
+		}catch(Exception e) {
+			System.out.println("getProductList 에러 : " + e);
 		}finally {
 			close(rs);
 			close(pstmt);
 		}
 		
-		return categoryList;
+		return prdList;
 	}
 
-	
-	//카테고리 추가
-	public int insertCategory(String cate_large, String cate_name, int i, int j) {
+	//상품 정보 불러오기
+	public ProductBean selectProduct(int pro_num) {
 		// TODO Auto-generated method stub
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		int cate_num = 0;
-		int insertCount = 0;
-		int ca_ref = 0;
-		String sql = "insert into category values (?, ?, ?, ?, ?)";
+		ProductBean prd = null;
 		
 		try {
-			//카테고리 번호 불러오기ㄺ
-			pstmt = con.prepareStatement("select max(cate_num) from category");
+			pstmt = con.prepareStatement("select * from pro_info where pro_num = ?");
+			pstmt.setInt(1, pro_num);
 			rs = pstmt.executeQuery();
+			
 			if(rs.next()) {
-				cate_num = rs.getInt(1) + 1;
-			}else {
-				cate_num = 1;
+				prd = new ProductBean();
+				prd.setPro_num(pro_num);
+				prd.setPro_name(rs.getString("pro_name"));
+				prd.setPro_price(rs.getInt("pro_price"));
+				prd.setPro_detail(rs.getString("pro_detail"));
+				prd.setPro_content(rs.getString("pro_content"));
+				prd.setPro_photo(rs.getString("pro_photo"));
+				prd.setCate_num(rs.getInt("cate_num"));
+				prd.setActive(rs.getString("active").charAt(0));
+				prd.setMain_nb(rs.getString("main_nb").charAt(0));
+				prd.setPro_date(rs.getString("pro_date"));
 			}
-			
-			//등록된 카테고리가 없거나, 대분류 카테고리를 등록할시에
-			if(cate_num == 1 || i == 0) {
-				//카테고리 관련글번호를 등록할 카테고리 번호랑 똑같이 바꿔주고
-				ca_ref = cate_num;
-			}else {
-				//소분류 카테고리를 등록할때는 대분류 카테고리 번호를 받아서 관련글번호로 지정한다.
-				ca_ref = Integer.parseInt(cate_large);
-			}
-			
-			pstmt = con.prepareStatement(sql);
-			pstmt.setInt(1, cate_num);
-			pstmt.setString(2, cate_name);
-			pstmt.setInt(3, ca_ref);
-			pstmt.setInt(4, i);
-			pstmt.setInt(5, j);
-			
-			insertCount = pstmt.executeUpdate();
-			
-		}catch(SQLException e) {
-			System.out.println("카테고리 추가 에러 " + e);
+		}catch(Exception e) {
+			System.out.println("selectProduct 에러 : " + e);
 		}finally {
 			close(rs);
 			close(pstmt);
 		}
-		
-		return insertCount;
+		return prd;
+	}
+
+	public ArrayList<ProDetBean> selectProductDetail(int pro_num) {
+		// TODO Auto-generated method stub
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		ProDetBean prdDet = null;
+		ArrayList<ProDetBean> prdDetList = new ArrayList<>();
+		try {
+			pstmt = con.prepareStatement("select * from pro_det where pro_num = ?");
+			pstmt.setInt(1, pro_num);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				prdDet = new ProDetBean();
+				prdDet.setPro_det_num(rs.getString("pro_det_num"));
+				prdDet.setPro_num(pro_num);
+				prdDet.setPro_size(rs.getString("pro_size"));
+				prdDet.setColor(rs.getString("color"));
+				prdDetList.add(prdDet);
+			}
+		}catch(Exception e) {
+			System.out.println("selectProductDetail 에러 : " + e);
+		}finally {
+			close(rs);
+			close(pstmt);
+		}
+		return prdDetList;
 	}
 
 }

@@ -279,4 +279,5 @@ function chkForm(f) {
 		</form>
 	</div>
 </body>
+>>>>>>> refs/remotes/origin/master
 </html>

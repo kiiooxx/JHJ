@@ -27,6 +27,15 @@ public class MemberController extends HttpServlet{
 		ActionForward forward = null;
 		Action action = null;
 		
+		
+		if(command.equals("/account.mem")) {
+			
+			request.setAttribute("pagefile", "/member/accountForm.jsp");
+			forward = new ActionForward("/template.jsp", false);
+		System.out.println("어카운트실행");
+		}
+		
+		
 		if(command.equals("/joinForm.mem")) {
 			request.setAttribute("pagefile", "member/joinForm.jsp");			
 			forward = new ActionForward("/template.jsp", false);
@@ -63,8 +72,9 @@ public class MemberController extends HttpServlet{
 			}
 			
 		}
-		
 	}
+		
+	
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		

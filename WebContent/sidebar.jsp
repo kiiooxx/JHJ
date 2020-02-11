@@ -1,12 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="vo.CategoryBean" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="common.css" type="text/css">
-<link rel="stylesheet" href="style.css" type="text/css">
-<title>Insert title here</title>
+<title>사이드바</title>
 </head>
 <body>
 <!-- 메인 사진 -->
@@ -20,13 +24,11 @@
 	
 	<div class="category_clothes">
 		<ul>
-			<li><a href="#">BEST</a></li>
-			<li><a href="#">NEW</a></li>
-			<li><a href="#">OUTER</a></li>
-			<li><a href="#">TOP</a></li>
-			<li><a href="#">BOTTOM</a></li>
-			<li><a href="#">ONEPIECE</a></li>
-			<li><a href="#">ACC</a></li>
+		<c:forEach var="list" items="${categoryList }" varStatus="i">
+			<c:if test="${list.ca_lev == 0}">
+			<li><a href="productList.pro?cate_num=${list.cate_num }&category=${list.category}">${list.category }</a></li>
+			</c:if>
+		</c:forEach>
 		</ul>
 	</div>
 	

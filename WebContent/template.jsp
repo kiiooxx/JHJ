@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,13 +11,12 @@
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body>
-
+<jsp:include page="/common/categoryCheck.jsp"/>
 <div id="template">
 	<!-- 헤더 -->
 	<div id="header">
 		<jsp:include page="top_menu.jsp"></jsp:include>
 	</div>
-	
 	<div id="wrap">
 	
 		<!-- 왼쪽 사이드 바 -->

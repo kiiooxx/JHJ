@@ -32,7 +32,7 @@
 			<a href="joinForm.mem">JOIN</a>
 		</li>
 		<li>
-			<a href="#">ACCOUNT</a>
+			<a href="account.mem">ACCOUNT</a>
 		</li>
 		<li>
 			<a href="#">ORDER</a>
@@ -40,8 +40,9 @@
 		<li>
 			<a href="#">CART</a>
 		</li>
+		<!-- 관리자일때만 admin메뉴 보이게 -->
 		<li>
-			<a href="categoryManagement.pro">ADMIN</a>
+			<a href="adminPage.ad">ADMIN</a>
 		</li>
 	</ul>
 </div>
