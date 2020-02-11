@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import action.Action;
+import admin.action.MemberListAction;
 import member.action.IdCheckAction;
 import member.action.MemberJoinProAction;
 import vo.ActionForward;
@@ -26,7 +27,7 @@ public class MemberController extends HttpServlet{
 		String command = RequestURI.substring(contextPath.length());
 		ActionForward forward = null;
 		Action action = null;
-		
+		System.out.println(command);
 		if(command.equals("/joinForm.mem")) {
 			request.setAttribute("pagefile", "member/joinForm.jsp");			
 			forward = new ActionForward("/template.jsp", false);
@@ -52,6 +53,8 @@ public class MemberController extends HttpServlet{
 			forward = new ActionForward("/member/idCheck.jsp", false);	
 			
 		}
+		
+		
 		
 		if(forward != null) {
 			

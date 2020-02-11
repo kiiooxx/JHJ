@@ -53,7 +53,7 @@ public class LoginDAO {
 				member.setJoindate(rs.getString("JOINDATE"));
 				member.setSex(rs.getString("SEX"));
 				member.setEmail(rs.getString("EMAIL"));
-				member.setGrade(rs.getString("GRADE"));
+				member.setGrade(rs.getString("GRADE").charAt(0));
 				member.setAddr1(rs.getString("ADDR1"));
 				member.setAddr2(rs.getString("ADDR2"));
 				
