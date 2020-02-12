@@ -228,7 +228,7 @@ function chkForm(f) {
 					<h3 class="join_title">추가정보</h3>
 					<tr>
 						<th><label for="gender"></label>성별</th>
-						<td><input type="radio" name="sex" value="남" checked
+						<td><input type="radio" name="sex" value="남"
 							id="gender1" />남자 <input type="radio" name="sex" value="여"
 							id="gender2" />여자</td>
 					</tr>

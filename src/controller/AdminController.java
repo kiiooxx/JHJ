@@ -15,6 +15,8 @@ import admin.action.CategoryDelAction;
 import admin.action.CategoryListAction;
 import admin.action.CategoryManagementForm;
 import admin.action.CategoryUpdateAction;
+import admin.action.MemberInfoAction;
+import admin.action.MemberListAction;
 import admin.action.ProducRegistAction;
 import vo.ActionForward;
 
@@ -103,7 +105,23 @@ public class AdminController extends HttpServlet {
 			}catch(Exception e) {
 				e.printStackTrace();
 			}
-    	}
+    	}else if(command.equals("/memberList.ad")) {
+			action = new MemberListAction();
+			try {
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+				System.out.println("controller error : memberList.ad");
+			}
+		}else if(command.equals("/memberInfo.ad")) {
+			action = new MemberInfoAction();
+			try {
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+				System.out.println("controller error : memberInfo.ad");
+			}
+		}
 		
 		//3.포워딩
 		if(forward != null) {

@@ -12,7 +12,8 @@ public class Member {
 	private String email;
 	private String birth;
 	private String joindate;
-	private String grade;
+	private char grade;
+	
 	public String getUser_id() {
 		return user_id;
 	}
@@ -79,10 +80,10 @@ public class Member {
 	public void setJoindate(String joindate) {
 		this.joindate = joindate;
 	}
-	public String getGrade() {
+	public char getGrade() {
 		return grade;
 	}
-	public void setGrade(String grade) {
+	public void setGrade(char grade) {
 		this.grade = grade;
 	}
 
