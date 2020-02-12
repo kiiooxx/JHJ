@@ -35,11 +35,11 @@ $(document).ready(function(){
 				$('#qnt_'+index).val('1');
 				$('#price_'+index).text(${prd.pro_price});
 				$('.option_product'+index).show();
-				
+				var prodetnum = $('#pdn'+index).val();
 				var html = '';
 				html += '<input type="hidden" id="size' + index + '" name="size" value="' + size + '"/>';
 				html += '<input type="hidden" id="color' + index + '" name="color" value="' + color + '"/>';
-				
+				html += '<input type="hidden" name="pro_det_num" value="'+ prodetnum +'"/>';
 				$("#totalPrice").append(html);
 				
 				var price = $('.total_price').text();
@@ -74,10 +74,11 @@ $(document).ready(function(){
 				$('#qnt_'+index).val('1');
 				$('#price_'+index).text(${prd.pro_price});
 				$('.option_product'+index).show();
-				
+				var prodetnum = $('#pdn'+index).val();
 				var html = '';
 				html += '<input type="hidden" id="size' + index + '" name="size" value="' + size + '"/>';
 				html += '<input type="hidden" id="color' + index + '" name="color" value="' + color + '"/>';
+				html += '<input type="hidden" name="pro_det_num" value="'+ prodetnum +'"/>';
 				$("#totalPrice").append(html);
 				
 				var price = $('.total_price').text();
@@ -245,6 +246,7 @@ $(document).ready(function(){
 							<tr class="option_product${count }">
 								<td>
 									<p class="product">
+										<input type="hidden" id="pdn${count }" value="${list.pro_det_num }"/>
 										<span id="color_${count }">${list.color } / </span>
 										<span id="size_${count }">${list.pro_size }</span>
 									</p>
