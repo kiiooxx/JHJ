@@ -22,9 +22,11 @@ public class CartListAction implements Action {
 		int totalPrice = 0;
 		int price = 0;
 		
-		for(int i=0; i<cartList.size(); i++) {
-			price = cartList.get(i).getPro_price()*cartList.get(i).getBas_pro_qnt();
-			totalPrice += price;
+		if(cartList != null) {
+			for(int i=0; i<cartList.size(); i++) {
+				price = cartList.get(i).getPro_price()*cartList.get(i).getBas_pro_qnt();
+				totalPrice += price;
+			}
 		}
 		request.setAttribute("totalPrice", totalPrice);
 		request.setAttribute("cartList", cartList);
