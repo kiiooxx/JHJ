@@ -17,9 +17,9 @@
 $(document).ready(function(){
 	var index1;
 	var index2;
-
+	var cnt = 0;
+	
 	$('#colorSelect').on('change', function() {
-		alert("dd");
 		//선택된 color, size값 받아오기
 		var color = $(this).val();
 		var size = $('#sizeSelect option:selected').val();
@@ -40,13 +40,14 @@ $(document).ready(function(){
 						h += '<tr class="option_product${i.count}">';
 						h += '<td><p class="product">';
 						h += '<input type="hidden" name="pro_det_num" value="${list.pro_det_num}"/>';
+						h += '<input type="hidden" name="color" value="' + color + '"/>';
+						h += '<input type="hidden" name="size" value="' + size + '"/>';
 						h += '<span>' + color + '/</span>';
 						h += '<span>' + size + '</span></p></td>';
 						h += '<td><span class="qnt">';
 						h += '<input type="number" value="1" min="1" name="qnt" id="qnt_${i.count}"/>';
 						h += '<a href="#" id="delItem${i.count}">X</a></span></td>';
-						h += '<td class="right"><span class="price" id="price_${count}">${prd.pro_price}</span></td></tr>';
-						alert(h);
+						h += '<td class="right"><span class="price" id="price_${i.count}">${prd.pro_price}</span></td></tr>';
 						$('#optionProduct').append(h);
 						
 						var price = $('.total_price').text();
@@ -55,9 +56,7 @@ $(document).ready(function(){
 						var qnt = $('.total_qnt').text();
 						$('.total_qnt').text(Number(qnt) + 1);
 						
-						$('#total_price').val(Number(price) + Number(${prd.pro_price}));
-						$('#total_qnt').val(Number(qnt) + 1);
-						
+						cnt += Number(1);
 						$(this).val('none').prop('selected', true);	
 					}
 				</c:forEach>
@@ -84,13 +83,14 @@ $(document).ready(function(){
 						h += '<tr class="option_product${i.count}">';
 						h += '<td><p class="product">';
 						h += '<input type="hidden" name="pro_det_num" value="${list.pro_det_num}"/>';
+						h += '<input type="hidden" name="color" value="' + color + '"/>';
+						h += '<input type="hidden" name="size" value="' + size + '"/>';
 						h += '<span>' + color + '/</span>';
 						h += '<span>' + size + '</span></p></td>';
 						h += '<td><span class="qnt">';
 						h += '<input type="number" value="1" min="1" name="qnt" id="qnt_${i.count}"/>';
 						h += '<a href="#" id="delItem${i.count}">X</a></span></td>';
-						h += '<td class="right"><span class="price" id="price_${count}">${prd.pro_price}</span></td></tr>';
-						alert(h);
+						h += '<td class="right"><span class="price" id="price_${i.count}">${prd.pro_price}</span></td></tr>';
 						$('#optionProduct').append(h);
 						
 						var price = $('.total_price').text();
@@ -99,9 +99,7 @@ $(document).ready(function(){
 						var qnt = $('.total_qnt').text();
 						$('.total_qnt').text(Number(qnt) + 1);
 						
-						$('#total_price').val(Number(price) + Number(${prd.pro_price}));
-						$('#total_qnt').val(Number(qnt) + 1);
-						
+						cnt += Number(1);
 						$(this).val('none').prop('selected', true);	 
 					}
 				</c:forEach>
@@ -110,19 +108,17 @@ $(document).ready(function(){
 		return false;
 	});
 	
-	$('input[name="qnt_"]').on('change', function() {
-		alert('ㅇㅇㅇ');
+	
+	$('body').on('change', '[id^=qnt_]', function() {
 		var q = $(this).val();
 		var id = $(this).attr("id")
 		var num = id.replace("qnt_", "");
 		//해당 옵션의 가격 바꾸기
 		var pr = Number(${prd.pro_price}*q);
 		$('#price_'+num).text(pr);
-		
 		//총금액 구하기
 		var total_p = '0';
 		var total_q = '0';
-		var cnt = $('#cnt').val();
 		
 		for(var i=1; i<=cnt; i++) {
 			total_p = Number(total_p) + Number($('#price_'+i).text());
@@ -131,13 +127,10 @@ $(document).ready(function(){
 		
 		$('.total_price').text(total_p);
 		$('.total_qnt').text(total_q);
-		$('#total_price').val(total_p);
-		$('#total_qnt').val(total_q);
-		
 	});
 	
 	//삭제
-	$('[id^=delItem]').on('click', function() {
+	$('body').on('click', '[id^=delItem]', function() {
 		alert("삭제");
 		var id = $(this).attr("id")
 		var num = id.replace("delItem", "");
@@ -163,27 +156,51 @@ $(document).ready(function(){
 	
 	$('#cart').on('click', function() {
 		 var pro_num = "${prd.pro_num}";
+		 var photo = "${prd.pro_photo}";
+		 var pro_name = "${prd.pro_name}";
+		 var pro_price = "${prd.pro_price}";
+		 
+		 alert(pro_num);
+		 alert(photo);
+		 alert(pro_name);
+		 alert(pro_price);
+		 
+		 
 		 var size = $("input[name='pro_det_num']").length;
 		 var prodetnum = new Array(size);
 		 for(var i=0; i<size; i++){                          
 			 prodetnum[i] = $("input[name='pro_det_num']")[i].value;
 		 }
-		 alert(prodetnum);
+
 		 var size2 = $("input[name='qnt']").length;
 		 var qnt = new Array(size2);
 		 for(var i=0; i<size2; i++){                          
 			 qnt[i] = $("input[name='qnt']")[i].value;
 		 }
-		 alert(qnt);
+		 
+		 var size3 = $("input[name='color']").length;
+		 var color = new Array(size3);
+		 for(var i=0; i<size3; i++){                          
+			 color[i] = $("input[name='color']")[i].value;
+		 }
+		 
+		 var size4 = $("input[name='size']").length;
+		 var pro_size = new Array(size4);
+		 for(var i=0; i<size4; i++){                          
+			 pro_size[i] = $("input[name='size']")[i].value;
+		 }
+		 alert(color);
+		 alert(pro_size);
 		$.ajax({
 			url : '<%=request.getContextPath()%>/addCart',
-			dataType : 'json',
 			type : 'POST',
-			data : 'pro_det_num='+prodetnum+'&qnt='+qnt+'&pro_num='+pro_num,
+			data : 'pro_det_num='+prodetnum+'&qnt='+qnt+'&pro_num='+pro_num
+				+'&pro_photo='+photo+'&pro_name='+pro_name+'&pro_price='+pro_price
+				+'&color='+color+'&pro_size='+pro_size,
 			cache: false,
 			contentType : 'application/x-www-form-urlencoded; charset=UTF-8',
 	        processData: false,
-			success : function(data) {
+			success : function() {
 					alert('선택한 상품을 장바구니에 담았습니다!');
 			},
 			error : function() {
@@ -280,8 +297,6 @@ $(document).ready(function(){
 						<td><span>TOTAL(QUANTITY) : </span>
 							<span class="total_price">0</span>
 							(<span class="total_qnt">0</span>)
-							<input type="hidden" name="total_price" id="total_price"/>
-							<input type="hidden" name="total_qnt" id="total_qnt"/>
 						</td>
 					</tr>
 				</table>
@@ -296,7 +311,7 @@ $(document).ready(function(){
 			<div id="btnArea">
 				<ul>
 					<li><a href="#" class="btn_b">BUY</a></li>
-					<li><a href="cartAdd.pro?pro_num=${prd.pro_num }&" class="btn_w" id="cart">SHOPPING CART</a></li>
+					<li><a href="#" class="btn_w" id="cart">SHOPPING CART</a></li>
 				</ul>
 			</div>
 		</div>

@@ -42,15 +42,11 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<style>
+
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script type="text/javascript" src="//code.jquery.com/jquery-2.1.1.min.js"></script>
 
 
-</style>
-
-<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
-<script src="http://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
-<!-- datepicker 한국어로 -->
-<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/i18n/datepicker-ko.js"></script>
 
 <script>
 
@@ -178,208 +174,219 @@ function checkAll(theForm){
 } */
 
 </script>
+<style>
+	th {background : #F6F6F6;}
+	.col {margin-bottom : 40px;}
+	#pageList {text-align : center;}
+</style>
 </head>
 <body>
-<h2>회원관리 페이지</h2>
+<!-- Page Heading -->
+ <div class="d-sm-flex align-items-center justify-content-between mb-4">
+ 	<h1 class="h3 mb-0 text-gray-800">회원 관리</h1>
+ </div>
+ <!-- Content Row -->
+ <div class="row">
+ 	<div class="col">
+	<form action="memberList.ad" method="post">
+		<div class="card card-default">
+				<div class="card-body">
+					<table class="table table-bordered">
+						<tr>
+							<th>개인정보</th>
+							<td>
+								<select id="searchType" name="searchType">
+									<option value="">선택</option>
+									<option value="user_id">아이디</option>
+									<option value="user_name">이름</option>
+									<option value="tel">휴대전화</option>
+									<option value="addr1">주소</option>
+								</select>
+								<input type="text" name="searchText" >
+							</td>
+						</tr>
+						<tr>
+							<th>회원등급</th>
+							<td>
+								<select id="searchGrade" name="searchGrade">
+									<option value="">선택</option>
+									<option value="N">일반회원</option>
+									<option value="A">관리자</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<th>구매금액</th>
+							<td>
+								<input type="text" id="startPrice" name="startPrice" onChange="priceComp(this);" size="5">원  ~ 
+								<input type="text" id="endPrice" name="endPrice" onChange="priceComp(this);" size="5">원
+							</td>
+						</tr>
+						<tr>
+		                    <th>주문일</th>
+		                    <td>
+		                        <ul class="searchDate">
+		                            <li>
+		                                <span class="chkbox2">
+		                                    <input type="radio" name="dateType" id="dateType1" onclick="setSearchDate('0d')"/>
+		                                    <label for="dateType1">당일</label>
+		                                </span>
+		                            </li>
+		                            <li>
+		                                <span class="chkbox2">
+		                                    <input type="radio" name="dateType" id="dateType2" onclick="setSearchDate('3d')"/>
+		                                    <label for="dateType2">3일</label>
+		                                </span>
+		                            </li>
+		                            <li>
+		                                <span class="chkbox2">
+		                                    <input type="radio" name="dateType" id="dateType3" onclick="setSearchDate('1w')"/>
+		                                    <label for="dateType3">1주</label>
+		                                </span>
+		                            </li>
+		                            <li>
+		                                <span class="chkbox2">
+		                                    <input type="radio" name="dateType" id="dateType4" onclick="setSearchDate('2w')"/>
+		                                    <label for="dateType4">2주</label>
+		                                </span>
+		                            </li>
+		                            <li>
+		                                <span class="chkbox2">
+		                                    <input type="radio" name="dateType" id="dateType5" onclick="setSearchDate('1m')"/>
+		                                    <label for="dateType5">1개월</label>
+		                                </span>
+		                            </li>
+		                            <li>
+		                                <span class="chkbox2">
+		                                    <input type="radio" name="dateType" id="dateType6" onclick="setSearchDate('3m')"/>
+		                                    <label for="dateType6">3개월</label>
+		                                </span>
+		                            </li>
+		                            <li>
+		                                <span class="chkbox2">
+		                                    <input type="radio" name="dateType" id="dateType7" onclick="setSearchDate('6m')"/>
+		                                    <label for="dateType7">6개월</label>
+		                                </span>
+		                            </li>
+		                        </ul>
+		                        
+		                        <div class="clearfix">
+		                            <!-- 시작일 -->
+		                            <span class="dset">
+		                                <input type="text" class="datepicker inpType" name="startDate" id="startDate" >
+		                                <a href="#none" class="btncalendar dateclick">달력</a>
+		                            </span>
+		                            <span class="demi">~</span>
+		                            <!-- 종료일 -->
+		                            <span class="dset">
+		                                <input type="text" class="datepicker inpType" name="endDate" id="endDate" >
+		                                <a href="#none" class="btncalendar dateclick">달력</a>
+		                            </span>
+		                        </div>    
+		                    </td>
+		                </tr>	
+					</table>
+					<input type="submit" value="검색" id="search_btn" name="search_btn">
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
 
-
-<section id="member_search">
-
-<form action="memberList.ad" method="post">
-	<table border="1">
-		<tr>
-			<th>개인정보</th>
-			<td>
-				<select id="searchType" name="searchType">
-					<option value="">선택</option>
-					<option value="user_id">아이디</option>
-					<option value="user_name">이름</option>
-					<option value="tel">휴대전화</option>
-					<option value="addr1">주소</option>
-				</select>
-				<input type="text" name="searchText" >
-			</td>
-		</tr>
-		<tr>
-			<th>회원등급</th>
-			<td>
-				<select id="searchGrade" name="searchGrade">
-					<option value="">선택</option>
-					<option value="N">N</option>
-					<option value="A">A</option>
-				</select>
-			</td>
-		</tr>
-		<tr>
-			<th>구매금액</th>
-			<td>
-				<input type="text" id="startPrice" name="startPrice" onChange="priceComp(this);" size="5">원  ~ 
-				<input type="text" id="endPrice" name="endPrice" onChange="priceComp(this);" size="5">원
-			</td>
-		</tr>
-		
-                    <th>주문일</th>
-                    <td>
-                        <ul class="searchDate">
-                            <li>
-                                <span class="chkbox2">
-                                    <input type="radio" name="dateType" id="dateType1" onclick="setSearchDate('0d')"/>
-                                    <label for="dateType1">당일</label>
-                                </span>
-                            </li>
-                            <li>
-                                <span class="chkbox2">
-                                    <input type="radio" name="dateType" id="dateType2" onclick="setSearchDate('3d')"/>
-                                    <label for="dateType2">3일</label>
-                                </span>
-                            </li>
-                            <li>
-                                <span class="chkbox2">
-                                    <input type="radio" name="dateType" id="dateType3" onclick="setSearchDate('1w')"/>
-                                    <label for="dateType3">1주</label>
-                                </span>
-                            </li>
-                            <li>
-                                <span class="chkbox2">
-                                    <input type="radio" name="dateType" id="dateType4" onclick="setSearchDate('2w')"/>
-                                    <label for="dateType4">2주</label>
-                                </span>
-                            </li>
-                            <li>
-                                <span class="chkbox2">
-                                    <input type="radio" name="dateType" id="dateType5" onclick="setSearchDate('1m')"/>
-                                    <label for="dateType5">1개월</label>
-                                </span>
-                            </li>
-                            <li>
-                                <span class="chkbox2">
-                                    <input type="radio" name="dateType" id="dateType6" onclick="setSearchDate('3m')"/>
-                                    <label for="dateType6">3개월</label>
-                                </span>
-                            </li>
-                            <li>
-                                <span class="chkbox2">
-                                    <input type="radio" name="dateType" id="dateType7" onclick="setSearchDate('6m')"/>
-                                    <label for="dateType7">6개월</label>
-                                </span>
-                            </li>
-                        </ul>
-                        
-                        <div class="clearfix">
-                            <!-- 시작일 -->
-                            <span class="dset">
-                                <input type="text" class="datepicker inpType" name="startDate" id="startDate" >
-                                <a href="#none" class="btncalendar dateclick">달력</a>
-                            </span>
-                            <span class="demi">~</span>
-                            <!-- 종료일 -->
-                            <span class="dset">
-                                <input type="text" class="datepicker inpType" name="endDate" id="endDate" >
-                                <a href="#none" class="btncalendar dateclick">달력</a>
-                            </span>
-                        </div>    
-                    </td>
-                </tr>	
-	</table>
-
-	<input type="submit" value="검색" id="search_btn" name="search_btn">
-</form>
-
-</section>
-
-
-
-<h2>회원 목록</h2> 
-
-<section id="search_result">
-	<table border="1">
-	<tr>
-		<td colspan="10"><input type="submit" value="선택삭제" name="remove" id="remove" style="align:left;"></td>
-	</tr>
+<div class="row">
+ 	<div class="col">
+		<div class="card card-default">
+				<div class="card-body">
+					<table class="table table-bordered">
+						<tr>
+							<td colspan="10"><input type="submit" value="선택삭제" name="remove" id="remove" style="align:left;"></td>
+						</tr>
 	
-	<tr>
-		<td class="list_top"><input type="checkbox" name="remove" id="remove"></td>
-		<td>회원가입일</td>
-		<td>아이디</td>
-		<td>이름</td>
-		<td>등급</td>
-		<td>휴대전화</td>
-		<td>성별</td>
-		<td>주소</td>
-		<td>이메일</td>
-		<td>메모</td>
-	</tr>
+						<tr>
+							<td class="list_top"><input type="checkbox" name="remove" id="remove"></td>
+							<td>회원가입일</td>
+							<td>아이디</td>
+							<td>이름</td>
+							<td>등급</td>
+							<td>휴대전화</td>
+							<td>성별</td>
+							<td>주소</td>
+							<td>이메일</td>
+							<td>메모</td>
+						</tr>
 	
-	<!-- 여기서부터 검색결과 -->
-	
-	<c:choose>
-		<c:when test="${memberList ne null }">
-		
-			<c:forEach items="${memberList }" var="member">
-				<tr>
-					<td><input type="checkbox" name="remove" id="remove"></td>
-					<td><a href="memberInfo.ad?user_id=${member.user_id }">${member.joindate }</a></td>
-					<td><a href="memberInfo.ad?user_id=${member.user_id }">${member.user_id }</a></td>
-					<td><a href="memberInfo.ad?user_id=${member.user_id }">${member.user_name }</a></td>
-					<td><a href="memberInfo.ad?user_id=${member.user_id }">${member.grade }</a></td>
-					<td><a href="memberInfo.ad?user_id=${member.user_id }">${member.tel }</a></td>
-					<td><a href="memberInfo.ad?user_id=${member.user_id }">${member.sex }</a></td>
-					<td><a href="memberInfo.ad?user_id=${member.user_id }">${member.addr1 }</a></td>
-					<td><a href="memberInfo.ad?user_id=${member.user_id }">${member.email}</a></td>
-					<td>메모</td>
-				</tr>		
-			</c:forEach>
-	
-		</c:when>
-		<c:otherwise>
-			<tr>
-				<td colspan="10">
-				 검색된 회원이 없습니다.
-				</td>
-			</tr>
-		</c:otherwise>
-		
-	</c:choose>
-</section>
+						<!-- 여기서부터 검색결과 -->
+						
+						<c:choose>
+							<c:when test="${memberList ne null }">
+							
+								<c:forEach items="${memberList }" var="member">
+									<tr>
+										<td><input type="checkbox" name="remove" id="remove"></td>
+										<td><a href="memberInfo.ad?user_id=${member.user_id }">${member.joindate }</a></td>
+										<td><a href="memberInfo.ad?user_id=${member.user_id }">${member.user_id }</a></td>
+										<td><a href="memberInfo.ad?user_id=${member.user_id }">${member.user_name }</a></td>
+										<td><a href="memberInfo.ad?user_id=${member.user_id }">${member.grade }</a></td>
+										<td><a href="memberInfo.ad?user_id=${member.user_id }">${member.tel }</a></td>
+										<td><a href="memberInfo.ad?user_id=${member.user_id }">${member.sex }</a></td>
+										<td><a href="memberInfo.ad?user_id=${member.user_id }">${member.addr1 }</a></td>
+										<td><a href="memberInfo.ad?user_id=${member.user_id }">${member.email}</a></td>
+										<td>메모</td>
+									</tr>		
+								</c:forEach>
+						
+							</c:when>
+							<c:otherwise>
+								<tr>
+									<td colspan="10">
+									 검색된 회원이 없습니다.
+									</td>
+								</tr>
+							</c:otherwise>
+							
+						</c:choose>
+						<!-- 여기까지 검색결과 -->
+						
+						<tr>
+							<td colspan="10"><input type="submit" value="선택삭제" name="remove" id="remove" style="align:left;"></td>
+						</tr>
+					</table>
 
-<!-- 여기까지 검색결과 -->
-
-<tr>
-	<td colspan="10"><input type="submit" value="선택삭제" name="remove" id="remove" style="align:left;"></td>
-</tr>
-</table>
-
-<!-- 여기서부터 페이징 -->
-	<section id="page">
-			<c:choose>
-				<c:when test="${pageInfo.page <= 1 }">
-					[이전]&nbsp;	
-				</c:when>
-				<c:otherwise>
-					<a href="memberList.ad?page=${pageInfo.page-1 }&searchType=${searchType}&searchText=${searchText}&searchGrade=${searchGrade}&startPrice=${startPrice}&endPrice=${endPrice}&startDate=${startDate}&endDate=${endDate}">[이전]</a>&nbsp;	
-				</c:otherwise>
-			</c:choose>
-	
-			<c:forEach var="a" begin="${pageInfo.startPage }" end="${pageInfo.endPage }" step="1">
+		<!-- 여기서부터 페이징 -->
+			<section id="page">
+					<c:choose>
+						<c:when test="${pageInfo.page <= 1 }">
+							[이전]&nbsp;	
+						</c:when>
+						<c:otherwise>
+							<a href="memberList.ad?page=${pageInfo.page-1 }&searchType=${searchType}&searchText=${searchText}&searchGrade=${searchGrade}&startPrice=${startPrice}&endPrice=${endPrice}&startDate=${startDate}&endDate=${endDate}">[이전]</a>&nbsp;	
+						</c:otherwise>
+					</c:choose>
 			
-				<c:choose>
-					<c:when test="${a eq pageInfo.page }"> 
-						[${a}]				<!-- 현재페이지는 링크 안걸어도 되니까. -->
-					</c:when>
-					<c:otherwise>
-						<a href="memberList.ad?page=${a}&searchType=${searchType}&searchText=${searchText}&searchGrade=${searchGrade}&startPrice=${startPrice}&endPrice=${endPrice}&startDate=${startDate}&endDate=${endDate}">[${a}]</a>
-					</c:otherwise>
-				</c:choose>
-			</c:forEach>
-			<c:choose>
-				<c:when test="${pageInfo.page >= pageInfo.maxPage }">
-					&nbsp;[다음]
-				</c:when>
-				<c:otherwise>
-					<a href="memberList.ad?page=${pageInfo.page+1 }&searchType=${searchType}&searchText=${searchText}&searchGrade=${searchGrade}&startPrice=${startPrice}&endPrice=${endPrice}&startDate=${startDate}&endDate=${endDate}">[다음]</a>	
-				</c:otherwise>
-			</c:choose>
-	</section>
+					<c:forEach var="a" begin="${pageInfo.startPage }" end="${pageInfo.endPage }" step="1">
+					
+						<c:choose>
+							<c:when test="${a eq pageInfo.page }"> 
+								[${a}]				<!-- 현재페이지는 링크 안걸어도 되니까. -->
+							</c:when>
+							<c:otherwise>
+								<a href="memberList.ad?page=${a}&searchType=${searchType}&searchText=${searchText}&searchGrade=${searchGrade}&startPrice=${startPrice}&endPrice=${endPrice}&startDate=${startDate}&endDate=${endDate}">[${a}]</a>
+							</c:otherwise>
+						</c:choose>
+					</c:forEach>
+					<c:choose>
+						<c:when test="${pageInfo.page >= pageInfo.maxPage }">
+							&nbsp;[다음]
+						</c:when>
+						<c:otherwise>
+							<a href="memberList.ad?page=${pageInfo.page+1 }&searchType=${searchType}&searchText=${searchText}&searchGrade=${searchGrade}&startPrice=${startPrice}&endPrice=${endPrice}&startDate=${startDate}&endDate=${endDate}">[다음]</a>	
+						</c:otherwise>
+					</c:choose>
+				</section>
+			</div>
+		</div>
+	</div>
+</div>
 
 <!-- 여기까지 페이징 -->
 </body>

@@ -28,7 +28,7 @@ public class MemberListAction implements Action{
 			PrintWriter out = response.getWriter();
 			out.println("<script>");
 			out.println("alert('관리자 로그인이 필요합니다.');");
-			out.println("location.href='loginForm.jsp'");
+			out.println("location.href='loginForm.log'");
 			out.println("</script>");
 		}else {
 			
@@ -117,8 +117,8 @@ public class MemberListAction implements Action{
 			request.setAttribute("startDate", startDate);
 			request.setAttribute("endDate", endDate);
 			
-			request.setAttribute("pagefile", "admin/member_list.jsp");
-			forward = new ActionForward("/template.jsp", false);
+			request.setAttribute("pagefile", "/admin/member_list.jsp");
+			forward = new ActionForward("/admin_template.jsp", false);
 		}
 		
 		

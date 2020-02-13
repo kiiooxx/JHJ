@@ -87,7 +87,7 @@ public class ProductDAO {
 				prd.setPro_detail(rs.getString("pro_detail"));
 				prd.setPro_content(rs.getString("pro_content"));
 				prd.setPro_photo(rs.getString("pro_photo"));
-				System.out.println(rs.getString("pro_photo"));
+				prd.setCate_num(rs.getInt("cate_num"));
 				prd.setCategory(rs.getString("category"));
 				prd.setMain_nb(rs.getString("main_nb").charAt(0));
 				prd.setActive(rs.getString("active").charAt(0));

@@ -23,7 +23,6 @@ public class CategoryManagementForm implements Action {
 		//세션으로 저장...
 		HttpSession session = request.getSession();
 		session.setAttribute("categoryList", categoryList);
-		
 		request.setAttribute("pagefile", "/admin/category_management.jsp");
 		ActionForward forward = new ActionForward("/admin_template.jsp", false);
 		return forward;
