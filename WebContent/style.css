@@ -790,3 +790,142 @@ table {
 #pro_detail {
 	width : 100%;
 }
+
+
+/* 장바구니 */
+
+.cartTable {
+    vertical-align: middle;
+    position: relatice;
+    width: 100%;
+    text-align : center;
+}
+.cartTable tr {
+	width : 100%;
+}
+.cartTable th{
+	padding: 11px 0 9px;
+}
+
+.cartTable td {
+	padding: 8px 10px 7px;
+	border-top: 1px solid #dfdfdf;
+    vertical-align: middle;
+}
+
+
+.cartImage {
+	width: 80px;
+	vertical-align: middle;
+}
+.left {
+	padding-left : 10px;
+	text-align : left;
+}
+
+.cart_option {
+	margin: 0;
+    padding: 0;
+}
+.cart_option li{
+	margin: 9px 0 0;
+    color: #707070;
+    line-height: 16px;
+}
+
+.qnt_area {
+	position: relative;
+    display: inline-block;
+    width: 50px;
+    margin: 0 1px 0 0;
+    text-align: left;
+}
+
+.qnt_area>input {
+	width: 35px;
+    height: 23px;
+    padding: 0 0 0 5px;
+    line-height: 25px;
+    border: 1px solid #d4d8d9;
+    border-radius: 3px 0 0 3px;
+}
+    
+#up>ion-icon {
+	position: absolute;
+    left: 27px;
+    top: 0;
+}
+
+#down>ion-icon {
+	position: absolute;
+    left: 27px;
+    bottom: 0;
+}
+
+.small_btn {
+	display: inline-block;
+    margin: 0px 0 0 0px;
+    padding: 0 10px 0 11px;
+    height: 20px;
+    border-radius: 0px;
+    line-height: 20px;
+    background: #fff;
+    border: 1px solid #ddd;
+    color: #000;
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 10px;
+    letter-spacing: 1px;
+}
+
+.button_area {
+	margin: 0 0 40px;
+}
+
+.total table {
+	position: relative;
+    margin: 10px 0 0;
+}
+
+.total th {
+	border: 1px solid #ddd;
+	height: 28px;
+    line-height: 28px;
+    font-size: 12px;
+    text-transform: uppercase;
+    background: #fff;
+}
+
+.total td {
+	text-align : center;
+	border: 1px solid #ddd;
+	height: 40px;
+	line-height: 40px;
+    font-size: 12px;
+}
+
+.order_button_area {
+	float:right;
+	margin: 10px 0 40px;
+}
+
+.order_button_area a{
+	display: inline-block;
+    margin: 0px 0 0 0px;
+    padding: 0 50px 0 51px;
+    height: 24px;
+    border-radius: 2px;
+    line-height: 24px;
+    background: #000;
+    border: 1px solid #222;
+    color: #fff;
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 10px;
+    letter-spacing: 1px;
+}
+.order_button_area>p>.w{
+	background: #fff;
+    border: 1px solid #ddd;
+    color: #000;
+}
