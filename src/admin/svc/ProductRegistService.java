@@ -34,7 +34,7 @@ public class ProductRegistService {
 				if(insertCount == 0) {
 					isRegistSuccess = false;
 					break;
-			}
+				}
 			}
 			commit(con);
 			isRegistSuccess = true;
@@ -44,5 +44,6 @@ public class ProductRegistService {
 		close(con);
 		return isRegistSuccess;
 	}
+
 
 }

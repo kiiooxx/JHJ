@@ -4,26 +4,20 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ page import="java.util.ArrayList" %>
-<%@ page import="vo.CategoryBean" %>
-
 
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 
-<link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">
-<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js"></script> 
-<script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script> 
-	
-<link href="dist/summernote.css" rel="stylesheet">
-<script src="dist/summernote.js"></script>
+<!-- include libraries(jQuery, bootstrap) -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
     
 <script type="text/javascript">
+
 $(document).ready(function() {
 	$('#summernote').summernote({ // summernote를 사용하기 위한 선언
-		width : 900,
         height: 400,
         callbacks : {
 			onImageUpload: function(files, editor, welEditable) {
@@ -38,7 +32,7 @@ $(document).ready(function() {
 function sendFile(file, editor) {
       var data = new FormData();
       data.append("file", file, file.name);
-      alert(file.name);
+
       $.ajax({
     	dataType : 'jSON',
         data: data,
@@ -60,85 +54,116 @@ function sendFile(file, editor) {
 </script>
 
 <script>
+var color_array = [];	//컬러 저장하는 배열
+var size_array = [];	//사이즈 저장하는 배열
+
+function keyEvent_color() {
+	var flug = true;
+	var keycode = event.keyCode;
+	var cnt = 0;
+	//세미콜론(;) , 엔터, tab 키 눌렀을 때 반응
+	if(keycode == 186 || keycode == 13 || keycode == 9) {
+		if($('#color').val()=='') {
+			return false;
+		}
+		//중복확인
+		for(var i in color_array) {
+			if(color_array[i] == $('#color').val()) {
+				flug = false;
+			}
+			cnt = i+1;
+		}
+		
+		//중복 값 없으면
+		if(flug) {
+			color_array = color_array.concat($('#color').val());
+			var html = '';
+			html += '<span id="color_' + cnt + '" class="bg-warning"><a href="#" id="color' + cnt + '">' + $('#color').val() + '</a><a href="#" id="del_color'+ cnt +'">[X]</a></span> &nbsp;';		
+			$('#color_append').append(html);
+		}
+		
+		$('#color').val('');
+	}
+}
+
+function keyEvent_size() {
+	var flug = true;
+	var cnt = 0;
+	var keycode = event.keyCode;
+	if(keycode == 186 || keycode == 13 || keycode == 9) {
+		if($('#size').val()=='') {
+			return false;
+		}
+		for(var i in size_array) {
+			if(size_array[i] == $('#size').val()) {
+				flug = false;
+			}
+			var cnt = i+1;
+		}
+		if(flug) {
+			size_array = size_array.concat($('#size').val());
+			var html = '';
+			html += '<span id="size_' + cnt + '" class="bg-warning"><a href="#" id="size' + cnt +'">' + $('#size').val() + '</a><a href="#" id="del_size'+ cnt +'">[X]</a></span> &nbsp;';	
+			$('#size_append').append(html);
+		}
+		
+		$('#size').val('');
+	}
+}
+
+$(document).on("click", '[id^=del_color]', function() {
+	var id = $(this).attr("id")
+	var num = id.replace("del_color", "");
+	
+	var txt = $('#color' + num).text();
+	color_array.splice(color_array.indexOf(txt),1);
+	$('#color_' + num).remove();
+	
+	return false;
+});
+
+$(document).on("click", '[id^=del_size]', function() {
+	var id = $(this).attr("id")
+	var num = id.replace("del_size", "");
+	
+	var txt = $('#size' + num).text();
+	size_array.splice(size_array.indexOf(txt),1);
+	$('#size_' + num).remove();
+	
+	return false;
+});
+
+$(document).on("click", '[id^=del_option]', function() {
+	var id = $(this).attr("id")
+	var num = id.replace("del_option", "");
+	
+	$('#option' + num).remove();
+	
+	return false;
+});
+
 $(document).ready(function(){
-	
-	//대분류 이미지 클릭했을때
-	$("[id^=img]").on('click', function(event){
-		var id = $(this).attr("id")
-		var num = id.replace("img", "");
-		
-		var src = ($('#'+id+'>img').attr('src') == 'layout_image/cate_default.png') ? 'layout_image/cate_click.png' : 'layout_image/cate_default.png';
-		$('#'+id+'>img').attr('src', src);
-		
-		var id2 = '.hide' + num;
-		var submenu = $(id2);
-			
-		// submenu 가 화면상에 보일때는 위로 보드랍게 접고 아니면 아래로 보드랍게 펼치기
-		if( submenu.is(":visible") ){
-			submenu.slideUp();
-		}else{
-			submenu.slideDown();
-		}
-		
-		//화면이 위로 가는 현상 막아줌.
-		return false;
-	});
-	
-	//카테고리 이름 클릭했을때
-	$("[id^=index]").on('click', function(event){
-		var id = $(this).attr("id")
-		var num = id.replace("index", "");
-		
-		//클릭한 소분류의 값..
-		var txt = $('#'+id).text().trim();
-		
-		var ref = $('#ref'+num).val();
-		
-		//클릭한 카테고리의 카테고리 번호 값.
-		var index = $('#'+id+'>#cate_index').val();
-		
-		//대분류 값을 클릭한 경우,,
-		if(ref == "" || ref == null || ref == undefined) {
-			$('#cate_large').val(txt);
-			$('#cate_sub').val('');
-		}else {
-			$('#cate_sub').val(txt);
-			$('#cate_large').val(ref);
-		}
-		
-		$('#cate_num').val(num);
-		return false;
-	});
-	
 	//옵션품목 만들기 버튼 누르면
 	$('#addTable').on('click', function(event){
-		if(f.color.value.trim() == ""){
-	    	alert("색상을 입력하세요.");
-	    	f.color.focus();
-	    	return false;
-	    }
-	    
-	    if(f.size.value.trim() == ""){
-	    	alert("색상을 입력하세요.");
-	    	f.size.focus();
-	    	return false;
-	    }
-	    
-	    $('#optionChk').val('1');
-	    
-		// 입력한 컬러값 받아와서  콤마(,)로 구분해서 배열 'c'로 저장
-		var colorStr = $('#color').val();
-		var c = colorStr.split(',');
+		alert(color_array);
+		if(color_array == null || color_array == '') {
+			alert("색상을 입력해주세요.");
+			return false;
+		}
 		
-		// 입력한 사이즈값 받아와서 콤마(,)로 구분해서 배열 's'로 저장
-		var sizeStr = $('#size').val();
-		var s = sizeStr.split(',');
+		if(size_array == null || size_array == '') {
+			alert("사이즈를 입력해주세요.")
+			return false;
+		}
+		
+	    $('#optionChk').val('1');
+	
 		
 		// 새로운 list를 만들어서 list값에다 c, s값 저장
 		var list = new Array();
-		for (var i in c) {
-			for(var j in s) {
-				list.push({color : c[i], size : s[j]});
+		for (var i in color_array) {
+			for(var j in size_array) {
+				list.push({color : color_array[i], size : size_array[j]});
 			}
 		}
 		
@@ -146,19 +171,20 @@ $(document).ready(function(){
 		var html = '';
 		var html2 = '';
 		for(key in list) {
-			html += '<tr>';
+			html += '<tr id="option'+ key +'">';
 			html += '<td>' + list[key].color + '</td>';
 			html += '<td>' + list[key].size + '</td>';
-			html += '<td>' + '<input type="number" min="0" name="stock" id="stock" required/></td>';
-			html += '</tr>';
+			html += '<td>' + '<input type="number" min="0" name="stock" id="stock" required/>';
+			html += '<a href="#" id="del_option' + key + '">삭제</a>';
+			html += '</td>';
 			
-			html2 += '<input type="hidden" name="pro_color" id="pro_color" value="'+ list[key].color +'"/>';
-			html2 += '<input type="hidden" name="pro_size" id="pro_size" value="'+ list[key].size +'"/>';
+			html += '<input type="hidden" name="pro_color" id="pro_color" value="'+ list[key].color +'"/>';
+			html += '<input type="hidden" name="pro_size" id="pro_size" value="'+ list[key].size +'"/>';
+			html += '</tr>';
 		}
 		
 		$('#optionTable').empty();
 		$('#optionTable').append(html);
-		$('#optionTable').append(html2);
 		return false;
 	});
 });
@@ -199,10 +225,18 @@ function chkForm(f) {
         return false;
     }
     
-    if(f.cate_large.value.trim() == ""){
-    	alert("카테고리를 선택해주세요.");
-    	f.cate_large.focus();
+    if(f.ca_ref.value.trim() == "none"){
+    	alert("카테고리 대분류를 선택해주세요.");
+    	f.ca_ref.focus();
     	return false;
+    }
+    
+    if(f.cate_sub.value.trim() == "none"){
+    	if($("#cate_sub option").size() > 1) {
+    		alert("카테고리 소분류를 선택해주세요.");
+        	f.cate_sub.focus();
+        	return false;
+    	}
     }
 
     if(f.optionChk.value.trim() != "1"){
@@ -212,6 +246,36 @@ function chkForm(f) {
 	f.submit();
 	
 }
+
+//카테고리
+$(function() {
+	$('#setSelectBox').change(function() {
+		var param = 'ca_ref='+$(this).val();
+		$.ajax({
+			url : '<%=request.getContextPath()%>/subCategoryList',
+			dataType : 'json',
+			type : 'POST',
+			data : param,
+			cache: false,
+			contentType : 'application/x-www-form-urlencoded; charset=UTF-8',
+	        processData: false,
+			success : function(data) {
+				var html = '<option value="none" selected disabled hidden>--[소분류]--</option>';
+				$.each(data, function(index, item){
+					var result = '';
+					result += index + " : " + item.cate_num;
+					html += '<option value="' + item.cate_num + '">' + item.category + '</option>'; 
+				})
+				$('#cate_sub').empty();
+				$('#cate_sub').append(html);
+			},
+			error : function() {
+				console.log("에러");
+			}
+		});
+	});
+});
+
 </script>
 <style>
 .menu a{cursor:pointer;}
@@ -223,164 +287,164 @@ ul {
 	list-style : none;
 }
 #optionChk {display:none;}
+#pro_detail {width : 100%;}
+table {float : left; width : 100%;}
+table th {width : 20%; background : #F6F6F6;}
 </style>
 <title>Insert title here</title>
 </head>
 <body>
-<div class="headArea">
-	<h1>상품 등록</h1>
-</div>
-
-<form action="productRegistAction.ad" name="f" method="post" enctype="multipart/form-data">
-<div class="contentArea">
-	<div class="prdAddForm">
-		
-		<h3 class="formTitle">기본 정보</h3>
-		
-			<table>
-				<tr>
-					<th><label for="pro_name">상품명</label></th>
-					<td><input type="text" name="pro_name" id="pro_name" required/></td>
-				</tr>
-				<tr>
-					<th><label for="pro_price">판매가</label></th>
-					<td><input type="text" name="pro_price" id="pro_price" numberOnly/></td>
-				</tr>
-				<tr>
-					<th><label for="pro_detail">상품 간단 설명</label></th>
-					<td><input type="text" name="pro_detail" id="pro_detail"/></td>
-				</tr>
-				<tr>
-					<th><label for="pro_content">상품 상세 설명</label></th>
-					<td>
-						<textarea name="pro_content" id="summernote"></textarea>
-					</td>
-				</tr>
-				<tr>
-					<th><label for="photo">대표 이미지</label></th>
-					<td>
-						<input type="file" name="photo" id="photo"/>
-					</td>
-				</tr>
-			</table>
-	</div>
-	
-	<div class="prdAddForm">
-		<h3 class="formTitle">쇼핑몰 진열설정</h3>
-			<table>
-				<tr>
-					<th><label for="active">진열상태</label></th>
-					<td>
-						<input type="radio" name="active" id="active" value="Y" checked/>진열
-						<input type="radio" name="active" id="active" value="N"/>진열안함
-					</td>
-				</tr>
-				<tr>
-					<th><label for="main_nb">메인진열</label></th>
-					<td>
-						<input type="radio" name="main_nb" id="main_nb" value="B"/>베스트
-						<input type="radio" name="main_nb" id="main_nb" value="N" checked/>신상품
-					</td>
-				</tr>
-				<tr>
-					<th>상품 분류</th>
-					<td>				
-						<!-- 카테고리 -->
-						<ul>
-							<!-- 대분류 -->
-							<!-- 버튼 누르면 옆에 추가버튼 생성 됨 -->
-							<c:forEach var="list" items="${categoryList }" varStatus="i">
-								<c:choose>
-									<c:when test="${list.ca_lev == 0}">
-										<!-- 대분류 -->
-										<li class="menu">
-											<span>
-												<a href="#" id="img${list.cate_num }"><img src="layout_image/cate_default.png"></a>
-												<a href="#" class="large" id="index${list.cate_num }">${list.category }</a>
-												<c:set var="ref" value="${list.category }"/>
-											</span>			
-										</li>
-									</c:when>
-									
-									<c:otherwise>
-										<!-- 소분류 -->
-										<ul class="hide${list.ca_ref }">
-											<li>
-												<span>
-													<img src="layout_image/cate_folder.png">
-													<a href="#" class="sub" id="index${list.cate_num }">
-														<input type="hidden" id="ref${list.cate_num }" value="${ref }"/>
-														${list.category }
-													</a>
-												</span>
-											</li>
-										</ul>
-									</c:otherwise>
-								</c:choose>
-							</c:forEach>
-					</ul>
-					대분류 <input type="text" name="cate_large" id="cate_large" readonly/>
-					소분류 <input type="text" name="cate_sub" id="cate_sub" readonly/>
-					<input type="hidden" name="cate_num" id="cate_num"/>
-					</td>
-				</tr>
-				
-			</table>
-		
-	</div>
-	
-	<div class="prdAddForm">
-		<h3 class="formTitle">옵션 설정</h3>
-		<table>
-			<tr>
-				<th>색상</th>
-				<td>
-					<!-- 추가버튼 누르면 텍스트 입력 추가되도록....여러개들어가니까 배열.. -->
-					<input type="text" name="color" id="color"/>
-					(콤마로 구분)
-				</td>
-			</tr>
-			<tr>
-				<th>사이즈</th>
-				<td>
-					<!-- 추가버튼 누르면 텍스트 입력 추가되도록...... -->
-					<input type="text" name="size" id="size"/>
-					(콤마로 구분)
-					&nbsp;
-					
-					<!-- 누르면 밑에 재고 설정 테이블 생성 -->
-					<a href="#" id="addTable">옵션품목 만들기
-						<!-- 옵션품목 만들기 버튼 눌렀는지 확인하기 위해 (누르면 value값 0->1로바뀜) -->
-						<input type="text" name="optionChk" id="optionChk" required/>
-					</a>
-				</td>
-			</tr>
-			<tr>
-				<th>재고설정</th>
-				<td>
-					<!-- 색상, 사이즈 입력한 값 불러와서 테이블로 만들고... 거기에 각 각 재고 입력할 수 있도록... -->
-					<div>
-						<table>
-							<tr>
-								<th>색상</th>
-								<th>사이즈</th>
-								<th>재고</th>
-							</tr>
-							<tbody id="optionTable">
+ <!-- Page Heading -->
+ <div class="d-sm-flex align-items-center justify-content-between mb-4">
+ 	<h1 class="h3 mb-0 text-gray-800">상품 등록</h1>
+ </div>
+ <!-- Content Row -->
+ <div class="row">
+ 	<div class="col">
+		<form action="productRegistAction.ad" name="f" method="post" enctype="multipart/form-data">
+			<div class="card shadow mb-4">
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary">기본 정보</h6>
+                </div>
+                <div class="card-body">
+	                <table class="table table-bordered">
+						<tr>
+							<th><label for="pro_name">상품명</label></th>
+							<td><input type="text" name="pro_name" id="pro_name" required/></td>
+						</tr>
+						<tr>
+							<th><label for="pro_price">판매가</label></th>
+							<td><input type="text" name="pro_price" id="pro_price" numberOnly/></td>
+						</tr>
+						<tr>
+							<th><label for="pro_detail">상품 간단 설명</label></th>
+							<td><input type="text" name="pro_detail" id="pro_detail"/></td>
+						</tr>
+						<tr>
+							<th><label for="pro_content">상품 상세 설명</label></th>
+							<td>
+								<textarea name="pro_content" id="summernote"></textarea>
+							</td>
+						</tr>
+						<tr>
+							<th><label for="photo">대표 이미지</label></th>
+							<td>
+								<input type="file" name="photo" id="photo"/>
+							</td>
+						</tr>
+					</table>
+                </div>
+              </div>
+              
+              <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary">쇼핑몰 진열 설정</h6>
+                </div>
+                <div class="card-body">
+                	<table class="table table-bordered">
+						<tr>
+							<th><label for="active">진열상태</label></th>
+							<td>
+								<input type="radio" name="active" id="active" value="Y" checked/>진열
+								<input type="radio" name="active" id="active" value="N"/>진열안함
+							</td>
+						</tr>
+						<tr>
+							<th><label for="main_nb">메인진열</label></th>
+							<td>
+								<input type="radio" name="main_nb" id="main_nb" value="X"/>메인진열X
+								<input type="radio" name="main_nb" id="main_nb" value="B"/>베스트
+								<input type="radio" name="main_nb" id="main_nb" value="N" checked/>신상품
+							</td>
+						</tr>
+						<tr>
+							<th>상품 분류</th>
+							<td>
+								<div class="row">
+								<div class="col-sm-5">			
+									<!-- 카테고리... -->
+									<select name="ca_ref" id="setSelectBox" class="form-control">
+										<option value="none" selected disabled hidden>--[대분류]--</option>
+										<c:forEach var="clist" items="${categoryList }" varStatus="i">
+											<c:if test="${clist.ca_lev == 0 }">
+												<option value="${clist.cate_num }">${clist.category }</option>
+											</c:if>
+										</c:forEach>
+									</select>
+									</div>
+									<div class="col-sm-5">	
+									<select name="cate_sub" id="cate_sub" class="form-control">
+										<option value="none" selected disabled hidden>--[소분류]--</option>
+									</select>
+									</div>
+									</div>
+							</td>
+						</tr>	
+					</table>
+                </div>
+              </div>
+              
+              <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary">옵션 설정</h6>
+                </div>
+                <div class="card-body">
+                	<table class="table table-bordered">
+						<tr>
+							<th>색상</th>
+							<td>
+								<!-- 추가버튼 누르면 텍스트 입력 추가되도록....여러개들어가니까 배열.. -->
+								<input type="text" name="color" id="color" onkeydown="javascript:keyEvent_color(this);"/>
+								<span id="color_append">
 								
-							</tbody>
-						</table>
-					</div>
-				</td>
-			</tr>
-		</table>
-		
-	</div>
-	
-	<div class="jo_btn">
-		<a href="javascript:chkForm(document.f);">등록</a>&nbsp;&nbsp;
+								</span>
+								<br>(세미콜론(;),엔터,탭키로 구분)
+							</td>
+						</tr>
+						<tr>
+							<th>사이즈</th>
+							<td>
+								<!-- 추가버튼 누르면 텍스트 입력 추가되도록...... -->
+								<input type="text" name="size" id="size" onkeydown="javascript:keyEvent_size(this);"/>
+								
+								<span id="size_append">
+									
+								</span>
+								<br>(세미콜론(;),엔터,탭키로 구분)
+								<br>
+								<!-- 누르면 밑에 재고 설정 테이블 생성 -->
+								<a href="#" id="addTable" class="btn btn-primary">옵션품목 만들기
+									<!-- 옵션품목 만들기 버튼 눌렀는지 확인하기 위해 (누르면 value값 0->1로바뀜) -->
+									<input type="text" name="optionChk" id="optionChk" required/>
+								</a>
+							</td>
+						</tr>
+						<tr>
+							<th>재고설정</th>
+							<td>
+								<!-- 색상, 사이즈 입력한 값 불러와서 테이블로 만들고... 거기에 각 각 재고 입력할 수 있도록... -->
+								<div>
+									<table class="table table-bordered">
+										<tr>
+											<th>색상</th>
+											<th>사이즈</th>
+											<th>재고</th>
+										</tr>
+										<tbody id="optionTable">
+											
+										</tbody>
+									</table>
+								</div>
+							</td>
+						</tr>
+					</table>
+             	</div>
+             </div>
+			<div>
+				<a href="javascript:chkForm(document.f);" class="btn btn-primary btn-lg btn-block">등록</a>&nbsp;&nbsp;
+			</div>
+		</form>
 	</div>
 </div>
-</form>
 </body>
 </html>

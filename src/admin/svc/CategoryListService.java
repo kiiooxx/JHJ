@@ -23,4 +23,15 @@ public class CategoryListService {
 		return categoryList;
 	}
 
+	public ArrayList<CategoryBean> selectCategoryList(int ca_ref) {
+		// TODO Auto-generated method stub
+		AdminDAO adminDAO = AdminDAO.getInstance();
+		Connection con = getConnection();
+		adminDAO.setConnection(con);
+		ArrayList<CategoryBean> categorySubList = adminDAO.selectCategoryList(ca_ref);
+		close(con);
+		
+		return categorySubList;
+	}
+
 }

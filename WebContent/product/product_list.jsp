@@ -7,11 +7,6 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="vo.ProductBean" %>
 
-<c:if test="${pageInfo != null }">
-	<c:set var="nowPage" value="${pageInfo.page }"/>
-	<c:set var="maxPage" value="${pageInfo.maxPage }"/>
-	<c:set var="startPage" value="${pageInfo.startPage }"/>
-	<c:set var="endPage" value="${pageInfo.endPage }"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -61,7 +56,7 @@
 				<c:if test="${plist.active eq 'Y'.charAt(0) }">
 					<li>
 						<div class="thumbnail">
-							<a href="productDetail.pro?pro_num=${plist.pro_num }&page="${nowPage }"><img src="<%= request.getContextPath() %>/upload/${plist.pro_photo }"/></a>
+							<a href="productDetail.pro?pro_num=${plist.pro_num }&page="${pageInfo.page }"><img src="<%= request.getContextPath() %>/upload/${plist.pro_photo }"/></a>
 						</div>
 						
 						<div class="description">
@@ -81,18 +76,18 @@
 		<div id="pageList">
 			<ol>
 			<c:choose>
-				<c:when test="${nowPage <= 1 }">
+				<c:when test="${pageInfo.page <= 1 }">
 					<li> < </li>
 				</c:when>
 				<c:otherwise>
-					<li><a href="productList.pro?page=${nowPage-1 }"> < </a></li>
+					<li><a href="productList.pro?page=${pageInfo.page-1 }"> < </a></li>
 				</c:otherwise>
 			</c:choose>
 			
 			
-			<c:forEach var="pglist" begin="${startPage }" end="${endPage }" step="1" varStatus="a">
+			<c:forEach var="pglist" begin="${pageInfo.startPage }" end="${pageInfo.endPage }" step="1" varStatus="a">
 				<c:choose>
-					<c:when test="${a.count == nowPage }">
+					<c:when test="${a.count == pageInfo.page }">
 						<li>[${a.count }]</li>
 					</c:when>
 					<c:otherwise>
@@ -103,16 +98,15 @@
 			
 			
 			<c:choose>
-				<c:when test="${nowPage>=maxPage }">
+				<c:when test="${pageInfo.page>=pageInfo.maxPage }">
 					<li> > </li>
 				</c:when>
 				<c:otherwise>
-					<li><a href="productList.pro?page=${nowPage+1 }"> > </a></li>
+					<li><a href="productList.pro?page=${pageInfo.page+1 }"> > </a></li>
 				</c:otherwise>
 			</c:choose>
 			</ol>
 		</div>
 	</div>
-</c:if>
 </body>
 </html>

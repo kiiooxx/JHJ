@@ -19,6 +19,8 @@ import admin.svc.CategoryListService;
 import vo.ActionForward;
 import vo.Cart;
 import vo.CategoryBean;
+import vo.ProDetBean;
+import vo.ProductBean;
 
 /**
  * Servlet implementation class subCategoryList
@@ -50,11 +52,14 @@ public class addCart extends HttpServlet {
 
 		String pro_det_num[] = request.getParameter("pro_det_num").split(",");
 		String qnt[] = request.getParameter("qnt").split(",");
-		
-		for(int i=0; i<qnt.length; i++) {
-			System.out.println(qnt[i]);
-		}
+		String color[] = request.getParameter("color").split(",");
+		String size[] = request.getParameter("pro_size").split(",");
 		int pro_num = Integer.parseInt(request.getParameter("pro_num"));
+		String pro_name = request.getParameter("pro_name");
+		String pro_photo = request.getParameter("pro_photo");
+		int pro_price = Integer.parseInt(request.getParameter("pro_price"));
+
+
 		HttpSession session =request.getSession();
 		ArrayList<Cart> cartList = (ArrayList<Cart>)session.getAttribute("cartList");
 		
@@ -84,6 +89,11 @@ public class addCart extends HttpServlet {
 				bas_num += 1;
 				cart.setBas_num(bas_num);
 				cart.setPro_num(pro_num);
+				cart.setPro_name(pro_name);
+				cart.setPro_price(pro_price);
+				cart.setPro_photo(pro_photo);
+				cart.setColor(color[i]);
+				cart.setPro_size(size[i]);
 				cart.setPro_det_num(pro_det_num[i]);
 				cart.setBas_pro_qnt(Integer.parseInt(qnt[i]));
 				System.out.println(pro_det_num[i]);

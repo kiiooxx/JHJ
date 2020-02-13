@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import action.Action;
 import admin.action.CategoryListAction;
+import product.action.CartListAction;
 import product.action.ProductDetailAction;
 import product.action.ProductListAction;
 import vo.ActionForward;
@@ -56,6 +57,14 @@ public class ProductController extends HttpServlet {
 			}
     	}else if(command.equals("/productDetail.pro")) {
 			action = new ProductDetailAction();
+			//프로젝트명+기능+형태(?)
+			try {
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+    	}else if(command.equals("/cartList.pro")) {
+			action = new CartListAction();
 			//프로젝트명+기능+형태(?)
 			try {
 				forward = action.execute(request, response);
