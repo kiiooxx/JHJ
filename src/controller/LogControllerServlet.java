@@ -1,4 +1,4 @@
-package log.controller;
+package controller;
 
 import java.io.IOException;
 
@@ -45,6 +45,10 @@ public class LogControllerServlet extends HttpServlet {
     	
 	
     	System.out.println(command);
+    	
+   
+    	
+    	
     	
     	
 		if(command.equals("/loginForm.log")) {

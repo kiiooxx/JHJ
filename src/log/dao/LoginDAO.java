@@ -210,4 +210,44 @@ public class LoginDAO {
 		}
 		return isRight;
 	}
+	
+	public Member selectmemberinfo(String id) {
+		// TODO Auto-generated method stub
+		Member member = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			pstmt = con.prepareStatement("select * from member where user_id=?");
+			pstmt.setString(1, id);
+			 		
+			rs = pstmt.executeQuery();
+	 
+			if(rs.next()) {
+				member = new Member();
+				member.setUser_id(rs.getString("USER_ID"));
+				member.setUser_pw(rs.getString("USER_PW"));
+				member.setUser_name(rs.getString("USER_NAME"));
+				member.setTel(rs.getString("TEL"));
+				member.setBirth(rs.getString("BIRTH"));
+				member.setJoindate(rs.getString("JOINDATE"));
+				member.setSex(rs.getString("SEX"));
+				member.setEmail(rs.getString("EMAIL"));
+				member.setGrade(rs.getString("GRADE"));
+				member.setPostcode(rs.getString("POSTCODE"));
+				member.setAddr1(rs.getString("ADDR1"));
+				member.setAddr2(rs.getString("ADDR2"));
+								
+			}
+		}catch(Exception ex) {
+			System.out.println("select 에러 : " + ex);
+		}finally {
+			close(rs);
+			close(pstmt);
+		}
+		return member;
+	}
+	
+	
+	
+	
 }

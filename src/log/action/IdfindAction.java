@@ -27,11 +27,7 @@ public class IdfindAction implements Action {
 		String phone = request.getParameter("phone") + request.getParameter("phone1") + request.getParameter("phone2");
 		String name2 = request.getParameter("name2");
 		String email = request.getParameter("email")  + "@" + request.getParameter("e_domain");
-		System.out.println("이름"+name);
-		System.out.println("이름"+name2);
-		System.out.println("전화"+phone);
-		System.out.println("이메일"+email);
-		// 2. 서비스 생성
+			// 2. 서비스 생성
 		IdfindService idfindService = new IdfindService();
 
 		if(request.getParameter("phone") == null) {
