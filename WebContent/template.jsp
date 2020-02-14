@@ -17,7 +17,6 @@
 	<div id="header">
 		<jsp:include page="top_menu.jsp"></jsp:include>
 	</div>
-	
 	<div id="wrap">
 	
 		<!-- 왼쪽 사이드 바 -->
@@ -29,6 +28,7 @@
 		<div id="container">
 			<div id="contents">
 				<jsp:include page='${pagefile }'></jsp:include>
+			
 				<%-- <jsp:include page="admin/category_management.jsp"></jsp:include> --%>
 			</div>
 		</div>
@@ -39,7 +39,14 @@
 		</div>
 	</div>
 
-</div>
 
+
+
+
+
+</div>
 </body>
 </html>
+
+
+

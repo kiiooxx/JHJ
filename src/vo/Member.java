@@ -86,6 +86,10 @@ public class Member {
 	public void setGrade(char grade) {
 		this.grade = grade;
 	}
+	public void setGrade(String string) {
+		// TODO Auto-generated method stub
+		
+	}
 
 
 

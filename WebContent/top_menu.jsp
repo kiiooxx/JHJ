@@ -32,7 +32,7 @@
 			<a href="joinForm.mem">JOIN</a>
 		</li>
 		<li>
-			<a href="#">ACCOUNT</a>
+			<a href="account.mem">ACCOUNT</a>
 		</li>
 		<li>
 			<a href="#">ORDER</a>

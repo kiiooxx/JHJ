@@ -21,7 +21,10 @@ public class LoginAction implements Action {
 		Member member = null;
 		LoginSvc loginSvc = new LoginSvc();
 		member = loginSvc.memberLogin(id);
-		System.out.println("ㅇㅇ");
+		
+		
+		
+		
 		if(member == null) {
 			response.setContentType("text/html;charset=UTF-8");
 			PrintWriter out = response.getWriter();
@@ -40,8 +43,10 @@ public class LoginAction implements Action {
 			}else {
 				HttpSession session = request.getSession();
 				session.setAttribute("id", id);
+				session.setAttribute("grade", member.getGrade());
 				request.setAttribute("pagefile", "/main.jsp");
 				System.out.println("로그인성공?");
+		
 				forward = new ActionForward("/template.jsp", false);
 			}
 		}
