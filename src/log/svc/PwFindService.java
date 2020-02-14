@@ -5,12 +5,12 @@ import static db.JdbcUtil.*;
 
 import java.sql.Connection;
 
-import log.action.pwfindAction;
+import log.action.PwFindAction;
 import log.dao.LoginDAO;
 import vo.Member;
 
 
-public class PwfindService {
+public class PwFindService {
 	
 
 

@@ -4,7 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import action.Action;
-import member.svc.IdCheckSVC;
+import member.svc.IdCheckService;
 import vo.ActionForward;
 import vo.Member;
 
@@ -16,7 +16,7 @@ public class IdCheckAction implements Action {
 		ActionForward forward = null;
 		
 		String chk_id = request.getParameter("id");
-		IdCheckSVC idCheckSvc = new IdCheckSVC();
+		IdCheckService idCheckSvc = new IdCheckService();
 		Member member = new Member();
 		member = idCheckSvc.memberId(chk_id);
 		

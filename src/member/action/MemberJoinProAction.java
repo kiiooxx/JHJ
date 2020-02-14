@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import action.Action;
-import member.svc.MemberJoinSvc;
+import member.svc.MemberJoinService;
 import vo.ActionForward;
 import vo.Member;
 
@@ -35,7 +35,7 @@ public class MemberJoinProAction implements Action {
 		
 		
 		//service 를 이용해서 DAO로 보낸다.
-		MemberJoinSvc memberJoinsvc = new MemberJoinSvc();
+		MemberJoinService memberJoinsvc = new MemberJoinService();
 		boolean isJoinSuccess = memberJoinsvc.joinMember(member);
 		
 		

@@ -13,10 +13,10 @@ import javax.servlet.http.HttpServletResponse;
 import action.Action;
 import log.action.LoginAction;
 import log.action.LogoutAction;
-import log.action.pwfindAction;
-import log.action.IdfindAction;
+import log.action.PwFindAction;
+import log.action.IdFindAction;
 
-import log.svc.LoginSvc;
+import log.svc.LoginService;
 import vo.ActionForward;
 import vo.Member;
 
@@ -73,7 +73,7 @@ public class LogControllerServlet extends HttpServlet {
     		request.setAttribute("pagefile", "/member/idfind.jsp");
     		forward = new ActionForward("/template.jsp", false);
     	}else if(command.equals("/idfindAction.log")) {
-    		action = new IdfindAction();
+    		action = new IdFindAction();
     	
     		try {
     			forward = action.execute(request, response);
@@ -86,7 +86,7 @@ public class LogControllerServlet extends HttpServlet {
     		request.setAttribute("pagefile", "/member/pwfind.jsp");
     		forward = new ActionForward("/template.jsp", false);
     	}else if(command.equals("/pwfindAction.log")) {
-    		action = new pwfindAction();
+    		action = new PwFindAction();
     	
     		try {
     			forward = action.execute(request, response);

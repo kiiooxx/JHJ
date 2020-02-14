@@ -7,7 +7,7 @@ import java.sql.Connection;
 import log.dao.LoginDAO;
 import vo.Member;
 
-public class IdfindService {
+public class IdFindService {
 
 	public Member memberSelect(String name, String phone) {
 		// TODO Auto-generated method stub

@@ -1,17 +1,17 @@
-package log.action;
+package member.action;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import action.Action;
-import log.svc.IdfindService;
-import log.svc.LoginSvc;
-import log.svc.accountSvc;
+import log.svc.IdFindService;
+import log.svc.LoginService;
+import member.svc.MyInfoService;
 import vo.ActionForward;
 import vo.Member;
 
-public class myinfoAction implements Action {
+public class MyInfoAction implements Action {
 
 	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		// TODO Auto-generated method stub
@@ -19,9 +19,9 @@ public class myinfoAction implements Action {
 		Member member = null;
 		HttpSession session = request.getSession();
 		String id = (String) session.getAttribute("id");
-		accountSvc accountSvc = new accountSvc();
+		MyInfoService MyInfoService = new MyInfoService();
 		System.out.println("myinfoaction" + id);
-		member = accountSvc.selectmemberinfo(id);
+		member = MyInfoService.selectmemberinfo(id);
 
 		request.setAttribute("member", member);
 		request.setAttribute("pagefile", "/member/myinfo.jsp");

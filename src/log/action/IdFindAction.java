@@ -8,12 +8,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import action.Action;
-import log.svc.IdfindService;
+import log.svc.IdFindService;
 
 import vo.ActionForward;
 import vo.Member;
 
-public class IdfindAction implements Action {
+public class IdFindAction implements Action {
 
 	@SuppressWarnings("unused")
 	@Override
@@ -28,13 +28,13 @@ public class IdfindAction implements Action {
 		String name2 = request.getParameter("name2");
 		String email = request.getParameter("email")  + "@" + request.getParameter("e_domain");
 			// 2. 서비스 생성
-		IdfindService idfindService = new IdfindService();
+		IdFindService idFindService = new IdFindService();
 
 		if(request.getParameter("phone") == null) {
-			member = idfindService.memberSelect1(name2,email);
+			member = idFindService.memberSelect1(name2,email);
 			System.out.println("ㅇㅇ" + member.getUser_id());
 		}else {
-			member = idfindService.memberSelect(name, phone);
+			member = idFindService.memberSelect(name, phone);
 		}
 		
 		
