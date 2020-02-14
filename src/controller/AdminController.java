@@ -18,6 +18,7 @@ import admin.action.CategorySubListAction;
 import admin.action.CategoryUpdateAction;
 import admin.action.MemberInfoAction;
 import admin.action.MemberListAction;
+import admin.action.OrderManageListAction;
 import admin.action.ProducRegistAction;
 import admin.action.ProductDelAction;
 import admin.action.ProductListManagementAction;
@@ -163,6 +164,13 @@ public class AdminController extends HttpServlet {
 			}
     	}else if(command.equals("/productDelAction.ad")) {
 			action = new ProductDelAction();
+			try {
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+    	}else if(command.equals("/orderManageList.ad")) {
+			action = new OrderManageListAction();
 			try {
 				forward = action.execute(request, response);
 			}catch(Exception e) {

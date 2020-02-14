@@ -9,7 +9,7 @@ import javax.servlet.http.HttpSession;
 
 import action.Action;
 import admin.svc.MemberInfoService;
-import admin.svc.OrderListService;
+import admin.svc.OrderManageListService;
 import vo.ActionForward;
 import vo.Member;
 import vo.Order;
@@ -45,7 +45,7 @@ public class MemberInfoAction implements Action{
 			
 			
 			//회원주문내역
-			OrderListService orderListService = new OrderListService();
+			OrderManageListService orderListService = new OrderManageListService();
 			int listCount = orderListService.getOrderListCount(user_id);
 			ArrayList<Order> order = orderListService.getOrderList(user_id,page, limit);
 			

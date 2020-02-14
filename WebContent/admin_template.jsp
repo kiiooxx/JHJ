@@ -16,6 +16,9 @@
   <!-- Custom styles for this template-->
   <link href="css/sb-admin-2.min.css" rel="stylesheet">
   <link href="dist/summernote.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/jquery-ui.min.css">
+
+
 </head>
 
 <body id="page-top">
@@ -59,7 +62,7 @@
         <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <a class="collapse-item" href="memberList.ad">회원관리</a>
-            <a class="collapse-item" href="utilities-border.html">Borders</a>
+            <a class="collapse-item" href="orderManageList.ad">주문관리</a>
             <a class="collapse-item" href="utilities-animation.html">Animations</a>
             <a class="collapse-item" href="utilities-other.html">Other</a>
           </div>

@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -72,16 +74,29 @@ function sample6_execDaumPostcode() {
 					<th>합계</th>
 				</tr>
 				<!-- 여기서부터 상품 리스트 출력 -->
+				<c:choose>
+					<c:when test="${totalMoney < 50000 }">
+						<c:set var="deliPrice" value="2500"/>
+					</c:when>
+					<c:otherwise>
+						<c:set var="deliPrice" value="0"/>
+					</c:otherwise>
+				</c:choose>
+				
+				<c:forEach var="list" items="${cartList }">
 				<tr>
-					<td><input type="checkbox" /></td>
-					<td>상품이미지</td>
-					<td>상품정보</td>
-					<td>판매가</td>
-					<td>수량</td>
+					<td><input type="checkbox" name="chk" value="${list.pro_det_num }" /></td>
+					<td><img src="<%=request.getContextPath() %>/upload/${list.pro_photo }"></td>
+					<td>${list.pro_name }<br>[옵션 : ${list.color } / ${list.pro_size }]</td>
+					<fmt:formatNumber var="price" value="${list.pro_price}" pattern="#,###"/>
+					<td>${price }</td>
+					<td>${list.bas_pro_qnt }</td>
 					<td>적립금</td>
-					<td>배송비</td>
-					<td>합계</td>
+					<td>${deliPrice}원</td>
+					<fmt:formatNumber var="total2" value="${list.pro_price * list.bas_pro_qnt }" pattern="#,###"/>
+					<td>${total2 }</td>
 				</tr>
+				</c:forEach>
 				<!-- 여기까지 상품 리스트 출력 -->
 
 
@@ -89,9 +104,14 @@ function sample6_execDaumPostcode() {
 					<td colspan="8" style="text-align: left;"><input type="button"
 						value="선택삭제">
 				</tr>
+				
+				
+				
+				
 				<tr>
-					<td colspan="8" style="text-align: right;">상품구매금액 () + 배송비 ()
-						= 합계: ()원</td>
+					<fmt:formatNumber var="total3" value="${totalMoney }" pattern="#,###"/>
+					<td colspan="8" style="text-align: right;">상품구매금액 (${totalMoney }) + 배송비 (${deliPrice })
+						= 합계: ${totalMoney }원</td>
 				</tr>
 
 			</tbody>
@@ -203,9 +223,9 @@ function sample6_execDaumPostcode() {
 					<th>총 결제예정 금액</th>
 				</tr>
 				<tr>
-					<td>()원</td>
-					<td>-()원</td>
-					<td>=()원</td>
+					<td>${totalMoney }원</td>
+					<td>-0원</td>
+					<td>=${totalMoney }원</td>
 			</tbody>
 		</table>
 		<table>
@@ -229,7 +249,7 @@ function sample6_execDaumPostcode() {
 					</td>
 					<td rowspan="3" style="text-align: right;">			
 						최종결제금액<br>
-						()원<br>
+						${totalMoney }원<br>
 						<input type="checkbox" name="termCheck"/>결제정보를 확인하였으며, 구매진행에 동의합니다.<br>
 						<input type="button" name="pay" value="결제하기"/><br>
 						적립예정금액:()원

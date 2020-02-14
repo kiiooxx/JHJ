@@ -17,6 +17,7 @@ import product.action.CartQtyDownAction;
 import product.action.CartQtyUpAction;
 import product.action.ProductDetailAction;
 import product.action.ProductListAction;
+import product.action.OrderPageAction;
 import vo.ActionForward;
 
 /**
@@ -93,6 +94,13 @@ public class ProductController extends HttpServlet {
     	}else if(command.equals("/cartDelete.pro")) {
 			action = new CartDeleteAction();
 			//프로젝트명+기능+형태(?)
+			try {
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+    	}else if(command.equals("/orderPage.pro")) {
+			action = new OrderPageAction();
 			try {
 				forward = action.execute(request, response);
 			}catch(Exception e) {
