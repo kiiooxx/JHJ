@@ -903,5 +903,51 @@ public class AdminDAO {
 			return isDeleteSuccess;
 		}
 
-		
+		public boolean updateActive(int pro_num, String active) {
+			// TODO Auto-generated method stub
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+			int updateCount = 0;
+			boolean isUpdateSuccess = false;
+			
+			try {
+				pstmt = con.prepareStatement("update pro_info set active=? where pro_num=?");
+				pstmt.setString(1, active);
+				pstmt.setInt(2, pro_num);
+				updateCount = pstmt.executeUpdate();
+				
+				if(updateCount > 0) {
+					isUpdateSuccess = true;
+				}
+			}catch(SQLException e) {
+				System.out.println("updateActive 에러 " + e);
+			}finally {
+				close(pstmt);
+			}
+			return isUpdateSuccess;
+		}
+
+		public boolean updateMain_nb(int pro_num, String main_nb) {
+			// TODO Auto-generated method stub
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+			int updateCount = 0;
+			boolean isUpdateSuccess = false;
+			
+			try {
+				pstmt = con.prepareStatement("update pro_info set main_nb=? where pro_num=?");
+				pstmt.setString(1, main_nb);
+				pstmt.setInt(2, pro_num);
+				updateCount = pstmt.executeUpdate();
+				
+				if(updateCount > 0) {
+					isUpdateSuccess = true;
+				}
+			}catch(SQLException e) {
+				System.out.println("updateMain_nb 에러 " + e);
+			}finally {
+				close(pstmt);
+			}
+			return isUpdateSuccess;
+		}
 }
