@@ -10,7 +10,7 @@ import java.sql.Connection;
 import dao.MemberDAO;
 import vo.Member;
 
-public class MemberJoinSvc {
+public class MemberJoinService {
 
 	public boolean joinMember(Member member) {
 		boolean isJoinSuccess = false;

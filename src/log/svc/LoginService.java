@@ -7,7 +7,7 @@ import java.sql.Connection;
 import log.dao.LoginDAO;
 import vo.Member;
 
-public class LoginSvc {
+public class LoginService {
 
 	public Member memberLogin(String id) {
 		// TODO Auto-generated method stub

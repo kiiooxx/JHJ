@@ -6,8 +6,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import action.Action;
-import log.svc.IdfindService;
-import log.svc.PwfindService;
+import log.svc.IdFindService;
+import log.svc.PwFindService;
 import mail.GoogleAuthentication;
 import vo.ActionForward;
 import vo.Member;
@@ -25,7 +25,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.naming.*;
 
-public class pwfindAction implements Action {
+public class PwFindAction implements Action {
 
 	@Override
 	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -39,8 +39,8 @@ public class pwfindAction implements Action {
 		String receiver = request.getParameter("email") + "@" + request.getParameter("e_domain");
 		System.out.println(receiver);
 		// 2. 서비스 생성
-		PwfindService pwfindService = new PwfindService();
-		member = pwfindService.selectMember3(id, receiver);
+		PwFindService pwFindService = new PwFindService();
+		member = pwFindService.selectMember3(id, receiver);
 
 		if (member != null) {
 
@@ -52,7 +52,7 @@ public class pwfindAction implements Action {
 
 			boolean isRight = false;//
 			
-			isRight = pwfindService.updateTempPW(id, uuid);
+			isRight = pwFindService.updateTempPW(id, uuid);
 			
 			//불린값이 펄스면 실행 안되는거 아닌가?
 			if(isRight) {// content : 임시비밀번호는 uuid 입니다.

@@ -11,9 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import action.Action;
 import admin.action.MemberListAction;
-import log.action.myinfoAction;
 import member.action.IdCheckAction;
 import member.action.MemberJoinProAction;
+import member.action.MyInfoAction;
 import vo.ActionForward;
 
 @WebServlet("*.mem")
@@ -35,7 +35,7 @@ public class MemberController extends HttpServlet {
 			forward = new ActionForward("/template.jsp", false);
 		} else if (command.equals("/myinfo.mem")) {
 			request.setAttribute("pagefile", "/member/myinfo.jsp");
-			action = new myinfoAction();
+			action = new MyInfoAction();
 			forward = new ActionForward("/template.jsp", false);
 
 		}
@@ -68,7 +68,7 @@ public class MemberController extends HttpServlet {
 
 		} else if (command.equals("/myinfo.mem")) {
 
-			action = new myinfoAction();
+			action = new MyInfoAction();
 			try {
 				forward = action.execute(request, response);
 			} catch (Exception e) {

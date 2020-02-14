@@ -8,7 +8,7 @@ import dao.MemberDAO;
 import vo.Member;
 
 //아이디 중복확인
-public class IdCheckSVC {
+public class IdCheckService {
 	
 	public Member memberId(String id) {
 	

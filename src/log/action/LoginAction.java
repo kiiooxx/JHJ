@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import action.Action;
-import log.svc.LoginSvc;
+import log.svc.LoginService;
 import vo.ActionForward;
 import vo.Member;
 
@@ -19,8 +19,8 @@ public class LoginAction implements Action {
 		ActionForward forward = null;
 		String id = request.getParameter("id");
 		Member member = null;
-		LoginSvc loginSvc = new LoginSvc();
-		member = loginSvc.memberLogin(id);
+		LoginService loginService = new LoginService();
+		member = loginService.memberLogin(id);
 		
 		
 		
