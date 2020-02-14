@@ -5,6 +5,7 @@ import static db.JdbcUtil.close;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 import javax.sql.DataSource;
 
@@ -27,6 +28,8 @@ public class MemberDAO {
 		this.con = con;
 		
 	}
+	
+	
 	
 	
 	//회원 id중복확인
@@ -62,32 +65,6 @@ public class MemberDAO {
 				
 			}
 	
-	
-	//id중복확인
-	/*
-	 * public Member selectMember(String id) { PreparedStatement pstmt = null;
-	 * ResultSet rs = null; Member member = null;
-	 * 
-	 * try { pstmt = con.prepareStatement("SELECT * FROM member WHERE user_id=?");
-	 * pstmt.setString(1, id); rs = pstmt.executeQuery();
-	 * 
-	 * if(rs.next()) { member = new Member(); member.setUser_id(id);
-	 * member.setUser_pw(rs.getString("user_pw"));
-	 * member.setUser_name(rs.getString("user_name"));
-	 * member.setSex(rs.getString("sex")); member.setTel(rs.getString("tel"));
-	 * member.setEmail(rs.getString("email"));
-	 * member.setPostcode(rs.getString("postcode"));
-	 * 
-	 * }
-	 * 
-	 * }catch(Exception e) { e.printStackTrace();
-	 * System.out.println("MemberDAO -selectMember error"); }finally { close(rs);
-	 * close(pstmt); }
-	 * 
-	 * return member;
-	 * 
-	 * }
-	 */
 			
 	//회원가입
 	public int insertMember(Member member) {
@@ -119,5 +96,7 @@ public class MemberDAO {
 		
 		return insertCount;
 	}
+	
+	
 
 }

@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import vo.CategoryBean;
+import vo.Member;
+import vo.Order;
 import vo.ProductBean;
 
 public class AdminDAO {
@@ -275,5 +277,234 @@ public class AdminDAO {
 				close(pstmt);
 			}
 			return isUpdateSuccess;
+		}
+		
+		
+		//↓↓↓↓↓↓↓↓ admin - 회원관리 ↓↓↓↓↓↓↓
+		
+		//회원 수 구하기
+		public int selectListCount(String searchType, String searchText, String searchGrade, int startPrice, int endPrice, String startDate, String endDate) {
+			
+			int listCount = 0; 
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+			String sql = "SELECT COUNT(DISTINCT member.user_id) FROM member LEFT JOIN order_page ON member.user_id=order_page.user_id WHERE member." + searchType + " LIKE ?";
+			
+			if(!searchGrade.trim().equals("")) {
+				sql += " AND grade = '" + searchGrade + "'";
+			}
+			String inputText =  "%" + searchText.trim() + "%";
+			
+			if(startPrice != 0 && endPrice == 0) {
+				sql += " AND sel_status='order_confirm' AND final_price>=" + startPrice ;
+			}else if(startPrice != 0 && endPrice != 0) {
+				sql += " AND sel_status='order_confirm' AND final_price>=" + startPrice + " AND final_price<=" + endPrice;
+			}
+			
+			if(!(startDate.trim().equals("") && endDate.trim().equals(""))) {
+				sql += " AND sel_date BETWEEN '" + startDate + "' AND '" + endDate + "'";
+			}
+			
+			
+			try {
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, inputText);
+				
+				rs = pstmt.executeQuery();
+				
+				if(rs.next()) {
+					listCount = rs.getInt(1);
+				}
+				
+			}catch(Exception e) {
+				System.out.println("selectListCount error : " + e);
+			}finally {
+				close(rs);
+				close(pstmt);
+			}
+			
+			
+			return listCount;
+		}
+
+		
+		//회원 검색 결과 
+		public ArrayList<Member> selectMemberList(String searchType, String searchText, String searchGrade, int startPrice, int endPrice, String startDate, String endDate, int page, int limit) {
+			
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+			String sql = "SELECT * FROM member LEFT JOIN order_page ON member.user_id=order_page.user_id WHERE member." + searchType + " LIKE ?";
+			
+			//고객등급 검색한 경우
+			if(!searchGrade.trim().equals("")) {
+				sql += " AND grade = '" + searchGrade + "'";
+			}
+			//text 입력내용
+			String inputText =  "%" + searchText.trim() + "%";
+			
+			//주문가격 입력한 경우
+			if(startPrice != 0 && endPrice == 0) {
+				sql += " AND sel_status='order_confirm' AND final_price >=" + startPrice ;
+			}else if(startPrice == 0 && endPrice != 0) {
+				sql += " AND sel_status='order_confirm' AND final_price <=" + endPrice ;
+			}else if(startPrice != 0 && endPrice != 0) {
+				sql += " AND sel_status='order_confirm' AND final_price >=" + startPrice + " AND final_price <=" + endPrice;
+			}
+			
+			//날짜 입력한 경우
+			if(!(startDate.trim().equals("") && endDate.trim().equals(""))) {
+				sql += " AND sel_date BETWEEN '" + startDate + "' AND '" + endDate + "'";
+			}
+			sql += " GROUP BY member.user_id ORDER BY joindate LIMIT ?, ?";
+			
+			
+			ArrayList<Member> memberList = new ArrayList<Member>();
+			Member member = null;
+			int startrow = (page-1)*limit;
+			
+			try {
+				pstmt = con.prepareStatement(sql);
+				
+				pstmt.setString(1, inputText);
+				pstmt.setInt(2, startrow);
+				pstmt.setInt(3, limit);
+				rs = pstmt.executeQuery();
+				
+				while(rs.next()) {
+					member = new Member();
+					member.setUser_id(rs.getString("user_id"));
+					member.setUser_name(rs.getString("user_name"));
+					member.setSex(rs.getString("sex"));
+					member.setTel(rs.getString("tel"));
+					member.setPostcode(rs.getString("postcode"));
+					member.setAddr1(rs.getString("addr1"));
+					member.setAddr2(rs.getString("addr2"));
+					member.setEmail(rs.getString("email"));
+					member.setJoindate(rs.getString("joindate"));
+					member.setGrade(rs.getString("grade").charAt(0));
+					memberList.add(member);
+				}
+				
+			}catch(Exception e) {
+				System.out.println("selectMemberList error :" + e);
+			}finally {
+				close(rs);
+				close(pstmt);
+			}
+			
+			return memberList;
+		}
+		
+		//회원 1명 정보 상세
+		public Member selectMember(String user_id) {
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+			Member member = null;
+			
+			try {
+				pstmt = con.prepareStatement("SELECT * FROM member WHERE user_id=?");
+				pstmt.setString(1, user_id);
+				rs = pstmt.executeQuery();
+				
+				if(rs.next()) {
+					member = new Member();
+					member.setUser_id(rs.getString("user_id"));
+					member.setUser_name(rs.getString("user_name"));
+					member.setSex(rs.getString("sex"));
+					member.setTel(rs.getString("tel"));
+					member.setPostcode(rs.getString("postcode"));
+					member.setAddr1(rs.getString("addr1"));
+					member.setAddr2(rs.getString("addr2"));
+					member.setEmail(rs.getString("email"));
+					member.setBirth(rs.getString("birth"));
+					member.setJoindate(rs.getString("joindate"));
+					member.setGrade(rs.getString("grade").charAt(0));				
+				}
+				
+				
+			}catch(Exception e) {
+				e.printStackTrace();
+				System.out.println("AdminDAO - selectMember error");
+			}finally {
+				close(rs);
+				close(pstmt);
+			}
+			
+			return member;
+		}
+
+		//회원정보에서 보는 주문목록 리스트 카운트
+		public int selectOrderListCount(String user_id) {
+		
+			int listCount = 0; 
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+			
+			String sql = "SELECT COUNT(*) FROM order_page WHERE user_id=?";
+			
+			try {
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, user_id);
+				rs = pstmt.executeQuery();
+				
+				if(rs.next()) {
+					listCount = rs.getInt(1);
+					System.out.println("selectOrderListCount rs:"+ rs.getInt(1));
+					
+				}
+				
+			}catch(Exception e) {
+				System.out.println("AdminDAO error: selectOrderListCount :" + e);
+			}finally{
+				close(rs);
+				close(pstmt);
+			}
+			System.out.println("selectOrderListCount sql:" + sql);
+			return listCount;
+			
+		}
+
+		//회원정보에서 보는 주문내역 내용 보여주는
+		public ArrayList<Order> selectOrderList(String user_id, int page, int limit) {
+			
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+			ArrayList<Order> orderList = new ArrayList<Order>();
+			Order order = null;
+			int startRow = (page-1)*limit;
+			System.out.println("startRow" + startRow);
+			String sql = "SELECT * FROM order_page WHERE user_id=? LIMIT ?, ?";
+			
+			try {
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, user_id);
+				pstmt.setInt(2, startRow);
+				pstmt.setInt(3, limit);
+				rs = pstmt.executeQuery();
+				
+				while(rs.next()) {
+					
+					order = new Order();
+					order.setUser_id(rs.getString("user_id"));
+					order.setSel_num(rs.getString("sel_num"));
+					order.setSel_date(rs.getString("sel_date"));
+					order.setDeli_num(rs.getString("deli_num"));
+					order.setSel_status(rs.getString("sel_status"));
+					order.setDeli_price(rs.getInt("deli_price"));
+					order.setPoint_use(rs.getInt("point_use"));
+					order.setFinal_price(rs.getInt("final_price"));
+					orderList.add(order);
+									
+				}
+				
+			}catch(Exception e) {
+				System.out.println("AdminDAO error: ArrayList<Order> selectOrderList :" + e);
+			}finally {
+				close(rs);
+				close(pstmt);
+			}
+			System.out.println("ArrayList<Order> selectOrderList sql:" + sql);
+			
+			return orderList;
 		}
 }
