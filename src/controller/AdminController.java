@@ -21,6 +21,7 @@ import admin.action.MemberListAction;
 import admin.action.ProducRegistAction;
 import admin.action.ProductDelAction;
 import admin.action.ProductListManagementAction;
+import admin.action.ProductListUpdateAction;
 import admin.action.ProductModifyAction;
 import admin.action.ProductModifyFormAction;
 import vo.ActionForward;
@@ -163,6 +164,13 @@ public class AdminController extends HttpServlet {
 			}
     	}else if(command.equals("/productDelAction.ad")) {
 			action = new ProductDelAction();
+			try {
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+    	}else if(command.equals("/productListUpdate.ad")) {
+			action = new ProductListUpdateAction();
 			try {
 				forward = action.execute(request, response);
 			}catch(Exception e) {

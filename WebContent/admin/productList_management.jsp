@@ -78,9 +78,8 @@ $(document).ready(function() {
 			var items=[];
 			$('input[name=chk]:checkbox:checked').each(function(){items.push($(this).val());});
 			var tmp = items.join(',');
-			alert(tmp);
 			var select = $('select[name=activeBox]').val();
-			location.href='productListUpdateAction.ad?pro_num='+tmp+'&active='+select;
+			location.href='productListUpdate.ad?pro_num='+tmp+'&active='+select;
 		}
 	});
 	
@@ -93,10 +92,8 @@ $(document).ready(function() {
 			var items=[];
 			$('input[name=chk]:checkbox:checked').each(function(){items.push($(this).val());});
 			var tmp = items.join(',');
-			alert(tmp);
 			var select = $('select[name=main_nb]').val();
-			alert(select)
-			location.href='productListUpdateAction.ad?pro_num='+tmp+'&main_nb='+select;
+			location.href='productListUpdate.ad?pro_num='+tmp+'&main_nb='+select;
 		}
 	});
 	
@@ -169,8 +166,10 @@ $(document).ready(function() {
 							</td>
 						</tr>
 					</table>
-					<a class="btn btn-default" href="javascript:productListSearch.submit()" role="button">검색</a>
-					<a class="btn btn-default" href="javascript:productListSearch.reset()" role="button">초기화</a>
+					<div align="center">
+						<a href="javascript:productListSearch.submit()" class="btn btn-primary">검색</a>
+						<a href="javascript:productListSearch.reset()" class="btn btn-primary">초기화</a>
+					</div>
 				</div>
 			</div>
 		</form>
@@ -187,6 +186,7 @@ $(document).ready(function() {
 							<th>상품명</th>
 							<th>판매가</th>
 							<th>진열상태</th>
+							<th>메인진열</th>
 							<th>상품분류</th>
 							<th>상품 등록일</th>	
 						</tr>
@@ -211,6 +211,19 @@ $(document).ready(function() {
 										</c:when>
 										<c:otherwise>
 											진열안함
+										</c:otherwise>
+									</c:choose>
+								</td>
+								<td>
+									<c:choose>
+										<c:when test="${list.main_nb == 'X'.charAt(0)}">
+											메인진열안함
+										</c:when>
+										<c:when test="${list.main_nb == 'B'.charAt(0) }">
+											베스트
+										</c:when>
+										<c:otherwise>
+											신상품
 										</c:otherwise>
 									</c:choose>
 								</td>
@@ -275,11 +288,12 @@ $(document).ready(function() {
 					<div id="bottom">
 						<a href="#" id="del">삭제</a>
 						<select id="activeBox" name="activeBox">
+							<option value="none" selected disabled hidden>--선택--</option>
 							<option value="Y">진열함</option>
 							<option value="N">진열안함</option>
 						</select>
-						<a href="#">상품분류변경</a>
 						<select id="main_nb" name="main_nb">
+							<option value="none" selected disabled hidden>--선택--</option>
 							<option value="X">메인진열안함</option>
 							<option value="B">베스트</option>
 							<option value="N">신상품</option>

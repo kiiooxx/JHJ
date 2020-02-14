@@ -20,7 +20,7 @@
 
 <div class="wleft">
 	<!-- 쇼핑몰 이름 -->
-	<h1 class="main_title"><a href="#">JHJ</a></h1>
+	<h1 class="main_title"><a href="main.pro">JHJ</a></h1>
 	
 	<div class="category_clothes">
 		<ul>

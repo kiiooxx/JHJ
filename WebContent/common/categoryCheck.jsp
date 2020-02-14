@@ -5,7 +5,7 @@
 
 <c:if test="${sessionScope.categoryList == null }">
 	<script>
-		location.href="${pageContext.request.contextPath}/categoryList.ad";
+		location.href="${pageContext.request.contextPath}/categoryList.ad?path=/template.jsp";
 	</script>
 </c:if>
 <!DOCTYPE html>

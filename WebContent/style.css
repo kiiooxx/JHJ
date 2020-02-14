@@ -196,6 +196,13 @@ table {
     height : 100%;
 }
 
+.prdList>div {
+	display: inline-block;
+    margin: 0px 0 35px 18px;
+	vertical-align: top;
+	width : 338px;
+	position : relative;
+}
 .prdList>li {
 	display: inline-block;
     margin: 0px 0 35px 18px;
@@ -205,10 +212,12 @@ table {
 }
 
 .thumbnail {
+	width : 338px;
 	float : left;
 	position: relative;
     margin: 0 0px 10px;
     text-align: center;
+    cursor : pointer;
 }
 
 .thumbnail a {

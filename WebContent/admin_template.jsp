@@ -19,7 +19,7 @@
 </head>
 
 <body id="page-top">
-
+<jsp:include page="/common/categoryCheckAdmin.jsp"/>
   <!-- Page Wrapper -->
   <div id="wrapper">
 
@@ -27,7 +27,7 @@
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
       <!-- Sidebar - Brand -->
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<%=request.getContextPath()%>/admin_template.jsp">
         <div class="sidebar-brand-text mx-3">관리자 페이지</div>
       </a>
 
@@ -88,7 +88,7 @@
 
           <!-- Sidebar Toggle (Topbar) -->
           <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-            <i class="fa fa-bars"></i>
+            <i class="fa fa-bars"><a href="<%= request.getContextPath() %>/template.jsp">메인으로</a></i>
           </button>
 
           <!-- Topbar Search -->
