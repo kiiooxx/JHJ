@@ -43,7 +43,13 @@ public class ProducRegistAction implements Action {
 		productBean.setPro_photo(image);
 		productBean.setActive(multi.getParameter("active").charAt(0));
 		productBean.setMain_nb(multi.getParameter("main_nb").charAt(0));
-		productBean.setCate_num(Integer.parseInt(multi.getParameter("cate_num")));
+		
+		//대분류만 선택했을시
+		if(multi.getParameter("cate_sub").equals("none")) {
+			productBean.setCate_num(Integer.parseInt(multi.getParameter("ca_ref")));
+		}else {
+			productBean.setCate_num(Integer.parseInt(multi.getParameter("cate_sub")));
+		}
 		
 		System.out.println(multi.getParameter("pro_content"));
 		System.out.println(multi.getFilesystemName("photo"));
@@ -62,10 +68,8 @@ public class ProducRegistAction implements Action {
 		String[] stock = multi.getParameterValues("stock");
 		
 		ArrayList<ProDetBean> proDetInfo = new ArrayList<>();
-		for(int i=0; i<color.length; i++) {
-			for(int j=0; j<pro_size.length; j++) {
-				proDetInfo.add(new ProDetBean(color[i], pro_size[j], Integer.parseInt(stock[i])));
-			}
+		for(int i=0; i<stock.length; i++) {
+			proDetInfo.add(new ProDetBean(color[i], pro_size[i], Integer.parseInt(stock[i])));
 		}
 		
 		ProductRegistService productRegistService = new ProductRegistService();

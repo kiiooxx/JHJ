@@ -17,12 +17,13 @@
 $(document).ready(function(){
 	var index1;
 	var index2;
+	var cnt = 0;
 	
 	$('#colorSelect').on('change', function() {
 		//선택된 color, size값 받아오기
 		var color = $(this).val();
 		var size = $('#sizeSelect option:selected').val();
-		
+
 		//colorSelect에서 선택된 index 값 저장
 		index1 = $("#colorSelect option").index($("#colorSelect option:selected"));
 		
@@ -32,31 +33,35 @@ $(document).ready(function(){
 			if($('.option_product'+index).is(":visible")){
 				alert("이미 선택 된 상품입니다.");
 			}else {
-				$('#qnt_'+index).val('1');
-				$('#price_'+index).text(${prd.pro_price});
-				$('.option_product'+index).show();
-				
-				var html = '';
-				html += '<input type="hidden" id="size' + index + '" name="size" value="' + size + '"/>';
-				html += '<input type="hidden" id="color' + index + '" name="color" value="' + color + '"/>';
-				
-				$("#totalPrice").append(html);
-				
-				var price = $('.total_price').text();
-				$('.total_price').text(Number(price) + Number(${prd.pro_price}));
-
-				var qnt = $('.total_qnt').text();
-				$('.total_qnt').text(Number(qnt) + 1);
-				
-				$('#total_price').val(Number(price) + Number(${prd.pro_price}));
-				$('#total_qnt').val(Number(qnt) + 1);
-				
-				index1 = '';
-				index2 = '';
-				
-				$(this).val('none').prop('selected', true);
+				var h = '';
+				<c:forEach var="list" items="${prdDetList }" varStatus="i">
+					if(size == "${list.pro_size}" && color == "${list.color}") {
+					alert(color);
+						h += '<tr class="option_product${i.count}">';
+						h += '<td><p class="product">';
+						h += '<input type="hidden" name="pro_det_num" value="${list.pro_det_num}"/>';
+						h += '<input type="hidden" name="color" value="' + color + '"/>';
+						h += '<input type="hidden" name="size" value="' + size + '"/>';
+						h += '<span>' + color + '/</span>';
+						h += '<span>' + size + '</span></p></td>';
+						h += '<td><span class="qnt">';
+						h += '<input type="number" value="1" min="1" name="qnt" id="qnt_${i.count}"/>';
+						h += '<a href="#" id="delItem${i.count}">X</a></span></td>';
+						h += '<td class="right"><span class="price" id="price_${i.count}">${prd.pro_price}</span></td></tr>';
+						$('#optionProduct').append(h);
+						
+						var price = $('.total_price').text();
+						$('.total_price').text(Number(price) + Number(${prd.pro_price}));
+						
+						var qnt = $('.total_qnt').text();
+						$('.total_qnt').text(Number(qnt) + 1);
+						
+						cnt += Number(1);
+						$(this).val('none').prop('selected', true);	
+					}
+				</c:forEach>
 			}
-		}	 
+		}
 		return false;
 	});
 	
@@ -71,40 +76,66 @@ $(document).ready(function(){
 			if($('.option_product'+index).is(":visible")){
 				alert("이미 선택 된 상품입니다.");
 			}else {
-				$('#qnt_'+index).val('1');
-				$('#price_'+index).text(${prd.pro_price});
-				$('.option_product'+index).show();
-				
-				var html = '';
-				html += '<input type="hidden" id="size' + index + '" name="size" value="' + size + '"/>';
-				html += '<input type="hidden" id="color' + index + '" name="color" value="' + color + '"/>';
-				$("#totalPrice").append(html);
-				
-				var price = $('.total_price').text();
-				$('.total_price').text(Number(price) + Number(${prd.pro_price}));
-				
-				var qnt = $('.total_qnt').text();
-				$('.total_qnt').text(Number(qnt) + 1);
-				
-				$('#total_price').val(Number(price) + Number(${prd.pro_price}));
-				$('#total_qnt').val(Number(qnt) + 1);
-				
-				index1 = '';
-				index2 = '';
-				$(this).val('none').prop('selected', true);
+				var h = '';
+				<c:forEach var="list" items="${prdDetList }" varStatus="i">
+					if(size == "${list.pro_size}" && color == "${list.color}") {
+						alert(size);
+						h += '<tr class="option_product${i.count}">';
+						h += '<td><p class="product">';
+						h += '<input type="hidden" name="pro_det_num" value="${list.pro_det_num}"/>';
+						h += '<input type="hidden" name="color" value="' + color + '"/>';
+						h += '<input type="hidden" name="size" value="' + size + '"/>';
+						h += '<span>' + color + '/</span>';
+						h += '<span>' + size + '</span></p></td>';
+						h += '<td><span class="qnt">';
+						h += '<input type="number" value="1" min="1" name="qnt" id="qnt_${i.count}"/>';
+						h += '<a href="#" id="delItem${i.count}">X</a></span></td>';
+						h += '<td class="right"><span class="price" id="price_${i.count}">${prd.pro_price}</span></td></tr>';
+						$('#optionProduct').append(h);
+						
+						var price = $('.total_price').text();
+						$('.total_price').text(Number(price) + Number(${prd.pro_price}));
+						
+						var qnt = $('.total_qnt').text();
+						$('.total_qnt').text(Number(qnt) + 1);
+						
+						cnt += Number(1);
+						$(this).val('none').prop('selected', true);	 
+					}
+				</c:forEach>
 			}
 		}
 		return false;
 	});
 	
-	$('[id^=qnt_]').change(function(){
+	
+	$('body').on('change', '[id^=qnt_]', function() {
 		var q = $(this).val();
 		var id = $(this).attr("id")
 		var num = id.replace("qnt_", "");
-		
 		//해당 옵션의 가격 바꾸기
 		var pr = Number(${prd.pro_price}*q);
 		$('#price_'+num).text(pr);
+		//총금액 구하기
+		var total_p = '0';
+		var total_q = '0';
+		
+		for(var i=1; i<=cnt; i++) {
+			total_p = Number(total_p) + Number($('#price_'+i).text());
+			total_q = Number(total_q) + Number($('#qnt_'+i).val());
+		}
+		
+		$('.total_price').text(total_p);
+		$('.total_qnt').text(total_q);
+	});
+	
+	//삭제
+	$('body').on('click', '[id^=delItem]', function() {
+		alert("삭제");
+		var id = $(this).attr("id")
+		var num = id.replace("delItem", "");
+		
+		$('.option_product'+num).remove();
 		
 		//총금액 구하기
 		var total_p = '0';
@@ -123,38 +154,65 @@ $(document).ready(function(){
 		
 	});
 	
-	//삭제
-	$('[id^=delItem]').on('click', function() {
-		var id = $(this).attr("id")
-		var num = id.replace("delItem", "");
-		
-		$('.option_product'+num).hide();
-		$('#size'+num).remove();
-		$('#color'+num).remove();
-		$('#price_'+num).text(0);
-		$('#qnt_'+num).val(0);
-		
-		//총금액 구하기
-		var total_p = '0';
-		var total_q = '0';
-		var cnt = $('#cnt').val();
-		
-		for(var i=1; i<=cnt; i++) {
-			total_p = Number(total_p) + Number($('#price_'+i).text());
-			total_q = Number(total_q) + Number($('#qnt_'+i).val());
-		}
-		
-		$('.total_price').text(total_p);
-		$('.total_qnt').text(total_q);
-		$('#total_price').val(total_p);
-		$('#total_qnt').val(total_q);
-		
+	$('#cart').on('click', function() {
+		 var pro_num = "${prd.pro_num}";
+		 var photo = "${prd.pro_photo}";
+		 var pro_name = "${prd.pro_name}";
+		 var pro_price = "${prd.pro_price}";
+		 
+		 alert(pro_num);
+		 alert(photo);
+		 alert(pro_name);
+		 alert(pro_price);
+		 
+		 
+		 var size = $("input[name='pro_det_num']").length;
+		 var prodetnum = new Array(size);
+		 for(var i=0; i<size; i++){                          
+			 prodetnum[i] = $("input[name='pro_det_num']")[i].value;
+		 }
+
+		 var size2 = $("input[name='qnt']").length;
+		 var qnt = new Array(size2);
+		 for(var i=0; i<size2; i++){                          
+			 qnt[i] = $("input[name='qnt']")[i].value;
+		 }
+		 
+		 var size3 = $("input[name='color']").length;
+		 var color = new Array(size3);
+		 for(var i=0; i<size3; i++){                          
+			 color[i] = $("input[name='color']")[i].value;
+		 }
+		 
+		 var size4 = $("input[name='size']").length;
+		 var pro_size = new Array(size4);
+		 for(var i=0; i<size4; i++){                          
+			 pro_size[i] = $("input[name='size']")[i].value;
+		 }
+		 alert(color);
+		 alert(pro_size);
+		$.ajax({
+			url : '<%=request.getContextPath()%>/addCart',
+			type : 'POST',
+			data : 'pro_det_num='+prodetnum+'&qnt='+qnt+'&pro_num='+pro_num
+				+'&pro_photo='+photo+'&pro_name='+pro_name+'&pro_price='+pro_price
+				+'&color='+color+'&pro_size='+pro_size,
+			cache: false,
+			contentType : 'application/x-www-form-urlencoded; charset=UTF-8',
+	        processData: false,
+			success : function() {
+					alert('선택한 상품을 장바구니에 담았습니다!');
+			},
+			error : function() {
+				console.log("에러");
+			}
+		});
 	});
 });
 </script>
 
 <style>
-[class^=option_product]{display:none;}
+
 </style>
 </head>
 <body>
@@ -233,46 +291,12 @@ $(document).ready(function(){
 				<table>
 					<tbody id="optionProduct">
 					
-					<c:set var="count" value="0"/>
 					
-					<c:forEach var="list" items="${prdDetList }" varStatus="i">
-						
-						<c:if test="${i.index==0 || cl != list.color || sz != list.pro_size}">
-							<c:set var="cl" value="${list.color }"/>
-							<c:set var="sz" value="${list.pro_size }"/>
-							<c:set var="count" value="${count + 1}" />
-							
-							<tr class="option_product${count }">
-								<td>
-									<p class="product">
-										<span id="color_${count }">${list.color } / </span>
-										<span id="size_${count }">${list.pro_size }</span>
-									</p>
-								</td>
-							
-								<td>
-									<span class="qnt">
-										<input type="number" value="0" min="1" name="qnt" id="qnt_${count }"/>
-										<a href="#" id="delItem${count }">X</a>
-									</span>
-								</td>
-								
-								<td class="right">
-									<span class="price" id="price_${count }">0</span>
-								</td>
-							</tr>
-						</c:if>
-
-					</c:forEach>
-					
-					<input type="hidden" id="cnt" value="${count }"/>
 					</tbody>
 					<tr>
 						<td><span>TOTAL(QUANTITY) : </span>
 							<span class="total_price">0</span>
 							(<span class="total_qnt">0</span>)
-							<input type="hidden" name="total_price" id="total_price"/>
-							<input type="hidden" name="total_qnt" id="total_qnt"/>
 						</td>
 					</tr>
 				</table>
@@ -287,7 +311,7 @@ $(document).ready(function(){
 			<div id="btnArea">
 				<ul>
 					<li><a href="#" class="btn_b">BUY</a></li>
-					<li><a href="#" class="btn_w">SHOPPING CART</a></li>
+					<li><a href="#" class="btn_w" id="cart">SHOPPING CART</a></li>
 				</ul>
 			</div>
 		</div>

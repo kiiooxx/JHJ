@@ -26,7 +26,7 @@
 		<ul>
 			<li><a href="categoryManagement.ad">카테고리관리</a></li>
 			<li><a href="productManagement.ad">상품등록</a></li>
-			<li><a href="#">상품관리</a></li>
+			<li><a href="productListManagement.ad">상품목록</a></li>
 			<li><a href="#">재고관리</a></li>
 		</ul>
 	</div>

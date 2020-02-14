@@ -4,13 +4,14 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ page import="java.util.ArrayList" %>
-<%@ page import="vo.CategoryBean" %>
+
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
+<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
 <script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
+
 <script>
 // html dom 이 다 로딩된 후 실행된다.
 $(document).ready(function(){
@@ -22,11 +23,11 @@ $(document).ready(function(){
 		
 		var id2 = '.hide' + num;
 		var submenu = $(id2);
-		
 		//소분류값 있을때만
 		if(!(submenu.text() == "" || submenu.text() == null || submenu.text() == undefined)) {
-			var src = ($('#'+id+'>img').attr('src') == 'layout_image/cate_default.png') ? 'layout_image/cate_click.png' : 'layout_image/cate_default.png';
-			$('#'+id+'>img').attr('src', src);
+			
+			var src = ($('#'+id+'>ion-icon').attr('name') == 'folder-outline') ? 'folder-open-outline' : 'folder-outline';
+			$('#'+id+'>ion-icon').attr('name', src);
 			
 			// submenu 가 화면상에 보일때는 위로 보드랍게 접고 아니면 아래로 보드랍게 펼치기
 			if( submenu.is(":visible") ){
@@ -81,7 +82,7 @@ $(document).ready(function(){
 	});
 	
 	//'대분류 추가' 클릭할시에
-	$('.large_add').click(function(){
+	$('#large_add').click(function(){
 		var state = $('#large_hidden').css('display');
 		if(state == 'none'){ 
 			$('#large_hidden').show(); 
@@ -91,7 +92,7 @@ $(document).ready(function(){
 	});
 	
 	//'소분류 추가' 클릭할시에
-	$('.sub_add').click(function(){
+	$('#sub_add').click(function(){
 		var state = $('#sub_hidden').css('display');
 		if(state == 'none'){ 
 			$('#large_hidden').hide(); 
@@ -102,11 +103,15 @@ $(document).ready(function(){
 });
 </script>
 <style>
+a {
+color : #343a40;
+}
 .menu a{cursor:pointer;}
-[class*='hide']{display:none; margin-left:15px;}
+[class*='hide']{display:none;}
 #large_hidden {display :none;}
 #sub_hidden {display :none;}
 #info_hidden {display:none;}
+[id*='del_icon']{display:none;}
 ul {
 	list-style : none;
 }
@@ -114,137 +119,150 @@ ul {
 <title>Insert title here</title>
 </head>
 <body>
-<div class="headArea">
-	<h1>카테고리 관리</h1>
-</div>
-<div id="categoryArea">
-	<div id="categoryList">
-		<h3>카테고리 목록</h3>
-		<form name="categorylistForm" action="categoryManagement.ad" method="post">
-		<!-- 목록 누르면 옆에 분류명에 이름 뜸 -->
-		<div class="cate_list">
-			<ul>
-			<!-- 대분류 -->
-			<!-- 버튼 누르면 옆에 추가버튼 생성 됨 -->
-			<c:forEach var="list" items="${categoryList }" varStatus="i">
-				<c:choose>
-					<c:when test="${list.ca_lev == 0}">
-						<!-- 대분류 -->
-						<li class="menu">
-							<span>
-								<a href="#" id="img${list.cate_num }"><img src="layout_image/cate_default.png"></a>
-								<a href="#" class="large" id="index${list.cate_num }">${list.category }</a>
-								<a href="#" id="del_icon${list.cate_num }">X</a>
-							</span>			
-						</li>
-					</c:when>
-						
-					<c:otherwise>
-						<!-- 소분류 -->
-						<ul class="hide${list.ca_ref }">
-							<li>
-								<span>
-									<img src="layout_image/cate_folder.png">
-									<a href="#" class="sub" id="index${list.cate_num }">
-										<input type="hidden" id="ref${list.cate_num }" value="${list.ca_ref }"/>
-										${list.category }
-									</a>
-									<a href="#" id="del_icon${list.cate_num }">X</a>
-								</span>
-							</li>
+ <!-- Page Heading -->
+ <div class="d-sm-flex align-items-center justify-content-between mb-4">
+ 	<h1 class="h3 mb-0 text-gray-800">카테고리 관리</h1>
+ </div>
+ <!-- Content Row -->
+ <div class="row">
+ 	<div class="col">
+		<div class="card card-default">
+			<div class="card-header">
+            	카테고리 관리
+          	</div>
+			
+			<div class="card-body">
+				<div class="row">
+	              <div class="col-md-6">
+	                <div class="form-group">
+	                	<label>카테고리 목록</label>
+						<form name="categorylistForm" action="categoryManagement.ad" method="post">
+						<!-- 목록 누르면 옆에 분류명에 이름 뜸 -->
+						<ul>
+							<!-- 대분류 -->
+							<!-- 버튼 누르면 옆에 추가버튼 생성 됨 -->
+							<c:forEach var="list" items="${categoryList }" varStatus="i">
+								<c:choose>
+									<c:when test="${list.ca_lev == 0}">
+										<!-- 대분류 -->
+										<li class="menu">
+											<span>
+												<a href="#" id="img${list.cate_num }"><ion-icon name="folder-outline"></ion-icon></a>
+												<a href="#" class="large" id="index${list.cate_num }">${list.category }</a>
+												<a href="#" id="del_icon${list.cate_num }"><ion-icon name="close-circle-outline"></ion-icon></a>
+											</span>			
+										</li>
+									</c:when>
+										
+									<c:otherwise>
+										<!-- 소분류 -->
+										<ul class="hide${list.ca_ref }">
+											<li>
+												<span>
+													<ion-icon name="folder-outline"></ion-icon>
+													<a href="#" class="sub" id="index${list.cate_num }">
+														<input type="hidden" id="ref${list.cate_num }" value="${list.ca_ref }"/>
+														${list.category }
+													</a>
+													<a href="#" id="del_icon${list.cate_num }"><ion-icon name="close-circle-outline"></ion-icon></a>
+												</span>
+											</li>
+										</ul>
+									</c:otherwise>
+								</c:choose>
+							</c:forEach>
 						</ul>
-					</c:otherwise>
-				</c:choose>
-			</c:forEach>
-			</ul>
-		</div>
-		
-		<div class="cate_bottom">
-			<a href="#" class="large_add">대분류 추가</a>
-			<a href="#" class="sub_add">소분류 추가</a>
-		</div>
-		</form>
-	</div>
-	
-	<div id="setTable">
-		<div id="large_hidden">
-			<h3>대분류추가</h3>
-			<form name="categorySetForm1" action="categoryAddAction.ad" method="post">
-				<table>
-					<tr>
-						<th>카테고리명</th>
-						<td>
-							<input type="hidden" name="index" id="index" value="${index }"/>
-							<input type="text" name="cate_name" id="cate_name" required/>
-							<a href="javascript:categorySetForm1.submit()" class="add_btn">추가</a>
-						</td>
-					</tr>
-				</table>
-			</form>
-		</div>
-		
-		<div id="sub_hidden">
-			<h3>소분류 추가</h3>
-			<form name="categorySetForm2" action="categoryAddAction.ad" method="post">
-				<table>
-					<tr>
-						<th>대분류명</th>
-						<td>		
-							<select name="cate_large">
-								<c:forEach var="list" items="${categoryList }" varStatus="i">
-									<c:if test="${list.ca_lev == 0}">
-										<option value="${list.cate_num }">${list.category }</option>
-									</c:if>
-								</c:forEach>
-							</select>
-						</td>
-					</tr>
+						</form>
+						<div class="cate_bottom">
+							<a class="btn btn-default" href="#" role="button" id="large_add">대분류 추가</a>
+							<a class="btn btn-default" href="#" role="button" id="sub_add">소분류 추가</a>
+						</div>
+					</div>
 					
-					<tr>
-						<th>카테고리명</th>
-						<td>
-							<input type="text" name="cate_name" id="cate_name" required/>
-							<a href="javascript:categorySetForm2.submit()" class="add_btn">추가</a>
-						</td>
-					</tr>
-				</table>
-			</form>
-		</div>
-		
-		
-		<!-- 카테고리 이름 누르면 옆에 정보가 뜨는 창 -->
-		<!-- 수정, 삭제 기능도 추가할것 (삭제 누르면 카테고리 내용도 전부 삭제되야하고, 수정누르면 상품 카테고리 이름 전부 변경되어야함...) -->
-		<div id="info_hidden">
-			<h3>분류 정보</h3>
-			<form name="categorySetForm3" action="categoryUpdateAction.ad" method="post">
-				<table>
-					<tr>
-						<th>대분류명</th>
-						<td>		
-							<select name="cate_large" id="info_select_large">
-								<c:forEach var="list" items="${categoryList }" varStatus="i">
-									<c:if test="${list.ca_lev == 0}">
-										<option value="${list.cate_num }">${list.category }</option>
-									</c:if>
-								</c:forEach>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<th>카테고리명</th>
-						<td>
-							<input type="text" name="cate_name" id="info_cate_name" required/>
-							<input type="hidden" name="cate_num" id="info_cate_num"/>
-						</td>
-						
-					</tr>
-					<tr>
-						<td><a href="javascript:categorySetForm3.submit()" class="add_btn">수정</a></td>
-					</tr>
-				</table>
-			</form>
+				</div>
+				
+				
+				<div class="form-group" id="large_hidden">
+					<label>대분류 추가</label>
+					<form name="categorySetForm1" action="categoryAddAction.ad" method="post">
+						<table>
+							<tr>
+								<th>카테고리명</th>
+								<td>
+									<input type="hidden" name="index" id="index" value="${index }"/>
+									<input type="text" name="cate_name" id="cate_name" required/>
+									<a href="javascript:categorySetForm1.submit()" class="btn btn-default" role="button">추가</a>
+								</td>
+							</tr>
+						</table>
+					</form>
+				</div>
+			
+			
+				<div class="form-group" id="sub_hidden">
+					<label>소분류 추가</label>
+					<form name="categorySetForm2" action="categoryAddAction.ad" method="post">
+						<table>
+							<tr>
+								<th>대분류명</th>
+								<td>		
+									<select name="cate_large">
+										<c:forEach var="list" items="${categoryList }" varStatus="i">
+											<c:if test="${list.ca_lev == 0}">
+												<option value="${list.cate_num }">${list.category }</option>
+											</c:if>
+										</c:forEach>
+									</select>
+								</td>
+							</tr>
+							
+							<tr>
+								<th>카테고리명</th>
+								<td>
+									<input type="text" name="cate_name" id="cate_name" required/>
+									<a href="javascript:categorySetForm2.submit()" class="btn btn-default" role="button">추가</a>
+								</td>
+							</tr>
+						</table>
+					</form>
+				</div>
+				
+				<!-- 카테고리 이름 누르면 옆에 정보가 뜨는 창 -->
+				<!-- 수정, 삭제 기능도 추가할것 (삭제 누르면 카테고리 내용도 전부 삭제되야하고, 수정누르면 상품 카테고리 이름 전부 변경되어야함...) -->
+				<div class="form-group" id="info_hidden">
+					<p>분류 정보</p>
+					<form name="categorySetForm3" action="categoryUpdateAction.ad" method="post">
+						<table>
+							<tr>
+								<th>대분류명</th>
+								<td>		
+									<select name="cate_large" id="info_select_large">
+										<c:forEach var="list" items="${categoryList }" varStatus="i">
+											<c:if test="${list.ca_lev == 0}">
+												<option value="${list.cate_num }">${list.category }</option>
+											</c:if>
+										</c:forEach>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<th>카테고리명</th>
+								<td>
+									<input type="text" name="cate_name" id="info_cate_name" required/>
+									<input type="hidden" name="cate_num" id="info_cate_num"/>
+								</td>
+								
+							</tr>
+							<tr>
+								<td><a href="javascript:categorySetForm3.submit()" class="btn btn-default" role="button">수정</a></td>
+							</tr>
+						</table>
+					</form>
+				</div>
+			</div>
 		</div>
 	</div>
+</div>
 </div>
 </body>
 </html>

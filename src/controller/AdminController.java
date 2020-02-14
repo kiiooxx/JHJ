@@ -14,10 +14,15 @@ import admin.action.CategoryAddAction;
 import admin.action.CategoryDelAction;
 import admin.action.CategoryListAction;
 import admin.action.CategoryManagementForm;
+import admin.action.CategorySubListAction;
 import admin.action.CategoryUpdateAction;
 import admin.action.MemberInfoAction;
 import admin.action.MemberListAction;
 import admin.action.ProducRegistAction;
+import admin.action.ProductDelAction;
+import admin.action.ProductListManagementAction;
+import admin.action.ProductModifyAction;
+import admin.action.ProductModifyFormAction;
 import vo.ActionForward;
 
 /**
@@ -121,7 +126,49 @@ public class AdminController extends HttpServlet {
 				e.printStackTrace();
 				System.out.println("controller error : memberInfo.ad");
 			}
-		}
+		}else if(command.equals("/productListManagement.ad")) {
+			action = new ProductListManagementAction();
+			try {
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+    	}else if(command.equals("/categorySubList.ad")) {
+			action = new CategorySubListAction();
+			try {
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+    	}else if(command.equals("/categorySubList.ad")) {
+			action = new CategorySubListAction();
+			try {
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+    	}else if(command.equals("/productModifyForm.ad")) {
+			action = new ProductModifyFormAction();
+			try {
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+    	}else if(command.equals("/productModifyAction.ad")) {
+			action = new ProductModifyAction();
+			try {
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+    	}else if(command.equals("/productDelAction.ad")) {
+			action = new ProductDelAction();
+			try {
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+    	}
 		
 		//3.포워딩
 		if(forward != null) {

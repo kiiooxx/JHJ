@@ -38,7 +38,7 @@
 			<a href="#">ORDER</a>
 		</li>
 		<li>
-			<a href="#">CART</a>
+			<a href="cartList.pro">CART</a>
 		</li>
 		<!-- 관리자일때만 admin메뉴 보이게 -->
 		<li>
