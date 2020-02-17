@@ -41,6 +41,7 @@ public class CartListService {
 					cart.setPro_det_num(cartList.get(j).getPro_det_num());
 					cart.setBas_pro_qnt(cartList.get(j).getBas_pro_qnt());
 					cartList2.add(cart);
+					System.out.println(cart.getPro_det_num() + "+" + cart.getBas_pro_qnt() );
 				}	
 			}
 		}
