@@ -36,28 +36,34 @@ $(document).ready(function(){
 				var h = '';
 				<c:forEach var="list" items="${prdDetList }" varStatus="i">
 					if(size == "${list.pro_size}" && color == "${list.color}") {
-					alert(color);
-						h += '<tr class="option_product${i.count}">';
-						h += '<td><p class="product">';
-						h += '<input type="hidden" name="pro_det_num" value="${list.pro_det_num}"/>';
-						h += '<input type="hidden" name="color" value="' + color + '"/>';
-						h += '<input type="hidden" name="size" value="' + size + '"/>';
-						h += '<span>' + color + '/</span>';
-						h += '<span>' + size + '</span></p></td>';
-						h += '<td><span class="qnt">';
-						h += '<input type="number" value="1" min="1" name="qnt" id="qnt_${i.count}"/>';
-						h += '<a href="#" id="delItem${i.count}">X</a></span></td>';
-						h += '<td class="right"><span class="price" id="price_${i.count}">${prd.pro_price}</span></td></tr>';
-						$('#optionProduct').append(h);
-						
-						var price = $('.total_price').text();
-						$('.total_price').text(Number(price) + Number(${prd.pro_price}));
-						
-						var qnt = $('.total_qnt').text();
-						$('.total_qnt').text(Number(qnt) + 1);
-						
-						cnt += Number(1);
-						$(this).val('none').prop('selected', true);	
+						<c:choose>
+							<c:when test="${list.stock_qnt <= 0}">
+								alert('재고가 없습니다!');
+							</c:when>
+							<c:otherwise>
+								h += '<tr class="option_product${i.count}">';
+								h += '<td><p class="product">';
+								h += '<input type="hidden" name="pro_det_num" value="${list.pro_det_num}"/>';
+								h += '<input type="hidden" name="color" value="' + color + '"/>';
+								h += '<input type="hidden" name="size" value="' + size + '"/>';
+								h += '<span>' + color + '/</span>';
+								h += '<span>' + size + '</span></p></td>';
+								h += '<td><span class="qnt">';
+								h += '<input type="number" value="1" min="1" name="qnt" id="qnt_${i.count}"/>';
+								h += '<a href="#" id="delItem${i.count}">X</a></span></td>';
+								h += '<td class="right"><span class="price" id="price_${i.count}">${prd.pro_price}</span></td></tr>';
+								$('#optionProduct').append(h);
+								
+								var price = $('.total_price').text();
+								$('.total_price').text(Number(price) + Number(${prd.pro_price}));
+								
+								var qnt = $('.total_qnt').text();
+								$('.total_qnt').text(Number(qnt) + 1);
+								
+								cnt += Number(1);
+								$(this).val('none').prop('selected', true);
+							</c:otherwise>
+						</c:choose>
 					}
 				</c:forEach>
 			}
@@ -79,28 +85,34 @@ $(document).ready(function(){
 				var h = '';
 				<c:forEach var="list" items="${prdDetList }" varStatus="i">
 					if(size == "${list.pro_size}" && color == "${list.color}") {
-						alert(size);
-						h += '<tr class="option_product${i.count}">';
-						h += '<td><p class="product">';
-						h += '<input type="hidden" name="pro_det_num" value="${list.pro_det_num}"/>';
-						h += '<input type="hidden" name="color" value="' + color + '"/>';
-						h += '<input type="hidden" name="size" value="' + size + '"/>';
-						h += '<span>' + color + '/</span>';
-						h += '<span>' + size + '</span></p></td>';
-						h += '<td><span class="qnt">';
-						h += '<input type="number" value="1" min="1" name="qnt" id="qnt_${i.count}"/>';
-						h += '<a href="#" id="delItem${i.count}">X</a></span></td>';
-						h += '<td class="right"><span class="price" id="price_${i.count}">${prd.pro_price}</span></td></tr>';
-						$('#optionProduct').append(h);
-						
-						var price = $('.total_price').text();
-						$('.total_price').text(Number(price) + Number(${prd.pro_price}));
-						
-						var qnt = $('.total_qnt').text();
-						$('.total_qnt').text(Number(qnt) + 1);
-						
-						cnt += Number(1);
-						$(this).val('none').prop('selected', true);	 
+						<c:choose>
+							<c:when test="${list.stock_qnt <= 0}">
+								alert('재고가 없습니다!');
+							</c:when>
+							<c:otherwise>
+								h += '<tr class="option_product${i.count}">';
+								h += '<td><p class="product">';
+								h += '<input type="hidden" name="pro_det_num" value="${list.pro_det_num}"/>';
+								h += '<input type="hidden" name="color" value="' + color + '"/>';
+								h += '<input type="hidden" name="size" value="' + size + '"/>';
+								h += '<span>' + color + '/</span>';
+								h += '<span>' + size + '</span></p></td>';
+								h += '<td><span class="qnt">';
+								h += '<input type="number" value="1" min="1" name="qnt" id="qnt_${i.count}"/>';
+								h += '<a href="#" id="delItem${i.count}">X</a></span></td>';
+								h += '<td class="right"><span class="price" id="price_${i.count}">${prd.pro_price}</span></td></tr>';
+								$('#optionProduct').append(h);
+								
+								var price = $('.total_price').text();
+								$('.total_price').text(Number(price) + Number(${prd.pro_price}));
+								
+								var qnt = $('.total_qnt').text();
+								$('.total_qnt').text(Number(qnt) + 1);
+								
+								cnt += Number(1);
+								$(this).val('none').prop('selected', true);	
+							</c:otherwise>
+						</c:choose>
 					}
 				</c:forEach>
 			}
@@ -131,7 +143,6 @@ $(document).ready(function(){
 	
 	//삭제
 	$('body').on('click', '[id^=delItem]', function() {
-		alert("삭제");
 		var id = $(this).attr("id")
 		var num = id.replace("delItem", "");
 		
@@ -160,12 +171,6 @@ $(document).ready(function(){
 		 var pro_name = "${prd.pro_name}";
 		 var pro_price = "${prd.pro_price}";
 		 
-		 alert(pro_num);
-		 alert(photo);
-		 alert(pro_name);
-		 alert(pro_price);
-		 
-		 
 		 var size = $("input[name='pro_det_num']").length;
 		 var prodetnum = new Array(size);
 		 for(var i=0; i<size; i++){                          
@@ -189,8 +194,7 @@ $(document).ready(function(){
 		 for(var i=0; i<size4; i++){                          
 			 pro_size[i] = $("input[name='size']")[i].value;
 		 }
-		 alert(color);
-		 alert(pro_size);
+
 		$.ajax({
 			url : '<%=request.getContextPath()%>/addCart',
 			type : 'POST',
@@ -263,7 +267,7 @@ $(document).ready(function(){
 					<option value="none" selected disabled hidden>-[필수]옵션을 선택해주세요-</option>
 					<c:forEach var="clist" items="${prdDetList }" varStatus="i">
 						<c:if test="${i.index == 0 || cl != clist.color}">
-							<option value="${clist.color }">${clist.color }</option>
+							<option value="${clist.color }" >${clist.color }</option>
 							<c:set var="cl" value="${clist.color }"/>		
 						</c:if>
 					</c:forEach>
@@ -274,15 +278,34 @@ $(document).ready(function(){
 			<tr>
 				<th>SIZE</th>
 				<td>
+				
+				<c:set var="sizeArr" value=""/>
+				<c:forEach var="sizeList" items="${prdDetList }" varStatus="i">
+					<c:set var="dup" value="true"/>
+					<c:forEach var="dupCheck" items="${sizeArr }" varStatus="j">
+						<c:if test="${sizeList.pro_size == dupCheck }">
+							<c:set var="dup" value="false"/>
+						</c:if>
+					</c:forEach>
+					
+					<c:choose>
+						<c:when test="${i.index == 0 }">
+							<c:set var="sizeArr" value="${sizeList.pro_size }"/>
+						</c:when>
+						<c:otherwise>
+							<c:if test="${dup == true }">
+								<c:set var="sizeArr" value="${sizeArr},${sizeList.pro_size }"/>
+							</c:if>
+						</c:otherwise>
+					</c:choose>
+				</c:forEach>
 			<select id="sizeSelect">
 				<option value="none" selected disabled hidden>-[필수]옵션을 선택해주세요-</option>
-				<c:forEach var="slist" items="${prdDetList }" varStatus="i">
-					<c:if test="${i.index == 0 || sz != slist.pro_size}">
-						<option value="${slist.pro_size }">${slist.pro_size }</option>
-						<c:set var="sz" value="${slist.pro_size }"/>
-					</c:if>
-				</c:forEach>
+				<c:forTokens items="${sizeArr }" delims="," var="item">
+					<option value="${item }">${item }</option>
+				</c:forTokens>
 			</select>
+			
 			</td>
 			</tr>
 			</table>

@@ -65,29 +65,64 @@ public class ProductModifyAction implements Action {
 			out.println("</script>");
 		}
 		
-		String[] color = multi.getParameterValues("pro_color");
-		String[] pro_size = multi.getParameterValues("pro_size");
-		String[] stock = multi.getParameterValues("stock");
+		//추가된 옵션 - 색상,사이즈,재고
+		String[] color = null;
+		String[] pro_size = null;
+		String[] stock = null;
 		
-		ArrayList<ProDetBean> proDetInfo = new ArrayList<>();
-		for(int i=0; i<stock.length; i++) {
-			proDetInfo.add(new ProDetBean(color[i], pro_size[i], Integer.parseInt(stock[i])));
+		if(multi.getParameterValues("stock") != null) {
+			color = multi.getParameterValues("pro_color");
+			pro_size = multi.getParameterValues("pro_size");
+			stock = multi.getParameterValues("stock");
 		}
 		
-		ProductModifyService productModifyService = new ProductModifyService();
-		boolean isUpdateSuccess = productModifyService.updateProduct(pro_num, productBean, proDetInfo);
+		//기존 옵션 - 상품상세코드,재고
+		String[] pro_det_num = multi.getParameterValues("pro_det_num");
+		String[] stock2 = multi.getParameterValues("stock2");
 		
-		if(isUpdateSuccess) {
-			forward = new ActionForward("productManagement.ad", true);
-		}else {
+		ProductModifyService productModifyService = new ProductModifyService();
+		ArrayList<ProDetBean> proDetInfo2 = new ArrayList<>();
+		for(int i=0; i<stock2.length; i++) {
+			ProDetBean proDetBean = new ProDetBean();
+			proDetBean.setPro_det_num(pro_det_num[i]);
+			proDetBean.setStock_qnt(Integer.parseInt(stock2[i]));
+			proDetInfo2.add(proDetBean);
+		}
+		
+		boolean isUpdateSuccess = productModifyService.updateProduct(pro_num, productBean, proDetInfo2);
+		
+		if(!isUpdateSuccess) {
 			response.setContentType("text/html;charset=UTF-8");
 			PrintWriter out = response.getWriter();
 			out.println("<script>");
-			out.println("alert('등록실패');");
+			out.println("alert('수정실패');");
 			out.println("history.back()");
 			out.println("</script>");
 		}
 		
+		
+		ArrayList<ProDetBean> proDetInfo = new ArrayList<>();
+		ProDetBean proDetBean = null;
+		for(int i=0; i<stock.length; i++) {
+			proDetBean = new ProDetBean();
+			proDetBean.setColor(color[i]);
+			proDetBean.setPro_size(pro_size[i]);
+			proDetBean.setStock_qnt(Integer.parseInt(stock[i]));
+			proDetInfo.add(proDetBean);
+		}
+
+		boolean isRegistSuccess = productModifyService.registProductOption(pro_num, proDetInfo);
+		
+		if(!isRegistSuccess) {
+			response.setContentType("text/html;charset=UTF-8");
+			PrintWriter out = response.getWriter();
+			out.println("<script>");
+			out.println("alert('상품 옵션 등록실패');");
+			out.println("history.back()");
+			out.println("</script>");
+		}
+		
+		forward = new ActionForward("productListManagement.ad", true);
 		return forward;
 	}
 

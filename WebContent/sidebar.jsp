@@ -24,6 +24,8 @@
 	
 	<div class="category_clothes">
 		<ul>
+			<li><a href="productListBestNew.pro?main_nb=B">BEST</a></li>
+			<li><a href="productListBestNew.pro?main_nb=N">NEW</a></li>
 		<c:forEach var="list" items="${categoryList }" varStatus="i">
 			<c:if test="${list.ca_lev == 0}">
 			<li><a href="productList.pro?cate_num=${list.cate_num }&category=${list.category}">${list.category }</a></li>

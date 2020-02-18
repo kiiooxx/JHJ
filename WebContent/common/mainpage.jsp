@@ -3,9 +3,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 
-<c:if test="${sessionScope.categoryList == null }">
+<c:if test="${prdList == null }">
 	<script>
-		location.href="${pageContext.request.contextPath}/categoryList.ad?path=/admin_template.jsp";
+		location.href="${pageContext.request.contextPath}/main.pro";
 	</script>
 </c:if>
 <!DOCTYPE html>

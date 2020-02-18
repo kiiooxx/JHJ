@@ -1,16 +1,24 @@
 package vo;
 
 public class StockBean {
-	private int stock_num;
+	private String stock_num;
 	private String pro_det_num;
 	private int stock_qnt;
-	private String inout;
-	private String inout_date;
+	private String stock_date;
+	private int out_stock_qnt;
 	
-	public int getStock_num() {
+	
+	
+	public int getOut_stock_qnt() {
+		return out_stock_qnt;
+	}
+	public void setOut_stock_qnt(int out_stock_qnt) {
+		this.out_stock_qnt = out_stock_qnt;
+	}
+	public String getStock_num() {
 		return stock_num;
 	}
-	public void setStock_num(int stock_num) {
+	public void setStock_num(String stock_num) {
 		this.stock_num = stock_num;
 	}
 	public String getPro_det_num() {
@@ -25,18 +33,11 @@ public class StockBean {
 	public void setStock_qnt(int stock_qnt) {
 		this.stock_qnt = stock_qnt;
 	}
-	public String getInout() {
-		return inout;
+	public String getStock_date() {
+		return stock_date;
 	}
-	public void setInout(String inout) {
-		this.inout = inout;
+	public void setStock_date(String stock_date) {
+		this.stock_date = stock_date;
 	}
-	public String getInout_date() {
-		return inout_date;
-	}
-	public void setInout_date(String inout_date) {
-		this.inout_date = inout_date;
-	}
-	
 	
 }

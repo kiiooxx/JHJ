@@ -6,15 +6,6 @@ public class ProDetBean extends StockBean{
 	private String pro_size;
 	private String color;
 	
-	public ProDetBean() {
-	}
-	
-	public ProDetBean(String color, String pro_size, int stock) {
-		this.color = color;
-		this.pro_size = pro_size;
-		setStock_qnt(stock);
-	}
-	
 	public String getPro_det_num() {
 		return pro_det_num;
 	}

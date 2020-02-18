@@ -173,7 +173,6 @@ table {
 	clear: both;
     /* overflow: hidden; */
     margin: 0px 0 80px 0;
-    height : 533px;
 }
 
 .product_list h2 {
@@ -193,26 +192,16 @@ table {
     font-size: 0;
     line-height: 0;
     position : relative;
-    height : 100%;
 }
 
 .prdList>div {
 	display: inline-block;
     margin: 0px 0 35px 18px;
 	vertical-align: top;
-	width : 338px;
-	position : relative;
-}
-.prdList>li {
-	display: inline-block;
-    margin: 0px 0 35px 18px;
-	vertical-align: top;
-	width : 338px;
 	position : relative;
 }
 
 .thumbnail {
-	width : 338px;
 	float : left;
 	position: relative;
     margin: 0 0px 10px;
@@ -225,9 +214,8 @@ table {
 }
 
 .thumbnail>a>img {
-	width: 100%;
-    box-sizing: border-box;
-    vertical-align: middle;
+	width: 338px;
+    height : 450px;
 }
 
 .description {
@@ -238,7 +226,11 @@ table {
     text-align: center;
 }
 
-.description .name {
+.description2 {
+	margin-top : 10px;
+	padding: 0 2px;
+    font-size: 11px;
+    line-height: 150%;
     text-align: center;
 }
 
@@ -698,108 +690,6 @@ table {
     text-transform: uppercase;
     text-align: center;
 }
-
-
-/* 관리자 */
-/* 카테고리 설정 */
-#categoryArea {
-	margin-top : 30px;
-	padding: 20px 20px 20px 390px;
-    border-radius: 2px;
-    border: 1px solid #ddd;
-    background: #fff;
-    height : 500px;
-}
-#categoryList {
-	float: left;
-    width: 350px;
-    margin: 0 0 0 -370px;
-    height : 400px;
-}
-
-.cate_list {
-	position: relative;
-    overflow: auto;
-    height : 400px;
-    padding: 7px;
-    border: 1px solid #dedede;
-}
-
-.cate_bottom {
-	margin : 10px;
-	text-align : left;
-}
-
-#setTable {
-	float: left;
-    width: 100%;
-}
-
-.menu a{cursor:pointer;}
-[class*='hide']{display:none; margin-left:15px;}
-#large_hidden {display :none;}
-#sub_hidden {display :none;}
-#info_hidden {display:none;}
-
-[id^=del_icon] {
-	display : none;
-	padding : 0px 2px;
-	background : #B58B8D;
-	color : white;
-}
-
-/*상품등록 폼*/
-.contentArea {
-	
-}
-
-.contentArea .prdAddForm {
-	
-}
-
-.formTitle {
-	margin : 50px 0 0px;
-    font-size: 12px;
-    color: #777;
-}
-
-.prdAddForm table {
-	position: relative;
-    margin: 10px 0 0;
-    border: 1px solid #d7d5d5;
-    border-top-color: #fff;
-    line-height: 1.5;
-    width: 100%;
-}
-
-.prdAddForm tr {
-	display: table-row;
-    vertical-align: inherit;
-    border-color: inherit;
-}
-
-.prdAddForm th {
-	width: 100px;
-	padding: 11px 0 10px 18px;
-    border: 1px solid #dfdfdf;
-    border-bottom-width: 0;
-    border-right-width: 0;
-    text-align: left;
-    font-weight: normal;
-    background-color: #fff;
-    vertical-align: top;
-}
-
-.prdAddForm td {
-	padding: 8px 10px 7px;
-	border-top: 1px solid #dfdfdf;
-    vertical-align: middle;
-}
-
-#pro_detail {
-	width : 100%;
-}
-
 
 /* 장바구니 */
 

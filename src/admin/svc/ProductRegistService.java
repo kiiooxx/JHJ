@@ -21,21 +21,24 @@ public class ProductRegistService {
 		int insertCount = 0;
 		
 		
-		if(pro_num > 0) {
-			commit(con);
-			isRegistSuccess = true;
-		}else {
-			rollback(con);
-		}
 		//상품 등록이 성공하면
 		if(pro_num > 0) {
+			// 상품상세코드 (상품 번호 + 색상 순서 )
+			String num = String.format("%04d", pro_num);
+
 			for(int i=0; i<proDetInfo.size(); i++) {
-				insertCount = adminDAO.insertPro_Det(pro_num, proDetInfo.get(i).getColor(), proDetInfo.get(i).getPro_size(), proDetInfo.get(i).getStock_qnt(), i+1);
+				String stock_num = adminDAO.selectStockCount();	//오늘 등록한 재고의 개수
+				String color_num = adminDAO.selectProDetColorNum(pro_num);
+				String pro_det_num = num + color_num + proDetInfo.get(i).getPro_size().substring(0,1);	//상품 상세 코드
+				insertCount = adminDAO.insertPro_Det(pro_num, pro_det_num, stock_num, proDetInfo.get(i).getColor(), proDetInfo.get(i).getPro_size(), proDetInfo.get(i).getStock_qnt());
 				if(insertCount == 0) {
 					isRegistSuccess = false;
 					break;
 				}
 			}
+		}
+		
+		if(insertCount > 0) {
 			commit(con);
 			isRegistSuccess = true;
 		}else {

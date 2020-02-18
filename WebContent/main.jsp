@@ -31,14 +31,15 @@
 			<c:forEach var="plist" items="${prdList }" varStatus="i">
 				<!-- 상품 진열 활성화 된것만-->
 				<c:if test="${plist.active eq 'Y'.charAt(0) && plist.main_nb eq 'B'.charAt(0)}">
-					<div class="prdList">
-						<div class="thumbnail">
+					<div>
+						<div>
 							<a href="productDetail.pro?pro_num=${plist.pro_num }"><img src="<%= request.getContextPath() %>/upload/${plist.pro_photo }"/></a>
 						</div>
 							
-						<div class="description">
-							<p class="name">${plist.pro_name }</p>
-							<p class="price">${plist.pro_price }</p>
+						<div class="description2">
+							<p>${plist.pro_name }</p>
+							<fmt:formatNumber var="price" value="${plist.pro_price}" pattern="#,###"/>
+							<p>${price }</p>
 						</div>
 					</div>
 				</c:if>
@@ -58,14 +59,15 @@
 			<c:forEach var="plist" items="${prdList }" varStatus="i">
 				<!-- 상품 진열 활성화 된것만-->
 				<c:if test="${plist.active eq 'Y'.charAt(0) && plist.main_nb eq 'N'.charAt(0)}">
-					<div class="prdList">
-						<div class="thumbnail">
+					<div>
+						<div>
 							<a href="productDetail.pro?pro_num=${plist.pro_num }"><img src="<%= request.getContextPath() %>/upload/${plist.pro_photo }"/></a>
 						</div>
 							
-						<div class="description">
-							<p class="name">${plist.pro_name }</p>
-							<p class="price">${plist.pro_price }</p>
+						<div class="description2">
+							<p>${plist.pro_name }</p>
+							<fmt:formatNumber var="price" value="${plist.pro_price}" pattern="#,###"/>
+							<p>${price }</p>
 						</div>
 					</div>
 				</c:if>

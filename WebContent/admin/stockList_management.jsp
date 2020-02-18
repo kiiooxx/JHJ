@@ -104,12 +104,13 @@ $(document).ready(function() {
 	th {background : #F6F6F6;}
 	.col {margin-bottom : 40px;}
 	#pageList {text-align : center;}
+	.thumb {width:80px;}
 </style>
 </head>
 <body>
 <!-- Page Heading -->
  <div class="d-sm-flex align-items-center justify-content-between mb-4">
- 	<h1 class="h3 mb-0 text-gray-800">상품 목록</h1>
+ 	<h1 class="h3 mb-0 text-gray-800">재고 목록</h1>
  </div>
  <!-- Content Row -->
  <div class="row">
@@ -176,82 +177,78 @@ $(document).ready(function() {
 		</form>
 	</div>
 </div>
+
  <div class="row">
  	<div class="col">
-		<form action="" name="" method="post">
+		<form action="stockListModify.ad" name="stockListModifyForm" method="post">
 			<div class="card card-default">
 				<div class="card-body">
 					<table class="table table-bordered">
 						<tr>
-							<th><input type="checkbox" id="checkall"/></th>
+							<th>No</th>
 							<th>상품명</th>
-							<th>판매가</th>
+							<th>품목명</th>
+							<th>재고수량</th>
 							<th>진열상태</th>
-							<th>메인진열</th>
-							<th>상품분류</th>
-							<th>상품 등록일</th>	
+							<th>총 누적 판매량</th>
 						</tr>
 			
+						
 						<!-- 상품 리스트 -->
 						<c:forEach var="list" items="${prdList }" varStatus="i">
+							<c:set var="cnt" value="0"/>
+							<c:forEach var="stock_list" items="${stockList }" varStatus="j">
+								<c:if test="${list.pro_num == stock_list.pro_num }">
+									<c:set var="cnt" value="${cnt + 1 }"/>
+								</c:if>
+							</c:forEach>
 							<tr>
-								<td><input type="checkbox" name="chk" value="${list.pro_num }"/></td>
-								<td><a href="javascript:void(0);" 
-										onclick="window.open('productModifyForm.ad?pro_num=${list.pro_num }','상품수정','width=1200, height=700')">
-										${list.pro_name }
-									</a>
+								<td rowspan="${cnt }">${list.pro_num }</td>
+								<td rowspan="${cnt }">
+									<img src="<%= request.getContextPath() %>/upload/${list.pro_photo }" class="thumb">
+									<br>
+									${list.pro_name }
 								</td>
-					
-								<!-- 가격 형식 -->
-								<fmt:formatNumber var="price" value="${list.pro_price}" pattern="#,###"/>
-								<td>${price }</td>
-								<td>
-									<c:choose>
-										<c:when test="${list.active == 'Y'.charAt(0)}">
-											진열함
-										</c:when>
-										<c:otherwise>
-											진열안함
-										</c:otherwise>
-									</c:choose>
-								</td>
-								<td>
-									<c:choose>
-										<c:when test="${list.main_nb == 'X'.charAt(0)}">
-											메인진열안함
-										</c:when>
-										<c:when test="${list.main_nb == 'B'.charAt(0) }">
-											베스트
-										</c:when>
-										<c:otherwise>
-											신상품
-										</c:otherwise>
-									</c:choose>
-								</td>
-								<td>
-									<c:forEach var="clist" items="${categoryList }" varStatus="j">
-										<c:if test="${list.cate_num == clist.cate_num }">
-											<c:choose>
-												<c:when test="${clist.ca_lev == 0}">
-													[대분류]${clist.category }
-												</c:when>
-												<c:otherwise>
-													[대분류]
-													<c:forEach var="dlist" items="${categoryList }" varStatus="d">
-														<c:if test="${clist.ca_ref == dlist.cate_num}">
-															${dlist.category }
-														</c:if>
-													</c:forEach>
-													 > [소분류]${clist.category }
-												</c:otherwise>
-											</c:choose>
-										</c:if>
-									</c:forEach>
-								</td>
-								<td>${list.pro_date }</td>
+								
+							<c:forEach var="stock_list" items="${stockList }" varStatus="s">
+								<c:if test="${list.pro_num == stock_list.pro_num}">
+									<td>
+										${stock_list.color } / ${stock_list.pro_size }<br>
+										(${stock_list.pro_det_num })
+									</td>
+									<!-- 재고 테이블 : 상품 번호, 상세 제품 코드, 수량 -->
+									<input type="hidden" name="pro_num" value="${stock_list.pro_num }"/>
+									<input type="hidden" name="pro_det_num" value="${stock_list.pro_det_num }"/>
+									<td><input type="text" name="stock_qnt" value="${stock_list.stock_qnt }"/></td>
+									<td>
+										<c:choose>
+											<c:when test="${list.active == 'Y'.charAt(0)}">
+												진열함
+												<c:if test="${stock_list.stock_qnt == 0 }">
+												(품절)
+												</c:if>
+											</c:when>
+											<c:otherwise>
+												진열안함
+												<c:if test="${stock_list.stock_qnt == 0 }">
+												(품절)
+												</c:if>
+											</c:otherwise>
+											
+										</c:choose>
+									</td>
+									<td>${stock_list.out_stock_qnt }</td>
+								</tr>
+								<tr>
+								</c:if>
+							</c:forEach>
 							</tr>
 						</c:forEach>
 					</table>
+					<div align="right" style="margin-bottom:10px;">
+						<a href="javascript:stockListModifyForm.submit()" class="btn btn-primary">저장</a>
+					</div>
+				</form>
 					
 					<div id="pageList">
 						<c:choose>
@@ -259,7 +256,7 @@ $(document).ready(function() {
 								<ion-icon name="chevron-back-outline"></ion-icon>
 							</c:when>
 							<c:otherwise>
-								<a href="productListManagement.ad?page=${pageInfo.page-1 }"><ion-icon name="chevron-back-outline"></ion-icon></a>
+								<a href="stockListManagement.ad?page=${pageInfo.page-1 }"><ion-icon name="chevron-back-outline"></ion-icon></a>
 							</c:otherwise>
 						</c:choose>
 							
@@ -270,7 +267,7 @@ $(document).ready(function() {
 									[${a.count }]
 								</c:when>
 								<c:otherwise>
-									<a href="productListManagement.ad?page=${a.count }">[${a.count }]</a>
+									<a href="stockListManagement.ad?page=${a.count }">[${a.count }]</a>
 								</c:otherwise>
 							</c:choose>
 						</c:forEach>
@@ -281,28 +278,14 @@ $(document).ready(function() {
 								<ion-icon name="chevron-forward-outline"></ion-icon>
 							</c:when>
 							<c:otherwise>
-								<a href="productListManagement.ad?page=${pageInfo.page+1 }"><ion-icon name="chevron-forward-outline"></ion-icon></li>
+								<a href="stockListManagement.ad?page=${pageInfo.page+1 }"><ion-icon name="chevron-forward-outline"></ion-icon></li>
 							</c:otherwise>
 						</c:choose>
 					</div>
 					
-					<div id="bottom">
-						<a href="#" id="del">삭제</a>
-						<select id="activeBox" name="activeBox">
-							<option value="none" selected disabled hidden>--진열--</option>
-							<option value="Y">진열함</option>
-							<option value="N">진열안함</option>
-						</select>
-						<select id="main_nb" name="main_nb">
-							<option value="none" selected disabled hidden>--메인진열--</option>
-							<option value="X">메인진열안함</option>
-							<option value="B">베스트</option>
-							<option value="N">신상품</option>
-						</select>
-					</div>
 				</div>
 			</div>
-		</form>
+		
 	</div>
 </div>
 </body>
