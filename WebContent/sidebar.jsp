@@ -20,10 +20,12 @@
 
 <div class="wleft">
 	<!-- 쇼핑몰 이름 -->
-	<h1 class="main_title"><a href="#">JHJ</a></h1>
+	<h1 class="main_title"><a href="main.pro">JHJ</a></h1>
 	
 	<div class="category_clothes">
 		<ul>
+			<li><a href="productListBestNew.pro?main_nb=B">BEST</a></li>
+			<li><a href="productListBestNew.pro?main_nb=N">NEW</a></li>
 		<c:forEach var="list" items="${categoryList }" varStatus="i">
 			<c:if test="${list.ca_lev == 0}">
 			<li><a href="productList.pro?cate_num=${list.cate_num }&category=${list.category}">${list.category }</a></li>

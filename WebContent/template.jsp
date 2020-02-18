@@ -12,6 +12,7 @@
 </head>
 <body>
 <jsp:include page="/common/categoryCheck.jsp"/>
+<jsp:include page="/common/pagefileCheck.jsp"/>
 <div id="template">
 	<!-- 헤더 -->
 	<div id="header">
@@ -38,15 +39,6 @@
 			<jsp:include page="footer.jsp"></jsp:include>
 		</div>
 	</div>
-
-
-
-
-
-
 </div>
 </body>
 </html>
-
-
-

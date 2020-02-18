@@ -25,6 +25,9 @@ import admin.action.ProductListManagementAction;
 import admin.action.ProductListUpdateAction;
 import admin.action.ProductModifyAction;
 import admin.action.ProductModifyFormAction;
+import admin.action.ProductOptionDelAction;
+import admin.action.StockListManagementAction;
+import admin.action.StockListModifyAction;
 import vo.ActionForward;
 
 /**
@@ -57,38 +60,33 @@ public class AdminController extends HttpServlet {
 		Action action = null;
 		ActionForward forward = null;
 		
-		//2. 각 요청별로 비즈니스 로직 호출
+		//=================관리자 페이지===================
 		if(command.equals("/adminPage.ad")) {
 			request.setAttribute("pagefile", "/admin/category_management.jsp");
 	    	forward = new ActionForward("/admin_template.jsp", false);
-    	}else if(command.equals("/categoryManagement.ad")) {
+    	}
+		
+		//===================카테고리====================
+		//카테고리 관리 페이지
+		else if(command.equals("/categoryManagement.ad")) {
     		action = new CategoryManagementForm();
-			//프로젝트명+기능+형태(?)
 			try {
 				forward = action.execute(request, response);
 			}catch(Exception e) {
 				e.printStackTrace();
 			}
-		}else if(command.equals("/categoryAddAction.ad")) {
+		}
+		//카테고리 추가 액션
+		else if(command.equals("/categoryAddAction.ad")) {
 			action = new CategoryAddAction();
-			//프로젝트명+기능+형태(?)
 			try {
 				forward = action.execute(request, response);
 			}catch(Exception e) {
 				e.printStackTrace();
 			}
-		}else if(command.equals("/productManagement.ad")) {
-			request.setAttribute("pagefile", "/admin/product_management.jsp");
-	    	forward = new ActionForward("/admin_template.jsp", false);
-    	}else if(command.equals("/productRegistAction.ad")) {
-			action = new ProducRegistAction();
-			//프로젝트명+기능+형태(?)
-			try {
-				forward = action.execute(request, response);
-			}catch(Exception e) {
-				e.printStackTrace();
-			}
-    	}else if(command.equals("/categoryList.ad")) {
+		}
+		//카테고리 리스트 세션에 저장하는 액션
+		else if(command.equals("/categoryList.ad")) {
 			action = new CategoryListAction();
 			//프로젝트명+기능+형태(?)
 			try {
@@ -96,23 +94,45 @@ public class AdminController extends HttpServlet {
 			}catch(Exception e) {
 				e.printStackTrace();
 			}
-    	}else if(command.equals("/categoryDelAction.ad")) {
+		}
+		//카테고리 삭제 액션
+    	else if(command.equals("/categoryDelAction.ad")) {
 			action = new CategoryDelAction();
-			//프로젝트명+기능+형태(?)
 			try {
 				forward = action.execute(request, response);
 			}catch(Exception e) {
 				e.printStackTrace();
 			}
-    	}else if(command.equals("/categoryUpdateAction.ad")) {
+    	}
+		//카테고리 수정 액션
+    	else if(command.equals("/categoryUpdateAction.ad")) {
 			action = new CategoryUpdateAction();
-			//프로젝트명+기능+형태(?)
 			try {
 				forward = action.execute(request, response);
 			}catch(Exception e) {
 				e.printStackTrace();
 			}
-    	}else if(command.equals("/memberList.ad")) {
+    	}
+		
+		//====================상품 등록=====================
+		//상품관리 - 상품 등록 페이지
+		else if(command.equals("/productManagement.ad")) {
+			request.setAttribute("pagefile", "/admin/product_management.jsp");
+	    	forward = new ActionForward("/admin_template.jsp", false);
+    	}
+		//상품 등록 액션
+		else if(command.equals("/productRegistAction.ad")) {
+			action = new ProducRegistAction();
+			try {
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+    	}
+		
+		//====================회원 관리======================
+		//회원 목록
+    	else if(command.equals("/memberList.ad")) {
 			action = new MemberListAction();
 			try {
 				forward = action.execute(request, response);
@@ -120,7 +140,9 @@ public class AdminController extends HttpServlet {
 				e.printStackTrace();
 				System.out.println("controller error : memberList.ad");
 			}
-		}else if(command.equals("/memberInfo.ad")) {
+		}
+    	//회원 정보 보기
+    	else if(command.equals("/memberInfo.ad")) {
 			action = new MemberInfoAction();
 			try {
 				forward = action.execute(request, response);
@@ -128,59 +150,101 @@ public class AdminController extends HttpServlet {
 				e.printStackTrace();
 				System.out.println("controller error : memberInfo.ad");
 			}
-		}else if(command.equals("/productListManagement.ad")) {
+		}
+		
+    	
+    	
+
+    	else if(command.equals("/categorySubList.ad")) {
+			action = new CategorySubListAction();
+			try {
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+    	}
+		
+		//=====================상품 목록=======================
+		//상품 리스트 보여주기
+    	else if(command.equals("/productListManagement.ad")) {
 			action = new ProductListManagementAction();
 			try {
 				forward = action.execute(request, response);
 			}catch(Exception e) {
 				e.printStackTrace();
 			}
-    	}else if(command.equals("/categorySubList.ad")) {
-			action = new CategorySubListAction();
-			try {
-				forward = action.execute(request, response);
-			}catch(Exception e) {
-				e.printStackTrace();
-			}
-    	}else if(command.equals("/categorySubList.ad")) {
-			action = new CategorySubListAction();
-			try {
-				forward = action.execute(request, response);
-			}catch(Exception e) {
-				e.printStackTrace();
-			}
-    	}else if(command.equals("/productModifyForm.ad")) {
+    	}
+		//상품 수정 페이지
+    	else if(command.equals("/productModifyForm.ad")) {
 			action = new ProductModifyFormAction();
 			try {
 				forward = action.execute(request, response);
 			}catch(Exception e) {
 				e.printStackTrace();
 			}
-    	}else if(command.equals("/productModifyAction.ad")) {
+    	}
+    	//상품 수정 액션
+    	else if(command.equals("/productModifyAction.ad")) {
 			action = new ProductModifyAction();
 			try {
 				forward = action.execute(request, response);
 			}catch(Exception e) {
 				e.printStackTrace();
 			}
-    	}else if(command.equals("/productDelAction.ad")) {
+    	}
+    	//상품 삭제 액션
+    	else if(command.equals("/productDelAction.ad")) {
 			action = new ProductDelAction();
 			try {
 				forward = action.execute(request, response);
 			}catch(Exception e) {
 				e.printStackTrace();
 			}
-    	}else if(command.equals("/orderManageList.ad")) {
-			action = new OrderManageListAction();
+    	}
+    	
+		//상품 리스트에서 수정하는 액션 
+    	else if(command.equals("/productListUpdate.ad")) {
+			action = new ProductListUpdateAction();
+
 			try {
 				forward = action.execute(request, response);
 			}catch(Exception e) {
 				e.printStackTrace();
 			}
-
-    	}else if(command.equals("/productListUpdate.ad")) {
-			action = new ProductListUpdateAction();
-
+    	}
+    	//상품 옵션 삭제 액션
+    	else if(command.equals("/productOptionDel.ad")) {
+			action = new ProductOptionDelAction();
+			try {
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+    	}
+		
+		//====================재고 관리=====================
+    	//재고 리스트 보여주는 액션
+    	else if(command.equals("/stockListManagement.ad")) {
+			action = new StockListManagementAction();
+			try {
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+    	}
+		//재고 리스트에서 재고 수정하는 액션
+    	else if(command.equals("/stockListModify.ad")) {
+			action = new StockListModifyAction();
+			try {
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+    	}
+		
+		//==================주문 관리======================
+    	else if(command.equals("/orderManageList.ad")) {
+			action = new OrderManageListAction();
 			try {
 				forward = action.execute(request, response);
 			}catch(Exception e) {

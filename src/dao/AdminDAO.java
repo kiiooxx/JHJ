@@ -15,6 +15,7 @@ import vo.Member;
 import vo.Order;
 import vo.ProDetBean;
 import vo.ProductBean;
+import vo.StockBean;
 
 public class AdminDAO {
 	Connection con;
@@ -38,7 +39,10 @@ public class AdminDAO {
 		return adminDAO;
 	}
 	
-	//카테고리 리스트 불러오기
+	
+	//===========================카테고리===========================
+	
+	//1. 카테고리 리스트 불러오기
 	public ArrayList<CategoryBean> selectCategoryList() {
 		// TODO Auto-generated method stub
 		PreparedStatement pstmt = null;
@@ -68,9 +72,9 @@ public class AdminDAO {
 		
 		return categoryList;
 	}
-
-			
-	//카테고리 추가
+	
+				
+	//2. 카테고리 추가
 	public int insertCategory(String cate_large, String cate_name, int i, int j) {
 		// TODO Auto-generated method stub
 		PreparedStatement pstmt = null;
@@ -117,7 +121,8 @@ public class AdminDAO {
 		
 		return insertCount;
 	}
-
+	
+	
 	
 	// 상품 정보 등록
 	public int insertProduct(ProductBean productBean) {
@@ -161,70 +166,8 @@ public class AdminDAO {
 		}
 		return num;
 	}
-
-	//상품 상세 등록 + 처음 재고 설정
-	public int insertPro_Det(int pro_num, String color, String size, int stock, int cnt) {
-		// TODO Auto-generated method stub
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		int insertCount = 0;
-		
-		//재고 번호 등록하기 위해 날짜 형식 저장
-		SimpleDateFormat format1 = new SimpleDateFormat ("yyyyMMdd");
-		Date time = new Date();
-		String time1 = format1.format(time);
-		
-		// 재고번호 카운트
-		int stock_cnt = 0;
-		
-		// 상품상세코드 상품번호 + 순서 + 사이즈
-		String num = String.format("%04d", pro_num);
-		String color_num = String.format("%02d", cnt);
-		String pro_det_num = num + color_num + size.substring(0,1);
-
-		try {
-			// 상품상세정보를 등록할 sql문
-			pstmt = con.prepareStatement("insert into pro_det values(?, ?, ?, ?)");
-			pstmt.setString(1, pro_det_num);	//상품 상세 코드
-			pstmt.setInt(2, pro_num);	//상품 번호
-			pstmt.setString(3, size);
-			pstmt.setString(4, color);
-			
-			insertCount = pstmt.executeUpdate();
-			System.out.println("들어갔니?" + insertCount);
-			// 성공적으로 등록이 되면
-			if(insertCount > 0) {
-				// 오늘 등록한 재고 번호의 갯수 구함.
-				pstmt = con.prepareStatement("SELECT count(if(stock_num like '" + time1 + "%', stock_num, null)) FROM stock");
-				rs = pstmt.executeQuery();
-				
-				if(rs.next()) {
-					// 재고 갯수를 stock_cnt 변수에 저장하고 +1
-					stock_cnt = rs.getInt(1) + 1;
-					String stock_num = time1 + String.format("%04d", stock_cnt);
-					
-					// 재고 테이블 등록
-					pstmt = con.prepareStatement("insert into stock values(?,?,?,'IN',NOW())");
-					pstmt.setString(1, stock_num);
-					pstmt.setString(2, pro_det_num);
-					pstmt.setInt(3, stock);
-
-					insertCount = pstmt.executeUpdate();
-				}else {
-					insertCount = 0;
-				}
-				
-			}
-		}catch(SQLException e) {
-			System.out.println("상품 상세 등록 에러 " + e);
-		}finally {
-			close(pstmt);
-			close(rs);
-		}
-		return insertCount;
-	}
-
-	//카테고리삭제. 관련 카테고리의 상품도 삭제
+	
+	//3. 카테고리삭제. 관련 카테고리의 상품도 삭제
 	public boolean deleteCategory(int cate_num) {
 		// TODO Auto-generated method stub
 		PreparedStatement pstmt = null;
@@ -255,6 +198,7 @@ public class AdminDAO {
 		return isDeleteSuccess;
 	}
 
+	//4. 카테고리 수정
 	public boolean updateCategory(int ca_ref, String cate_name, int cate_num) {
 		// TODO Auto-generated method stub
 		PreparedStatement pstmt = null;
@@ -280,7 +224,7 @@ public class AdminDAO {
 		return isUpdateSuccess;
 	}
 	
-	//ca_ref로 하위 카테고리 리스트 만들기
+	//5. ca_ref로 하위 카테고리 리스트 만들기
 	public ArrayList<CategoryBean> selectCategoryList(int ca_ref) {
 		// TODO Auto-generated method stub
 		PreparedStatement pstmt = null;
@@ -311,8 +255,114 @@ public class AdminDAO {
 		
 		return categorySubList;
 	}
+	
+	//===========================상품 등록============================
+	
+	//1. 상품 상세 코드 색상 순서 불러오기
+	public String selectProDetColorNum(int pro_num) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int cnt = 0;
+		String color_num = "";
+		
+		// 상품상세코드 상품번호
+		String num = String.format("%04d", pro_num);
+		
+		try {
+			//상품 상세 코드의 
+			pstmt = con.prepareStatement("SELECT count(if(pro_det_num like '" + num + "%', pro_det_num, null)) FROM pro_det");
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				cnt = rs.getInt(1) + 1;	//컬러 순서
+				color_num = String.format("%02d", cnt);
+			}
+		}catch(SQLException e) {
+			System.out.println("상품 상세 코드 색상 순서 불러오기 에러  " + e);
+		}finally {
+			close(pstmt);
+			close(rs);
+		}
+		return color_num;
+	}
+		
+	//2. 오늘 등록한 재고 번호의 개수 구하기
+	public String selectStockCount() {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String stock_num = "";
+		
+		//재고 번호 등록하기 위해 날짜 형식 저장
+		SimpleDateFormat format1 = new SimpleDateFormat ("yyyyMMdd");
+		Date time = new Date();
+		String time1 = format1.format(time);
+		
+		try {
+			pstmt = con.prepareStatement("SELECT count(if(stock_num like '" + time1 + "%', stock_num, null)) FROM stock");
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				// 재고 갯수를 stock_cnt 변수에 저장하고 +1
+				int stock_cnt = rs.getInt(1) + 1;
+				stock_num = time1 + String.format("%04d", stock_cnt);
+			}
+		}catch(SQLException e) {
+			System.out.println("오늘 등록한 재고 번호의 개수 구하기 에러 " + e);
+		}finally {
+			close(pstmt);
+			close(rs);
+		}
+		return stock_num;
+		
+	}
+	
+	//3. 상품 상세 등록 + 처음 재고 설정
+	public int insertPro_Det(int pro_num, String pro_det_num, String stock_num, String color, String size, int stock) {
+		// TODO Auto-generated method stub
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int insertCount = 0;
+		
+		try {
+			// 상품상세정보를 등록할 sql문
+			pstmt = con.prepareStatement("insert into pro_det values(?, ?, ?, ?)");
+			pstmt.setString(1, pro_det_num);	//상품 상세 코드
+			pstmt.setInt(2, pro_num);	//상품 번호
+			pstmt.setString(3, size);
+			pstmt.setString(4, color);
+				
+			insertCount = pstmt.executeUpdate();
+			
+			// 성공적으로 등록이 되면
+			if(insertCount > 0) {
+				//입출고 테이블 - 입고 수량 추가
+				pstmt = con.prepareStatement("insert into in_out_table select ifnull(max(in_out_num)+1, 1), ?, ?, 'IN', NOW() from in_out_table");
+				pstmt.setString(1, pro_det_num);
+				pstmt.setInt(2, stock);
+				insertCount = pstmt.executeUpdate();
+				
+				if(insertCount > 0) {
+					//재고 테이블 추가
+					pstmt = con.prepareStatement("insert into stock values(?,?,?,NOW())");
+					pstmt.setString(1, stock_num);
+					pstmt.setString(2, pro_det_num);
+					pstmt.setInt(3, stock);
+	
+					insertCount = pstmt.executeUpdate();
+				}
+			}else {
+				insertCount = 0;
+			}
+		}catch(SQLException e) {
+			System.out.println("상품 상세 등록 에러 " + e);
+		}finally {
+			close(pstmt);
+		}
+		return insertCount;
+	}
 
-	//상품 리스트 검색하고 나온 갯수
+	//===============================상품 목록=================================
+	//1. 상품 리스트 count
 	public int selectListCount(String search_type, String search_text, String cate_type, int ca_ref, String pro_date, String active) {
 		// TODO Auto-generated method stub
 		int listCount = 0;
@@ -351,8 +401,8 @@ public class AdminDAO {
 		}
 		return listCount;
 	}
-
-	//상품 목록 리스트에 저장
+	
+	//2. 상품 목록 리스트에 저장
 	public ArrayList<ProductBean> selectProductList(String search_type, String search_text, String cate_type,
 			int ca_ref, String pro_date, String active, int page, int limit) {
 		// TODO Auto-generated method stub
@@ -412,8 +462,8 @@ public class AdminDAO {
 		
 		return prdList;
 	}
-
-	//상품정보 가져오기
+	
+	//3. 상품정보 가져오기
 	public ProductBean selectProInfo(int pro_num) {
 		// TODO Auto-generated method stub
 		PreparedStatement pstmt = null;
@@ -448,7 +498,7 @@ public class AdminDAO {
 		return productBean;
 	}
 
-	//상품 상세 정보 가져오기
+	//4. 상품 상세 정보 가져오기
 	public ArrayList<ProDetBean> selectProDet(int pro_num) {
 		// TODO Auto-generated method stub
 		PreparedStatement pstmt = null;
@@ -478,15 +528,15 @@ public class AdminDAO {
 		}
 		return proDetList;
 	}
-
-	//상품 정보 수정
+	
+	//5. 상품 정보 수정
 	public boolean updateProduct(int pro_num, ProductBean productBean) {
 		// TODO Auto-generated method stub
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		int updateCount = 0;
 		boolean isUpdateSuccess = false;
-		String sql = "update pro_info set pro_name=?, pro_price=?, pro_detail=?, pro_content=?, cate_num=? main_nb=?, active=? ";
+		String sql = "update pro_info set pro_name=?, pro_price=?, pro_detail=?, pro_content=?, cate_num=?, main_nb=?, active=? ";
 		if(productBean.getPro_photo()!=null) {
 			sql += ",pro_photo=? ";
 		}
@@ -509,7 +559,7 @@ public class AdminDAO {
 			
 			updateCount = pstmt.executeUpdate();
 				
-			if(updateCount == 0) {
+			if(updateCount > 0) {
 				isUpdateSuccess = true;
 			}
 		}catch(SQLException e) {
@@ -520,8 +570,175 @@ public class AdminDAO {
 		return isUpdateSuccess;
 	}
 
+	//6. 상품 수정 - 재고 수정
+	public boolean updateStock(int pro_num, String pro_det_num, int stock_qnt) {
+		// TODO Auto-generated method stub
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int updateCount = 0;
+		boolean isUpdateSuccess = false;
 		
+		try {
+			pstmt = con.prepareStatement("select * from in_out_table where pro_det_num=?");
+			pstmt.setString(1, pro_det_num);
+			rs = pstmt.executeQuery();
+			int in_qnt = 0;	//입고 수량
+			int out_qnt = 0;	//출고 수량
+			int result_qnt = 0;	//입고 - 출고 결과 수량
+			int in_out_num = 0;
+			while(rs.next()) {
+				if(rs.getString("in_out").equals("IN")) {
+					in_qnt += rs.getInt("in_out_qnt");
+					in_out_num = rs.getInt("in_out_num");	//입출고테이블 번호 저장
+				}else {
+					out_qnt += rs.getInt("in_out_qnt");
+				}
+			}
+			
+			result_qnt = in_qnt - out_qnt;
+			int temp_qnt = 0;
+			temp_qnt = stock_qnt - result_qnt;
+			System.out.println("temp_qnt=" + temp_qnt);
+			
+			String sql = "update in_out_table set in_out_qnt=in_out_qnt";
+			if(temp_qnt >= 0) {
+				sql+="+";
+			}
+			sql+= temp_qnt + " where in_out_num=?";
+			System.out.println(sql);
+			
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, in_out_num);
+			updateCount = pstmt.executeUpdate();
+			
+			if(updateCount > 0) {
+					
+				pstmt = con.prepareStatement("update stock set stock_qnt=? where pro_det_num=?");
+				pstmt.setInt(1, stock_qnt);
+				pstmt.setString(2, pro_det_num);
+				
+				updateCount = pstmt.executeUpdate();
+				
+				if(updateCount > 0) {
+					isUpdateSuccess = true;
+				}
+			}
+		}catch(SQLException e) {
+			System.out.println("updateStock 에러 " + e);
+		}finally {
+			close(rs);
+			close(pstmt);
+		}
+		return isUpdateSuccess;
+	}
+	
+	
+	//7. 상품 삭제
+	public boolean deleteProduct(int pro_num) {
+		// TODO Auto-generated method stub
+		PreparedStatement pstmt = null;
+		int deleteCount = 0;
+		boolean isDelSuccess = false;
+		String sql = "delete a, b, c, d from pro_info a inner join pro_det b on a.pro_num = b.pro_num ";
+		sql += "inner join stock c on b.pro_det_num = c.pro_det_num ";
+		sql += "inner join in_out_table d on c.pro_det_num = d.pro_det_num where a.pro_num=?";
 		
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, pro_num);
+			deleteCount = pstmt.executeUpdate();
+			
+			if(deleteCount > 0) {
+				isDelSuccess = true;
+			}
+		}catch(SQLException e) {
+			System.out.println("상품 삭제 에러 " + e);
+		}finally {
+			close(pstmt);
+		}
+		
+		return isDelSuccess;
+	}
+
+	//8. 상품 진열 활성화 여부 수정
+	public boolean updateActive(int pro_num, String active) {
+		// TODO Auto-generated method stub
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int updateCount = 0;
+		boolean isUpdateSuccess = false;
+		
+		try {
+			pstmt = con.prepareStatement("update pro_info set active=? where pro_num=?");
+			pstmt.setString(1, active);
+			pstmt.setInt(2, pro_num);
+			updateCount = pstmt.executeUpdate();
+			
+			if(updateCount > 0) {
+				isUpdateSuccess = true;
+			}
+		}catch(SQLException e) {
+			System.out.println("updateActive 에러 " + e);
+		}finally {
+			close(pstmt);
+		}
+		return isUpdateSuccess;
+	}
+
+	//9. 상품 메인 진열 활성화 여부 수정
+	public boolean updateMain_nb(int pro_num, String main_nb) {
+		// TODO Auto-generated method stub
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int updateCount = 0;
+		boolean isUpdateSuccess = false;
+		
+		try {
+			pstmt = con.prepareStatement("update pro_info set main_nb=? where pro_num=?");
+			pstmt.setString(1, main_nb);
+			pstmt.setInt(2, pro_num);
+			updateCount = pstmt.executeUpdate();
+			
+			if(updateCount > 0) {
+				isUpdateSuccess = true;
+			}
+		}catch(SQLException e) {
+			System.out.println("updateMain_nb 에러 " + e);
+		}finally {
+			close(pstmt);
+		}
+		return isUpdateSuccess;
+	}
+
+	//10. 상품 옵션 삭제 (pro_det, in_out_table, stock 테이블 제거)
+	public boolean deleteProductOption(String pro_det_num) {
+		// TODO Auto-generated method stub
+		PreparedStatement pstmt = null;
+		int deleteCount = 0;
+		boolean isDeleteSuccess = false;
+		String sql = "delete a, b, c from pro_det a inner join stock b on a.pro_det_num = b.pro_det_num ";
+		sql += "inner join in_out_table c on b.pro_det_num = c.pro_det_num where a.pro_det_num=?";
+		
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, pro_det_num);
+			
+			deleteCount = pstmt.executeUpdate();
+			
+			if(deleteCount > 0) {
+				isDeleteSuccess = true;
+			}
+			
+		}catch(SQLException e) {
+			System.out.println("상품 옵션 삭제 에러 " + e);
+		}finally {
+			close(pstmt);
+		}
+		
+		return isDeleteSuccess;
+	}
+	
+	
 		//↓↓↓↓↓↓↓↓ admin - 회원관리 ↓↓↓↓↓↓↓
 		
 		//회원 수 구하기
@@ -877,77 +1094,66 @@ public class AdminDAO {
 			return orderList;
 		}
 
-		public boolean deleteProduct(int pro_num) {
-			// TODO Auto-generated method stub
-			PreparedStatement pstmt = null;
-			int deleteCount = 0;
-			boolean isDeleteSuccess = false;
-			String sql = "delete a, b, c from pro_info a inner join pro_det b on a.pro_num = b.pro_num ";
-			sql += "inner join stock c on b.pro_det_num = c.pro_det_num where a.pro_num=?";
-			
-			try {
-				pstmt = con.prepareStatement(sql);
-				pstmt.setInt(1, pro_num);
-				deleteCount = pstmt.executeUpdate();
-				
-				if(deleteCount > 0) {
-					isDeleteSuccess = true;
-				}
-				
-			}catch(SQLException e) {
-				System.out.println("상품 삭제 에러 " + e);
-			}finally {
-				close(pstmt);
-			}
-			
-			return isDeleteSuccess;
-		}
+		
+		
 
-		public boolean updateActive(int pro_num, String active) {
+		//===========================재고 목록=============================
+		//재고 리스트 불러오기
+		public ArrayList<ProDetBean> selectStockList(String[] pro_num) {
 			// TODO Auto-generated method stub
 			PreparedStatement pstmt = null;
 			ResultSet rs = null;
-			int updateCount = 0;
-			boolean isUpdateSuccess = false;
+			ResultSet rs2 = null;
+			String sql =  "select * from stock s inner join pro_det p on s.pro_det_num = p.pro_det_num where p.pro_num = ?";
+			
+			ArrayList<ProDetBean> stockList = new ArrayList<>();
+			ProDetBean proDetBean = null;
+			int stock_num;
+			String pro_det_num;
+			int stock_qnt;
+			String in_out;
+			String inout_date;
 			
 			try {
-				pstmt = con.prepareStatement("update pro_info set active=? where pro_num=?");
-				pstmt.setString(1, active);
-				pstmt.setInt(2, pro_num);
-				updateCount = pstmt.executeUpdate();
-				
-				if(updateCount > 0) {
-					isUpdateSuccess = true;
+				for(int i=0; i<pro_num.length; i++) {
+					pstmt = con.prepareStatement(sql);
+					pstmt.setInt(1, Integer.parseInt(pro_num[i]));
+					rs = pstmt.executeQuery();
+					
+					while(rs.next()) {
+						proDetBean = new ProDetBean();
+						proDetBean.setPro_num(rs.getInt("pro_num"));
+						proDetBean.setStock_num(rs.getString("stock_num"));
+						proDetBean.setPro_det_num(rs.getString("pro_det_num"));
+						proDetBean.setColor(rs.getString("color"));
+						proDetBean.setPro_size(rs.getString("pro_size"));
+						proDetBean.setStock_qnt(rs.getInt("stock_qnt"));
+						proDetBean.setPro_num(rs.getInt("pro_num"));
+						
+						//출고된 재고 구하기
+						pstmt = con.prepareStatement("select * from in_out_table where pro_det_num=? and in_out='OUT'");
+						pstmt.setString(1, proDetBean.getPro_det_num());
+						rs2 = pstmt.executeQuery();
+						int out_stock_qnt = 0;
+						
+						while(rs2.next()) {
+							out_stock_qnt += rs2.getInt("stock_qnt");
+						}
+						
+						proDetBean.setOut_stock_qnt(out_stock_qnt);
+						
+						stockList.add(proDetBean);
+					}
 				}
-			}catch(SQLException e) {
-				System.out.println("updateActive 에러 " + e);
+			}catch(Exception e) {
+				System.out.println("getProductList 에러 : " + e);
 			}finally {
+				close(rs2);
+				close(rs);
 				close(pstmt);
 			}
-			return isUpdateSuccess;
+			
+			return stockList;
 		}
 
-		public boolean updateMain_nb(int pro_num, String main_nb) {
-			// TODO Auto-generated method stub
-			PreparedStatement pstmt = null;
-			ResultSet rs = null;
-			int updateCount = 0;
-			boolean isUpdateSuccess = false;
-			
-			try {
-				pstmt = con.prepareStatement("update pro_info set main_nb=? where pro_num=?");
-				pstmt.setString(1, main_nb);
-				pstmt.setInt(2, pro_num);
-				updateCount = pstmt.executeUpdate();
-				
-				if(updateCount > 0) {
-					isUpdateSuccess = true;
-				}
-			}catch(SQLException e) {
-				System.out.println("updateMain_nb 에러 " + e);
-			}finally {
-				close(pstmt);
-			}
-			return isUpdateSuccess;
-		}
 }

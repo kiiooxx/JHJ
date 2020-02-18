@@ -24,8 +24,7 @@ public class CategoryListAction implements Action {
 		HttpSession session = request.getSession();
 		session.setAttribute("categoryList", categoryList);
 		
-		request.setAttribute("pagefile", "/main.jsp");
-		ActionForward forward = new ActionForward("/template.jsp", false);
+		ActionForward forward = new ActionForward("main.pro", true);
 		return forward;
 	}
 

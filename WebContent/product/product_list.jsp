@@ -50,28 +50,29 @@
 			</ul>
 		</div>
 
-		<ul class="prdList">
+		<div class="prdList">
 			<c:forEach var="plist" items="${prdList }" varStatus="i">
 				<!-- 상품 진열 활성화 된것만-->
 				<c:if test="${plist.active eq 'Y'.charAt(0) }">
-					<li>
+					<div>
 						<div class="thumbnail">
 							<a href="productDetail.pro?pro_num=${plist.pro_num }&page="${pageInfo.page }"><img src="<%= request.getContextPath() %>/upload/${plist.pro_photo }"/></a>
 						</div>
 						
 						<div class="description">
 							<p class="name">${plist.pro_name }</p>
-							<p class="price">${plist.pro_price }</p>
+							<fmt:formatNumber var="price" value="${plist.pro_price}" pattern="#,###"/>
+							<p class="price">${price }</p>
 						</div>
-					</li>
+					</div>
 					
 					<c:if test="${i.count % 3 == 0 }">
-						</ul>
-						<ul class="prdList">
+						</div>
+						<div class="prdList">
 					</c:if>
 				</c:if>
 			</c:forEach>	
-		</ul>
+		</div>
 		
 		<div id="pageList">
 			<ol>

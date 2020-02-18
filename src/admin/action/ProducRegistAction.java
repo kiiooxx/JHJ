@@ -68,8 +68,13 @@ public class ProducRegistAction implements Action {
 		String[] stock = multi.getParameterValues("stock");
 		
 		ArrayList<ProDetBean> proDetInfo = new ArrayList<>();
+		ProDetBean proDetBean = null;
 		for(int i=0; i<stock.length; i++) {
-			proDetInfo.add(new ProDetBean(color[i], pro_size[i], Integer.parseInt(stock[i])));
+			proDetBean = new ProDetBean();
+			proDetBean.setColor(color[i]);
+			proDetBean.setPro_size(pro_size[i]);
+			proDetBean.setStock_qnt(Integer.parseInt(stock[i]));
+			proDetInfo.add(proDetBean);
 		}
 		
 		ProductRegistService productRegistService = new ProductRegistService();

@@ -18,6 +18,7 @@ import product.action.CartQtyUpAction;
 import product.action.MainListAction;
 import product.action.ProductDetailAction;
 import product.action.ProductListAction;
+import product.action.ProductListBestNewAction;
 import product.action.OrderPageAction;
 import vo.ActionForward;
 
@@ -109,6 +110,14 @@ public class ProductController extends HttpServlet {
 			}
     	}else if(command.equals("/main.pro")) {
 			action = new MainListAction();
+			//프로젝트명+기능+형태(?)
+			try {
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+    	}else if(command.equals("/productListBestNew.pro")) {
+			action = new ProductListBestNewAction();
 			//프로젝트명+기능+형태(?)
 			try {
 				forward = action.execute(request, response);

@@ -60,13 +60,16 @@ function sendFile(file, editor) {
 <script>
 var color_array = [];	//컬러 저장하는 배열
 var size_array = [];	//사이즈 저장하는 배열
-var color_array2 = [];
-var size_array2 = [];
+var color_array2 = [];	//추가하는 컬러 저장하는 배열
+var size_array2 = [];	//추가하는 사이즈 저장하는 배열
+var color_array3 = [];	//DB에 저장되어있는 컬러 저장하는 배열
+var size_array3 = [];	//DB에 저장되어있는 사이즈 저장하는 배열
 
 <c:forEach var="list" items="${proDetList }" varStatus="i">
 	<c:if test="${i.index == 0 || c != list.color }">
 		<c:set var="c" value="${list.color }"/>
 			color_array = color_array.concat('${list.color}');
+			color_array3 = color_array3.concat('${list.color}');
 	</c:if>
 </c:forEach>
 
@@ -74,6 +77,7 @@ var size_array2 = [];
 <c:if test="${i.index == 0 || s != list.pro_size }">
 	<c:set var="s" value="${list.pro_size }"/>
 		size_array = size_array.concat('${list.pro_size}');
+		size_array3 = size_array3.concat('${list.pro_size}');
 </c:if>
 </c:forEach>
 
@@ -100,8 +104,9 @@ function keyEvent_color() {
 		if(flug) {
 			color_array = color_array.concat($('#color').val());
 			color_array2 = color_array2.concat($('#color').val());
+			
 			var html = '';
-			html += '<span id="color_' + cnt + '" class="bg-warning"><a href="#" id="color' + cnt + '">' + $('#color').val() + '</a><a href="#" id="del_color'+ cnt +'">[X]</a></span> &nbsp;';		
+			html += '<span id="color_' + cnt + '" class="bg-warning"><a href="#" id="color' + cnt + '">' + $('#color').val() + '</a><a href="#" id="del_color'+ cnt +'">[X]</a></span>';		
 			$('#color_append').append(html);
 		}
 		
@@ -127,7 +132,7 @@ function keyEvent_size() {
 			size_array = size_array.concat($('#size').val());
 			size_array2 = size_array2.concat($('#size').val());
 			var html = '';
-			html += '<span id="size_' + cnt + '" class="bg-warning"><a href="#" id="size' + cnt +'">' + $('#size').val() + '</a><a href="#" id="del_size'+ cnt +'">[X]</a></span> &nbsp;';	
+			html += '<span id="size_' + cnt + '" class="bg-warning"><a href="#" id="size' + cnt +'">' + $('#size').val() + '</a><a href="#" id="del_size'+ cnt +'">[X]</a></span>';	
 			$('#size_append').append(html);
 		}
 		
@@ -140,9 +145,10 @@ $(document).on("click", '[id^=del_color]', function() {
 	var num = id.replace("del_color", "");
 	
 	var txt = $('#color' + num).text();
+	alert(txt);
 	color_array.splice(color_array.indexOf(txt),1);
 	$('#color_' + num).remove();
-	
+	$("#pro_colorㅇ"+txt).parent().remove();
 	return false;
 });
 
@@ -151,8 +157,10 @@ $(document).on("click", '[id^=del_size]', function() {
 	var num = id.replace("del_size", "");
 	
 	var txt = $('#size' + num).text();
+	alert(txt);
 	size_array.splice(size_array.indexOf(txt),1);
 	$('#size_' + num).remove();
+	$("#pro_sizeㅇ"+txt).parent().remove();
 	
 	return false;
 });
@@ -169,38 +177,58 @@ $(document).on("click", '[id^=del_option]', function() {
 $(document).ready(function(){
 	//옵션품목 만들기 버튼 누르면
 	$('#addTable').on('click', function(event){	
-		if(color_array2 == null || color_array2 == '') {
-			alert("색상을 입력해주세요.");
-			return false;
-		}
 		
-		if(size_array == null || size_array == '') {
-			alert("사이즈를 입력해주세요.")
+ 		if((color_array2 == null || color_array2) == '' && (size_array2 == null || size_array2 == '')) {
+			alert("사이즈나 색상을 입력해주세요.")
 			return false;
 		}
 		
 	    $('#optionChk').val('1');
-	
-		
+	    
 		// 새로운 list를 만들어서 list값에다 c, s값 저장
-		var list = new Array();		
-		if(size_array2 == null || size_array2 == '') {
-			for (var i in color_array2) {
-				for(var j in size_array) {
-					list.push({color : color_array2[i], size : size_array[j]});
-				}
-			}
-			color_array2 = [];
-		}else {
-			for (var i in color_array) {
+		var list = new Array();
+		if(color_array2 == null || color_array2 == '') {
+			//사이즈만 추가 된 경우
+			//전체 컬러 + 추가된 사이즈 list에 넣기
+			for(var i in color_array) {
 				for(var j in size_array2) {
-					list.push({color : color_array[i], size : size_array2[j]});				
+					list.push({color : color_array[i], size : size_array2[j]});
 				}
 			}
-			size_array2 = [];
+			size_array2 = [];	//추가된 사이즈 초기화
+		}else {
+			// 새로운 색상만 추가 된 경우
+			if(size_array2 == null || size_array2 == '') {
+				//추가된 사이즈 + 전체 사이즈 리스트에 넣기
+				for(var i in color_array2) {
+					for(var j in size_array) {
+						list.push({color : color_array2[i], size : size_array[j]});
+					}
+				}
+				color_array2 = [];	//추가된 컬러 초기화
+				
+			}else {
+				//사이즈 색상 둘 다 추가 된 경우
+				
+				//1. 전체 컬러 + 추가된 사이즈 list에 넣기
+				for(var i in color_array) {
+					for(var j in size_array2) {
+						list.push({color : color_array[i], size : size_array2[j]});
+					}
+				}
+				
+				//2. 추가된 컬러 + 원래 있던 사이즈 list에 넣기
+				for(var i in color_array2) {
+					for(var j in size_array3) {
+						list.push({color : color_array2[i], size : size_array3[j]});
+					}
+				}
+				
+				size_array2 = [];
+				color_array2 = [];
+			}
 		}
-		
-		
+
 		//배열의 크기만큼 테이블 동적으로 추가한다.
 		var html = '';
 		var html2 = '';
@@ -212,8 +240,8 @@ $(document).ready(function(){
 			html += '<td>' + '<input type="number" min="0" name="stock" id="stock" required/></td>';
 			html += '<td><a href="#" id="del_option' + key + '">삭제</a></td>';
 			
-			html += '<input type="hidden" name="pro_color" id="pro_color" value="'+ list[key].color +'"/>';
-			html += '<input type="hidden" name="pro_size" id="pro_size" value="'+ list[key].size +'"/>';
+			html += '<input type="hidden" name="pro_color" id="pro_colorㅇ' + list[key].color + '" value="'+ list[key].color +'"/>';
+			html += '<input type="hidden" name="pro_size" id="pro_sizeㅇ' + list[key].size + '" value="'+ list[key].size +'"/>';
 			html += '</tr>';
 		}
 		
@@ -221,7 +249,16 @@ $(document).ready(function(){
 		return false;
 	});
 	
-	
+	//삭제버튼 눌렀을 때
+	$(document).on("click", '[id^=del]', function() {
+		var id = $(this).attr("id")
+		var num = id.replace("del", "");
+		alert(num);
+		
+		location.href = "productOptionDel.ad?pro_det_num="+num+"&pro_num=${pro_num}";
+		
+		return false;
+	});
 });
 
 
@@ -254,12 +291,6 @@ function chkForm(f) {
     	return false;
     }
     
-    var fileCheck = document.getElementById("photo").value;
-    if(!fileCheck){
-        alert("이미지를 첨부해 주세요");
-        return false;
-    }
-    
     if(f.ca_ref.value.trim() == "none"){
     	alert("카테고리 대분류를 선택해주세요.");
     	f.ca_ref.focus();
@@ -273,13 +304,11 @@ function chkForm(f) {
         	return false;
     	}
     }
-
-    if(f.optionChk.value.trim() != "1"){
-    	alert("옵션품목 만들기 버튼을 눌러주세요");
-    	return false;
-    }
-	f.submit();
 	
+/*     f.target = "openPage"; */
+	f.submit();
+	alert('창을 닫습니다');
+	self.close();
 }
 
 //카테고리
@@ -314,19 +343,16 @@ $(function() {
 </script>
 <style>
 .menu a{cursor:pointer;}
-[class*='hide']{display:none; margin-left:15px;}
-#large_hidden {display :none;}
-#sub_hidden {display :none;}
-#info_hidden {display:none;}
 ul {
 	list-style : none;
 }
 #optionChk {display:none;}
 #pro_detail {width : 100%;}
 table {float : left; width : 100%;}
-table th {width : 20%; background : #F6F6F6;}
+table th {width : 300px; background : #F6F6F6;}
+
 </style>
-<title>Insert title here</title>
+<title>상품 수정 폼</title>
 </head>
 <body>
  <!-- Page Heading -->
@@ -494,7 +520,7 @@ table th {width : 20%; background : #F6F6F6;}
 													<td><input type="hidden" name="pro_det_num" value="${list.pro_det_num }" readonly/>${list.pro_det_num }</td>
 													<td>${list.color }</td>
 													<td>${list.pro_size }</td>
-													<td><input type="number" min="0" name="stock" id="stock" value="${list.stock_qnt }"/></td>
+													<td><input type="number" min="0" name="stock2" id="stock" value="${list.stock_qnt }"/></td>
 													<td><a href="#" id="del${list.pro_det_num }">삭제</a></td>
 												</tr>
 											</c:forEach>
@@ -506,6 +532,10 @@ table th {width : 20%; background : #F6F6F6;}
 					</table>
              	</div>
              </div>
+             
+             <!-- 상품번호 -->
+			<input type="hidden" name="pro_num" value="${pro_num }"/>
+	
 			<div>
 				<a href="javascript:chkForm(document.f);" class="btn btn-primary btn-lg btn-block">등록</a>&nbsp;&nbsp;
 			</div>

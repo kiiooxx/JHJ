@@ -22,7 +22,6 @@
 </head>
 
 <body id="page-top">
-
   <!-- Page Wrapper -->
   <div id="wrapper">
 
@@ -48,7 +47,7 @@
             <a class="collapse-item" href="categoryManagement.ad">카테고리 관리</a>
             <a class="collapse-item" href="productManagement.ad">상품 등록</a>
             <a class="collapse-item" href="productListManagement.ad">상품 목록</a>
-            <a class="collapse-item" href="#">재고 관리</a>
+            <a class="collapse-item" href="stockListManagement.ad">재고 관리</a>
           </div>
         </div>
       </li>

@@ -35,4 +35,17 @@ public class ProductListService {
 		close(con);
 		return prdList;
 	}
+
+
+	//전체 상품 목록 불러온다.
+	public ArrayList<ProductBean> getPrdList() {
+		// TODO Auto-generated method stub
+		ArrayList<ProductBean> prdList = null;
+		Connection con = getConnection();
+		ProductDAO productDAO = ProductDAO.getInstance();
+		productDAO.setConnection(con);
+		prdList = productDAO.selectProductList();
+		close(con);
+		return prdList;
+	}
 }

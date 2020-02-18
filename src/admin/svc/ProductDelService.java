@@ -15,8 +15,8 @@ public class ProductDelService {
 		AdminDAO adminDAO = AdminDAO.getInstance();
 		adminDAO.setConnection(con);
 		
-		//카테고리 삭제
 		for(int i=0; i<pro_num.length; i++) {
+			isDeleteSuccess = false;
 			isDeleteSuccess = adminDAO.deleteProduct(Integer.parseInt(pro_num[i]));
 			if(!isDeleteSuccess) {
 				rollback(con);
@@ -24,6 +24,27 @@ public class ProductDelService {
 			}
 		}
 		
+		if(isDeleteSuccess) {
+			commit(con);
+		}else {
+			rollback(con);
+		}
+		
+		close(con);
+		return isDeleteSuccess;
+	}
+
+	
+	//상품 옵션 삭제
+	public boolean deleteProductOption(String pro_det_num) {
+		// TODO Auto-generated method stub
+		boolean isDeleteSuccess = false;
+		Connection con = getConnection();
+		AdminDAO adminDAO = AdminDAO.getInstance();
+		adminDAO.setConnection(con);
+		
+		isDeleteSuccess = adminDAO.deleteProductOption(pro_det_num);
+			
 		if(isDeleteSuccess) {
 			commit(con);
 		}else {
