@@ -22,18 +22,6 @@ public class ProductListAction implements Action {
 		int cate_num = Integer.parseInt(request.getParameter("cate_num"));
 		String category = request.getParameter("category");
 		
-		//서브 카테고리 이름 선택했을 때
-		int cate_sub_num = 0;
-		if(request.getParameter("cate_sub_num") != null) {
-			cate_sub_num = Integer.parseInt(request.getParameter("cate_sub_num"));
-		}
-		
-		//진열 순서
-		String orderBy = "p.pro_date desc";
-		if(request.getParameter("orderBy") != null) {
-			orderBy = request.getParameter("orderBy");
-		}
-		System.out.println(orderBy);
 		int page = 1;
 		int limit = 9;	//페이지에 보여줄 목록 수
 		int limitPage = 3;	//페이지 수
@@ -46,7 +34,7 @@ public class ProductListAction implements Action {
 		ProductListService prdListService = new ProductListService();
 		listCount = prdListService.getListCount(cate_num);
 		//총 리스트 수를 받아옴
-		prdList = prdListService.getPrdList(cate_num, cate_sub_num, orderBy, page,limit);
+		prdList = prdListService.getPrdList(cate_num, page,limit);
 		//리스트를 받아옴
 		//총 페이지 수
 		int maxPage = (int)((double)listCount/limit+0.95);

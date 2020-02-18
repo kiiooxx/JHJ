@@ -16,10 +16,13 @@
   <!-- Custom styles for this template-->
   <link href="css/sb-admin-2.min.css" rel="stylesheet">
   <link href="dist/summernote.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/jquery-ui.min.css">
+
+
 </head>
 
 <body id="page-top">
-<jsp:include page="/common/categoryCheckAdmin.jsp"/>
+
   <!-- Page Wrapper -->
   <div id="wrapper">
 
@@ -27,7 +30,7 @@
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
       <!-- Sidebar - Brand -->
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<%=request.getContextPath()%>/admin_template.jsp">
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
         <div class="sidebar-brand-text mx-3">관리자 페이지</div>
       </a>
 
@@ -59,7 +62,7 @@
         <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <a class="collapse-item" href="memberList.ad">회원관리</a>
-            <a class="collapse-item" href="utilities-border.html">Borders</a>
+            <a class="collapse-item" href="orderManageList.ad">주문관리</a>
             <a class="collapse-item" href="utilities-animation.html">Animations</a>
             <a class="collapse-item" href="utilities-other.html">Other</a>
           </div>
@@ -88,7 +91,7 @@
 
           <!-- Sidebar Toggle (Topbar) -->
           <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-            <i class="fa fa-bars"><a href="<%= request.getContextPath() %>/template.jsp">메인으로</a></i>
+            <i class="fa fa-bars"></i>
           </button>
 
           <!-- Topbar Search -->

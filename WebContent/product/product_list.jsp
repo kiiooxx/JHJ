@@ -4,11 +4,15 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="vo.ProductBean" %>
 
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
+<link rel="stylesheet" href="common.css" type="text/css">
+<link rel="stylesheet" href="style.css" type="text/css">
 <title>Insert title here</title>
 <style>
 
@@ -25,12 +29,12 @@
 		
 		<div class="sub_category">
 			<ul>
-				<li><a href="productList.pro?category=${category }&cate_num=${cate_num }">ALL</a></li>
+				<li><a href="#">ALL</a></li>
 				
 				<!-- 서브 카테고리 이름 넣기 -->
 				<c:forEach var="list" items="${categoryList }" varStatus="i">
 					<c:if test="${cate_num == list.ca_ref && list.ca_lev != 0 }">
-						<li><a href="productList.pro?category=${category }&cate_num=${cate_num }&cate_sub_num=${list.cate_num}">${list.category }</a></li>
+						<li><a href="#">${list.category }</a></li>
 					</c:if>
 				</c:forEach>
 			</ul>
@@ -39,10 +43,10 @@
 		<!-- 진열 순서 -->
 		<div class="pro_display_seq">
 			<ul>
-				<li><a href="productList.pro?category=${category }&cate_num=${cate_num }&orderBy=p.pro_date desc">신상품</a></li>
-				<li><a href="productList.pro?category=${category }&cate_num=${cate_num }&orderBy=p.pro_name desc">상품명</a></li>
-				<li><a href="productList.pro?category=${category }&cate_num=${cate_num }&orderBy=p.pro_price asc">낮은가격</a></li>
-				<li><a href="productList.pro?category=${category }&cate_num=${cate_num }&orderBy=p.pro_price desc">높은가격</a></li>
+				<li><a href="#">신상품</a></li>
+				<li><a href="#">상품명</a></li>
+				<li><a href="#">낮은가격</a></li>
+				<li><a href="#">높은가격</a></li>
 			</ul>
 		</div>
 

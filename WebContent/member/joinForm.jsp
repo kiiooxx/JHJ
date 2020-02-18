@@ -47,12 +47,11 @@
 			}else{
 				$("#birthD").append("<option value='-"+ i +"'>" + i + "일" + "</option>");
 			}
-			
 		}
 	}
 
+	
 	//우편번호
-
 function sample6_execDaumPostcode() {
 	new daum.Postcode(
 		{

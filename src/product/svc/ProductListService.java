@@ -25,26 +25,13 @@ public class ProductListService {
 	}
 
 
-	public ArrayList<ProductBean> getPrdList(int cate_num, int cate_sub_num, String orderBy, int page, int limit) {
+	public ArrayList<ProductBean> getPrdList(int cate_num, int page, int limit) {
 		// TODO Auto-generated method stub
 		ArrayList<ProductBean> prdList = null;
 		Connection con = getConnection();
 		ProductDAO productDAO = ProductDAO.getInstance();
 		productDAO.setConnection(con);
-		prdList = productDAO.selectProductList(cate_num, cate_sub_num, orderBy, page, limit);
-		close(con);
-		return prdList;
-	}
-
-
-	//전체 상품 목록 불러온다.
-	public ArrayList<ProductBean> getPrdList() {
-		// TODO Auto-generated method stub
-		ArrayList<ProductBean> prdList = null;
-		Connection con = getConnection();
-		ProductDAO productDAO = ProductDAO.getInstance();
-		productDAO.setConnection(con);
-		prdList = productDAO.selectProductList();
+		prdList = productDAO.selectProductList(cate_num, page, limit);
 		close(con);
 		return prdList;
 	}
