@@ -14,10 +14,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
  
 @WebServlet("/memberedit.do")
-public class infomodController extends HttpServlet {
+public class InFomodController extends HttpServlet {
     private static final long serialVersionUID = 1L;
  
-    public infomodController() {
+    public InFomodController() {
         super();
     }
  

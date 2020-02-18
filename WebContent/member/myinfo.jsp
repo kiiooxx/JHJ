@@ -96,7 +96,7 @@
 	저희 쇼핑몰을 이용해 주셔서 감사합니다. ${member.user_name} 님은 [${grade1}] 회원이십니다.
 
 
-	<form action="myinfo.mem" id="myinfo" name="f" method="post">
+	<form action="myinfomodify.mem" id="myinfomod" name="f" method="post">
 
 		<div class="join_table">
 			<table border="1" summary>
@@ -184,12 +184,10 @@
 			
 			
 			   <p class="btx">
-         	<a href="javascript:myinfo.submit()" class="login_btn" onclick="sendit()">회원정보수정</a>
-         	<a href="joinForm.mem" class="join_btn">회원 탈퇴</a>
+         	<a href="javascript:myinfomod.submit()" class="login_btn" onclick="sendit()">회원정보수정</a>
+         	<a href="myinfoquit.mem" class="join_btn">회원 탈퇴</a>
          	
-         	<input type="button" class="btn btn-danger"                                  
-         	onclick="location.href='secession'" value="회원탈퇴">
-        
+         	
          </p>
         
         

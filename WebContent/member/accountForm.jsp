@@ -37,26 +37,7 @@
 <br>
 <br>
 <br>    
-<div>
-        <h3><a href="/myshop/wish_list.html"><strong>wishlist</strong></a></h3>
-        <p><a href="/myshop/wish_list.html">관심상품으로 등록하신 상품의 목록을 보여드립니다.</a></p>
-    </div>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<div>
-        <h3><a href="/myshop/coupon/coupon.html"><strong>coupon</strong></a></h3>
-        <p><a href="/myshop/coupon/coupon.html">고객님이 보유하고 계신 쿠폰내역을 보여드립니다.</a></p>
-    </div>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
+
 <div>
         <h3><a href="/myshop/mileage/historyList.html"><strong>point</strong></a></h3>
         <p><a href="/myshop/mileage/historyList.html">적립금은 상품 구매 시 사용하실 수 있습니다.<br/></a></p>
@@ -67,16 +48,7 @@
 <br>
 <br>
 <br>
-<div>
-        <h3><a href="/myshop/deposits/historyList.html"><strong>deposits</strong></a></h3>
-        <p><a href="/myshop/deposits/historyList.html">예치금은 현금과 동일하게 상품 구매시 사용하실 수 있습니다.<br/></a></p>
-    </div>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
+
 <div>
         <h3><a href="/myshop/addr/list.html"><strong>address</strong></a></h3>
         <p><a href="/myshop/addr/list.html">자주 사용하는 배송지를 등록하고 관리하실 수 있습니다.</a></p>

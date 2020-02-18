@@ -1,12 +1,12 @@
 package member.action;
 
+import java.io.PrintWriter;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import action.Action;
-import log.svc.IdFindService;
-import log.svc.LoginService;
 import member.svc.MyInfoService;
 import vo.ActionForward;
 import vo.Member;
@@ -17,10 +17,11 @@ public class MyInfoAction implements Action {
 		// TODO Auto-generated method stub
 		ActionForward forward = null;
 		Member member = null;
+		String id = "";
 		HttpSession session = request.getSession();
-		String id = (String) session.getAttribute("id");
+		id = (String) session.getAttribute("id");
 		MyInfoService MyInfoService = new MyInfoService();
-		System.out.println("myinfoaction" + id);
+	
 		member = MyInfoService.selectmemberinfo(id);
 
 		request.setAttribute("member", member);
@@ -30,3 +31,42 @@ public class MyInfoAction implements Action {
 
 	}
 }
+
+//		ActionForward forward = null;
+//		Member member = null;
+//		String id = "";
+//		
+//		HttpSession session = request.getSession();
+//		id = (String) session.getAttribute("id");
+//		MyInfoService MyInfoService = new MyInfoService();
+//	
+//		member = MyInfoService.selectmemberinfo(id);
+//
+//		request.setAttribute("member", member);
+//		request.setAttribute("pagefile", "/member/myinfo.jsp");
+//		forward = new ActionForward("/template.jsp", false);
+//
+//		
+//		
+//		if(session.getAttribute("id")==null) {
+//			response.setContentType("text/html;charset=UTF-8");
+//			PrintWriter out = response.getWriter();
+//			out.println("<script>");
+//			out.println("alert('로그인을 하세요!!')");
+//			out.println("location.href='loginForm.log'");
+//			out.println("</script>");
+//		}else {
+//	
+//			id = (String) session.getAttribute("id");
+//			
+//			member = MyInfoService.selectmemberinfo(id);
+//	
+//			request.setAttribute("member", member);
+//			request.setAttribute("pagefile", "/member/myinfo.jsp");
+//			forward = new ActionForward("/template.jsp", false);
+//		
+//			return forward;
+//		}		
+//				
+//	}
+//}
