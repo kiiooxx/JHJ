@@ -18,6 +18,7 @@ import admin.action.CategorySubListAction;
 import admin.action.CategoryUpdateAction;
 import admin.action.MemberInfoAction;
 import admin.action.MemberListAction;
+import admin.action.OrderManageListAction;
 import admin.action.ProducRegistAction;
 import admin.action.ProductDelAction;
 import admin.action.ProductListManagementAction;
@@ -200,9 +201,11 @@ public class AdminController extends HttpServlet {
 				e.printStackTrace();
 			}
     	}
-    	//상품 리스트에서 수정하는 액션 
+    	
+		//상품 리스트에서 수정하는 액션 
     	else if(command.equals("/productListUpdate.ad")) {
 			action = new ProductListUpdateAction();
+
 			try {
 				forward = action.execute(request, response);
 			}catch(Exception e) {
@@ -218,6 +221,7 @@ public class AdminController extends HttpServlet {
 				e.printStackTrace();
 			}
     	}
+		
 		//====================재고 관리=====================
     	//재고 리스트 보여주는 액션
     	else if(command.equals("/stockListManagement.ad")) {
@@ -231,6 +235,16 @@ public class AdminController extends HttpServlet {
 		//재고 리스트에서 재고 수정하는 액션
     	else if(command.equals("/stockListModify.ad")) {
 			action = new StockListModifyAction();
+			try {
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+    	}
+		
+		//==================주문 관리======================
+    	else if(command.equals("/orderManageList.ad")) {
+			action = new OrderManageListAction();
 			try {
 				forward = action.execute(request, response);
 			}catch(Exception e) {

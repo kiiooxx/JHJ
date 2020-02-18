@@ -65,27 +65,20 @@ public class ProductDAO {
 	}
 
 	//상품 리스트
-	public ArrayList<ProductBean> selectProductList(int cate_num, int cate_sub_num, String orderBy, int page, int limit) {
+	public ArrayList<ProductBean> selectProductList(int cate_num, int page, int limit) {
 		// TODO Auto-generated method stub
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		
-		String sql = "select * from pro_info p inner join category c on p.cate_num = c.cate_num where ";
-		if(cate_sub_num != 0) {
-			sql += "p.cate_num=" + cate_sub_num + " order by ";
-		}else {
-			sql += "c.ca_ref=" + cate_num + " order by ";
-		}
-		
-		sql+= orderBy + " limit ?,?";
+		String sql = "select * from pro_info p inner join category c on p.cate_num = c.cate_num where c.ca_ref=? order by p.pro_date desc limit ?,?";
 		ArrayList<ProductBean> prdList = new ArrayList<ProductBean>();
 		ProductBean prd = null;
 		int startrow = (page-1)*limit;	//읽기 시작할 row 번호
 		
 		try {	
 			pstmt = con.prepareStatement(sql);
-			pstmt.setInt(1, startrow);
-			pstmt.setInt(2, limit);
+			pstmt.setInt(1, cate_num);
+			pstmt.setInt(2, startrow);
+			pstmt.setInt(3, limit);
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
@@ -284,5 +277,4 @@ public class ProductDAO {
 		
 		return prdList;
 	}
-
 }

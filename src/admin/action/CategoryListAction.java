@@ -19,7 +19,7 @@ public class CategoryListAction implements Action {
 		ArrayList<CategoryBean> categoryList = null;
 		CategoryListService categoryListService = new CategoryListService();
 		categoryList = categoryListService.selectCategoryList();
-		String path = request.getParameter("path");
+		
 		//세션으로 저장...
 		HttpSession session = request.getSession();
 		session.setAttribute("categoryList", categoryList);

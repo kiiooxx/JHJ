@@ -489,7 +489,7 @@ table th {width : 300px; background : #F6F6F6;}
 											<span id="size_${i.index }" class="bg-warning">
 											<a href="#" id="size${i.index }">${list.pro_size }</a>
 										</span>&nbsp;
-										</c:if>
+										</c:if>	
 									</c:forEach>
 								</span>
 								<br>(세미콜론(;),엔터,탭키로 구분)

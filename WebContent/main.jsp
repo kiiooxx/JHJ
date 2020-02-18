@@ -15,7 +15,12 @@
 <link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
-
+<style>
+	#autoplay1 img, #autoplay2 img {
+		width: 338px;
+    	height : 450px;
+	}
+</style>
 </head>
 <body>
 	<div class="blank">

@@ -13,6 +13,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script>
 $(document).ready(function(){
 	var index1;
@@ -38,7 +39,7 @@ $(document).ready(function(){
 					if(size == "${list.pro_size}" && color == "${list.color}") {
 						<c:choose>
 							<c:when test="${list.stock_qnt <= 0}">
-								alert('재고가 없습니다!');
+								swal("재고가 없습니다!", "다른 상품을 선택해주세요.", "warning");
 							</c:when>
 							<c:otherwise>
 								h += '<tr class="option_product${i.count}">';
@@ -87,7 +88,7 @@ $(document).ready(function(){
 					if(size == "${list.pro_size}" && color == "${list.color}") {
 						<c:choose>
 							<c:when test="${list.stock_qnt <= 0}">
-								alert('재고가 없습니다!');
+								swal("재고가 없습니다!", "다른 상품을 선택해주세요.", "warning");
 							</c:when>
 							<c:otherwise>
 								h += '<tr class="option_product${i.count}">';
@@ -205,7 +206,18 @@ $(document).ready(function(){
 			contentType : 'application/x-www-form-urlencoded; charset=UTF-8',
 	        processData: false,
 			success : function() {
-					alert('선택한 상품을 장바구니에 담았습니다!');
+				swal({
+					  title: "장바구니로 이동하시겠습니까?",
+					  text: "장바구니에 상품을 담았습니다!",
+					  icon: "success",
+					  buttons: true,
+					  dangerMode: false,
+				})
+					.then((willCart) => {
+					  if (willCart) {
+					    location.href="cartList.pro";
+					  }
+				});
 			},
 			error : function() {
 				console.log("에러");

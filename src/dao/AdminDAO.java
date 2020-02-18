@@ -747,7 +747,8 @@ public class AdminDAO {
 			int listCount = 0; 
 			PreparedStatement pstmt = null;
 			ResultSet rs = null;
-			String sql = "SELECT COUNT(DISTINCT member.user_id) FROM member LEFT JOIN order_page ON member.user_id=order_page.user_id WHERE member." + searchType + " LIKE ?";
+			String sql = "SELECT COUNT(DISTINCT member.user_id) FROM member LEFT JOIN order_page ON member.user_id=order_page.user_id WHERE member." 
+					+ searchType + " LIKE ?";
 			
 			if(!searchGrade.trim().equals("")) {
 				sql += " AND grade = '" + searchGrade + "'";
@@ -923,7 +924,7 @@ public class AdminDAO {
 			
 		}
 
-		//회원정보에서 보는 주문내역 내용 보여주는
+		//회원정보에서 보는 주문내역
 		public ArrayList<Order> selectOrderList(String user_id, int page, int limit) {
 			
 			PreparedStatement pstmt = null;
@@ -963,6 +964,132 @@ public class AdminDAO {
 				close(pstmt);
 			}
 			System.out.println("ArrayList<Order> selectOrderList sql:" + sql);
+			
+			return orderList;
+		}
+		
+		
+		//주문관리에서 보는 주문 리스트 카운트 
+		public int selectOrderListCount(String searchType, String searchText, String orderDate, String[] deliStatus) {
+			
+			int listCount = 0; 
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+			
+			String inputText =  "%" + searchText.trim() + "%";
+			
+			String sql = "SELECT COUNT(*) FROM order_page WHERE ? LIKE ?";
+			
+			if(!(orderDate == null || orderDate.trim().equals(""))) {
+				sql += " AND sel_date='" + orderDate + "'";
+			}
+			
+			if(!(deliStatus == null)) {
+				
+				if(deliStatus.length<=0) {
+					sql += " AND (sel_status='" + deliStatus + "')";
+				}else if(deliStatus.length <0) {
+					
+					sql += " AND (sel_status='" + deliStatus + "')";
+					
+					for(int i = 1; i < deliStatus.length; i++) {
+						
+						sql += " OR (sel_status='" + deliStatus[i] + "')";
+						
+					}
+				}	
+					
+			}
+			
+			
+			try {
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, searchType);
+				pstmt.setString(2, inputText);
+				rs = pstmt.executeQuery();
+				
+				if(rs.next()) {
+					listCount = rs.getInt(1);
+				}
+				
+			}catch(Exception e) {
+				System.out.println("selectListCount(OrderManage) error : " + e);
+			}finally {
+				close(rs);
+				close(pstmt);
+			}
+			
+			
+			return listCount;
+			
+		}
+
+		//주문관리에서 보는 주문 리스트 
+		public ArrayList<Order> selectOrderList(String searchType, String searchText, String orderDate,
+				String deliStatus[], int page, int limit) {
+			
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+			ArrayList<Order> orderList = new ArrayList<Order>();
+			Order order = null;
+			int startRow = (page-1)*limit;
+			String inputText =  "%" + searchText.trim() + "%";
+			
+			System.out.println("startRow" + startRow);
+			String sql = "SELECT * FROM order_page WHERE " + searchType  + " LIKE ?";
+			
+			if(!(orderDate == null || orderDate.trim().equals(""))) {
+				sql += " AND sel_date='" + orderDate + "'";
+			}
+			
+			if(!(deliStatus == null)) {
+				
+				if(deliStatus.length<=0) {
+					sql += " AND (sel_status='" + deliStatus + "')";
+				}else if(deliStatus.length <0) {
+					
+					sql += " AND (sel_status='" + deliStatus + "')";
+					
+					for(int i = 1; i < deliStatus.length; i++) {
+						
+						sql += " OR (sel_status='" + deliStatus[i] + "')";
+						
+					}
+				}	
+					
+			}
+			sql +=  " ORDER BY sel_date LIMIT ?, ?";
+			
+			
+			try {
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, inputText);
+				pstmt.setInt(2, startRow);
+				pstmt.setInt(3, limit);
+				rs = pstmt.executeQuery();
+				
+				while(rs.next()) {
+					
+					order = new Order();
+					order.setUser_id(rs.getString("user_id"));
+					order.setSel_num(rs.getString("sel_num"));
+					order.setSel_date(rs.getString("sel_date"));
+					order.setDeli_num(rs.getString("deli_num"));
+					order.setSel_status(rs.getString("sel_status"));
+					order.setDeli_price(rs.getInt("deli_price"));
+					order.setPoint_use(rs.getInt("point_use"));
+					order.setFinal_price(rs.getInt("final_price"));
+					orderList.add(order);
+									
+				}
+				
+			}catch(Exception e) {
+				System.out.println("AdminDAO error: ArrayList<Order> selectOrderList(OrderManage) :" + e);
+			}finally {
+				close(rs);
+				close(pstmt);
+			}
+			System.out.println("ArrayList<Order> selectOrderList(OrderManage) sql:" + sql);
 			
 			return orderList;
 		}

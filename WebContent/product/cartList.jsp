@@ -53,18 +53,19 @@ $(document).ready(function() {
 			return false;
 		}else {
 			var items=[];
-			alert($(this).val());
+			
 			//체크한 상품상세코드만 배열로 만들어서 pro_det_num 값으로 보내고, 주문 페이지로 이동
 			$('input[name=chk]:checkbox:checked').each(function(){items.push($(this).val());});
 			var tmp = items.join(',');
-			location.href='주문.pro?pro_det_num='+tmp;
+			alert(tmp);
+			location.href='orderPage.pro?pro_det_num='+tmp;
 		}
 	});
 	
 	
 	//all order 버튼 눌렀을 때
 	$('#allOrder').click(function() {
-		location.href='주문.pro';
+		location.href='orderPage.pro';
 	});
 });
 </script>
