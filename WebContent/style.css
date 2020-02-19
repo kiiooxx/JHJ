@@ -186,17 +186,19 @@ table {
 }
 
 .prdList {
+	width : 100%;
+	transform: translate3d(0px, 0px, 0px);
 	float : left;
 	display: table;
-    margin: 0px 0 0 -18px;
-    font-size: 0;
-    line-height: 0;
-    position : relative;
+    position: relative;
+    display: block;
+    margin: 0 auto;
+    
 }
 
 .prdList>div {
+	width : 33%;
 	display: inline-block;
-    margin: 0px 0 35px 18px;
 	vertical-align: top;
 	position : relative;
 }
@@ -828,3 +830,99 @@ table {
     border: 1px solid #ddd;
     color: #000;
 }
+
+/*게시판*/
+.board {
+	padding: 30px 0 50px;
+    line-height: 18px;
+}
+
+.board h3 {
+	padding: 0 0px 15px 0px;
+    font-size: 10px;
+    font-weight: normal;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-family: arial,Arimo;
+}
+
+.board_table {
+	margin: 15px 0 0;
+    line-height: 140%;
+    width: 100%;
+    border: 0;
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+
+.board_table th {
+	padding: 14px 0 14px;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    font-weight: normal;
+    letter-spacing: 1px;
+    font-family: arial,Arimo;
+    text-transform: uppercase;
+    font-size: 10px;
+}
+
+.board_table td {
+	padding: 6px 3px 5px;
+    height: 32px;
+    border-bottom: 1px solid #e3e3e3;
+    text-align: center;
+    vertical-align: middle;
+}
+
+/* 리뷰게시판 글 등록 폼 */
+.prd_info {
+	overflow: hidden;
+    margin: 0 0 20px;
+    padding: 15px 20px;
+    border: 1px solid #e8e8e8;
+}
+
+.prdThumb {
+	float: left;
+}
+
+.prdThumb img {
+	width: 110px;
+    border: 1px solid #d5d5d5;
+}
+
+.prd_name {
+	float: left;
+    width: 620px;
+    padding: 0 0 0 20px;
+}
+
+.prd_name h3 {
+	margin: 10px 0 5px;
+    font-size: 11px;
+    font-weight: normal;
+}
+
+.starR{
+  background: url('http://miuu227.godohosting.com/images/icon/ico_review.png') no-repeat right 0;
+  background-size: auto 100%;
+  width: 15px;
+  height: 15px;
+  display: inline-block;
+  text-indent: -9999px;
+  cursor: pointer;
+}
+.starR.on{background-position:0 0;}
+
+
+/* 리뷰게시판 글 상세보기 */
+.editor > th {
+	padding: 50px 18px 50px 18px;
+	text-align : left;
+	font-size : 12px;
+}
+
+.prd_review_content {
+	border: 0px solid #dfdfdf;
+}
+

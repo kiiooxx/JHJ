@@ -14,6 +14,7 @@
 <title>Insert title here</title>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
 <script>
 $(document).ready(function(){
 	var index1;
@@ -224,11 +225,35 @@ $(document).ready(function(){
 			}
 		});
 	});
+	
+	//리뷰 제목 클릭했을 때
+	$("[id^=rev_subject]").on('click', function(event){
+		var id = $(this).attr("id")
+		var num = id.replace("rev_subject", "");
+		
+		var id2 = '#rev_content' + num;
+		
+		var content = $(id2);
+		var content2 = $('.like'+num);
+		
+		// rev_content 가 화면상에 보일때는 위로 보드랍게 접고 아니면 아래로 보드랍게 펼치기
+		if( content.is(":visible") ){
+			content.slideUp();
+			content2.slideUp();
+		}else{
+			content.slideDown();
+			content2.slideDown();
+		}
+		
+		return false;
+	});
+		
+		
 });
 </script>
 
 <style>
-
+[id*='rev_content'] {display:none;}
 </style>
 </head>
 <body>
@@ -360,8 +385,65 @@ $(document).ready(function(){
 		</div>
 	</div>
 	
+	<!-- 리뷰 게시판 -->
 	<div id="prdReview">
-	
+		<div class="board">
+			<h3>review</h3>
+			<div>
+				<table class="board_table">
+					<colgroup>
+						<col style="width:70px;">	
+						<col style="width:auto">
+						<col style="width:120px;">
+						<col style="width:120px;">
+						<col style="width:80px;">
+						<col style="width:70px;">
+					</colgroup>
+					<tr>
+						<th scope="col">no</th>
+						<th scope="col">subject</th>
+						<th scope="col">score</th>
+						<th scope="col">writer</th>
+						<th scope="col">date</th>
+					</tr>
+					<c:forEach var="review_list" items="${reviewList }" varStatus="i">
+						<tr>
+							<td>${i.count }</td>
+							<td style="text-align:left;"><a href="#" id="rev_subject${i.count }">${review_list.rev_subject }</a></td>
+							<td>
+								<div class="starRev">
+								  <span class="starR ${review_list.score >= 1 ? 'on' : ''}">1</span>
+								  <span class="starR ${review_list.score >= 2 ? 'on' : ''}">2</span>
+								  <span class="starR ${review_list.score >= 3 ? 'on' : ''}">3</span>
+								  <span class="starR ${review_list.score >= 4 ? 'on' : ''}">4</span>
+								  <span class="starR ${review_list.score >= 5 ? 'on' : ''}">5</span>
+								</div>
+							</td>
+							<td>${review_list.user_id}</td>
+							<!-- 날짜 형식 바꿔주기 (yyyy-MM-dd) -->
+							<fmt:parseDate value="${review_list.rev_date}" var="rev_date" pattern="yyyy-MM-dd HH:mm:ss"/>
+							<fmt:formatDate var="dateFmt" value="${rev_date}" pattern="yyyy-MM-dd"/>
+							<td>${dateFmt }</td>
+						</tr>
+						<tr class="editor" id="rev_content${i.count }">
+							<th colspan="5">
+								<c:if test="${!(review_list.rev_photo eq null || review_list.rev_photo eq '' )}">
+									<img src="<%= request.getContextPath() %>/upload/${review_list.rev_photo }"><br>
+								</c:if>
+								${review_list.rev_content }
+							</th>
+						</tr>
+					</c:forEach>
+				</table>
+			</div>
+			
+			<div class="order_button_area">
+				<p>
+					<a href="reviewList.bo" class="w">LIST</a>
+					<a href="reviewWriteForm.bo?pro_num=${prd.pro_num }" class="b">WRITE</a>
+				</p>
+			</div>
+		</div>
 	</div>
 	
 	<div id="prdQnA">

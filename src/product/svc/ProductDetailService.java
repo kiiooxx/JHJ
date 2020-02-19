@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import dao.ProductDAO;
 import vo.ProDetBean;
 import vo.ProductBean;
+import vo.ReviewBean;
 
 public class ProductDetailService {
 
@@ -34,5 +35,4 @@ public class ProductDetailService {
 		close(con);
 		return prdDetList;
 	}
-
 }

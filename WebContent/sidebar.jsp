@@ -38,7 +38,7 @@
 		<ul>
 			<li><a href="#">NOTICE</a></li>
 			<li><a href="#">Q & A</a></li>
-			<li><a href="#">REVIEW</a></li>
+			<li><a href="reviewList.bo">REVIEW</a></li>
 		</ul>
 	</div>
 	

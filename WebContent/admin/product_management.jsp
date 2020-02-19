@@ -329,7 +329,7 @@ table th {width : 20%; background : #F6F6F6;}
 						<tr>
 							<th><label for="photo">대표 이미지</label></th>
 							<td>
-								<input type="file" name="photo" id="photo"/>
+								<input type="file" name="photo" id="photo" accept="image/gif, image/jpeg, image/png"/>
 							</td>
 						</tr>
 					</table>

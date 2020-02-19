@@ -47,7 +47,7 @@
 				<c:if test="${plist.active eq 'Y'.charAt(0) }">
 					<div>
 						<div class="thumbnail">
-							<a href="productDetail.pro?pro_num=${plist.pro_num }&page="${pageInfo.page }"><img src="<%= request.getContextPath() %>/upload/${plist.pro_photo }"/></a>
+							<a href="productDetail.pro?pro_num=${plist.pro_num }"><img src="<%= request.getContextPath() %>/upload/${plist.pro_photo }"/></a>
 						</div>
 						
 						<div class="description">
