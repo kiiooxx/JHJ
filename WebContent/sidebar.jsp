@@ -36,7 +36,7 @@
 	
 	<div class="category_board">
 		<ul>
-			<li><a href="#">NOTICE</a></li>
+			<li><a href="notice_boardList.bo">NOTICE</a></li>
 			<li><a href="qnaWriteForm.bo">Q & A</a></li>
 			<li><a href="reviewList.bo">REVIEW</a></li>
 		</ul>

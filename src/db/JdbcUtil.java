@@ -22,6 +22,20 @@ public class JdbcUtil {
 		}
 		return con;
 	}
+	public static Connection getConnectionBoard() {
+		Connection con = null;
+		
+		try {
+			Context initCtx = new InitialContext();
+			Context envCtx = (Context)initCtx.lookup("java:comp/env");
+			DataSource ds = (DataSource)envCtx.lookup("jdbc/mySQLDB");
+			con = ds.getConnection();
+			con.setAutoCommit(false);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return con;
+	}
 	
 	public static void close(Connection con) {
 		try {
