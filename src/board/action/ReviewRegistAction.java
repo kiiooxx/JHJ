@@ -47,7 +47,7 @@ public class ReviewRegistAction implements Action {
 		boolean isRegistSuccess = reviewRegistService.registReview(reviewBean);
 		
 		if(isRegistSuccess) {
-			forward = new ActionForward("main.pro", true);
+			forward = new ActionForward("reviewList.bo", true);
 		}else {
 			response.setContentType("text/html;charset=UTF-8");
 			PrintWriter out = response.getWriter();

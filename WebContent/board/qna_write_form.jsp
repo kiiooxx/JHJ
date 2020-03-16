@@ -124,8 +124,6 @@ function chkForm(f) {
 <jsp:include page="/common/loginCheck.jsp"/>
 <div id="join_form">
 	<form action="qnaRegist.bo" name="f" method="post" enctype="multipart/form-data">
-		<input type="hidden" name="pro_num" value="${prd.pro_num }"/>
-		
 		<!-- 글 쓰기 폼 -->
 		<div class="join_table">
 			<table>
@@ -150,8 +148,8 @@ function chkForm(f) {
 				<tr>
 					<th>공개여부</th>
 					<td>
-						<input type="radio" name="open" value="open" checked>공개
-						<input type="radio" name="open" value="sercret">비공개
+						<input type="radio" name="qna_open" value="Y" checked>공개
+						<input type="radio" name="qna_open" value="N">비공개
 					</td>
 				</tr>
 				<tr>
@@ -174,7 +172,7 @@ function chkForm(f) {
 				</tr>
 			</table>
 			<!-- 상품번호 : 상품 상세 페이지에서 문의 글쓰기를 눌렀을 경우 -->
-			<input type="hidden" name="pro_num" value="${pro_num }"/>
+			<input type="hidden" name="pro_num" value="${prd.pro_num }"/>
 			<!-- 주문번호 : 마이페이지 -> 주문내역 -> 해당 주문건에 대한 문의하기를 눌렀을 경우 -->
 			<input type="hidden" name="sel_num" value="${sel_num }"/>
 		</div>

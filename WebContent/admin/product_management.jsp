@@ -276,6 +276,12 @@ $(function() {
 	});
 });
 
+//숫자만 입력
+function onlyNumber(){
+	if((event.keyCode<48)||(event.keyCode>57))
+		event.returnValue=false;
+}
+
 </script>
 <style>
 .menu a{cursor:pointer;}
@@ -314,7 +320,7 @@ table th {width : 20%; background : #F6F6F6;}
 						</tr>
 						<tr>
 							<th><label for="pro_price">판매가</label></th>
-							<td><input type="text" name="pro_price" id="pro_price" numberOnly/></td>
+							<td><input type="text" name="pro_price" id="pro_price" onkeypress="onlyNumber();"/></td>
 						</tr>
 						<tr>
 							<th><label for="pro_detail">상품 간단 설명</label></th>

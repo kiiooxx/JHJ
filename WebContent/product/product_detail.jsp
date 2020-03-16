@@ -456,7 +456,78 @@ $(document).ready(function(){
 	</div>
 	
 	<div id="prdQnA">
-	
+		<div class="board">
+			<h3>QnA</h3>
+			<div>
+				<table class="board_table">
+					<colgroup>
+						<col style="width:70px;">
+						<col style="width:100px;">	
+						<col style="width:auto">
+						<col style="width:80px;">
+						<col style="width:120px;">
+						<col style="width:80px;">
+					</colgroup>
+					<tr>
+						<th scope="col">no</th>
+						<th scope="col">type</th>
+						<th scope="col">subject</th>
+						<th scope="col">step</th>
+						<th scope="col">writer</th>
+						<th scope="col">date</th>
+					</tr>
+					<c:set var="size" value="${fn:length(qnaList) }"/>
+					<c:forEach var="qna_list" items="${qnaList }" varStatus="i">
+					<tr>
+						<td>${i.count }</td>
+						<td>
+							<c:choose>
+								<c:when test="${qna_list.qna_type == 'product_qna'}">
+									[상품문의]
+								</c:when>
+								<c:when test="${qna_list.qna_type == 'delivery_qna' }">
+									[배송문의]
+								</c:when>
+								<c:otherwise>
+									[기타문의]
+								</c:otherwise>
+							</c:choose>
+						</td>
+						<td style="text-align:left;">
+							<c:choose>
+								<c:when test="${qna_list.qna_open != 'N'.charAt(0) || grade=='A'.charAt(0)}">
+									<a href="qnaDetail.bo?&qna_num=${qna_list.qna_num}&pro_num=${qna_list.pro_num}">
+										${qna_list.qna_title}
+									</a>
+								</c:when>
+								<c:otherwise>
+									${qna_list.qna_title}
+								</c:otherwise>
+							</c:choose>
+							<c:if test="${qna_list.qna_open == 'N'.charAt(0) }">
+								<img src="<%= request.getContextPath() %>/layout_image/lock_icon.png"/>
+							</c:if>
+						</td>
+						<td>
+							${qna_list.qna_step }
+						</td>
+						<td>${qna_list.user_id }</td>
+						<!-- 날짜 형식 바꿔주기 (yyyy-MM-dd) -->
+						<fmt:parseDate value="${qna_list.qna_date}" var="qna_date" pattern="yyyy-MM-dd HH:mm:ss"/>
+						<fmt:formatDate var="dateFmt" value="${qna_date}" pattern="yyyy-MM-dd"/>
+						<td>${dateFmt }</td>
+					</tr>
+					</c:forEach>
+				</table>
+			</div>
+			
+			<div class="order_button_area">
+				<p>
+					<a href="qnaList.bo" class="w">LIST</a>
+					<a href="qnaWriteForm.bo?pro_num=${prd.pro_num }" class="b">WRITE</a>
+				</p>
+			</div>
+		</div>
 	</div>
 </div>
 </form>

@@ -6,12 +6,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import action.Action;
+import board.svc.QnAListService;
 import board.svc.ReviewListService;
 import product.svc.ProductDetailService;
 import vo.ActionForward;
 import vo.PageInfo;
 import vo.ProDetBean;
 import vo.ProductBean;
+import vo.QnABean;
 import vo.ReviewBean;
 
 public class ProductDetailAction implements Action {
@@ -24,7 +26,8 @@ public class ProductDetailAction implements Action {
 		ProductBean prd = prdDetailService.getProduct(pro_num);
 		ArrayList<ProDetBean> prdDetList = prdDetailService.getProductDetail(pro_num);
 		ArrayList<ReviewBean> reviewList = new ArrayList<>();	//리뷰 리스트
-
+		ArrayList<QnABean> qnaList = new ArrayList<>();	//QnA리스트
+		
 		int page = 1;
 		int limit = 10;	//페이지에 보여줄 목록 수
 		int limitPage = 5;	//페이지 수
@@ -36,9 +39,15 @@ public class ProductDetailAction implements Action {
 		
 		//전체 리뷰 목록
 		ReviewListService reviewListService = new ReviewListService();
-		listCount = reviewListService.getListCount(pro_num);
-		//총 리스트 수를 받아옴
 		reviewList = reviewListService.getReviewList(pro_num, page, limit);
+		//문의 목록
+		QnAListService qnaListService = new QnAListService();
+		qnaList = qnaListService.getQnAList(pro_num, page, limit);
+		
+		//총 리스트 수를 받아옴
+		listCount = reviewListService.getListCount(pro_num);
+		
+		
 		//리스트를 받아옴
 		//총 페이지 수
 		int maxPage = (int)((double)listCount/limit+0.95);
@@ -59,6 +68,7 @@ public class ProductDetailAction implements Action {
 		pageInfo.setStartPage(startPage);
 		request.setAttribute("reviewPageInfo", pageInfo);
 		request.setAttribute("reviewList", reviewList);
+		request.setAttribute("qnaList", qnaList);
 		request.setAttribute("prd", prd);
 		request.setAttribute("prdDetList", prdDetList);
 		request.setAttribute("pagefile", "/product/product_detail.jsp");

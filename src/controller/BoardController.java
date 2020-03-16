@@ -16,6 +16,10 @@ import board.action.Notice_BoardListAction;
 import board.action.Notice_BoardModifyFormAction;
 import board.action.Notice_BoardModifyProAction;
 import board.action.Notice_BoardWriteProAction;
+import board.action.QnADetailAction;
+import board.action.QnAListAction;
+import board.action.QnARegistAction;
+import board.action.QnAWriteFormAction;
 import board.action.ReviewDetailAction;
 import board.action.ReviewListAction;
 import board.action.ReviewRegistAction;
@@ -89,11 +93,41 @@ public class BoardController extends HttpServlet {
 				e.printStackTrace();
 			}
     	}
-		
-		
-		if(command.equals("/qnaWriteForm.bo")) {
-			request.setAttribute("pagefile", "/board/qna_write_form.jsp");
-	    	forward = new ActionForward("/template.jsp", false);
+		//5. QnA 게시판 등록 폼
+		else if(command.equals("/qnaWriteForm.bo")) {
+			action = new QnAWriteFormAction();
+			try {
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+    	}
+		//6. QnA 게시판 등록 액션
+		else if(command.equals("/qnaRegist.bo")) {
+			action = new QnARegistAction();
+			try {
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+    	}
+		//7. QnA 리스트 목록 가져오는 액션
+		else if(command.equals("/qnaList.bo")) {
+			action = new QnAListAction();
+			try {
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+    	}
+		//8. QnA 게시글 상세 보기 액션
+		else if(command.equals("/qnaDetail.bo")) {
+			action = new QnADetailAction();
+			try {
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
     	}
 		
 		if(command.equals("/notice_boardWriteForm.bo")) {
