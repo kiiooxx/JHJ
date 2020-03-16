@@ -84,6 +84,12 @@ public class BoardController extends HttpServlet {
 			}
     	}
 		
+		if(command.equals("/qnaWriteForm.bo")) {
+			request.setAttribute("pagefile", "/board/qna_write_form.jsp");
+	    	forward = new ActionForward("/template.jsp", false);
+    	}
+		
+		
 		//3.포워딩
 		if(forward != null) {
 			if(forward.isRedirect()) {

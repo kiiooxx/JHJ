@@ -32,7 +32,7 @@
 		<!-- 상품 정보 -->
 		<div class="prd_info">
 			<p class="prdThumb">
-				<a href="#"><img src="<%= request.getContextPath() %>/upload/${prd.pro_photo }"></a>
+				<a href="productDetail.pro?pro_num=${prd.pro_num }"><img src="<%= request.getContextPath() %>/upload/${prd.pro_photo }"></a>
 			</p>
 			<div class="prd_name">
 				<h3><a href="productDetail.pro?pro_num=${prd.pro_num }">${prd.pro_name }</a></h3>

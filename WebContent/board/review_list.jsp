@@ -50,7 +50,12 @@
 							</a>
 						</td>
 						<td style="text-align:left;">
-							<a href="reviewDetail.bo?&rev_num=${list.rev_num}&pro_num=${list.pro_num}">${list.rev_subject }</a>
+							<a href="reviewDetail.bo?&rev_num=${list.rev_num}&pro_num=${list.pro_num}">
+								${list.rev_subject }
+							</a>
+							<c:if test="${!(list.rev_photo == null || list.rev_photo == '')}">
+								<img src="<%= request.getContextPath() %>/layout_image/pic_icon.gif"/>
+							</c:if>
 						</td>
 						<td>
 							<div class="starRev">

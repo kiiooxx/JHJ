@@ -115,7 +115,7 @@ $(document).ready(function() {
  <!-- Content Row -->
  <div class="row">
  	<div class="col">
-		<form action="productListManagement.ad" name="productListSearch" method="post">
+		<form action="stockListManagement.ad" name="stockListSearch" method="post">
 			<div class="card card-default">
 				<div class="card-body">
 					<table class="table table-bordered">
@@ -169,8 +169,8 @@ $(document).ready(function() {
 						</tr>
 					</table>
 					<div align="center">
-						<a href="javascript:productListSearch.submit()" class="btn btn-primary">검색</a>
-						<a href="javascript:productListSearch.reset()" class="btn btn-primary">초기화</a>
+						<a href="javascript:stockListSearch.submit()" class="btn btn-primary">검색</a>
+						<a href="javascript:stockListSearch.reset()" class="btn btn-primary">초기화</a>
 					</div>
 				</div>
 			</div>

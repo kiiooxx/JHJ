@@ -406,10 +406,18 @@ $(document).ready(function(){
 						<th scope="col">writer</th>
 						<th scope="col">date</th>
 					</tr>
+					<c:set var="size" value="${fn:length(reviewList) }"/>
 					<c:forEach var="review_list" items="${reviewList }" varStatus="i">
 						<tr>
-							<td>${i.count }</td>
-							<td style="text-align:left;"><a href="#" id="rev_subject${i.count }">${review_list.rev_subject }</a></td>
+							<td>${size }</td>
+							<td style="text-align:left;">
+								<a href="#" id="rev_subject${i.count }">
+									${review_list.rev_subject }
+								</a>
+									<c:if test="${!(review_list.rev_photo == null || review_list.rev_photo == '')}">
+										<img src="<%= request.getContextPath() %>/layout_image/pic_icon.gif"/>
+									</c:if>
+							</td>
 							<td>
 								<div class="starRev">
 								  <span class="starR ${review_list.score >= 1 ? 'on' : ''}">1</span>
@@ -433,6 +441,7 @@ $(document).ready(function(){
 								${review_list.rev_content }
 							</th>
 						</tr>
+						<c:set var="size" value="${size-1 }"/>
 					</c:forEach>
 				</table>
 			</div>
