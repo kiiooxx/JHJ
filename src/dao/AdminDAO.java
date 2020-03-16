@@ -11,8 +11,13 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import vo.CategoryBean;
+import vo.DeliInfo;
+import vo.MailOption;
 import vo.Member;
 import vo.Order;
+import vo.OrderProView;
+import vo.PayInfo;
+import vo.PointMan;
 import vo.ProDetBean;
 import vo.ProductBean;
 import vo.StockBean;
@@ -933,7 +938,9 @@ public class AdminDAO {
 			Order order = null;
 			int startRow = (page-1)*limit;
 			System.out.println("startRow" + startRow);
-			String sql = "SELECT * FROM order_page WHERE user_id=? LIMIT ?, ?";
+			//String sql = "SELECT * FROM order_page WHERE user_id=? LIMIT ?, ?";
+			String sql = "SELECT * FROM pro_info AS a INNER JOIN pro_det AS b ON a.pro_num=b.pro_num INNER JOIN order_det AS c "
+					+ "ON b.pro_det_num=c.pro_det_num INNER JOIN order_page AS d ON c.sel_num=d.sel_num WHERE d.user_id=? GROUP BY d.sel_date LIMIT ?,?";
 			
 			try {
 				pstmt = con.prepareStatement(sql);
@@ -953,6 +960,7 @@ public class AdminDAO {
 					order.setDeli_price(rs.getInt("deli_price"));
 					order.setPoint_use(rs.getInt("point_use"));
 					order.setFinal_price(rs.getInt("final_price"));
+					order.setPro_name(rs.getString("a.pro_name"));
 					orderList.add(order);
 									
 				}
@@ -1036,19 +1044,22 @@ public class AdminDAO {
 			String inputText =  "%" + searchText.trim() + "%";
 			
 			System.out.println("startRow" + startRow);
-			String sql = "SELECT * FROM order_page WHERE " + searchType  + " LIKE ?";
+			String sql = "SELECT * FROM order_manage_main WHERE " + searchType  + " LIKE ?";
 			
 			if(!(orderDate == null || orderDate.trim().equals(""))) {
-				sql += " AND sel_date='" + orderDate + "'";
+				sql += " AND sel_date LIKE'" + orderDate + "%'";
 			}
 			
+			
+			
 			if(!(deliStatus == null)) {
-				
-				if(deliStatus.length<=0) {
-					sql += " AND (sel_status='" + deliStatus + "')";
-				}else if(deliStatus.length <0) {
+				System.out.println("AdminDAO - deliStatus:"+deliStatus[0]);
+				System.out.println("AdminDAO - deliStatus.length:"+deliStatus.length);
+				if(deliStatus.length==1) {
+					sql += " AND (sel_status='" + deliStatus[0] + "')";
+				}else if(deliStatus.length > 1) {
 					
-					sql += " AND (sel_status='" + deliStatus + "')";
+					sql += " AND (sel_status='" + deliStatus[0] + "')";
 					
 					for(int i = 1; i < deliStatus.length; i++) {
 						
@@ -1058,7 +1069,7 @@ public class AdminDAO {
 				}	
 					
 			}
-			sql +=  " ORDER BY sel_date LIMIT ?, ?";
+			sql +=  " GROUP BY sel_date ORDER BY sel_date DESC LIMIT ?, ?";
 			
 			
 			try {
@@ -1076,12 +1087,15 @@ public class AdminDAO {
 					order.setSel_date(rs.getString("sel_date"));
 					order.setDeli_num(rs.getString("deli_num"));
 					order.setSel_status(rs.getString("sel_status"));
-					order.setDeli_price(rs.getInt("deli_price"));
-					order.setPoint_use(rs.getInt("point_use"));
+					//order.setDeli_price(rs.getInt("deli_price"));
+					//order.setPoint_use(rs.getInt("point_use"));
 					order.setFinal_price(rs.getInt("final_price"));
+					order.setPro_name(rs.getString("pro_name"));
+					order.setCancel_req(rs.getString("cancel_req").charAt(0));
+					
 					orderList.add(order);
-									
 				}
+				
 				
 			}catch(Exception e) {
 				System.out.println("AdminDAO error: ArrayList<Order> selectOrderList(OrderManage) :" + e);
@@ -1093,8 +1107,236 @@ public class AdminDAO {
 			
 			return orderList;
 		}
-
 		
+		//주문 상세페이지 - 주문상품리스트
+		public ArrayList<OrderProView> selectOrderDet(String sel_num) {
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+			
+			ArrayList<OrderProView> orderProList = new ArrayList<OrderProView>();
+			OrderProView orderProView = null;
+			
+			
+			try {
+				pstmt = con.prepareStatement("SELECT * FROM order_detail_view WHERE sel_num=?");
+				pstmt.setString(1, sel_num);
+				rs = pstmt.executeQuery();
+				
+				while(rs.next()) {
+					orderProView = new OrderProView();
+					orderProView.setPro_num(rs.getInt("pro_num"));
+					orderProView.setPro_name(rs.getString("pro_name"));
+					orderProView.setPro_price(rs.getInt("pro_price"));
+					orderProView.setPro_photo(rs.getString("pro_photo"));
+					orderProView.setPro_det_num(rs.getString("pro_det_num"));
+					orderProView.setPro_size(rs.getString("pro_size"));
+					orderProView.setColor(rs.getString("color"));
+					orderProView.setPro_qnt(rs.getInt("pro_qnt"));
+					orderProView.setSel_num(sel_num);
+					
+					orderProList.add(orderProView);
+									
+				}
+				
+				
+			}catch(Exception e) {
+				e.printStackTrace();
+				System.out.println("AdminDAO - selectOrderDet error");
+			}finally {
+				close(rs);
+				close(pstmt);
+			}
+			return orderProList;
+		}
+
+		//주문상세페이지 - 배송정보
+		public DeliInfo selectDeliInfo(String user_id) {
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+			DeliInfo deliInfo = null;
+			
+			try {
+				pstmt = con.prepareStatement("SELECT * FROM deli_info WHERE user_id=?");
+				pstmt.setString(1, user_id);
+				rs = pstmt.executeQuery();
+				
+				if(rs.next()) {
+					deliInfo = new DeliInfo();
+					deliInfo.setDeli_num(rs.getString("deli_num"));
+					deliInfo.setDeli_postcode(rs.getString("deli_postcode"));
+					deliInfo.setDeli_addr1(rs.getString("deli_addr1"));
+					deliInfo.setDeli_addr2(rs.getString("deli_addr2"));
+					deliInfo.setDeli_content(rs.getString("deli_content"));
+					deliInfo.setRec_name(rs.getString("rec_name"));
+					deliInfo.setRec_tel(rs.getString("rec_tel"));
+					
+				}
+			}catch(Exception e) {
+				e.printStackTrace();
+				System.out.println("AdminDAO - selectDeliInfo error");
+			}finally {
+				close(rs);
+				close(pstmt);
+			}
+			
+			return deliInfo;
+		}
+		
+		//주문상세페이지 - 결제정보
+		public PayInfo selectPayInfo(String sel_num) {
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+			PayInfo payInfo = null;
+			
+			try {
+				pstmt = con.prepareStatement("SELECT * FROM pay_info WHERE sel_num=?");
+				pstmt.setString(1, sel_num);
+				rs = pstmt.executeQuery();
+				
+				if(rs.next()) {
+					payInfo = new PayInfo();
+					payInfo.setPay_date(rs.getString("pay_date"));
+					payInfo.setPay_type(rs.getString("pay_type"));
+					payInfo.setAcc_name(rs.getString("acc_name"));
+					payInfo.setAcc_bank(rs.getString("acc_bank"));
+					payInfo.setPay_exp(rs.getString("pay_exp"));
+				}
+			}catch(Exception e) {
+				e.printStackTrace();
+				System.out.println("AdminDAO - selectPayInfo error");
+			}finally {
+				close(rs);
+				close(pstmt);
+			}
+			
+			return payInfo;
+		}
+		
+		//주문상세페이지 - 주문 정보(주문상품 제외), 배송상태 및 취소요청여부
+		public Order selectOrderInfo(String sel_num) {
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+			Order orderInfo = null;
+			
+			try {
+				pstmt = con.prepareStatement("SELECT a.*, b.user_name FROM order_page AS a LEFT JOIN member AS b ON a.user_id=b.user_id WHERE sel_num=?");
+				pstmt.setString(1, sel_num);
+				rs = pstmt.executeQuery();
+				
+				if(rs.next()) {
+					orderInfo = new Order();
+					orderInfo.setSel_num(sel_num);
+					orderInfo.setSel_date(rs.getString("sel_date"));
+					orderInfo.setUser_id(rs.getString("user_id"));
+					orderInfo.setSel_status(rs.getString("sel_status"));
+					orderInfo.setDeli_price(rs.getInt("deli_price"));
+					orderInfo.setPoint_use(rs.getInt("point_use"));
+					orderInfo.setFinal_price(rs.getInt("final_price"));
+					orderInfo.setUser_name(rs.getString("user_name"));
+					orderInfo.setCancel_req(rs.getString("cancel_req").charAt(0));
+				}
+						
+			}catch(Exception e) {
+				e.printStackTrace();
+				System.out.println("AdminDAO - selectOrderInfo error");
+			}finally {
+				close(rs);
+				close(pstmt);
+			}
+			return orderInfo;
+		}
+		
+		
+		//주문상세 - 배송상태 변경
+		public int updateDeliStatus(String selNum, String deliStatus) {
+			int updateCount = 0;
+			PreparedStatement pstmt = null;
+			String sql = "UPDATE order_page SET sel_status=? WHERE sel_num=?";
+			
+			try {
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, deliStatus);
+				pstmt.setString(2, selNum);
+				updateCount = pstmt.executeUpdate();
+			}catch(Exception e) {
+				e.printStackTrace();
+				System.out.println("AdminDAO - updateDeliStatus error");
+			}finally {
+				close(pstmt);
+			}
+			
+			return updateCount;
+		}
+		
+		//자동메일옵션 설정저장
+		public ArrayList<MailOption> updateMailOption(char newMem, char quitMem, char newOrder, char checkPaid,
+				char sendPro, char deliIng, char deliFin, char confirmOrder, char accCancel) {
+			PreparedStatement pstmt = null;
+			//String sql = "UPDATE mail_option SET "
+			return null;
+		}
+		//적립금 설정 페이지(설정값 불러오기)
+		public PointMan viewPointOption(int seq) {
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+			PointMan pointMan = null;
+			
+			try {
+				pstmt = con.prepareStatement("SELECT * FROM point_man WHERE p_seq=?");
+				pstmt.setInt(1, seq);
+				rs = pstmt.executeQuery();
+				if(rs.next()) {
+					pointMan = new PointMan();
+					pointMan.setP_date(rs.getInt("p_date"));
+					pointMan.setP_mark(rs.getString("p_mark"));
+					pointMan.setP_rate(rs.getInt("p_rate"));
+					pointMan.setP_stand(rs.getString("p_stand"));
+					pointMan.setP_newmem(rs.getInt("p_newmem"));
+					pointMan.setP_pricelimit(rs.getInt("p_pricelimit"));
+					pointMan.setP_pointlimit(rs.getInt("p_pointlimit"));
+					pointMan.setP_review(rs.getInt("p_review"));
+				}
+			}catch(Exception e) {
+				e.printStackTrace();
+				System.out.println("AdminDAO - viewPointOption error");
+			}finally {
+				close(rs);
+				close(pstmt);
+			}
+			
+			return pointMan;
+		}
+		//적립금 설정 저장
+		public int settingPointOption(int pointDate, String markOption, float rate, String usePointOpt, int newMem,
+				int priceLimit, int pointLimit, int reviewP) {
+			int updateCount = 0;
+			PreparedStatement pstmt = null;
+			String sql = "UPDATE point_man SET p_date=?, p_mark=?, p_rate=?, p_stand=?, "
+					+ "p_newmem=?, p_pricelimit=?, p_pointlimit=?, p_review=? WHERE p_seq=1";
+			
+			try {
+				
+				pstmt = con.prepareStatement(sql);
+				pstmt.setInt(1, pointDate);
+				pstmt.setString(2, markOption);
+				pstmt.setFloat(3, rate);
+				pstmt.setString(4, usePointOpt);
+				pstmt.setInt(5, newMem);
+				pstmt.setInt(6, priceLimit);
+				pstmt.setInt(7, pointLimit);
+				pstmt.setInt(8, reviewP);
+				
+				updateCount = pstmt.executeUpdate();
+			}catch(Exception e) {
+				e.printStackTrace();
+				System.out.println("AdminDAO - settingPointOption error");
+				System.out.println("sql:"+sql);
+			}finally {
+				close(pstmt);
+			}
+			
+			return updateCount;
+		}
 		
 
 		//===========================재고 목록=============================
@@ -1155,5 +1397,21 @@ public class AdminDAO {
 			
 			return stockList;
 		}
+
+		
+
+		
+
+		
+
+		
+
+		
+
+		
+
+		
+
+		
 
 }

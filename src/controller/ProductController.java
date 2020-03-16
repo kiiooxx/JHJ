@@ -20,6 +20,7 @@ import product.action.ProductDetailAction;
 import product.action.ProductListAction;
 import product.action.ProductListBestNewAction;
 import product.action.OrderPageAction;
+import product.action.OrderProcessAction;
 import vo.ActionForward;
 
 /**
@@ -103,6 +104,13 @@ public class ProductController extends HttpServlet {
 			}
     	}else if(command.equals("/orderPage.pro")) {
 			action = new OrderPageAction();
+			try {
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+    	}else if(command.equals("/payProcess.pro")) {
+			action = new OrderProcessAction();
 			try {
 				forward = action.execute(request, response);
 			}catch(Exception e) {

@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,11 +10,8 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-
+<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <script>
-
-
-
 
 function sample6_execDaumPostcode() {
 	new daum.Postcode(
@@ -325,7 +322,7 @@ img{
 				</tr>
 				<tr>
 					<td>${totalMoney + deliPrice }원</td>
-					<td>-0원</td>
+					<td>-0(적립금 입력하고 사용하기 버튼 눌렀을 때 그 값이 여기로 들어온다)원</td>
 					<td>=${totalMoney + deliPrice}원</td>
 			</tbody>
 		</table>
@@ -354,7 +351,14 @@ img{
 						<input type="checkbox" id="termCheck3" name="termCheck3"/>결제정보를 확인하였으며, 구매진행에 동의합니다.<br>
 						<!-- <input type="submit" id="payStart" name="payStart" value="결제하기" onClick="javascript:chkForm(document.f);"/><br> -->
 						<a href="javascript:chkForm(document.f);">결제하기</a>
-						적립예정금액:()원
+						<fmt:formatNumber var="applyRate" value="${totalMoney * (pointMan.p_rate*0.01)}" pattern="#,###"/>
+						<br>구매확정 시, 
+						<c:choose>
+							<c:when test="${pointMan.p_mark eq 'per'}">구매금액의 ${pointMan.p_rate }</c:when>
+							<c:when test="${pointMan.p_mark eq 'won'}">${applyRate}원</c:when>
+							<c:when test="${pointMan.p_mark eq 'double'}">${applyRate}원(${pointMan.p_rate }%)</c:when>
+						</c:choose>
+						&nbsp;적립 예정
 					</td>	
 				
 				<div id="mutong" style="display: none;">	

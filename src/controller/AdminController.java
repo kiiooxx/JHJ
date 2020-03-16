@@ -16,8 +16,11 @@ import admin.action.CategoryListAction;
 import admin.action.CategoryManagementForm;
 import admin.action.CategorySubListAction;
 import admin.action.CategoryUpdateAction;
+import admin.action.ChangeStatusAction;
+import admin.action.MailManagementAction;
 import admin.action.MemberInfoAction;
 import admin.action.MemberListAction;
+import admin.action.OrderManageDetailAction;
 import admin.action.OrderManageListAction;
 import admin.action.ProducRegistAction;
 import admin.action.ProductDelAction;
@@ -28,6 +31,8 @@ import admin.action.ProductModifyFormAction;
 import admin.action.ProductOptionDelAction;
 import admin.action.StockListManagementAction;
 import admin.action.StockListModifyAction;
+import admin.action.PointManagementAction;
+import admin.action.PointManagementFormAction;
 import vo.ActionForward;
 
 /**
@@ -243,8 +248,53 @@ public class AdminController extends HttpServlet {
     	}
 		
 		//==================주문 관리======================
+		//주문검색페이지
     	else if(command.equals("/orderManageList.ad")) {
 			action = new OrderManageListAction();
+			try {
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+    	}
+		//주문내역상세
+    	else if(command.equals("/orderManageDetail.ad")) {
+			action = new OrderManageDetailAction();
+			try {
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+    	}
+		//배송상태변경
+    	else if(command.equals("/changeStatus.ad")) {
+			action = new ChangeStatusAction();
+			try {
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+    	}
+		//====================자동메일옵션=======================
+    	else if(command.equals("/mailManagement.ad")) {
+			action = new MailManagementAction();
+			try {
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+    	}
+		//================적립금 관리=======================
+    	else if(command.equals("/pointManagementForm.ad")) {
+			action = new PointManagementFormAction();
+			try {
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+    	}
+    	else if(command.equals("/pointManagement.ad")) {
+			action = new PointManagementAction();
 			try {
 				forward = action.execute(request, response);
 			}catch(Exception e) {

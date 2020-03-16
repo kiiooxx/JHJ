@@ -18,6 +18,15 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
+<style>
+table{
+	border: 1px solid;
+	width: 70%;
+}
+th, td{
+	border: 1px solid;
+}
+</style>
 <body>
 <form action="memberInfo.ad" method="post">
 <h2>회원 정보 조회</h2>
@@ -82,29 +91,31 @@
 
 <form action="orderList.ad" method="post">
 <h2>회원 주문 내역</h2>
-<table>
-	<tr>
-		<td>주문번호 </td><td>주문일자</td><td>주문상품정보</td><td>결제금액</td><td>상태</td>
-	</tr>
-	
+
+	<table>
+		<tr>
+			<td>주문번호 </td><td>주문일자</td><td>주문상품정보</td><td>결제금액</td><td>상태</td>
+		</tr>
 	<!-- 여기서부터 데이터 뿌려주기 -->
-	
-	<c:choose>
-		<c:when test="${order ne null }">
-			
+		<c:choose>
+		<c:when test="${!empty order}">
+		
 			<c:forEach items="${order }" var="order">
-			
 				<tr>
-					<td>${order.sel_num } </td>
+					<td><a href="orderManageDetail.ad?sel_num=${order.sel_num }&user_id=${member.user_id}">${order.sel_num }&nbsp;[상세내역보기]</a></td>
 					<td>${order.sel_date }</td>
-					<td>주문상품정보</td>
+					<td>${order.pro_name }</td>
 					<td>${order.final_price }원</td>
-					<td>${order.sel_status }</td>
-				</tr>
-			
+					<td>
+					<c:if test="${order.sel_status eq 'order_done' }">주문완료</c:if>
+					<c:if test="${order.sel_status eq 'check_paid' }">입금확인</c:if>
+					<c:if test="${order.sel_status eq 'send_pro' }">상품발송</c:if>
+					<c:if test="${order.sel_status eq 'deli_ing' }">배송중</c:if>
+					<c:if test="${order.sel_status eq 'deli_fin' }">배송완료</c:if>
+					<c:if test="${order.sel_status eq 'order_confirm' }">구매확정</c:if>
+					</td>
+				</tr>	
 			</c:forEach>
-		
-		
 		</c:when>
 		<c:otherwise>
 			<tr>
@@ -112,7 +123,6 @@
 				 주문 내역이 없습니다.
 				</td>
 			</tr>
-		
 		</c:otherwise>
 	</c:choose>
 	</table>

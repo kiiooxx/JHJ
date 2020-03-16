@@ -1,6 +1,8 @@
 package admin.action;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.StringTokenizer;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,7 +25,8 @@ public class OrderManageListAction implements Action {
 		String searchType = "user_id";
 		String searchText = "";
 		String orderDate = "";
-		String[] deliStatus = null;
+		String deliChecked = "";//주문상태 체크된 값을 String으로 받고
+		String[] deliStatus = null;//StringTokenizer로 나눈 문자들을 넣을 배열
 		
 		if(!(request.getParameter("searchType")==null || request.getParameter("searchType").trim().equals(""))) {
 			searchType = request.getParameter("searchType");
@@ -34,13 +37,27 @@ public class OrderManageListAction implements Action {
 		if(request.getParameter("orderDate") != null) {
 			orderDate = request.getParameter("orderDate");
 		}
-		if(request.getParameterValues("deliStatus") != null) {
-			deliStatus = request.getParameterValues("deliStatus");
+		if(request.getParameter("deliStatus") != null) {
 			
+			deliChecked = Arrays.toString(request.getParameterValues("deliStatus"));
+			//값을 그냥 받으면 배열 메모리 주소값([Ljava.lang.String@숫자)만 나와서 Arrays.toString()을 사용했습니다.
+			
+			//System.out.println("deliChecked:" + deliChecked);
+			
+			StringTokenizer st = new StringTokenizer(deliChecked,"[, ]");
+			//Arrays.toString()으로 얻은 문자열 형태가 [값, 값, 값] 이라서 StringTokenizer로 잘랐습니다.
+			
+			deliStatus = new String[st.countTokens()];
+			int i = 0;
+			
+			while(st.hasMoreTokens()) {
+				deliStatus[i++] = st.nextToken();	
+			}
+//			for(i=0; i < deliStatus.length; i++) {
+//				System.out.println("deliStatus["+i+"]:"+deliStatus[i]);
+//			}			
 		}
-		
-		
-		
+
 		int page = 1;
 		int limit = 10;
 		int limitPage = 5;

@@ -9,6 +9,10 @@ public class Order {
 	private int deli_price;
 	private int point_use;
 	private int final_price;
+	private String pro_name;
+	private int pro_count;
+	private char cancel_req;
+	private String user_name;
 	
 	public String getSel_num() {
 		return sel_num;
@@ -57,6 +61,31 @@ public class Order {
 	}
 	public void setFinal_price(int final_price) {
 		this.final_price = final_price;
+	}
+	
+	public String getPro_name() {
+		return pro_name;
+	}
+	public void setPro_name(String pro_name) {
+		this.pro_name = pro_name;
+	}
+	public int getPro_count() {
+		return pro_count;
+	}
+	public void setPro_count(int pro_count) {
+		this.pro_count = pro_count;
+	}
+	public char getCancel_req() {
+		return cancel_req;
+	}
+	public void setCancel_req(char cancel_req) {
+		this.cancel_req = cancel_req;
+	}
+	public String getUser_name() {
+		return user_name;
+	}
+	public void setUser_name(String user_name) {
+		this.user_name = user_name;
 	} 
 	
 }

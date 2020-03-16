@@ -6,7 +6,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import action.Action;
+import admin.action.SendMailAction;
 import member.svc.MemberJoinService;
+import point.action.PointAction;
+import point.svc.PointService;
 import vo.ActionForward;
 import vo.Member;
 
@@ -17,7 +20,7 @@ public class MemberJoinProAction implements Action {
 		ActionForward forward = null;
 		
 		Member member = new Member();
-		member.setUser_id(request.getParameter("id"));;
+		member.setUser_id(request.getParameter("id"));
 		member.setUser_pw(request.getParameter("pass"));
 		member.setUser_name(request.getParameter("name"));
 		member.setTel(request.getParameter("tel"));
@@ -32,6 +35,7 @@ public class MemberJoinProAction implements Action {
 		String birthD = request.getParameter("birthD");
 		member.setBirth(birthY+birthM+birthD);
 		
+		String user_id = request.getParameter("id");
 		
 		
 		//service 를 이용해서 DAO로 보낸다.
@@ -48,8 +52,14 @@ public class MemberJoinProAction implements Action {
 			out.println("</script>");
 			
 		}else {
+			SendMailAction sendMailAction = new SendMailAction();
+			sendMailAction.mailling(request, response);
+			PointService pointService = new PointService();
+			pointService.pointForNewmem(user_id);
+			//PointAction pointAction = new PointAction();
+			//pointAction.newMemPoint(request, response);
 			request.setAttribute("pagefile", "/main.jsp");
-			forward = new ActionForward("/template.jsp", false);
+			forward = new ActionForward("/main.pro", false);
 			
 		}
 		

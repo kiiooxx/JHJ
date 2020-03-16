@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <c:set var="pageInfo" value="${requestScope.pageInfo }" />
 <c:set var="orderList" value="${requestScope.orderList }" />
@@ -92,7 +93,7 @@ style>th {
 										<option value="user_id">주문자 아이디</option>
 										<option value="user_name">주문자 이름</option>
 										<option value="rec_name">수령인 이름</option>
-										<option value="order_num">주문번호</option>
+										<option value="sel_num">주문번호</option>
 										<option value="deli_num">배송번호</option>
 										<option value="pro_num">상품번호</option>
 								</select> <input type="text" name="searchText"></td>
@@ -111,12 +112,13 @@ style>th {
 							</tr>
 							<tr>
 								<th>주문상태</th>
-								<td><input type="checkbox" name="deliStatus"
-									value="order_done">주문완료 <input type="checkbox"
-									name="deliStatus" value="check_paid">입금확인 <input
-									type="checkbox" name="deliStatus" value="deli_ing">배송중
+								<td><input type="checkbox" name="deliStatus" value="order_done">주문완료 
+									<input type="checkbox" name="deliStatus" value="check_paid">입금확인
+									<input type="checkbox" name="deliStatus" value="send_pro">상품발송 
+									<input type="checkbox" name="deliStatus" value="deli_ing">배송중
 									<input type="checkbox" name="deliStatus" value="deli_fin">배송완료
 									<input type="checkbox" name="deliStatus" value="order_confirm">구매확정
+									<input type="checkbox" name="deliStatus" value="cancel_req">취소요청
 								</td>
 							</tr>
 						</table>
@@ -143,14 +145,26 @@ style>th {
 
 					<!-- 여기서부터 검색결과 -->
 
+	
+
 					<c:choose>
 						<c:when test="${orderList ne null }">
 							<c:forEach items="${orderList }" var="order">
 								<tr>
-									<td>${order.sel_date }</td>
-									<td>${order.sel_num }</td>
-									<td>${order.user_id }</td>
-									<td>상품명</td>
+									<td><a href="orderManageDetail.ad?sel_num=${order.sel_num }&user_id=${order.user_id}">${order.sel_date }</a></td>
+									<td><a href="orderManageDetail.ad?sel_num=${order.sel_num }&user_id=${order.user_id}">${order.sel_num }</a></td>
+									<td><a href="orderManageDetail.ad?sel_num=${order.sel_num }&user_id=${order.user_id}">${order.user_id }</a></td>
+									
+									<c:choose>
+									<c:when test="${order.pro_count > 1 }">
+									<td>${order.pro_name } 외 ${order.pro_count }개</td>
+									</c:when>
+									<c:otherwise>
+									<td>${order.pro_name }</td>
+									</c:otherwise>
+									</c:choose>
+									
+									
 									<td>${order.final_price }원</td>
 									<td>
 									<c:if test="${order.sel_status eq 'order_done' }">
@@ -158,6 +172,9 @@ style>th {
 									</c:if>
 									<c:if test="${order.sel_status eq 'check_paid' }">
 										입금확인
+									</c:if>
+									<c:if test="${order.sel_status eq 'send_pro' }">
+										상품발송
 									</c:if>
 									<c:if test="${order.sel_status eq 'deli_ing' }">
 										배송중
@@ -167,6 +184,12 @@ style>th {
 									</c:if>
 									<c:if test="${order.sel_status eq 'order_confirm' }">
 										구매확정
+									</c:if>
+									<c:if test="${fn:contains(order.cancel_req,'Y')}">
+										<span style="color:red">취소요청</span>
+									</c:if>
+									<c:if test="${fn:contains(order.cancel_req,'C')}">
+										취소완료
 									</c:if>
 									</td>
 								</tr>
@@ -187,8 +210,13 @@ style>th {
 							[이전]&nbsp;	
 						</c:when>
 						<c:otherwise>
-							<a
-								href="orderList.ad?page=${pageInfo.page-1 }&searchType=${searchType}&searchText=${searchText}&orderDate=${orderDate}&deliStatus=${deliStatus}">[이전]</a>&nbsp;	
+							<a href="orderList.ad?page=${pageInfo.page-1 }&searchType=${searchType}&searchText=${searchText}&orderDate=${orderDate}&deliStatus=
+							<c:if test="${deliStatus ne null }">
+								<c:forEach items="${deliStatus }" var="deliStatus">
+								${deliStatus}
+								</c:forEach>
+							</c:if>
+							">[이전]</a>&nbsp;	
 						</c:otherwise>
 					</c:choose>
 
@@ -200,8 +228,13 @@ style>th {
 								[${a}]				<!-- 현재페이지는 링크 안걸어도 되니까. -->
 							</c:when>
 							<c:otherwise>
-								<a
-									href="orderList.ad?page=${a}&searchType=${searchType}&searchText=${searchText}&orderDate=${orderDate}&deliStatus=${deliStatus}">[${a}]</a>
+								<a href="orderList.ad?page=${a}&searchType=${searchType}&searchText=${searchText}&orderDate=${orderDate}&deliStatus=
+									<c:if test="${deliStatus ne null }">
+										<c:forEach items="${deliStatus }" var="deliStatus">
+										${deliStatus}
+										</c:forEach>
+									</c:if>
+								">[${a}]</a>
 							</c:otherwise>
 						</c:choose>
 					</c:forEach>
@@ -210,8 +243,13 @@ style>th {
 							&nbsp;[다음]
 						</c:when>
 						<c:otherwise>
-							<a
-								href="orderList.ad?page=${pageInfo.page+1 }&searchType=${searchType}&searchText=${searchText}&orderDate=${orderDate}&deliStatus=${deliStatus}">[다음]</a>
+							<a href="orderList.ad?page=${pageInfo.page+1 }&searchType=${searchType}&searchText=${searchText}&orderDate=${orderDate}&deliStatus=
+							<c:if test="${deliStatus ne null }">
+								<c:forEach items="${deliStatus }" var="deliStatus">
+									${deliStatus}
+								</c:forEach>
+							</c:if>
+							">[다음]</a>
 						</c:otherwise>
 					</c:choose>
 				</section>

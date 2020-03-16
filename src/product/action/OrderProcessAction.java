@@ -59,7 +59,7 @@ public class OrderProcessAction implements Action {
 		if(!(request.getParameter("pro_det_num") == null || request.getParameter("pro_det_num").equals(""))) {
 			//장바구니에서 선택한 상품만 주문할 경우 
 			pro_det_num = request.getParameter("pro_det_num").split(",");
-			cartList = cartListService.getCheckedCartList(pro_det_num,request);
+			cartList = cartListService.getCheckedCartList(pro_det_num, request);
 			
 //			cartQtyService.delCartQty(pro_det_num, request);
 		}else {
@@ -122,8 +122,6 @@ public class OrderProcessAction implements Action {
 				orderDet2.add(orderDet);
 			}
 		}
-		
-		
 		
 		//결제정보 db에 넣을거
 		PayInfo payInfo = new PayInfo();

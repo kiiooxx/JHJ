@@ -68,7 +68,7 @@ public class OrderDAO {
 		int insertCount = 0;
 		
 		try {
-			pstmt = con.prepareStatement("INSERT INTO order_page VALUES (?,?,?,?,?,?,?,?)");
+			pstmt = con.prepareStatement("INSERT INTO order_page VALUES (?,?,?,?,?,?,?,?,'N')");
 			pstmt.setString(1, order.getSel_num());
 			pstmt.setString(2, order.getSel_date());
 			pstmt.setString(3, order.getUser_id());
@@ -77,6 +77,7 @@ public class OrderDAO {
 			pstmt.setInt(6, order.getDeli_price());
 			pstmt.setInt(7, order.getPoint_use());
 			pstmt.setInt(8, order.getFinal_price());
+			//9번째는 주문취소 디폴트값
 			insertCount = pstmt.executeUpdate();
 		}catch(Exception e) {
 			e.printStackTrace();

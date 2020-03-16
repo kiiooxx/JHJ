@@ -69,7 +69,7 @@ public class MemberInfoAction implements Action{
 			
 			
 			request.setAttribute("pagefile", "admin/member_info.jsp");
-			forward = new ActionForward("/template.jsp", false);
+			forward = new ActionForward("/admin_template.jsp", false);
 			
 		}
 
