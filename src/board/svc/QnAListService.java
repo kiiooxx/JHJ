@@ -44,4 +44,40 @@ public class QnAListService {
 		return qnaList;
 	}
 
+	//해당하는 상품번호의 리스트 불러오기
+	public int getListCount(int pro_num) {
+		// TODO Auto-generated method stub
+		int listCount = 0;
+		Connection con = getConnection();
+		BoardDAO boardDAO = BoardDAO.getInstance();
+		boardDAO.setConnection(con);
+		listCount = boardDAO.selectQnAListCount(pro_num);
+		close(con);
+		return listCount;
+	}
+
+	//id가 작성한 QnA 게시글 수 가져오기
+	public int getListCount(String id) {
+		// TODO Auto-generated method stub
+		int listCount = 0;
+		Connection con = getConnection();
+		BoardDAO boardDAO = BoardDAO.getInstance();
+		boardDAO.setConnection(con);
+		listCount = boardDAO.selectQnAListCount(id);
+		close(con);
+		return listCount;
+	}
+
+	//id가 작성한 QnA 게시글 목록 불러오기
+	public ArrayList<QnABean> getQnAList(String id, int page, int limit) {
+		// TODO Auto-generated method stub
+		ArrayList<QnABean> qnaList = null;
+		Connection con = getConnection();
+		BoardDAO boardDAO = BoardDAO.getInstance();
+		boardDAO.setConnection(con);
+		qnaList = boardDAO.selectQnAList(id, page, limit);
+		close(con);
+		return qnaList;
+	}
+
 }

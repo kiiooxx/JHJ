@@ -7,61 +7,53 @@
 <head>
 <meta charset="UTF-8">
 <title>MVC게시판</title>
-<style type="text/css">
-	#articleForm {
-		width : 700px;
-		height : 500px;
-		border : 1px solid #6c7a89;
-		margin : auto;
-		background : #6c7a89;
-		color : #f3f1ef;
+<script>
+//삭제 버튼 눌렀을 때
+function del() {
+	if(confirm('정말 삭제하시겠습니까?')) {
+		location.href="notice_boardDeletePro.bo?board_num=${notice.notice_num}&page=${nowPage}";
+	}else {
+		return false;
 	}
-	
-	h2 {
-		text-align : center;
-	}
-	
-	#basicInfoArea {
-		height : 40px;
-	}
-	
-	#articleContentArea {
-		background : #f3f1ef;
-		margin-top : 20px;
-		height : 350px;
-		text-align : center;
-		overflow : auto;
-		color : #6c7a89;
-	}
-	
-	#commandList {
-		margin : auto;
-		width : 500px;
-		text-align : center;
-	}
-</style>
+}
+</script>
 </head>
 <body>
-<!-- 게시판 수정 -->
-<section id="articleForm">
-	<h2>글 내용 상세보기</h2>
-	<section id="basicInfoArea">
-		제 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;목 :
-	${notice.notice_title}<br>
+<div class="blank">
+</div>
+<div id="join_form">
+	<div class="join_table">
+		<table>
+			<tr>
+				<th>SUBJECT</th>
+				<td>${notice.notice_title}</td>
+			</tr>
+			<tr>
+				<th>WRITER</th>
+				<td>관리자</td>
+			</tr>
+			<tr>
+				<th>DATE</th>
+				<td>${notice.notice_date }</td>
+			</tr>
+			<tr>
+				<th colspan="2">
+					${notice.notice_content}
+				</th>
+			</tr>
+		</table>
 		
-	</section>
-	<section id="articleContentArea">
-		${notice.notice_content}
-	</section>
-</section>
-<section id="commandList">
-	<a href="notice_boardModifyForm.bo?board_num=${notice.notice_num}&page=${nowPage}">[수정]</a>
-	<a href="notice_boardDeletePro.bo?board_num=${notice.notice_num}&page=${nowPage}">[삭제]</a>
-	
-	<a href="notice_boardList.bo?page=${nowPage}">[목록]</a>
-	&nbsp;&nbsp;	
-</section>
-
+		<div class="order_button_area">
+			<p>
+				<c:if test="${grade == 'A'.charAt(0) }">
+					<a href="notice_boardModifyForm.bo?board_num=${notice.notice_num}&page=${nowPage}" class="b">MODIFY</a>
+					<a href="#" class="b" onclick="del()">DELETE</a>
+				</c:if>
+				<a href="notice_boardList.bo?page=${nowPage}" class="w">LIST</a>
+			</p>
+		</div>
+	</div>
+</div>
 </body>
 </html>
 

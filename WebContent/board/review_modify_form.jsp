@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
@@ -85,8 +86,6 @@ $(document).ready(function() {
 	    $('#lengthCheck').text(len);    //글자수 실시간 카운팅
 	});
 	
-	
-	
 });
 
 var chkId = false;
@@ -107,7 +106,10 @@ function chkForm(f) {
 	
 }
 
-
+//파일 수정 버튼을 누르면
+function file_modify() {
+	$('#file_add').show();
+}
 </script>
 <style>
 	.editor th{
@@ -116,6 +118,9 @@ function chkForm(f) {
 		padding : 0px;
 	}
 	
+	#file_add {
+		display : none;
+	}
 </style>
 </head>
 <body>
@@ -123,58 +128,67 @@ function chkForm(f) {
 </div>
 <jsp:include page="/common/loginCheck.jsp"/>
 <div id="join_form">
-	<form action="qnaRegist.bo" name="f" method="post" enctype="multipart/form-data">
+	<form action="reviewModify.bo" name="f" method="post" enctype="multipart/form-data">
+		<input type="hidden" name="pro_num" value="${prd.pro_num }"/>
+		<!-- 상품 정보 -->
+		<div class="prd_info">
+			<p class="prdThumb">
+				<a href="#"><img src="<%= request.getContextPath() %>/upload/${prd.pro_photo }"></a>
+			</p>
+			<div class="prd_name">
+				<h3><a href="productDetail.pro?pro_num=${prd.pro_num }">${prd.pro_name }</a></h3>
+				<fmt:formatNumber var="price" value="${prd.pro_price}" pattern="#,###"/>
+				<p>${price }</p>
+			</div>
+		</div>
+		
 		<!-- 글 쓰기 폼 -->
 		<div class="join_table">
+			<input type="hidden" name="rev_num" value="${review.rev_num }"/>
 			<table>
 				<tr>
 					<th>SUBJECT</th>
-					<td><input type="text" name="subject" id="subject" style="width:60%">(<span id="lengthCheck">0</span>/100)</td>
+					<td><input type="text" name="subject" id="subject" style="width:60%" value="${review.rev_subject }">(<span id="lengthCheck">0</span>/100)</td>
 				</tr>
 				<tr>
 					<th>WRITER</th>
-					<td><input type="text" name="user_id" value="${id }" readonly></td>
+					<td><input type="text" name="user_id" value="${review.user_id }" readonly></td>
 				</tr>
 				<tr>
-					<th>문의구분</th>
+					<th>SCORE</th>
 					<td>
-						<select name="qna_type" id="qna_type">
-							<option value="product_qna">상품문의</option>
-							<option value="delivery_qna">배송문의</option>
-							<option value="etc_qna">기타문의</option>
-						</select>
+						<div class="starRev">
+						  <span class="starR ${review.score >= 1 ? 'on' : ''}">1</span>
+						  <span class="starR ${review.score >= 2 ? 'on' : ''}">2</span>
+						  <span class="starR ${review.score >= 3 ? 'on' : ''}">3</span>
+						  <span class="starR ${review.score >= 4 ? 'on' : ''}">4</span>
+						  <span class="starR ${review.score >= 5 ? 'on' : ''}">5</span>
+						  (<span id="star_text">${review.score }</span>)
+						  <input type="hidden" name="score" id="score" value="${review.score }"/>
+						</div>
 					</td>
-				</tr>
-				<tr>
-					<th>공개여부</th>
-					<td>
-						<input type="radio" name="qna_open" value="Y" checked>공개
-						<input type="radio" name="qna_open" value="N">비공개
-					</td>
-				</tr>
-				<tr>
-					<th>E-MAIL</th>
-					<td><input type="text" name="email" id="email" required /></td>
 				</tr>
 				<tr class="editor">
 					<th colspan="2" style="padding:0px;">
-						<textarea name="content" id="summernote">
-							성함 : <br>
-							연락처 : <br>
-							문의 내용 : <br>
-						</textarea>
+						<textarea name="content" id="summernote">${review.rev_content }</textarea>
 					</th>
 				</tr>
 				
 				<tr>
 					<th>ATTACH FILE</th>
-					<td><input type="file" name="qna_file" accept="image/gif, image/jpeg, image/png"></td>
+					<td>
+						<p id="file_info">
+							${review.rev_photo }
+							<input type="hidden" name="rev_photo2" value="${review.rev_photo }"/>
+							<input type="button" value="수정" onclick="file_modify()"/>
+						</p>
+						<p id="file_add">
+							<input type="file" name="rev_photo" accept="image/gif, image/jpeg, image/png">
+						</p>
+					</td>
 				</tr>
+				
 			</table>
-			<!-- 상품번호 : 상품 상세 페이지에서 문의 글쓰기를 눌렀을 경우 -->
-			<input type="hidden" name="pro_num" value="${prd.pro_num }"/>
-			<!-- 주문번호 : 마이페이지 -> 주문내역 -> 해당 주문건에 대한 문의하기를 눌렀을 경우 -->
-			<input type="hidden" name="sel_num" value="${sel_num }"/>
 		</div>
 		<div class="jo_btn">
 			<a href="javascript:chkForm(document.f);">등록</a>&nbsp;&nbsp;

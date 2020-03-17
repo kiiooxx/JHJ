@@ -16,6 +16,7 @@ import member.action.MyInfoModAction;
 import member.action.MyInfoQuitAction;
 import member.action.IdCheckAction;
 import member.action.MemberJoinProAction;
+import member.action.MyBoardAction;
 import member.action.MyInfoAction;
 import vo.ActionForward;
 
@@ -96,6 +97,20 @@ public class MemberController extends HttpServlet {
     		}	
     		
     	}
+		
+		
+		// 내가 쓴 게시판 글 목록 보기
+		else if(command.equals("/myboard.mem")){
+    		action = new MyBoardAction();
+    		try {
+    			forward = action.execute(request, response);
+    		}catch(Exception e) {
+    			e.printStackTrace();
+    		}	
+    		
+    	}
+		
+		
 		if (forward != null) {
 
 			if (forward.isRedirect()) {

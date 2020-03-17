@@ -16,8 +16,6 @@
 </style>
 </head>
 <body>
-<div class="blank">
-</div>
 
 <!-- 문의 게시판 -->
 	<div id="prdReview">

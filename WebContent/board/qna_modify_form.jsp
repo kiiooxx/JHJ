@@ -107,7 +107,10 @@ function chkForm(f) {
 	
 }
 
-
+//파일 수정 버튼을 누르면
+function file_modify() {
+	$('#file_add').show();
+}
 </script>
 <style>
 	.editor th{
@@ -123,58 +126,65 @@ function chkForm(f) {
 </div>
 <jsp:include page="/common/loginCheck.jsp"/>
 <div id="join_form">
-	<form action="qnaRegist.bo" name="f" method="post" enctype="multipart/form-data">
+	<form action="qnaModify.bo" name="f" method="post" enctype="multipart/form-data">
 		<!-- 글 쓰기 폼 -->
 		<div class="join_table">
+			<input type="hidden" name="qna_num" value="${qna.qna_num }"/>
+			<input type="hidden" name="pro_num" value="${qna.pro_num }"/>
+			<input type="hidden" name="sel_num" value="${qna.sel_num }"/>
+			<input type="hidden" name="qna_step"	value="${qna.qna_step }"/>
 			<table>
 				<tr>
 					<th>SUBJECT</th>
-					<td><input type="text" name="subject" id="subject" style="width:60%">(<span id="lengthCheck">0</span>/100)</td>
+					<td><input type="text" name="subject" id="subject" style="width:60%" value="${qna.qna_title }">(<span id="lengthCheck">0</span>/100)</td>
 				</tr>
 				<tr>
 					<th>WRITER</th>
-					<td><input type="text" name="user_id" value="${id }" readonly></td>
+					<td><input type="text" name="user_id" value="${qna.user_id }" readonly></td>
 				</tr>
 				<tr>
 					<th>문의구분</th>
 					<td>
 						<select name="qna_type" id="qna_type">
-							<option value="product_qna">상품문의</option>
-							<option value="delivery_qna">배송문의</option>
-							<option value="etc_qna">기타문의</option>
+							<option value="product_qna" ${qna.qna_type == 'product_qna' ? 'selected' : '' }>상품문의</option>
+							<option value="delivery_qna" ${qna.qna_type == 'delivery_qna' ? 'selected' : '' }>배송문의</option>
+							<option value="etc_qna" ${qna.qna_type == 'etc_qna' ? 'selected' : '' }>기타문의</option>
 						</select>
 					</td>
 				</tr>
 				<tr>
 					<th>공개여부</th>
 					<td>
-						<input type="radio" name="qna_open" value="Y" checked>공개
-						<input type="radio" name="qna_open" value="N">비공개
+						<input type="radio" name="qna_open" value="Y" ${qna.qna_open == 'Y'.charAt(0) ? 'checked' : '' }>공개
+						<input type="radio" name="qna_open" value="N" ${qna.qna_open == 'N'.charAt(0) ? 'checked' : '' }>비공개
 					</td>
 				</tr>
 				<tr>
 					<th>E-MAIL</th>
-					<td><input type="text" name="email" id="email" required /></td>
+					<td><input type="text" name="email" id="email" value="${qna.qna_email }" required/></td>
 				</tr>
 				<tr class="editor">
 					<th colspan="2" style="padding:0px;">
 						<textarea name="content" id="summernote">
-							성함 : <br>
-							연락처 : <br>
-							문의 내용 : <br>
+							${qna.qna_content }
 						</textarea>
 					</th>
 				</tr>
 				
 				<tr>
 					<th>ATTACH FILE</th>
-					<td><input type="file" name="qna_file" accept="image/gif, image/jpeg, image/png"></td>
+					<td>
+						<p id="file_info">
+							${review.rev_photo }
+							<input type="hidden" name="qna_file2" value="${qna.qna_file }"/>
+							<input type="button" value="수정" onclick="file_modify()"/>
+						</p>
+						<p id="file_add">
+							<input type="file" name="qna_file" accept="image/gif, image/jpeg, image/png">
+						</p>
+					</td>
 				</tr>
 			</table>
-			<!-- 상품번호 : 상품 상세 페이지에서 문의 글쓰기를 눌렀을 경우 -->
-			<input type="hidden" name="pro_num" value="${prd.pro_num }"/>
-			<!-- 주문번호 : 마이페이지 -> 주문내역 -> 해당 주문건에 대한 문의하기를 눌렀을 경우 -->
-			<input type="hidden" name="sel_num" value="${sel_num }"/>
 		</div>
 		<div class="jo_btn">
 			<a href="javascript:chkForm(document.f);">등록</a>&nbsp;&nbsp;

@@ -1,4 +1,4 @@
-package admin.action;
+package board.action;
 
 import java.io.PrintWriter;
 
@@ -6,32 +6,30 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import action.Action;
-import admin.svc.ProductDelService;
+import board.svc.ReivewDeleteService;
 import vo.ActionForward;
 
-public class ProductDelAction implements Action {
+public class ReviewDeleteAction implements Action {
 
 	@Override
 	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		// TODO Auto-generated method stub
-		String pro_num[] = request.getParameter("pro_num").split(",");
-		ProductDelService productDelService = new ProductDelService();
-		boolean isDeleteSuccess = productDelService.deleteProduct(pro_num);
-		ActionForward forward = null;
+		int rev_num = Integer.parseInt(request.getParameter("rev_num"));
+		ReivewDeleteService reviewDeleteService = new ReivewDeleteService();
+		boolean isDeleteSuccess = reviewDeleteService.deleteReview(rev_num);
 		
 		if(!isDeleteSuccess) {
 			response.setContentType("text/html;charset=UTF-8");
 			PrintWriter out = response.getWriter();
 			out.println("<script>");
-			out.println("alert('상품 삭제 실패!')");
-			out.println("history.back()");
+			out.println("alert('Fail');");
+			out.println("history.back();");
 			out.println("</script>");
 			out.close();
-		}else {
-			 forward = new ActionForward("productListManagement.ad", true);
 		}
-		return forward;
 		
+		ActionForward forward = new ActionForward("myboard.mem", true);
+		return forward;
 	}
 
 }

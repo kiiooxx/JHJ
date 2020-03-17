@@ -71,38 +71,40 @@
 		</div>
 		
 		<div id="pageList">
-			<ol>
-			<c:choose>
-				<c:when test="${pageInfo.page <= 1 }">
-					<li> < </li>
-				</c:when>
-				<c:otherwise>
-					<li><a href="productList.pro?page=${pageInfo.page-1 }"> < </a></li>
-				</c:otherwise>
-			</c:choose>
-			
-			
-			<c:forEach var="pglist" begin="${pageInfo.startPage }" end="${pageInfo.endPage }" step="1" varStatus="a">
+			<c:if test="${pageInfo.endPage > 0}">
+				<ol>
 				<c:choose>
-					<c:when test="${a.count == pageInfo.page }">
-						<li>[${a.count }]</li>
+					<c:when test="${pageInfo.page <= 1 }">
+						<li> < </li>
 					</c:when>
 					<c:otherwise>
-						<li><a href="productList.pro?page=${a.count }">[${a.count }]</a></li>
+						<li><a href="productList.pro?page=${pageInfo.page-1 }"> < </a></li>
 					</c:otherwise>
 				</c:choose>
-			</c:forEach>
-			
-			
-			<c:choose>
-				<c:when test="${pageInfo.page>=pageInfo.maxPage }">
-					<li> > </li>
-				</c:when>
-				<c:otherwise>
-					<li><a href="productList.pro?page=${pageInfo.page+1 }"> > </a></li>
-				</c:otherwise>
-			</c:choose>
-			</ol>
+				
+				
+				<c:forEach var="pglist" begin="${pageInfo.startPage }" end="${pageInfo.endPage }" step="1" varStatus="a">
+					<c:choose>
+						<c:when test="${a.count == pageInfo.page }">
+							<li>[${a.count }]</li>
+						</c:when>
+						<c:otherwise>
+							<li><a href="productList.pro?page=${a.count }">[${a.count }]</a></li>
+						</c:otherwise>
+					</c:choose>
+				</c:forEach>
+				
+				
+				<c:choose>
+					<c:when test="${pageInfo.page>=pageInfo.maxPage }">
+						<li> > </li>
+					</c:when>
+					<c:otherwise>
+						<li><a href="productList.pro?page=${pageInfo.page+1 }"> > </a></li>
+					</c:otherwise>
+				</c:choose>
+				</ol>
+			</c:if>
 		</div>
 	</div>
 </body>

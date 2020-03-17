@@ -9,7 +9,14 @@
 <title>Insert title here</title>
 
 <script type="text/javascript">
-
+//삭제 버튼 눌렀을 때
+function del() {
+	if(confirm('정말 삭제하시겠습니까?')) {
+		location.href='qnaDelete.bo?qna_num='+${qna.qna_num};
+	}else {
+		return false;
+	}
+}
 
 </script>
 <style>
@@ -104,6 +111,10 @@
 		</div>
 		<div class="order_button_area">
 			<p>
+				<c:if test="${qna.user_id == id }">
+					<a href="qnaModifyForm.bo?qna_num=${qna.qna_num }&pro_num=${prd.pro_num}" class="b">MODIFY</a>
+					<a href="#" class="b" onclick="del()">DELETE</a>
+				</c:if>
 				<a href="qnaList.bo" class="w">LIST</a>
 			</p>
 		</div>

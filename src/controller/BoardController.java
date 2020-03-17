@@ -16,12 +16,18 @@ import board.action.Notice_BoardListAction;
 import board.action.Notice_BoardModifyAction;
 import board.action.Notice_BoardModifyFormAction;
 import board.action.Notice_BoardWriteProAction;
+import board.action.QnADeleteAction;
 import board.action.QnADetailAction;
 import board.action.QnAListAction;
+import board.action.QnAModifyAction;
+import board.action.QnAModifyFormAction;
 import board.action.QnARegistAction;
 import board.action.QnAWriteFormAction;
+import board.action.ReviewDeleteAction;
 import board.action.ReviewDetailAction;
 import board.action.ReviewListAction;
+import board.action.ReviewModifyAction;
+import board.action.ReviewModifyFormAction;
 import board.action.ReviewRegistAction;
 import board.action.ReviewWriteFormAction;
 import vo.ActionForward;
@@ -93,7 +99,36 @@ public class BoardController extends HttpServlet {
 				e.printStackTrace();
 			}
     	}
-		//5. QnA 게시판 등록 폼
+		//5. 리뷰 글 삭제하는 액션
+		else if(command.equals("/reviewDelete.bo")) {
+			action = new ReviewDeleteAction();
+			try {
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+    	}
+		//6. 리뷰 글 수정 폼
+		else if(command.equals("/reviewModifyForm.bo")) {
+			action = new ReviewModifyFormAction();
+			try {
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+    	}
+		//7. 리뷰 글 수정하는 액션
+		else if(command.equals("/reviewModify.bo")) {
+			action = new ReviewModifyAction();
+			try {
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+    	}
+		
+		//====================QnA====================
+		//1. QnA 게시판 등록 폼
 		else if(command.equals("/qnaWriteForm.bo")) {
 			action = new QnAWriteFormAction();
 			try {
@@ -102,7 +137,7 @@ public class BoardController extends HttpServlet {
 				e.printStackTrace();
 			}
     	}
-		//6. QnA 게시판 등록 액션
+		//2. QnA 게시판 등록 액션
 		else if(command.equals("/qnaRegist.bo")) {
 			action = new QnARegistAction();
 			try {
@@ -111,7 +146,7 @@ public class BoardController extends HttpServlet {
 				e.printStackTrace();
 			}
     	}
-		//7. QnA 리스트 목록 가져오는 액션
+		//3. QnA 리스트 목록 가져오는 액션
 		else if(command.equals("/qnaList.bo")) {
 			action = new QnAListAction();
 			try {
@@ -120,7 +155,7 @@ public class BoardController extends HttpServlet {
 				e.printStackTrace();
 			}
     	}
-		//8. QnA 게시글 상세 보기 액션
+		//4. QnA 게시글 상세 보기 액션
 		else if(command.equals("/qnaDetail.bo")) {
 			action = new QnADetailAction();
 			try {
@@ -129,33 +164,70 @@ public class BoardController extends HttpServlet {
 				e.printStackTrace();
 			}
     	}
+		//5. QnA 글 삭제하는 액션
+		else if(command.equals("/qnaDelete.bo")) {
+			action = new QnADeleteAction();
+			try {
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+    	}
+		//6. QnA 글 수정 폼
+		else if(command.equals("/qnaModifyForm.bo")) {
+			action = new QnAModifyFormAction();
+			try {
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+    	}
+		//7. QnA 글 수정하는 액션
+		else if(command.equals("/qnaModify.bo")) {
+			action = new QnAModifyAction();
+			try {
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+    	}
 		
+		//====================공지사항====================
+		//1. 공지사항 등록 폼
 		if(command.equals("/notice_boardWriteForm.bo")) {
     		request.setAttribute("pagefile", "/board/notice_board_write.jsp");
     		forward = new ActionForward("/template.jsp",false);
     		
-    	}else if(command.equals("/notice_boardWritePro.bo")) {
+    	}
+		//2. 공지사항 등록 액션
+		else if(command.equals("/notice_boardWritePro.bo")) {
     		action = new Notice_BoardWriteProAction();
     		try {
     			forward = action.execute(request, response);
     		}catch(Exception e) {
     			e.printStackTrace();
     		}
-    	}else if(command.equals("/notice_boardList.bo")) {
+    	}
+		//3. 공지사항 리스트
+		else if(command.equals("/notice_boardList.bo")) {
     		action = new Notice_BoardListAction();
     		try {
     			forward = action.execute(request, response);
     		}catch(Exception e) {
     			e.printStackTrace();
     		}
-    	}else if(command.equals("/notice_boardDetail.bo")) {
+    	}
+		//4. 공지사항 상세
+		else if(command.equals("/notice_boardDetail.bo")) {
     		action = new Notice_BoardDetailAction();
     		try {
     			forward = action.execute(request, response);
     		}catch(Exception e) {
     			e.printStackTrace();
     		}
-    	}else if(command.equals("/notice_boardModifyForm.bo")) {
+    	}
+		//5. 공지사항 수정 폼
+		else if(command.equals("/notice_boardModifyForm.bo")) {
     		action = new Notice_BoardModifyFormAction();
     		try {
     			forward = action.execute(request, response);
@@ -163,7 +235,9 @@ public class BoardController extends HttpServlet {
     			e.printStackTrace();
     		}
     	
-    	}else if(command.equals("/notice_boardModify.bo")) {
+    	}
+		//공지사항 수정 액션
+		else if(command.equals("/notice_boardModify.bo")) {
     		action = new Notice_BoardModifyAction();
     		try {
     			forward = action.execute(request, response);
@@ -171,7 +245,9 @@ public class BoardController extends HttpServlet {
     			e.printStackTrace();
     		}
  
-    	}else if(command.equals("/notice_boardDeletePro.bo")) {
+    	}
+		//공지사항 삭제 액션
+		else if(command.equals("/notice_boardDeletePro.bo")) {
     		action = new Notice_BoardDeleteProAction();
     		try {
     			forward = action.execute(request, response);
@@ -179,6 +255,7 @@ public class BoardController extends HttpServlet {
     			e.printStackTrace();
     		}
     	}
+		
 		//3.포워딩
 		if(forward != null) {
 			if(forward.isRedirect()) {

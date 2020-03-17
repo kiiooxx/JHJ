@@ -122,7 +122,6 @@ $(document).ready(function(){
 		return false;
 	});
 	
-	
 	$('body').on('change', '[id^=qnt_]', function() {
 		var q = $(this).val();
 		var id = $(this).attr("id")
@@ -234,15 +233,12 @@ $(document).ready(function(){
 		var id2 = '#rev_content' + num;
 		
 		var content = $(id2);
-		var content2 = $('.like'+num);
 		
 		// rev_content 가 화면상에 보일때는 위로 보드랍게 접고 아니면 아래로 보드랍게 펼치기
 		if( content.is(":visible") ){
 			content.slideUp();
-			content2.slideUp();
 		}else{
 			content.slideDown();
-			content2.slideDown();
 		}
 		
 		return false;
@@ -452,6 +448,44 @@ $(document).ready(function(){
 					<a href="reviewWriteForm.bo?pro_num=${prd.pro_num }" class="b">WRITE</a>
 				</p>
 			</div>
+			
+			<!-- 페이지 리스트 -->
+			<div id="pageList">
+				<c:if test="${reviewPageInfo.endPage > 0}">
+					<ol>
+					<c:choose>
+						<c:when test="${reviewPageInfo.page <= 1 }">
+							<li> < </li>
+						</c:when>
+						<c:otherwise>
+							<li><a href="productList.pro?page=${reviewPageInfo.page-1 }"> < </a></li>
+						</c:otherwise>
+					</c:choose>
+					
+					
+					<c:forEach var="pglist" begin="${reviewPageInfo.startPage }" end="${reviewPageInfo.endPage }" step="1" varStatus="a">
+						<c:choose>
+							<c:when test="${a.count == reviewPageInfo.page }">
+								<li>[${a.count }]</li>
+							</c:when>
+							<c:otherwise>
+								<li><a href="productList.pro?page=${a.count }">[${a.count }]</a></li>
+							</c:otherwise>
+						</c:choose>
+					</c:forEach>
+					
+					
+					<c:choose>
+						<c:when test="${reviewPageInfo.page>=reviewPageInfo.maxPage }">
+							<li> > </li>
+						</c:when>
+						<c:otherwise>
+							<li><a href="productList.pro?page=${reviewPageInfo.page+1 }"> > </a></li>
+						</c:otherwise>
+					</c:choose>
+					</ol>
+				</c:if>
+			</div>
 		</div>
 	</div>
 	
@@ -526,6 +560,43 @@ $(document).ready(function(){
 					<a href="qnaList.bo" class="w">LIST</a>
 					<a href="qnaWriteForm.bo?pro_num=${prd.pro_num }" class="b">WRITE</a>
 				</p>
+			</div>
+			<!-- 페이지 리스트 -->
+			<div id="pageList">
+				<c:if test="${qnaPageInfo.endPage > 0}">
+					<ol>
+					<c:choose>
+						<c:when test="${qnaPageInfo.page <= 1 }">
+							<li> < </li>
+						</c:when>
+						<c:otherwise>
+							<li><a href="productList.pro?page=${qnaPageInfo.page-1 }"> < </a></li>
+						</c:otherwise>
+					</c:choose>
+					
+					
+					<c:forEach var="pglist" begin="${qnaPageInfo.startPage }" end="${qnaPageInfo.endPage }" step="1" varStatus="a">
+						<c:choose>
+							<c:when test="${a.count == qnaPageInfo.page }">
+								<li>[${a.count }]</li>
+							</c:when>
+							<c:otherwise>
+								<li><a href="productList.pro?page=${a.count }">[${a.count }]</a></li>
+							</c:otherwise>
+						</c:choose>
+					</c:forEach>
+					
+					
+					<c:choose>
+						<c:when test="${qnaPageInfo.page>=qnaPageInfo.maxPage }">
+							<li> > </li>
+						</c:when>
+						<c:otherwise>
+							<li><a href="productList.pro?page=${qnaPageInfo.page+1 }"> > </a></li>
+						</c:otherwise>
+					</c:choose>
+					</ol>
+				</c:if>
 			</div>
 		</div>
 	</div>

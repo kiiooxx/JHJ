@@ -9,15 +9,9 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<style>
-	.rev_thumb {
-		width : 50px;
-	}
-</style>
+
 </head>
 <body>
-<div class="blank">
-</div>
 
 <!-- 리뷰 게시판 -->
 	<div id="prdReview">
