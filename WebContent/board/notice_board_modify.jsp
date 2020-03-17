@@ -4,16 +4,16 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-
-<!-- include libraries(jQuery, bootstrap) -->
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-
-    
+<title>MVC게시판</title>
+<script language="javascript">
+	function modifyboard() {
+		modifyform.submit();
+	}
+</script>
 <style type="text/css">
 	#writeForm {
 		width : 500px;
@@ -50,31 +50,29 @@
 </style>
 </head>
 <body>
-	<!-- 게시판 등록 -->
-	<section id="writeForm">
-		<h2>공지 게시판 글 등록</h2>
-		<form action="notice_boardWritePro.bo" method="post" name="boardform">
-			<form action="notice_boardWritePro.bo" method="post" name="boardform">
+<!-- 게시판 등록 -->
+<section id="writeForm">
+	<h2>게시판 글 수정</h2>
+	<form action="notice_boardModify.bo" method="post" name="modifyform">
+	<input type = "hidden" name="board_num" value="${article.notice_num}"/>
+		
 			<table>
 				
 				<tr>
 					<td class="td_left"><label for="notice_title">제 목</label></td>
-					<td class="td_right"><input type="text" name="notice_title" id="notice_title" required="required"/></td>
+					<td class="td_right"><input type="text" name="notice_title" id="notice_title" required="required" value="${article.notice_title}"/></td>
 				</tr>
 				<tr>
 					<td class="td_left"><label for="notice_content">내 용</label></td>
-					<td class="td_right"><textarea name="notice_content" id="notice_content" cols="40" rows="15" required="required"></textarea></td>
+					<td class="td_right"><textarea name="notice_content" id="notice_content" cols="40" rows="15" required="required" >${article.notice_content}</textarea></td>
 				</tr>
 				
 			</table>
-			<section id="commandCell">
-				<input type="submit" value="등록">&nbsp;&nbsp;
-				<input type="reset" value="다시쓰기"/>
-			</section>
-		</form>
-			<section id="commandCell">
-				<input type="submit" value="등록">&nbsp;&nbsp;
-				<input type="reset" value="다시쓰기"/>
-			</section>
-		</form>
-	</section>
+		<section id="commandCell">
+			<a href="javascript:modifyboard()">[수정]</a>&nbsp;&nbsp;
+			<a href="javascript:history.go(-1)">[뒤로]</a>
+		</section>
+	</form>
+</section>
+</body>
+</html>

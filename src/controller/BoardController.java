@@ -13,8 +13,8 @@ import action.Action;
 import board.action.Notice_BoardDeleteProAction;
 import board.action.Notice_BoardDetailAction;
 import board.action.Notice_BoardListAction;
+import board.action.Notice_BoardModifyAction;
 import board.action.Notice_BoardModifyFormAction;
-import board.action.Notice_BoardModifyProAction;
 import board.action.Notice_BoardWriteProAction;
 import board.action.QnADetailAction;
 import board.action.QnAListAction;
@@ -162,21 +162,16 @@ public class BoardController extends HttpServlet {
     		}catch(Exception e) {
     			e.printStackTrace();
     		}
-    	}else if(command.equals("/notice_boardModifyPro.bo")) {
-    		action = new Notice_BoardModifyProAction();
+    	
+    	}else if(command.equals("/notice_boardModify.bo")) {
+    		action = new Notice_BoardModifyAction();
     		try {
     			forward = action.execute(request, response);
     		}catch(Exception e) {
     			e.printStackTrace();
     		}
-    	}else if(command.equals("/notice_boardDeleteForm.bo")) {
-    		String nowPage = request.getParameter("page");
-    		request.setAttribute("page", nowPage);
-    		int board_num = Integer.parseInt(request.getParameter("board_num"));
-    		request.setAttribute("board_num", board_num);
-    		forward = new ActionForward("/board/notice_board_delete.jsp",true);
  
-    	}else if(command.equals("/boardDeletePro.bo")) {
+    	}else if(command.equals("/notice_boardDeletePro.bo")) {
     		action = new Notice_BoardDeleteProAction();
     		try {
     			forward = action.execute(request, response);

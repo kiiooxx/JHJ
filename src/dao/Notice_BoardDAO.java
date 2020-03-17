@@ -90,27 +90,20 @@ public class Notice_BoardDAO {
 	public Notice_BoardBean selectArticle(int notice_num) {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		Notice_BoardBean boardBean = null;
+		Notice_BoardBean notice_Bean = null;
 		
 		try {
-			pstmt = con.prepareStatement("select * from board where notice_num = ?");
+			pstmt = con.prepareStatement("select * from notice where notice_num = ?");
 			pstmt.setInt(1, notice_num);
 			
 			rs = pstmt.executeQuery();
 			
 			if(rs.next()) {
-				boardBean = new Notice_BoardBean();
-				boardBean.setNotice_num(rs.getInt("BOARD_NUM"));
-				boardBean.setNotice_title(rs.getString("BOARD_NAME"));
-				boardBean.setNotice_content(rs.getString("BOARD_SUBJECT"));
-				boardBean.setNotice_date(rs.getString("BOARD_CONTENT"));
-//				boardBean.setBOARD_FILE(rs.getString("BOARD_FILE"));
-//				boardBean.setBOARD_RE_REF(rs.getInt("BOARD_RE_REF"));
-//				boardBean.setBOARD_RE_LEV(rs.getInt("BOARD_RE_LEV"));
-//				boardBean.setBOARD_RE_SEQ(rs.getInt("BOARD_RE_SEQ"));
-//				boardBean.setBOARD_READCOUNT(rs.getInt("BOARD_READCOUNT"));
-//				boardBean.setBOARD_RE_COUNT(rs.getInt("BOARD_RE_COUNT"));
-//				boardBean.setBOARD_DATE(rs.getDate("BOARD_DATE"));
+				notice_Bean = new Notice_BoardBean();
+				notice_Bean.setNotice_num(rs.getInt("NOTICE_NUM"));
+				notice_Bean.setNotice_title(rs.getString("NOTICE_TITLE"));
+				notice_Bean.setNotice_content(rs.getString("NOTICE_CONTENT"));
+				notice_Bean.setNotice_date(rs.getString("NOTICE_DATE"));
 			}
 		}catch(Exception ex) {
 			System.out.println("getDetail 에러 : " + ex);
@@ -119,7 +112,7 @@ public class Notice_BoardDAO {
 			close(pstmt);
 		}
 		
-		return boardBean;
+		return notice_Bean;
 	}
 	
 	//글 등록
@@ -156,11 +149,13 @@ public class Notice_BoardDAO {
 	}
 	
 	//글 수정
+
+	
 	public int updateArticle(Notice_BoardBean article) {
 		
 		int updateCount = 0;
 		PreparedStatement pstmt = null;
-		String sql = "update board set notice_title=?, notice_content=? where notice_num=?";
+		String sql = "update notice set notice_title=?, notice_content=? where notice_num=?";
 		
 		try {
 			pstmt = con.prepareStatement(sql);
@@ -177,26 +172,27 @@ public class Notice_BoardDAO {
 		return updateCount;
 	}
 	
-//	//글 삭제
-//	public int deleteArticle(int notice_num) {
-//		PreparedStatement pstmt = null;
-//		ResultSet rs = null;
-//		String sql ='';
-//		int deleteCount = 0;
-//		
-//			if(	String sql = "delete from board where BOARD_NUM=?") {
-//				pstmt = con.prepareStatement(sql);
-//				pstmt.setInt(1, notice_num);
-//				deleteCount = pstmt.executeUpdate();
-//			}
-//		}catch(Exception ex) {
-//			System.out.println("boardDelete 에러 : " + ex);
-//		}finally {
-//			close(pstmt);
-//		}
-//		return deleteCount;
-//	}
-//	
+	//글 삭제
+	public int deleteArticle(int notice_num) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql ="delete from notice where NOTICE_NUM=?";
+		int deleteCount = 0;
+		
+		try {
+				pstmt = con.prepareStatement(sql);
+				pstmt.setInt(1, notice_num);
+				deleteCount = pstmt.executeUpdate();
+			
+		}catch(Exception ex) {
+			System.out.println("boardDelete 에러 : " + ex);
+		}finally {
+			close(pstmt);
+		}
+		return deleteCount;
+	}
+
+	
 	//조회수 업데이트
 	public int updateReadCount(int board_num) {
 		

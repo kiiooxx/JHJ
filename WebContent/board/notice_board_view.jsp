@@ -1,10 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@page import="vo.Notice_BoardBean" %>
-<%
-Notice_BoardBean selectArticle = (Notice_BoardBean)request.getAttribute("selectArticle");
-	String nowPage = (String)request.getAttribute("page");
-%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="nowPage" value="${page }"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -50,18 +47,18 @@ Notice_BoardBean selectArticle = (Notice_BoardBean)request.getAttribute("selectA
 	<h2>글 내용 상세보기</h2>
 	<section id="basicInfoArea">
 		제 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;목 :
-	${selectArticle.notice_title}<br>
+	${notice.notice_title}<br>
 		
 	</section>
 	<section id="articleContentArea">
-		${selectArticle.Notice_content1}
+		${notice.notice_content}
 	</section>
 </section>
 <section id="commandList">
-	<a href="boardModifyForm.bo?board_num=${selectArticle.Notice_num()}&page=&{nowPage}">[수정]</a>
-	<a href="boardDeleteForm.bo?board_num=${selectArticle.Notice_num()}&page=&{nowPage}">[삭제]</a>
-	<%System.out.println("현재페이지" + nowPage); %>
-	<a href="boardList.bo?page=${nowPage}">[목록]</a>
+	<a href="notice_boardModifyForm.bo?board_num=${notice.notice_num}&page=${nowPage}">[수정]</a>
+	<a href="notice_boardDeletePro.bo?board_num=${notice.notice_num}&page=${nowPage}">[삭제]</a>
+	
+	<a href="notice_boardList.bo?page=${nowPage}">[목록]</a>
 	&nbsp;&nbsp;	
 </section>
 

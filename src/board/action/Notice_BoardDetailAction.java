@@ -21,7 +21,7 @@ public class Notice_BoardDetailAction implements Action {
 		Notice_BoardBean selectArticle = boardDetailService.getselectArticle(notice_num);
 		System.out.println("BoardDetailAction 페이지 " + page);
 		request.setAttribute("page", page);
-		request.setAttribute("article", selectArticle);
+		request.setAttribute("notice", selectArticle);
 		request.setAttribute("pagefile","/board/notice_board_view.jsp");
 		ActionForward forward = new ActionForward("/template.jsp",false);
 		return forward;
