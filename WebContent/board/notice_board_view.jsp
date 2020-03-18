@@ -2,11 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="nowPage" value="${page }"/>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>MVC게시판</title>
+
 <script>
 //삭제 버튼 눌렀을 때
 function del() {
@@ -17,8 +13,7 @@ function del() {
 	}
 }
 </script>
-</head>
-<body>
+
 <div class="blank">
 </div>
 <div id="join_form">
@@ -54,8 +49,6 @@ function del() {
 		</div>
 	</div>
 </div>
-</body>
-</html>
 
 
 

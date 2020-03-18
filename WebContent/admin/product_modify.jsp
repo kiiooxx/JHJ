@@ -340,6 +340,11 @@ $(function() {
 	});
 });
 
+//파일 수정 버튼을 누르면
+function file_modify() {
+	$('#file_add').show();
+	$('#file_info').hide();
+}
 </script>
 <style>
 .menu a{cursor:pointer;}
@@ -350,7 +355,9 @@ ul {
 #pro_detail {width : 100%;}
 table {float : left; width : 100%;}
 table th {width : 300px; background : #F6F6F6;}
-
+#file_add {
+		display : none;
+	}
 </style>
 <title>상품 수정 폼</title>
 </head>
@@ -390,7 +397,14 @@ table th {width : 300px; background : #F6F6F6;}
 						<tr>
 							<th><label for="photo">대표 이미지</label></th>
 							<td>
-								<input type="file" name="photo" id="photo"/>
+								<p id="file_info">
+									${prd.pro_photo }
+									<input type="hidden" name="photo2" value="${prd.pro_photo }"/>
+									<input type="button" value="수정" onclick="file_modify()" class="btn btn-primary"/>
+								</p>
+								<p id="file_add">
+									<input type="file" name="photo" id="photo" accept="image/gif, image/jpeg, image/png"/>
+								</p>
 							</td>
 						</tr>
 					</table>

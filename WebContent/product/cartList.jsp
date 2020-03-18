@@ -6,15 +6,8 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <!-- 가격 형식 -->
-
 <fmt:formatNumber var="total_price" value="${totalPrice}" pattern="#,###"/>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<script src="http://code.jquery.com/jquery-latest.js"></script>
-<script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
+
 <script type="text/javascript">
 $(document).ready(function() {
 	
@@ -69,8 +62,7 @@ $(document).ready(function() {
 	});
 });
 </script>
-</head>
-<body>
+
 <div class="cartPage">
 	<div class="cartList">
 		<table class="cartTable">
@@ -129,7 +121,7 @@ $(document).ready(function() {
 			<fmt:formatNumber var="total" value="${totalPrice+deliPrice}" pattern="#,###"/>
 			<tr>
 				<td colspan="6" class="right">
-					상품 구매 금액 <b>${total_price }</b> + 배송비 = ${deli } (무료) 합계 = <b>${total }</b>
+					상품 구매 금액 <b>${total_price }</b> + 배송비 = ${deli } ${deli == '0' ? '(무료)' : '' } 합계 = <b>${total }</b>
 				</td>
 			</tr>
 		</table>
@@ -163,5 +155,3 @@ $(document).ready(function() {
 		</p>
 	</div>
 </div>
-</body>
-</html>

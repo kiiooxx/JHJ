@@ -4,17 +4,10 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title></title>
-<!-- include libraries(jQuery, bootstrap) -->
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script src="dist/summernote.js"></script>
-<link href="dist/summernote.css" rel="stylesheet">
+
+<!-- summernote -->
+<jsp:include page="/resources/summernote.jsp"/>
+
 <script language="javascript">
 $(document).ready(function() {
 	$('#summernote').summernote({ // summernote를 사용하기 위한 선언
@@ -77,8 +70,7 @@ function chkForm(f) {
 		padding : 0px;
 	}
 </style>
-</head>
-<body>
+
 <div class="blank">
 </div>
 
@@ -108,5 +100,3 @@ function chkForm(f) {
 		</div>
 	</form>
 </div>
-</body>
-</html>

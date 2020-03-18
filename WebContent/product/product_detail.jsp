@@ -7,14 +7,8 @@
 
 <!-- 가격 형식 -->
 <fmt:formatNumber var="price" value="${prd.pro_price}" pattern="#,###"/>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<script src="http://code.jquery.com/jquery-latest.js"></script>
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-<script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
+
+
 <script>
 $(document).ready(function(){
 	var index1;
@@ -602,5 +596,3 @@ $(document).ready(function(){
 	</div>
 </div>
 </form>
-</body>
-</html>

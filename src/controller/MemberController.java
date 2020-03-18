@@ -33,21 +33,15 @@ public class MemberController extends HttpServlet {
 		ActionForward forward = null;
 		Action action = null;
 
-		if (command.equals("/account.mem")) {
-
-			request.setAttribute("pagefile", "/member/accountForm.jsp");
-			forward = new ActionForward("/template.jsp", false);
-		
-
-		}
-
-		System.out.println(command);
-
+		//===================회원가입=====================
+		//1. 회원가입 페이지
 		if (command.equals("/joinForm.mem")) {
 			request.setAttribute("pagefile", "/member/joinForm.jsp");
 			forward = new ActionForward("/template.jsp", false);
 
-		} else if (command.equals("/memberJoinProcess.mem")) {
+		} 
+		//2. 회원가입 액션
+		else if (command.equals("/memberJoinProcess.mem")) {
 			action = new MemberJoinProAction();
 			try {
 				forward = action.execute(request, response);
@@ -55,19 +49,33 @@ public class MemberController extends HttpServlet {
 				e.printStackTrace();
 				System.out.println("Controller error");
 			}
-
-		} else if (command.equals("/idCheck.mem")) {
+		}
+		//3. 회원가입 - 아이디 중복 체크 액션
+		else if (command.equals("/idCheck.mem")) {
 			action = new IdCheckAction();
 			try {
 				forward = action.execute(request, response);
 			} catch (Exception e) {
 
 			}
-		} else if (command.equals("/idCheckForm.mem")) {
+		}
+		//4. 회원가입 - 아이디 중복 체크 페이지
+		else if (command.equals("/idCheckForm.mem")) {
 
 			forward = new ActionForward("/member/idCheck.jsp", false);
 
-		} else if (command.equals("/myinfo.mem")) {
+		}
+		
+		
+		//===================마이페이지====================
+		//1. 마이페이지 홈
+		if (command.equals("/account.mem")) {
+			request.setAttribute("pagefile", "/member/accountForm.jsp");
+			forward = new ActionForward("/template.jsp", false);
+		}
+		//===================MY INFO===================
+		//2. 내 정보 페이지
+		else if (command.equals("/myinfo.mem")) {
 
 			action = new MyInfoAction();
 			try {
@@ -77,7 +85,7 @@ public class MemberController extends HttpServlet {
 				System.out.println("Controller error");
 			}
 		}
-
+		//3. 내 정보 수정 액션
 		else if(command.equals("/myinfomodify.mem")){
     		action = new MyInfoModAction();
     		try {
@@ -87,7 +95,7 @@ public class MemberController extends HttpServlet {
     		}	
     		
     	}
-		
+		//4. 회원 탈퇴
 		else if(command.equals("/myinfoquit.mem")){
     		action = new MyInfoQuitAction();
     		try {
@@ -97,9 +105,8 @@ public class MemberController extends HttpServlet {
     		}	
     		
     	}
-		
-		
-		// 내가 쓴 게시판 글 목록 보기
+		//===================MY BOARD===================
+		//1. 내가 쓴 게시물 보기 페이지
 		else if(command.equals("/myboard.mem")){
     		action = new MyBoardAction();
     		try {

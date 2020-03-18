@@ -2,11 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+
 
 <script type="text/javascript">
 //삭제 버튼 눌렀을 때
@@ -19,6 +15,7 @@ function del() {
 }
 
 </script>
+
 <style>
 	.editor th{
 		margin : 0px;
@@ -28,8 +25,7 @@ function del() {
 	
 
 </style>
-</head>
-<body>
+
 <div class="blank">
 </div>
 
@@ -120,5 +116,3 @@ function del() {
 		</div>
 	</form>
 </div>
-</body>
-</html>

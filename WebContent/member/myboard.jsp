@@ -4,13 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
+
 <!-- 리뷰 게시판 -->
 	<div id="prdReview">
 		<div class="board">
@@ -208,5 +202,3 @@
 			</div>
 		</div>
 	</div>
-</body>
-</html>
