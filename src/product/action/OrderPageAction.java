@@ -9,11 +9,13 @@ import javax.servlet.http.HttpSession;
 import action.Action;
 import admin.svc.OrderManageListService;
 import admin.svc.PointManageFormService;
+import point.svc.PointService;
 import product.svc.CartListService;
 import product.svc.OrderPageService;
 import vo.ActionForward;
 import vo.Cart;
 import vo.Member;
+import vo.Point;
 import vo.PointMan;
 
 public class OrderPageAction implements Action {
@@ -43,17 +45,20 @@ public class OrderPageAction implements Action {
 		
 		int totalMoney = 0;
 		int money = 0;
-		
-		for(int i = 0; i < cartList.size(); i++) {
-			money = cartList.get(i).getPro_price()*cartList.get(i).getBas_pro_qnt();
-			totalMoney += money;
+		if(cartList != null) {
+			for(int i = 0; i < cartList.size(); i++) {
+				money = cartList.get(i).getPro_price()*cartList.get(i).getBas_pro_qnt();
+				totalMoney += money;
+			}
 		}
-		
 		
 		OrderPageService orderPageService = new OrderPageService();
 		member = orderPageService.getOrderUserInfo(user_id);
 		PointManageFormService pointManageFormService = new PointManageFormService();
 		PointMan pointMan = pointManageFormService.getPointOption(1);
+		PointService pointService = new PointService();
+		Point memberPoint = pointService.memberPoint(user_id);
+		request.setAttribute("memberPoint", memberPoint);
 		request.setAttribute("pointMan", pointMan);
 		request.setAttribute("totalMoney", totalMoney);
 		request.setAttribute("cartList", cartList);

@@ -12,6 +12,7 @@ public class Order {
 	private String pro_name;
 	private int pro_count;
 	private char cancel_req;
+	private String cancel_reason;
 	private String user_name;
 	
 	public String getSel_num() {
@@ -80,6 +81,12 @@ public class Order {
 	}
 	public void setCancel_req(char cancel_req) {
 		this.cancel_req = cancel_req;
+	}
+	public String getCancel_reason() {
+		return cancel_reason;
+	}
+	public void setCancel_reason(String cancel_reason) {
+		this.cancel_reason = cancel_reason;
 	}
 	public String getUser_name() {
 		return user_name;

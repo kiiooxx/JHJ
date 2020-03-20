@@ -27,7 +27,7 @@ function ok(v){
 
 <body onload="init()">
 <form action="<%=request.getContextPath() %>/idCheck.mem" method="post" name=f>
-	<input type="text" name="id" id="userId" >	
+	<input type="text" name="id" id="userId" pattern="^\S*$" title="공백문자는 포함할 수 없습니다" required>	
 	<input type="submit" value="중복확인">
 </form>
 

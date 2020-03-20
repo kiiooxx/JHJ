@@ -32,6 +32,11 @@ function changeBtn(f){
 		return;
 	}
 }
+
+//주문취소요청 팝업
+function showPopup() { 
+	window.open("acceptCancelForm.ad?openInit=true", "a", "width=500, height=300, left=100, top=50"); 
+}
 </script>
 <body>
 <!-- <form action="orderManageDetail.ad" method="post"> -->
@@ -185,19 +190,25 @@ function changeBtn(f){
 <br>
 <input type="button" name="changeStatus" value="상태변경하기" onclick="javascript:changeBtn(document.f);"> alert띄우기.상태를 변경하시겠습니까? 원래상태->변경상태
 </form>
-
+<br><br><br>
 
 <h2>주문취소 신청여부</h2>
 <c:choose>
 	<c:when test="${fn:contains(orderInfo.cancel_req,'N') }">
-		취소요청 내역이 없습니다.	
+		<h4>취소요청 내역이 없습니다.</h4>	
+	</c:when>
+	<c:when test="${fn:contains(orderInfo.cancel_req,'C') }">
+		<h4>주문취소가 완료되었습니다.</h4>
 	</c:when>
 	<c:otherwise>
-		주문 취소 요청이 있습니다.<input type="button" name="checkCancel" value="내역조회" onclick="window.open('주문취소내역.pro?openInit=true', '' , 'width=300, height=200')"/>
+		<input type="hidden" id="reason" name="reason" value="${orderInfo.cancel_reason }"/>
+		<input type="hidden" id="sel_num" name="sel_num" value="${orderInfo.sel_num }"/>
+		<h4>주문 취소 요청이 있습니다.</h4>
+		<input type="button" name="checkCancel" value="내역조회" onclick="showPopup();"/>
 	</c:otherwise>
 </c:choose>
-<br>- 누르면 새창 or 같은창에 취소 사유랑 같이 승인버튼 나오게.승인버튼 누르면 취소되게. 
-취소되면 취소가 완료되었습니다 알림 메세지 띄우고, 회원한테 메일 보내고, 회원 주문내역에도 취소완료 나오게. 
+
+<br><br><br><br><br><br><br>
 </body>
 <!-- </form> -->
 </html>

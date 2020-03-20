@@ -8,6 +8,7 @@ import static db.JdbcUtil.rollback;
 import java.sql.Connection;
 
 import dao.PointDAO;
+import vo.Point;
 
 public class PointService {
 
@@ -45,6 +46,18 @@ public class PointService {
 		close(con);
 		
 		return isPoint;
+	}
+	
+	public Point memberPoint(String user_id) {
+		
+		Point memberPoint = null;
+		Connection con = getConnection();
+		PointDAO pointDAO = PointDAO.getInstance();
+		pointDAO.setConnection(con);
+		memberPoint = pointDAO.selectMemberPoint(user_id);
+		
+		return memberPoint;
+		
 	}
 
 }

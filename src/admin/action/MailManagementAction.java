@@ -1,14 +1,13 @@
 package admin.action;
 
 import java.io.PrintWriter;
-import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import action.Action;
-import admin.svc.MailOptionService;
+import admin.svc.MailManagementService;
 import vo.ActionForward;
 import vo.MailOption;
 
@@ -19,6 +18,17 @@ public class MailManagementAction implements Action {
 		
 		ActionForward forward = null;
 		HttpSession session = request.getSession();
+		MailOption mailOption = new MailOption();
+		int newMem = 0;
+		int quitMem = 0;
+		int newOrder = 0;
+		int checkPaid = 0;
+		int sendPro = 0;
+		int deliIng = 0;
+		int deliFin = 0;
+		int confirmOrder = 0; 
+		int accCancel = 0;
+		int qnaRe = 0;
 		
 		if((session.getAttribute("id")==null) || !((String)session.getAttribute("id")).equals("admin")) {
 			response.setContentType("text/html;charset=utf-8");
@@ -30,25 +40,83 @@ public class MailManagementAction implements Action {
 			
 		}else {
 			
-			ArrayList<MailOption> mailList = new ArrayList<>();
+			if(request.getParameter("A")!=null) {
+				newMem = 1;
+			}
+			if(request.getParameter("B")!=null) {
+				quitMem = 1;
+			}
+			if(request.getParameter("C")!=null) {
+				newOrder = 1;
+			}
+			if(request.getParameter("D")!=null) {
+				checkPaid = 1;
+			}
+			if(request.getParameter("E")!=null) {
+				sendPro = 1;
+			}
+			if(request.getParameter("F")!=null) {
+				deliIng = 1;
+			}
+			if(request.getParameter("G")!=null) {
+				deliFin = 1;
+			}
+			if(request.getParameter("H")!=null) {
+				confirmOrder = 1;
+			}
+			if(request.getParameter("I")!=null) {
+				accCancel = 1;
+			}
+			if(request.getParameter("J")!=null) {
+				qnaRe = 1;
+			}
 			
-			char newMem = request.getParameter("A").charAt(0);
-			char quitMem = request.getParameter("B").charAt(0);
-			char newOrder = request.getParameter("C").charAt(0);
-			char checkPaid = request.getParameter("D").charAt(0);
-			char sendPro = request.getParameter("E").charAt(0);
-			char deliIng = request.getParameter("F").charAt(0);
-			char deliFin = request.getParameter("G").charAt(0);
-			char confirmOrder = request.getParameter("H").charAt(0);
-			char accCancel = request.getParameter("I").charAt(0);
-			MailOptionService mailOptionService = new MailOptionService();
-			mailList = mailOptionService.updateMailOption(newMem, quitMem, newOrder, 
-					checkPaid, sendPro, deliIng, deliFin, confirmOrder, accCancel);
+
+			mailOption.setNew_mem(newMem);
+			mailOption.setQuit_mem(quitMem);
+			mailOption.setOrder_info(newOrder);
+			mailOption.setCheck_paid(checkPaid);
+			mailOption.setSend_pro(sendPro);
+			mailOption.setDeli_ing(deliIng);
+			mailOption.setDeli_fin(deliFin);
+			mailOption.setConfirm_order(confirmOrder);
+			mailOption.setAcc_cancel(accCancel);
+			mailOption.setQna_re(qnaRe);
+			System.out.println("newMem:"+newMem);
+			System.out.println("quitMem:"+quitMem);
+			System.out.println("newOrder:"+newOrder);
+			System.out.println("checkPaid:"+checkPaid);
+			System.out.println("sendPro:"+sendPro);
+			System.out.println("deliIng:"+deliIng);
+			System.out.println("deliFin:"+deliFin);
+			System.out.println("confirmOrder:"+confirmOrder);
+			System.out.println("accCancel:"+accCancel);
+			System.out.println("qnaRe:"+qnaRe);
 			
-			request.setAttribute("mailList", mailList);
-			request.setAttribute("pagefile", "/admin/mailManagement.jsp");
-			forward = new ActionForward("/admin_template.jsp", false);
 			
+			MailManagementService mailManagementService = new MailManagementService();
+			boolean isSettingSuccess = mailManagementService.updateMailOption(newMem, quitMem, newOrder, 
+					checkPaid, sendPro, deliIng, deliFin, confirmOrder, accCancel, qnaRe);
+			if(!isSettingSuccess) {
+				response.setContentType("text/html;charset=UTF-8");
+				PrintWriter out = response.getWriter();
+				out.println("<script>");
+				out.println("alert('저장실패')");
+				out.println("history.back()");
+				out.println("</script>");
+			}else {
+				request.setAttribute("mailOption", mailOption);
+				response.setContentType("text/html;charset=UTF-8");
+				PrintWriter out = response.getWriter();
+				out.println("<script>");
+				out.println("alert('설정이 저장되었습니다.')");
+				out.println("location.href='mailManageForm.ad?seq=1';");
+				out.println("</script>");
+				
+//				request.setAttribute("pagefile", "/admin/mailManagement.jsp");
+//				forward = new ActionForward("/admin_template.jsp", false);
+				
+			}
 			
 		}
 		

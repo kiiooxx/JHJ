@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import action.Action;
+import admin.action.AcceptCancelAction;
 import admin.action.CategoryAddAction;
 import admin.action.CategoryDelAction;
 import admin.action.CategoryListAction;
@@ -17,6 +18,7 @@ import admin.action.CategoryManagementForm;
 import admin.action.CategorySubListAction;
 import admin.action.CategoryUpdateAction;
 import admin.action.ChangeStatusAction;
+import admin.action.MailManageFormAction;
 import admin.action.MailManagementAction;
 import admin.action.MemberInfoAction;
 import admin.action.MemberListAction;
@@ -275,7 +277,29 @@ public class AdminController extends HttpServlet {
 				e.printStackTrace();
 			}
     	}
+		//주문취소승인
+		
+		else if(command.equals("/acceptCancelForm.ad")) {
+			forward = new ActionForward("/admin/popup_cancel_req.jsp", false);
+    	}
+		
+    	else if(command.equals("/acceptCancel.ad")) {
+			action = new AcceptCancelAction();
+			try {
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+    	}
 		//====================자동메일옵션=======================
+    	else if(command.equals("/mailManageForm.ad")) {
+			action = new MailManageFormAction();
+			try {
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+    	}
     	else if(command.equals("/mailManagement.ad")) {
 			action = new MailManagementAction();
 			try {
@@ -302,6 +326,7 @@ public class AdminController extends HttpServlet {
 			}
     	}
 		
+		System.out.println(command);
 		//3.포워딩
 		if(forward != null) {
 			if(forward.isRedirect()) {

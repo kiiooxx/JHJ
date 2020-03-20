@@ -34,6 +34,7 @@ public class OrderDAO {
 		return orderDAO;
 	}
 
+	///////////////////////////(사용자)주문 = 주문내역 insert
 	
 	//배송지 정보 입력
 	public int insertDeliInfo(DeliInfo deliInfo) {
@@ -132,6 +133,29 @@ public class OrderDAO {
 		}
 		return insertCount;
 	}
+	
+//	//(관리자)주문취소승인= 주문내역(주문정보, 주문상세, 배송정보, 결제정보) delete
+//	public int deleteDeliInfo(String sel_num) {
+//	
+//		PreparedStatement pstmt = null;
+//		int deleteCount = 0;
+//		String sql = "DELETE a, b, c, d from deli_info AS a inner join order_page AS b on a.deli_num=b.deli_num "
+//				+ "inner join order_det AS c on b.sel_num=c.sel_num inner join pay_info AS d on c.sel_num=d.sel_num WHERE d.sel_num=? ";
+//		
+//		try {
+//			pstmt = con.prepareStatement(sql);
+//			pstmt.setString(1, sel_num);
+//			deleteCount = pstmt.executeUpdate();
+//			
+//		}catch(Exception e) {
+//			e.printStackTrace();
+//			System.out.println("OrderDAO - deleteDeliInfo error");
+//			System.out.println("sql: " + sql);
+//		}
+//		
+//		return deleteCount;
+//	}
+	
 	
 
 }
