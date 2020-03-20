@@ -10,19 +10,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import action.Action;
-import board.action.Notice_BoardDeleteProAction;
-import board.action.Notice_BoardDetailAction;
-import board.action.Notice_BoardListAction;
-import board.action.Notice_BoardModifyAction;
-import board.action.Notice_BoardModifyFormAction;
-import board.action.Notice_BoardWriteProAction;
-import board.action.QnADetailAction;
-import board.action.QnAListAction;
-import board.action.QnARegistAction;
+import board.action.BoardDeleteAction;
+import board.action.BoardListAction;
+import board.action.BoardModifyAction;
+import board.action.BoardRegistAction;
+import board.action.BoardViewAction;
 import board.action.QnAWriteFormAction;
-import board.action.ReviewDetailAction;
-import board.action.ReviewListAction;
-import board.action.ReviewRegistAction;
 import board.action.ReviewWriteFormAction;
 import vo.ActionForward;
 
@@ -56,6 +49,53 @@ public class BoardController extends HttpServlet {
 		Action action = null;
 		ActionForward forward = null;
 		
+		//====================게시판====================
+		//1.게시글 등록 액션
+		if(command.equals("/boardRegistAction.bo")) {
+			action = new BoardRegistAction();
+			try {
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+    	}
+		//2.게시글 수정 액션
+		else if(command.equals("/boardModifyAction.bo")) {
+			action = new BoardModifyAction();
+			try {
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+    	}
+		//3.게시글 삭제 액션
+		else if(command.equals("/boardDeleteAction.bo")) {
+			action = new BoardDeleteAction();
+			try {
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+    	}
+		//4. 게시글 보기 액션
+		else if(command.equals("/boardViewAction.bo")) {
+			action = new BoardViewAction();
+			try {
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+    	}
+		//5. 게시판 리스트 액션
+		else if(command.equals("/boardListAction.bo")) {
+			action = new BoardListAction();
+			try {
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+    	}
+		
 		//====================리뷰====================
 		//1. 리뷰 글 쓰기 폼
 		if(command.equals("/reviewWriteForm.bo")) {
@@ -66,34 +106,9 @@ public class BoardController extends HttpServlet {
 				e.printStackTrace();
 			}
     	}
-		//2. 리뷰 글 등록 액션
-		else if(command.equals("/reviewRegist.bo")) {
-			action = new ReviewRegistAction();
-			try {
-				forward = action.execute(request, response);
-			}catch(Exception e) {
-				e.printStackTrace();
-			}
-    	}
-		//3. 리뷰 리스트 목록 가져오는 액션
-		else if(command.equals("/reviewList.bo")) {
-			action = new ReviewListAction();
-			try {
-				forward = action.execute(request, response);
-			}catch(Exception e) {
-				e.printStackTrace();
-			}
-    	}
-		//4. 리뷰 글 상세 보기 액션
-		else if(command.equals("/reviewDetail.bo")) {
-			action = new ReviewDetailAction();
-			try {
-				forward = action.execute(request, response);
-			}catch(Exception e) {
-				e.printStackTrace();
-			}
-    	}
-		//5. QnA 게시판 등록 폼
+		
+		//====================QnA====================
+		//1. QnA 게시판 등록 폼
 		else if(command.equals("/qnaWriteForm.bo")) {
 			action = new QnAWriteFormAction();
 			try {
@@ -102,83 +117,17 @@ public class BoardController extends HttpServlet {
 				e.printStackTrace();
 			}
     	}
-		//6. QnA 게시판 등록 액션
-		else if(command.equals("/qnaRegist.bo")) {
-			action = new QnARegistAction();
-			try {
-				forward = action.execute(request, response);
-			}catch(Exception e) {
-				e.printStackTrace();
-			}
-    	}
-		//7. QnA 리스트 목록 가져오는 액션
-		else if(command.equals("/qnaList.bo")) {
-			action = new QnAListAction();
-			try {
-				forward = action.execute(request, response);
-			}catch(Exception e) {
-				e.printStackTrace();
-			}
-    	}
-		//8. QnA 게시글 상세 보기 액션
-		else if(command.equals("/qnaDetail.bo")) {
-			action = new QnADetailAction();
-			try {
-				forward = action.execute(request, response);
-			}catch(Exception e) {
-				e.printStackTrace();
-			}
-    	}
 		
-		if(command.equals("/notice_boardWriteForm.bo")) {
-    		request.setAttribute("pagefile", "/board/notice_board_write.jsp");
+		
+		//====================공지사항====================
+		//1. 공지사항 등록 폼
+		if(command.equals("/noticeWriteForm.bo")) {
+    		request.setAttribute("pagefile", "/board/notice_write_form.jsp");
     		forward = new ActionForward("/template.jsp",false);
     		
-    	}else if(command.equals("/notice_boardWritePro.bo")) {
-    		action = new Notice_BoardWriteProAction();
-    		try {
-    			forward = action.execute(request, response);
-    		}catch(Exception e) {
-    			e.printStackTrace();
-    		}
-    	}else if(command.equals("/notice_boardList.bo")) {
-    		action = new Notice_BoardListAction();
-    		try {
-    			forward = action.execute(request, response);
-    		}catch(Exception e) {
-    			e.printStackTrace();
-    		}
-    	}else if(command.equals("/notice_boardDetail.bo")) {
-    		action = new Notice_BoardDetailAction();
-    		try {
-    			forward = action.execute(request, response);
-    		}catch(Exception e) {
-    			e.printStackTrace();
-    		}
-    	}else if(command.equals("/notice_boardModifyForm.bo")) {
-    		action = new Notice_BoardModifyFormAction();
-    		try {
-    			forward = action.execute(request, response);
-    		}catch(Exception e) {
-    			e.printStackTrace();
-    		}
-    	
-    	}else if(command.equals("/notice_boardModify.bo")) {
-    		action = new Notice_BoardModifyAction();
-    		try {
-    			forward = action.execute(request, response);
-    		}catch(Exception e) {
-    			e.printStackTrace();
-    		}
- 
-    	}else if(command.equals("/notice_boardDeletePro.bo")) {
-    		action = new Notice_BoardDeleteProAction();
-    		try {
-    			forward = action.execute(request, response);
-    		}catch(Exception e) {
-    			e.printStackTrace();
-    		}
     	}
+		
+		
 		//3.포워딩
 		if(forward != null) {
 			if(forward.isRedirect()) {

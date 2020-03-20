@@ -1,18 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script src="dist/summernote.js"></script>
-<link href="dist/summernote.css" rel="stylesheet">
-<script type="text/javascript">
 
+<!-- summernote -->
+<jsp:include page="/resources/summernote.jsp"/>
+
+<script type="text/javascript">
 $(document).ready(function() {
 	$('#summernote').summernote({ // summernote를 사용하기 위한 선언
         height: 400,
@@ -61,7 +54,7 @@ $(document).ready(function() {
 	});
 	
 	//제목 글자수 제한
-	$('#subject').on('keyup', function () {
+	$('#board_title').on('keyup', function () {
 	    var content = $(this).val();
 	    
 	    
@@ -84,22 +77,19 @@ $(document).ready(function() {
 	    
 	    $('#lengthCheck').text(len);    //글자수 실시간 카운팅
 	});
-	
-	
-	
 });
 
 var chkId = false;
 function chkForm(f) {
-	if (f.subject.value.trim() == "") {
+	if (f.board_title.value.trim() == "") {
 		alert("제목을 입력하세요.");
-		f.pass.focus();
+		f.board_title.focus();
 		return false;
 	}
     
-    if (f.content.value.trim() == "") {
+    if (f.board_content.value.trim() == "") {
         alert("내용을 입력해 주세요.");
-        f.name.focus();
+        f.board_content.focus();
         return false;
     }
 	
@@ -107,33 +97,25 @@ function chkForm(f) {
 	
 }
 
-
 </script>
-<style>
-	.editor th{
-		margin : 0px;
-		width : 100%;
-		padding : 0px;
-	}
-	
-</style>
-</head>
-<body>
+
+
 <div class="blank">
 </div>
 <jsp:include page="/common/loginCheck.jsp"/>
 <div id="join_form">
-	<form action="qnaRegist.bo" name="f" method="post" enctype="multipart/form-data">
+	<form action="boardRegistAction.bo" name="f" method="post" enctype="multipart/form-data">
+		<input type="hidden" name="board_type" value="qna"/>
 		<!-- 글 쓰기 폼 -->
 		<div class="join_table">
 			<table>
 				<tr>
 					<th>SUBJECT</th>
-					<td><input type="text" name="subject" id="subject" style="width:60%">(<span id="lengthCheck">0</span>/100)</td>
+					<td><input type="text" name="board_title" id="board_title" style="width:60%">(<span id="lengthCheck">0</span>/100)</td>
 				</tr>
 				<tr>
 					<th>WRITER</th>
-					<td><input type="text" name="user_id" value="${id }" readonly></td>
+					<td><input type="text" name="board_writer" value="${id }" readonly></td>
 				</tr>
 				<tr>
 					<th>문의구분</th>
@@ -154,11 +136,11 @@ function chkForm(f) {
 				</tr>
 				<tr>
 					<th>E-MAIL</th>
-					<td><input type="text" name="email" id="email" required /></td>
+					<td><input type="text" name="qna_email" id="qna_email" required /></td>
 				</tr>
 				<tr class="editor">
 					<th colspan="2" style="padding:0px;">
-						<textarea name="content" id="summernote">
+						<textarea name="board_content" id="summernote">
 							성함 : <br>
 							연락처 : <br>
 							문의 내용 : <br>
@@ -168,7 +150,7 @@ function chkForm(f) {
 				
 				<tr>
 					<th>ATTACH FILE</th>
-					<td><input type="file" name="rev_photo" accept="image/gif, image/jpeg, image/png"></td>
+					<td><input type="file" name="board_photo" accept="image/gif, image/jpeg, image/png"></td>
 				</tr>
 			</table>
 			<!-- 상품번호 : 상품 상세 페이지에서 문의 글쓰기를 눌렀을 경우 -->
@@ -181,5 +163,3 @@ function chkForm(f) {
 		</div>
 	</form>
 </div>
-</body>
-</html>

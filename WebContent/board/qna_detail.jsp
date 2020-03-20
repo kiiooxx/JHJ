@@ -2,32 +2,26 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+
 
 <script type="text/javascript">
-
+//삭제 버튼 눌렀을 때
+function del() {
+	if(confirm('정말 삭제하시겠습니까?')) {
+		location.href='boardDeleteAction.bo?board_num='+${board.board_num};
+	}else {
+		return false;
+	}
+}
 
 </script>
-<style>
-	.editor th{
-		margin : 0px;
-		width : 100%;
-		padding : 0px;
-	}
-	
 
-</style>
-</head>
-<body>
+
+
 <div class="blank">
 </div>
 
 <div id="join_form">
-	<form action="reviewRegist.bo" name="f" method="post" enctype="multipart/form-data">
 		<c:if test="${prd != null }">
 		<input type="hidden" name="pro_num" value="${prd.pro_num }"/>
 		<!-- 상품 정보 -->
@@ -48,20 +42,20 @@
 			<table>
 				<tr>
 					<th>SUBJECT</th>
-					<td>${qna.qna_title }</td>
+					<td>${board.board_title }</td>
 				</tr>
 				<tr>
 					<th>WRITER</th>
-					<td>${qna.user_id }</td>
+					<td>${board.board_writer }</td>
 				</tr>
 				<tr>
 					<th>문의구분</th>
 					<td>
 						<c:choose>
-								<c:when test="${qna.qna_type == 'product_qna'}">
+								<c:when test="${board.qna_type == 'product_qna'}">
 									[상품문의]
 								</c:when>
-								<c:when test="${qna.qna_type == 'delivery_qna' }">
+								<c:when test="${board.qna_type == 'delivery_qna' }">
 									[배송문의]
 								</c:when>
 								<c:otherwise>
@@ -74,7 +68,7 @@
 					<th>공개여부</th>
 					<td>
 						<c:choose>
-							<c:when test="${qna.qna_open == 'Y'.charAt(0) } ">
+							<c:when test="${board.qna_open == 'Y' } ">
 								공개
 							</c:when>
 							<c:otherwise>
@@ -85,18 +79,18 @@
 				</tr>
 				<tr>
 					<th>E-MAIL</th>
-					<td>${qna.qna_email }</td>
+					<td>${board.qna_email }</td>
 				</tr>
 				<tr>
 					<th>답변여부</th>
-					<td>${qna.qna_step }</td>
+					<td>${board.board_step }</td>
 				</tr>
 				<tr class="editor">
 					<th colspan="2">
-						<c:if test="${!(qna.qna_file eq null || qna.qna_file eq '' )}">
-							<img src="<%= request.getContextPath() %>/upload/${qna.qna_file }"><br>
+						<c:if test="${!(board.board_photo eq null || board.board_photo eq '' )}">
+							<img src="<%= request.getContextPath() %>/upload/${board.board_photo }"><br>
 						</c:if>
-						${qna.qna_content }
+						${board.board_content }
 					</th>
 				</tr>
 				
@@ -104,10 +98,11 @@
 		</div>
 		<div class="order_button_area">
 			<p>
-				<a href="qnaList.bo" class="w">LIST</a>
+				<c:if test="${board.board_writer == id }">
+					<a href="boardViewAction.bo?board_type=qna&board_num=${board.board_num }&pro_num=${prd.pro_num}&path=modify_form" class="b">MODIFY</a>
+					<a href="#" class="b" onclick="del()">DELETE</a>
+				</c:if>
+				<a href="boardListAction.bo?board_type=qna" class="w">LIST</a>
 			</p>
 		</div>
-	</form>
 </div>
-</body>
-</html>

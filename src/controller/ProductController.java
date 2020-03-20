@@ -53,77 +53,10 @@ public class ProductController extends HttpServlet {
 		Action action = null;
 		ActionForward forward = null;
 		
-		//2. 각 요청별로 비즈니스 로직 호출
-		if(command.equals("/productList.pro")) {
-			action = new ProductListAction();
-			//프로젝트명+기능+형태(?)
-			try {
-				forward = action.execute(request, response);
-			}catch(Exception e) {
-				e.printStackTrace();
-			}
-    	}else if(command.equals("/productDetail.pro")) {
-			action = new ProductDetailAction();
-			//프로젝트명+기능+형태(?)
-			try {
-				forward = action.execute(request, response);
-			}catch(Exception e) {
-				e.printStackTrace();
-			}
-    	}else if(command.equals("/cartList.pro")) {
-			action = new CartListAction();
-			//프로젝트명+기능+형태(?)
-			try {
-				forward = action.execute(request, response);
-			}catch(Exception e) {
-				e.printStackTrace();
-			}
-    	}else if(command.equals("/cartQtyUp.pro")) {
-			action = new CartQtyUpAction();
-			//프로젝트명+기능+형태(?)
-			try {
-				forward = action.execute(request, response);
-			}catch(Exception e) {
-				e.printStackTrace();
-			}
-    	}else if(command.equals("/cartQtyDown.pro")) {
-			action = new CartQtyDownAction();
-			//프로젝트명+기능+형태(?)
-			try {
-				forward = action.execute(request, response);
-			}catch(Exception e) {
-				e.printStackTrace();
-			}
-    	}else if(command.equals("/cartDelete.pro")) {
-			action = new CartDeleteAction();
-			//프로젝트명+기능+형태(?)
-			try {
-				forward = action.execute(request, response);
-			}catch(Exception e) {
-				e.printStackTrace();
-			}
-    	}else if(command.equals("/directOrderPage.pro")) {
-			action = new DirectOrderPageAction();
-			try {
-				forward = action.execute(request, response);
-			}catch(Exception e) {
-				e.printStackTrace();
-			}
-    	}else if(command.equals("/orderPage.pro")) {
-			action = new OrderPageAction();
-			try {
-				forward = action.execute(request, response);
-			}catch(Exception e) {
-				e.printStackTrace();
-			}
-    	}else if(command.equals("/payProcess.pro")) {
-			action = new OrderProcessAction();
-			try {
-				forward = action.execute(request, response);
-			}catch(Exception e) {
-				e.printStackTrace();
-			}
-    	}else if(command.equals("/main.pro")) {
+	
+		//===================상품==================
+		//1. 메인 상품
+		if(command.equals("/main.pro")) {
 			action = new MainListAction();
 			//프로젝트명+기능+형태(?)
 			try {
@@ -131,7 +64,27 @@ public class ProductController extends HttpServlet {
 			}catch(Exception e) {
 				e.printStackTrace();
 			}
-    	}else if(command.equals("/productListBestNew.pro")) {
+    	}
+		//2. 상품 리스트 보기 액션
+		else if(command.equals("/productList.pro")) {
+			action = new ProductListAction();
+			try {
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+    	}
+		//3. 상품 상세 정보 보기 액션
+		else if(command.equals("/productDetail.pro")) {
+			action = new ProductDetailAction();
+			try {
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+    	}
+		//4. 상품 리스트 - 베스트 신상품 보기 액션
+		else if(command.equals("/productListBestNew.pro")) {
 			action = new ProductListBestNewAction();
 			//프로젝트명+기능+형태(?)
 			try {
@@ -140,6 +93,78 @@ public class ProductController extends HttpServlet {
 				e.printStackTrace();
 			}
     	}
+		
+		//===================장바구니==================
+		//1. 장바구니 리스트 보기 액션
+		else if(command.equals("/cartList.pro")) {
+			action = new CartListAction();
+			//프로젝트명+기능+형태(?)
+			try {
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+    	}
+		//2. 장바구니 수량 추가
+		else if(command.equals("/cartQtyUp.pro")) {
+			action = new CartQtyUpAction();
+			//프로젝트명+기능+형태(?)
+			try {
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+    	}
+		//3. 장바구니 수량 감소
+		else if(command.equals("/cartQtyDown.pro")) {
+			action = new CartQtyDownAction();
+			//프로젝트명+기능+형태(?)
+			try {
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+    	}
+		//4. 장바구니 삭제
+		else if(command.equals("/cartDelete.pro")) {
+			action = new CartDeleteAction();
+			//프로젝트명+기능+형태(?)
+			try {
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+    	}
+		
+		//===================주문==================
+		//1. 주문 페이지
+		else if(command.equals("/directOrderPage.pro")) {
+			action = new DirectOrderPageAction();
+			try {
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		else if(command.equals("/orderPage.pro")) {
+			action = new OrderPageAction();
+			try {
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+    	}
+		//2. 결제
+		else if(command.equals("/payProcess.pro")) {
+			action = new OrderProcessAction();
+			try {
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+    	}
+		
+			
 		
 		//3.포워딩
 		if(forward != null) {

@@ -4,15 +4,9 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ page import="java.util.ArrayList" %>
-<%@ page import="vo.CategoryBean" %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>사이드바</title>
-</head>
-<body>
+
+
+
 <!-- 메인 사진 -->
 <p class="main_photo">
 	<a href="#"><img src="main.jpg"></a>
@@ -20,7 +14,7 @@
 
 <div class="wleft">
 	<!-- 쇼핑몰 이름 -->
-	<h1 class="main_title"><a href="main.pro">JHJ</a></h1>
+	<h1 class="main_title"><a href="main.pro">PURPLE LINE</a></h1>
 	
 	<div class="category_clothes">
 		<ul>
@@ -36,9 +30,9 @@
 	
 	<div class="category_board">
 		<ul>
-			<li><a href="notice_boardList.bo">NOTICE</a></li>
-			<li><a href="qnaList.bo">Q & A</a></li>
-			<li><a href="reviewList.bo">REVIEW</a></li>
+			<li><a href="boardListAction.bo?board_type=notice">NOTICE</a></li>
+			<li><a href="boardListAction.bo?board_type=qna">Q & A</a></li>
+			<li><a href="boardListAction.bo?board_type=review">REVIEW</a></li>
 		</ul>
 	</div>
 	
@@ -51,5 +45,3 @@
 	</div>
 	
 </div>
-</body>
-</html>

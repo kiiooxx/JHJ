@@ -14,7 +14,33 @@ public class Order {
 	private char cancel_req;
 	private String cancel_reason;
 	private String user_name;
+	private String pro_photo;
+	private int pro_qnt;
+	private String pro_size;
+	private String color;
+	private int pro_price;	//상품 가격
+	private int pro_num;
 	
+	
+	
+	public int getPro_num() {
+		return pro_num;
+	}
+	public void setPro_num(int pro_num) {
+		this.pro_num = pro_num;
+	}
+	public int getPro_qnt() {
+		return pro_qnt;
+	}
+	public void setPro_qnt(int pro_qnt) {
+		this.pro_qnt = pro_qnt;
+	}
+	public int getPro_price() {
+		return pro_price;
+	}
+	public void setPro_price(int pro_price) {
+		this.pro_price = pro_price;
+	}
 	public String getSel_num() {
 		return sel_num;
 	}
@@ -93,6 +119,25 @@ public class Order {
 	}
 	public void setUser_name(String user_name) {
 		this.user_name = user_name;
+	} 
+	public String getPro_photo() {
+		return pro_photo;
+	}
+	public void setPro_photo(String pro_photo) {
+		this.pro_photo = pro_photo;
+	}
+	
+	public String getPro_size() {
+		return pro_size;
+	}
+	public void setPro_size(String pro_size) {
+		this.pro_size = pro_size;
+	}
+	public String getColor() {
+		return color;
+	}
+	public void setColor(String color) {
+		this.color = color;
 	} 
 	
 }

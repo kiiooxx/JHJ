@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import action.Action;
 import product.svc.CartListService;
@@ -18,6 +19,13 @@ public class CartListAction implements Action {
 		CartListService cartListService = new CartListService();
 		ArrayList<Cart> cartList = cartListService.getCartList(request);
 		
+		HttpSession session =request.getSession();
+		String id = (String)session.getAttribute("id");	//로그인한 아이디 확인
+		
+		if(id != null) {
+			
+		}
+		
 		//총 금액 계산
 		int totalPrice = 0;
 		int price = 0;
@@ -28,6 +36,8 @@ public class CartListAction implements Action {
 				totalPrice += price;
 			}
 		}
+		
+		
 		request.setAttribute("totalPrice", totalPrice);
 		request.setAttribute("cartList", cartList);
 		request.setAttribute("pagefile", "/product/cartList.jsp");

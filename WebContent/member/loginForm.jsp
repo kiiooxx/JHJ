@@ -1,16 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-    
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
-<html>
-<head>
-<meta charset="UTF-8">
-
-<title>Insert title here</title>
-<link rel="stylesheet" href="common.css" type="text/css">
-<link rel="stylesheet" href="style.css" type="text/css">
 <script>
     window.onload = function() {
  
@@ -65,21 +56,8 @@
         document.loginform.submit(); //유효성 검사가 통과되면 서버로 전송.
  
     }
-    
-    
-    
-    
-   
-  </script>
 </script>
-</head>
-<body>
-<div class="path">
-	<ol>
-		<li><a href="#">경로</a></li>
-		<li><a href="#">LOGIN</a></li>
-	</ol>
-</div>
+
 
 <div class="login">
 	<fieldset>
@@ -111,13 +89,6 @@
       			<a href="pwfind.log" name="findpw" method="post">FIND PASSWORD</a></li>
         </ul>
       </div>
-      
-      
-     
-      	
    </form>
-  
    </fieldset>
 </div>
-</body>
-</html>

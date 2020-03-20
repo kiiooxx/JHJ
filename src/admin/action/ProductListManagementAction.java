@@ -86,9 +86,18 @@ public class ProductListManagementAction implements Action {
 		pageInfo.setMaxPage(maxPage);
 		pageInfo.setPage(page);
 		pageInfo.setStartPage(startPage);
+		
+		
 		request.setAttribute("pageInfo", pageInfo);
 		request.setAttribute("prdList", prdList);
 
+		//검색 조건 넘기기
+		request.setAttribute("search_type", search_type);
+		request.setAttribute("search_text", search_text);
+		request.setAttribute("cate_type", cate_type);
+		request.setAttribute("ca_ref", ca_ref);
+		request.setAttribute("pro_date", pro_date);
+		request.setAttribute("active", active);
 		
 		request.setAttribute("pagefile", "/admin/productList_management.jsp");
 		ActionForward forward = new ActionForward("/admin_template.jsp", false);

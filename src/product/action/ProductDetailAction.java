@@ -6,15 +6,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import action.Action;
-import board.svc.QnAListService;
-import board.svc.ReviewListService;
+import board.svc.BoardListService;
 import product.svc.ProductDetailService;
 import vo.ActionForward;
+import vo.BoardBean;
 import vo.PageInfo;
 import vo.ProDetBean;
 import vo.ProductBean;
-import vo.QnABean;
-import vo.ReviewBean;
 
 public class ProductDetailAction implements Action {
 
@@ -25,49 +23,56 @@ public class ProductDetailAction implements Action {
 		ProductDetailService prdDetailService = new ProductDetailService();
 		ProductBean prd = prdDetailService.getProduct(pro_num);
 		ArrayList<ProDetBean> prdDetList = prdDetailService.getProductDetail(pro_num);
-		ArrayList<ReviewBean> reviewList = new ArrayList<>();	//리뷰 리스트
-		ArrayList<QnABean> qnaList = new ArrayList<>();	//QnA리스트
+		ArrayList<BoardBean> reviewList = null;	//리뷰 리스트
+		ArrayList<BoardBean> qnaList = null;	//QnA리스트
 		
 		int page = 1;
 		int limit = 10;	//페이지에 보여줄 목록 수
 		int limitPage = 5;	//페이지 수
-		int listCount = 0;
+		int review_listCount = 0;
+		int qna_listCount = 0;
 		
 		if(request.getParameter("page") != null) {
 			page = Integer.parseInt(request.getParameter("page"));
 		}
 		
-		//전체 리뷰 목록
-		ReviewListService reviewListService = new ReviewListService();
-		reviewList = reviewListService.getReviewList(pro_num, page, limit);
+		//리뷰 목록
+		String board_type = "review";
+		BoardListService boardListService = new BoardListService();
+		review_listCount = boardListService.getBoardListCount(pro_num, board_type);
+		reviewList = boardListService.getBoardList(board_type, pro_num, page, limit);
+		int review_maxPage = (int)((double)review_listCount/limit+0.95);
+		int review_startPage = (((int)((double)page/limitPage+0.9)) -1) * limitPage + 1;
+		int review_endPage = review_startPage + limitPage-1;
+		if(review_endPage > review_maxPage) review_endPage = review_maxPage;
+		
+		PageInfo review_pageInfo = new PageInfo();
+		review_pageInfo.setEndPage(review_endPage);
+		review_pageInfo.setListCount(review_listCount);
+		review_pageInfo.setMaxPage(review_maxPage);
+		review_pageInfo.setPage(page);
+		review_pageInfo.setStartPage(review_startPage);
+		
 		//문의 목록
-		QnAListService qnaListService = new QnAListService();
-		qnaList = qnaListService.getQnAList(pro_num, page, limit);
+		board_type = "qna";
+		qna_listCount = boardListService.getBoardListCount(pro_num, board_type);
+		qnaList = boardListService.getBoardList(board_type, pro_num, page, limit);
+		int qna_maxPage = (int)((double)qna_listCount/limit+0.95);
+		int qna_startPage = (((int)((double)page/limitPage+0.9)) -1) * limitPage + 1;
+		int qna_endPage = qna_startPage + limitPage-1;
+		if(qna_endPage > qna_maxPage) qna_endPage = qna_maxPage;
 		
-		//총 리스트 수를 받아옴
-		listCount = reviewListService.getListCount(pro_num);
+		PageInfo qna_pageInfo = new PageInfo();
+		qna_pageInfo.setEndPage(qna_endPage);
+		qna_pageInfo.setListCount(qna_listCount);
+		qna_pageInfo.setMaxPage(qna_maxPage);
+		qna_pageInfo.setPage(page);
+		qna_pageInfo.setStartPage(qna_startPage);
 		
-		
-		//리스트를 받아옴
-		//총 페이지 수
-		int maxPage = (int)((double)listCount/limit+0.95);
-		//0.95를 더해서 올림 처리
-		//현재 페이지에 보여줄 시작 페이지 수(1, 11, 21 등...)
-		int startPage = (((int)((double)page/limitPage+0.9)) -1) * limitPage + 1;
-	
-		//현재 페이지에 보여줄 마지막 페이지 수.(10,20,30 등..)
-		int endPage = startPage + limitPage-1;
-		
-		if(endPage > maxPage) endPage = maxPage;
-		
-		PageInfo pageInfo = new PageInfo();
-		pageInfo.setEndPage(endPage);
-		pageInfo.setListCount(listCount);
-		pageInfo.setMaxPage(maxPage);
-		pageInfo.setPage(page);
-		pageInfo.setStartPage(startPage);
-		request.setAttribute("reviewPageInfo", pageInfo);
+				
+		request.setAttribute("reviewPageInfo", review_pageInfo);
 		request.setAttribute("reviewList", reviewList);
+		request.setAttribute("qnaPageInfo", qna_pageInfo);
 		request.setAttribute("qnaList", qnaList);
 		request.setAttribute("prd", prd);
 		request.setAttribute("prdDetList", prdDetList);

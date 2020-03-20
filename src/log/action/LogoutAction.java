@@ -16,7 +16,9 @@ public class LogoutAction implements Action{
 		// TODO Auto-generated method stub
 		
 		HttpSession session = request.getSession();
-		session.invalidate();
+		session.removeAttribute("id");	//아이디
+		session.removeAttribute("grade");	//등급
+		session.removeAttribute("cartList");	//카트
 		
 		request.setAttribute("pagefile", "/member/loginForm.jsp");
 		ActionForward forward = new ActionForward("/template.jsp", false);
