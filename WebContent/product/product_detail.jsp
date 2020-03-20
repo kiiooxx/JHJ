@@ -226,6 +226,44 @@ $(document).ready(function(){
 		});
 	});
 	
+	//바로주문
+	$('#buy').on('click', function() {
+		 var pro_num = "${prd.pro_num}";
+		 var photo = "${prd.pro_photo}";
+		 var pro_name = "${prd.pro_name}";
+		 var pro_price = "${prd.pro_price}";
+		 
+		 var size = $("input[name='pro_det_num']").length;
+		 var prodetnum = new Array(size);
+		 for(var i=0; i<size; i++){                          
+			 prodetnum[i] = $("input[name='pro_det_num']")[i].value;
+		 }
+
+		 var size2 = $("input[name='qnt']").length;
+		 var qnt = new Array(size2);
+		 for(var i=0; i<size2; i++){                          
+			 qnt[i] = $("input[name='qnt']")[i].value;
+		 }
+		 
+		 var size3 = $("input[name='color']").length;
+		 var color = new Array(size3);
+		 for(var i=0; i<size3; i++){                          
+			 color[i] = $("input[name='color']")[i].value;
+		 }
+		 
+		 var size4 = $("input[name='size']").length;
+		 var pro_size = new Array(size4);
+		 for(var i=0; i<size4; i++){                          
+			 pro_size[i] = $("input[name='size']")[i].value;
+		 }
+		 
+		 location.href='directOrderPage.pro?' + 
+		 		'pro_det_num='+prodetnum+'&qnt='+qnt+'&pro_num='+pro_num
+				+'&pro_photo='+photo+'&pro_name='+pro_name+'&pro_price='+pro_price
+				+'&color='+color+'&pro_size='+pro_size;
+
+	});
+	
 	//리뷰 제목 클릭했을 때
 	$("[id^=rev_subject]").on('click', function(event){
 		var id = $(this).attr("id")
@@ -370,7 +408,7 @@ $(document).ready(function(){
 			<!-- 주문, 장바구니버튼 -->
 			<div id="btnArea">
 				<ul>
-					<li><a href="#" class="btn_b">BUY</a></li>
+					<li><a href="#" class="btn_b" id="buy">BUY</a></li>
 					<li><a href="#" class="btn_w" id="cart">SHOPPING CART</a></li>
 				</ul>
 			</div>
