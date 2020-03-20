@@ -63,7 +63,7 @@ $(document).ready(function() {
 				var items=[];
 				$('input[name=chk]:checkbox:checked').each(function(){items.push($(this).val());});
 				var tmp = items.join(',');
-				location.href='productDelAction.ad?pro_num='+tmp;
+				location.href='boardDeleteAction.bo?board_num='+tmp;
 			}else {
 				return false;
 			}
@@ -104,151 +104,134 @@ $(document).ready(function() {
 	th {background : #F6F6F6;}
 	.col {margin-bottom : 40px;}
 	#pageList {text-align : center;}
-	.thumb {width:80px;}
 </style>
 </head>
 <body>
 <!-- Page Heading -->
  <div class="d-sm-flex align-items-center justify-content-between mb-4">
- 	<h1 class="h3 mb-0 text-gray-800">재고 목록</h1>
+ 	<h1 class="h3 mb-0 text-gray-800">상품 목록</h1>
  </div>
  <!-- Content Row -->
  <div class="row">
  	<div class="col">
-		<form action="stockListManagement.ad" name="stockListSearch" method="post">
+		<form action="boardManagementForm.ad" name="boardSearch" method="post">
 			<div class="card card-default">
 				<div class="card-body">
 					<table class="table table-bordered">
 						<tr>
-							<th>검색분류</th>
+							<th>기간</th>
+							<td>
+								<input type="radio" name="board_date" value="-0"/>오늘
+								<input type="radio" name="board_date" value="-3"/>3일
+								<input type="radio" name="board_date" value="-7"/>7일
+								<input type="radio" name="board_date" value="-30"/>1개월
+								<input type="radio" name="board_date" value="all" checked/>전체
+							</td>
+						</tr>
+						<tr>
+							<th>게시판 선택</th>
+							<td>
+								<select name="board_type">
+									<option value="all" selected>전체 게시물</option>
+									<option value="notice">공지사항</option>
+									<option value="review">리뷰게시판</option>
+									<option value="qna">QnA게시판</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<th>게시글 찾기</th>
 							<td>
 								<select name="search_type">
-									<option value="pro_name">상품명</option>
-									<option value="pro_num">상품번호</option>
+									<option value="board_title">제목</option>
+									<option value="board_content">내용</option>
+									<option value="board_writer">작성자</option>
+									<option value="pro_num">상품명</option>
 								</select>
 								<input type="text" name="search_text"/>
 							</td>
 						</tr>
 						<tr>
-							<th>상품분류</th>
+							<th>답변상태</th>
 							<td>
-								<!-- 카테고리... -->
-								<select name="ca_ref" id="setSelectBox">
-									<option value="none" selected disabled hidden>--[대분류]--</option>
-									<c:forEach var="clist" items="${categoryList }" varStatus="i">
-										<c:if test="${clist.ca_lev == 0 }">
-											<option value="${clist.cate_num }">${clist.category }</option>
-										</c:if>
-									</c:forEach>
-								</select>
-								
-								<select name="cate_sub" id="cate_sub">
-									<option value="none" selected disabled hidden>--[소분류]--</option>
-								</select>	
+								<input type="radio" name="board_step" value="all" checked/>전체보기&nbsp;&nbsp;
+								<input type="radio" name="board_step" value="N"/>답변 전&nbsp;&nbsp;
+								<input type="radio" name="board_step" value="Y"/>답변 완료
 							</td>
 						</tr>
 						<tr>
-							<th>상품등록일</th>
+							<th>첨부파일 여부</th>
 							<td>
-								<input type="radio" name="pro_date" value="-0"/>오늘
-								<input type="radio" name="pro_date" value="-3"/>3일
-								<input type="radio" name="pro_date" value="-7"/>7일
-								<input type="radio" name="pro_date" value="-30"/>1개월
-								<input type="radio" name="pro_date" value="-90"/>3개월
-								<input type="radio" name="pro_date" value="-365"/>1년
-								<input type="radio" name="pro_date" value="all" checked/>전체
-							</td>
-						</tr>
-						<tr>
-							<th>진열상태</th>
-							<td>
-								<input type="radio" name="active" value="all" checked/>전체
-								<input type="radio" name="active" value="Y"/>진열함
-								<input type="radio" name="active" value="N"/>진열안함
+								<input type="radio" name="board_photo" value="all" checked/>전체보기&nbsp;&nbsp;
+								<input type="radio" name="board_photo" value="Y"/>있음&nbsp;&nbsp;
+								<input type="radio" name="board_photo" value="N"/>없음
 							</td>
 						</tr>
 					</table>
+					
 					<div align="center">
-						<a href="javascript:stockListSearch.submit()" class="btn btn-primary">검색</a>
-						<a href="javascript:stockListSearch.reset()" class="btn btn-primary">초기화</a>
+						<a href="javascript:boardSearch.submit()" class="btn btn-primary">검색</a>
+						<a href="javascript:boardSearch.reset()" class="btn btn-primary">초기화</a>
 					</div>
 				</div>
 			</div>
 		</form>
 	</div>
 </div>
-
  <div class="row">
  	<div class="col">
-		<form action="stockListModify.ad" name="stockListModifyForm" method="post">
+		<form action="" name="" method="post">
 			<div class="card card-default">
 				<div class="card-body">
 					<table class="table table-bordered">
 						<tr>
-							<th>No</th>
-							<th>상품명</th>
-							<th>품목명</th>
-							<th>재고수량</th>
-							<th>진열상태</th>
-							<th>총 누적 판매량</th>
+							<th><input type="checkbox" id="checkall"/></th>
+							<th>번호</th>
+							<th>분류</th>
+							<th>제목</th>
+							<th>답변상태</th>
+							<th>답변하기</th>
+							<th>작성자</th>
+							<th>작성일</th>
 						</tr>
 			
-						
 						<!-- 상품 리스트 -->
-						<c:forEach var="list" items="${prdList }" varStatus="i">
-							<c:set var="cnt" value="0"/>
-							<c:forEach var="stock_list" items="${stockList }" varStatus="j">
-								<c:if test="${list.pro_num == stock_list.pro_num }">
-									<c:set var="cnt" value="${cnt + 1 }"/>
-								</c:if>
-							</c:forEach>
+						<c:forEach var="list" items="${boardList }" varStatus="i">
 							<tr>
-								<td rowspan="${cnt }">${list.pro_num }</td>
-								<td rowspan="${cnt }">
-									<img src="<%= request.getContextPath() %>/upload/${list.pro_photo }" class="thumb">
-									<br>
-									${list.pro_name }
+								<td><input type="checkbox" name="chk" value="${list.board_num }"/></td>
+								<td>${list.board_num }</td>
+								<td>
+										<c:if test="${list.board_type == 'notice'}">
+											공지사항
+										</c:if>
+										<c:if test="${list.board_type == 'review' }">
+											리뷰게시판
+										</c:if>
+										<c:if test="${list.board_type == 'qna' }">
+											문의게시판
+										</c:if>
 								</td>
 								
-							<c:forEach var="stock_list" items="${stockList }" varStatus="s">
-								<c:if test="${list.pro_num == stock_list.pro_num}">
-									<td>
-										${stock_list.color } / ${stock_list.pro_size }<br>
-										(${stock_list.pro_det_num })
-									</td>
-									<!-- 재고 테이블 : 상품 번호, 상세 제품 코드, 수량 -->
-									<input type="hidden" name="pro_num" value="${stock_list.pro_num }"/>
-									<input type="hidden" name="pro_det_num" value="${stock_list.pro_det_num }"/>
-									<td><input type="text" name="stock_qnt" value="${stock_list.stock_qnt }"/></td>
-									<td>
-										<c:choose>
-											<c:when test="${list.active == 'Y'.charAt(0)}">
-												진열함
-												<c:if test="${stock_list.stock_qnt == 0 }">
-												(품절)
-												</c:if>
-											</c:when>
-											<c:otherwise>
-												진열안함
-												<c:if test="${stock_list.stock_qnt == 0 }">
-												(품절)
-												</c:if>
-											</c:otherwise>
-											
-										</c:choose>
-									</td>
-									<td>${stock_list.out_stock_qnt }</td>
-								</tr>
-								<tr>
-								</c:if>
-							</c:forEach>
+								<td><a href="javascript:void(0);" onclick="window.open('boardView.ad?path=board_view&board_num=${list.board_num}&pro_num=${list.pro_num }', ' ', 'width=700, height=500')">
+										${list.board_title }
+									</a>
+								</td>
+								<td>
+									<c:if test="${list.board_type == 'notice' }">
+										-
+									</c:if>
+									${list.board_step }
+								</td>
+								<td>
+									<c:if test="${list.board_type != 'notice' }">
+										<a href="javascript:void(0);" onclick="window.open('boardView.ad?path=board_answer_form&board_num=${list.board_num}&pro_num=${list.pro_num }', ' ', 'width=600, height=800')">답변하기</a>
+									</c:if>
+								</td>
+								<td>${list.board_writer }</td>
+								<td>${list.board_date }</td>
 							</tr>
 						</c:forEach>
 					</table>
-					<div align="right" style="margin-bottom:10px;">
-						<a href="javascript:stockListModifyForm.submit()" class="btn btn-primary">저장</a>
-					</div>
-				</form>
 					
 					<div id="pageList">
 						<c:choose>
@@ -256,7 +239,7 @@ $(document).ready(function() {
 								<ion-icon name="chevron-back-outline"></ion-icon>
 							</c:when>
 							<c:otherwise>
-								<a href="stockListManagement.ad?search_type=${search_type }&search_text=${search_text }&cate_type=${cate_type }&ca_ref=${ca_ref }&pro_date=${pro_date }&active=${active }&page=${pageInfo.page-1 }"><ion-icon name="chevron-back-outline"></ion-icon></a>
+								<a href="boardManagementForm.ad?board_date=${board_date }&board_type=${board_type }&search_type=${search_type }&search_text=${search_text }&board_step=${board_step }&board_photo=${board_photo }&page=${pageInfo.page-1 }"><ion-icon name="chevron-back-outline"></ion-icon></a>
 							</c:otherwise>
 						</c:choose>
 							
@@ -267,7 +250,7 @@ $(document).ready(function() {
 									[${a.count }]
 								</c:when>
 								<c:otherwise>
-									<a href="stockListManagement.ad?search_type=${search_type }&search_text=${search_text }&cate_type=${cate_type }&ca_ref=${ca_ref }&pro_date=${pro_date }&active=${active }&page=${a.count }">[${a.count }]</a>
+									<a href="boardManagementForm.ad?board_date=${board_date }&board_type=${board_type }&search_type=${search_type }&search_text=${search_text }&board_step=${board_step }&board_photo=${board_photo }&page=${a.count }">[${a.count }]</a>
 								</c:otherwise>
 							</c:choose>
 						</c:forEach>
@@ -278,14 +261,17 @@ $(document).ready(function() {
 								<ion-icon name="chevron-forward-outline"></ion-icon>
 							</c:when>
 							<c:otherwise>
-								<a href="stockListManagement.ad?search_type=${search_type }&search_text=${search_text }&cate_type=${cate_type }&ca_ref=${ca_ref }&pro_date=${pro_date }&active=${active }&page=${pageInfo.page+1 }"><ion-icon name="chevron-forward-outline"></ion-icon></li>
+								<a href="boardManagementForm.ad?board_date=${board_date }&board_type=${board_type }&search_type=${search_type }&search_text=${search_text }&board_step=${board_step }&board_photo=${board_photo }&page=${pageInfo.page+1 }"><ion-icon name="chevron-forward-outline"></ion-icon></li>
 							</c:otherwise>
 						</c:choose>
 					</div>
 					
+					<div id="bottom">
+						<a href="#" id="del">삭제</a>
+					</div>
 				</div>
 			</div>
-		
+		</form>
 	</div>
 </div>
 </body>

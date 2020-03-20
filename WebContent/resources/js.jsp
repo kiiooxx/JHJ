@@ -17,3 +17,8 @@
 
 <!-- post -->
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
+
+<slick>
+<script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+<script type="text/javascript" src="resources/slick/slick.min.js"></script>

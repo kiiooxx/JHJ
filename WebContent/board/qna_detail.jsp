@@ -8,7 +8,7 @@
 //삭제 버튼 눌렀을 때
 function del() {
 	if(confirm('정말 삭제하시겠습니까?')) {
-		location.href='qnaDelete.bo?qna_num='+${qna.qna_num};
+		location.href='boardDeleteAction.bo?board_num='+${board.board_num};
 	}else {
 		return false;
 	}
@@ -16,21 +16,12 @@ function del() {
 
 </script>
 
-<style>
-	.editor th{
-		margin : 0px;
-		width : 100%;
-		padding : 0px;
-	}
-	
 
-</style>
 
 <div class="blank">
 </div>
 
 <div id="join_form">
-	<form action="reviewRegist.bo" name="f" method="post" enctype="multipart/form-data">
 		<c:if test="${prd != null }">
 		<input type="hidden" name="pro_num" value="${prd.pro_num }"/>
 		<!-- 상품 정보 -->
@@ -51,20 +42,20 @@ function del() {
 			<table>
 				<tr>
 					<th>SUBJECT</th>
-					<td>${qna.qna_title }</td>
+					<td>${board.board_title }</td>
 				</tr>
 				<tr>
 					<th>WRITER</th>
-					<td>${qna.user_id }</td>
+					<td>${board.board_writer }</td>
 				</tr>
 				<tr>
 					<th>문의구분</th>
 					<td>
 						<c:choose>
-								<c:when test="${qna.qna_type == 'product_qna'}">
+								<c:when test="${board.qna_type == 'product_qna'}">
 									[상품문의]
 								</c:when>
-								<c:when test="${qna.qna_type == 'delivery_qna' }">
+								<c:when test="${board.qna_type == 'delivery_qna' }">
 									[배송문의]
 								</c:when>
 								<c:otherwise>
@@ -77,7 +68,7 @@ function del() {
 					<th>공개여부</th>
 					<td>
 						<c:choose>
-							<c:when test="${qna.qna_open == 'Y'.charAt(0) } ">
+							<c:when test="${board.qna_open == 'Y' } ">
 								공개
 							</c:when>
 							<c:otherwise>
@@ -88,18 +79,18 @@ function del() {
 				</tr>
 				<tr>
 					<th>E-MAIL</th>
-					<td>${qna.qna_email }</td>
+					<td>${board.qna_email }</td>
 				</tr>
 				<tr>
 					<th>답변여부</th>
-					<td>${qna.qna_step }</td>
+					<td>${board.board_step }</td>
 				</tr>
 				<tr class="editor">
 					<th colspan="2">
-						<c:if test="${!(qna.qna_file eq null || qna.qna_file eq '' )}">
-							<img src="<%= request.getContextPath() %>/upload/${qna.qna_file }"><br>
+						<c:if test="${!(board.board_photo eq null || board.board_photo eq '' )}">
+							<img src="<%= request.getContextPath() %>/upload/${board.board_photo }"><br>
 						</c:if>
-						${qna.qna_content }
+						${board.board_content }
 					</th>
 				</tr>
 				
@@ -107,12 +98,11 @@ function del() {
 		</div>
 		<div class="order_button_area">
 			<p>
-				<c:if test="${qna.user_id == id }">
-					<a href="qnaModifyForm.bo?qna_num=${qna.qna_num }&pro_num=${prd.pro_num}" class="b">MODIFY</a>
+				<c:if test="${board.board_writer == id }">
+					<a href="boardViewAction.bo?board_type=qna&board_num=${board.board_num }&pro_num=${prd.pro_num}&path=modify_form" class="b">MODIFY</a>
 					<a href="#" class="b" onclick="del()">DELETE</a>
 				</c:if>
-				<a href="qnaList.bo" class="w">LIST</a>
+				<a href="boardListAction.bo?board_type=qna" class="w">LIST</a>
 			</p>
 		</div>
-	</form>
 </div>

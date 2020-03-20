@@ -7,7 +7,7 @@
 //삭제 버튼 눌렀을 때
 function del() {
 	if(confirm('정말 삭제하시겠습니까?')) {
-		location.href='reviewDelete.bo?rev_num='+${review.rev_num};
+		location.href='boardDeleteAction.bo?board_num='+${board.board_num};
 	}else {
 		return false;
 	}
@@ -37,30 +37,30 @@ function del() {
 			<table>
 				<tr>
 					<th>SUBJECT</th>
-					<td>${review.rev_subject }</td>
+					<td>${board.board_title }</td>
 				</tr>
 				<tr>
 					<th>WRITER</th>
-					<td>${review.user_id }</td>
+					<td>${board.board_writer }</td>
 				</tr>
 				<tr>
 					<th>SCORE</th>
 					<td>
 						<div class="starRev">
-						  <span class="starR ${review.score >= 1 ? 'on' : ''}">1</span>
-						  <span class="starR ${review.score >= 2 ? 'on' : ''}">2</span>
-						  <span class="starR ${review.score >= 3 ? 'on' : ''}">3</span>
-						  <span class="starR ${review.score >= 4 ? 'on' : ''}">4</span>
-						  <span class="starR ${review.score >= 5 ? 'on' : ''}">5</span>
+						  <span class="starR ${board.review_score >= 1 ? 'on' : ''}">1</span>
+						  <span class="starR ${board.review_score >= 2 ? 'on' : ''}">2</span>
+						  <span class="starR ${board.review_score >= 3 ? 'on' : ''}">3</span>
+						  <span class="starR ${board.review_score >= 4 ? 'on' : ''}">4</span>
+						  <span class="starR ${board.review_score >= 5 ? 'on' : ''}">5</span>
 						</div>
 					</td>
 				</tr>
 				<tr class="editor">
 					<th colspan="2">
-						<c:if test="${!(review.rev_photo eq null || review.rev_photo eq '' )}">
-							<img src="<%= request.getContextPath() %>/upload/${review.rev_photo }"><br>
+						<c:if test="${!(board.board_photo eq null || board.board_photo eq '' )}">
+							<img src="<%= request.getContextPath() %>/upload/${board.board_photo }"><br>
 						</c:if>
-						${review.rev_content }
+						${board.board_content }
 					</th>
 				</tr>
 				
@@ -68,11 +68,11 @@ function del() {
 		</div>
 		<div class="order_button_area">
 			<p>
-				<c:if test="${review.user_id == id }">
-					<a href="reviewModifyForm.bo?rev_num=${review.rev_num }&pro_num=${prd.pro_num}" class="b">MODIFY</a>
+				<c:if test="${board.board_writer == id }">
+					<a href="boardViewAction.bo?board_type=review&board_num=${board.board_num }&pro_num=${prd.pro_num}&path=modify_form" class="b">MODIFY</a>
 					<a href="#" class="b" onclick="del()">DELETE</a>
 				</c:if>
-				<a href="reviewList.bo" class="w">LIST</a>
+				<a href="boardListAction.bo?board_type=review" class="w">LIST</a>
 			</p>
 		</div>
 </div>

@@ -4,7 +4,7 @@ ul {
 	list-style : none;
 }
 a {
-	color : #B58B8D;
+	color : #9C93B5;
 	text-decoration : none;
 }
 li {
@@ -71,6 +71,11 @@ table {
     font-size: 10px;
 }
 
+#autoplay1 img, #autoplay2 img {
+		width: 338px;
+    	height : 450px;
+}
+	
 /*탑 메뉴*/
 .top {
 }
@@ -93,7 +98,7 @@ table {
 
 .top>ul>li>a {
 	text-align : center;
-	color : #B58B8D;
+	color : #9C93B5;
 }
 
 .top ul li a:hover {
@@ -149,6 +154,7 @@ table {
 	font-size : 14px;
 	letter-spacing : 2px;
 	margin : 0 0 30px;
+	color : #5B6C93;
 }
 
 .category_clothes, .category_board, .category_call {
@@ -237,6 +243,10 @@ table {
 }
 
 /* 상품 상세 페이지 */
+
+[id*='rev_content'] {display:none;}
+
+
 #product_detail {
 	clear : both;
 	position: relative;
@@ -929,6 +939,11 @@ table {
 	font-size : 12px;
 }
 
+/* 게시판 수정폼 */
+#file_add {
+	display : none;
+}
+
 .prd_review_content {
 	border: 0px solid #dfdfdf;
 }
@@ -997,7 +1012,7 @@ strong {
 .mypage_inner li h1 a {
     font-size: 14px;
     line-height: 20px;
-    color: #888;
+    color: #9C93B5;
     text-transform: uppercase;
     text-align: left;
 }
@@ -1005,7 +1020,7 @@ strong {
 .mypage_inner li a {
     display: block;
     font-size: 12px;
-    color: #555;
+    color: #C6AFC6;
     padding: 5px 0;
 }
 

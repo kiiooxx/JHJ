@@ -14,7 +14,7 @@
 
 <div class="wleft">
 	<!-- 쇼핑몰 이름 -->
-	<h1 class="main_title"><a href="main.pro">JHJ</a></h1>
+	<h1 class="main_title"><a href="main.pro">PURPLE LINE</a></h1>
 	
 	<div class="category_clothes">
 		<ul>
@@ -30,9 +30,9 @@
 	
 	<div class="category_board">
 		<ul>
-			<li><a href="notice_boardList.bo">NOTICE</a></li>
-			<li><a href="qnaList.bo">Q & A</a></li>
-			<li><a href="reviewList.bo">REVIEW</a></li>
+			<li><a href="boardListAction.bo?board_type=notice">NOTICE</a></li>
+			<li><a href="boardListAction.bo?board_type=qna">Q & A</a></li>
+			<li><a href="boardListAction.bo?board_type=review">REVIEW</a></li>
 		</ul>
 	</div>
 	

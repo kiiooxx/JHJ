@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import action.Action;
+import admin.action.BoardViewAction;
+import admin.action.BoardManagementFormAction;
 import admin.action.CategoryAddAction;
 import admin.action.CategoryDelAction;
 import admin.action.CategoryListAction;
@@ -301,6 +303,24 @@ public class AdminController extends HttpServlet {
 				e.printStackTrace();
 			}
     	}
+		//===================게시판 관리=======================
+    	else if(command.equals("/boardManagementForm.ad")) {
+			action = new BoardManagementFormAction();
+			try {
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+    	}
+    	else if(command.equals("/boardView.ad")) {
+	    	action = new BoardViewAction();
+			try {
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+    	}
+		
 		
 		//3.포워딩
 		if(forward != null) {

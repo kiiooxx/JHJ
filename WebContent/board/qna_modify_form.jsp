@@ -54,7 +54,7 @@ $(document).ready(function() {
 	});
 	
 	//제목 글자수 제한
-	$('#subject').on('keyup', function () {
+	$('#board_title').on('keyup', function () {
 	    var content = $(this).val();
 	    
 	    
@@ -84,15 +84,15 @@ $(document).ready(function() {
 
 var chkId = false;
 function chkForm(f) {
-	if (f.subject.value.trim() == "") {
+	if (f.board_title.value.trim() == "") {
 		alert("제목을 입력하세요.");
-		f.pass.focus();
+		f.board_title.focus();
 		return false;
 	}
     
-    if (f.content.value.trim() == "") {
+    if (f.board_content.value.trim() == "") {
         alert("내용을 입력해 주세요.");
-        f.name.focus();
+        f.board_content.focus();
         return false;
     }
 	
@@ -105,60 +105,50 @@ function file_modify() {
 	$('#file_add').show();
 }
 </script>
-<style>
-	.editor th{
-		margin : 0px;
-		width : 100%;
-		padding : 0px;
-	}
-	
-</style>
 
 <div class="blank">
 </div>
 <jsp:include page="/common/loginCheck.jsp"/>
 <div id="join_form">
-	<form action="qnaModify.bo" name="f" method="post" enctype="multipart/form-data">
+	<form action="boardModifyAction.bo" name="f" method="post" enctype="multipart/form-data">
 		<!-- 글 쓰기 폼 -->
 		<div class="join_table">
-			<input type="hidden" name="qna_num" value="${qna.qna_num }"/>
-			<input type="hidden" name="pro_num" value="${qna.pro_num }"/>
-			<input type="hidden" name="sel_num" value="${qna.sel_num }"/>
-			<input type="hidden" name="qna_step"	value="${qna.qna_step }"/>
+			<input type="hidden" name="board_num" value="${board.board_num }"/>
+			<input type="hidden" name="board_type" value="${board.board_type }"/>
 			<table>
 				<tr>
 					<th>SUBJECT</th>
-					<td><input type="text" name="subject" id="subject" style="width:60%" value="${qna.qna_title }">(<span id="lengthCheck">0</span>/100)</td>
+					<td><input type="text" name="board_title" id="board_title" style="width:60%" value="${board.board_title }">(<span id="lengthCheck">0</span>/100)</td>
 				</tr>
 				<tr>
 					<th>WRITER</th>
-					<td><input type="text" name="user_id" value="${qna.user_id }" readonly></td>
+					<td><input type="text" name="board_writer" value="${board.board_writer }" readonly></td>
 				</tr>
 				<tr>
 					<th>문의구분</th>
 					<td>
 						<select name="qna_type" id="qna_type">
-							<option value="product_qna" ${qna.qna_type == 'product_qna' ? 'selected' : '' }>상품문의</option>
-							<option value="delivery_qna" ${qna.qna_type == 'delivery_qna' ? 'selected' : '' }>배송문의</option>
-							<option value="etc_qna" ${qna.qna_type == 'etc_qna' ? 'selected' : '' }>기타문의</option>
+							<option value="product_qna" ${board.qna_type == 'product_qna' ? 'selected' : '' }>상품문의</option>
+							<option value="delivery_qna" ${board.qna_type == 'delivery_qna' ? 'selected' : '' }>배송문의</option>
+							<option value="etc_qna" ${board.qna_type == 'etc_qna' ? 'selected' : '' }>기타문의</option>
 						</select>
 					</td>
 				</tr>
 				<tr>
 					<th>공개여부</th>
 					<td>
-						<input type="radio" name="qna_open" value="Y" ${qna.qna_open == 'Y'.charAt(0) ? 'checked' : '' }>공개
-						<input type="radio" name="qna_open" value="N" ${qna.qna_open == 'N'.charAt(0) ? 'checked' : '' }>비공개
+						<input type="radio" name="qna_open" value="Y" ${board.qna_open == 'Y' ? 'checked' : '' }>공개
+						<input type="radio" name="qna_open" value="N" ${board.qna_open == 'N' ? 'checked' : '' }>비공개
 					</td>
 				</tr>
 				<tr>
 					<th>E-MAIL</th>
-					<td><input type="text" name="email" id="email" value="${qna.qna_email }" required/></td>
+					<td><input type="text" name="qna_email" id="qna_email" value="${board.qna_email }" required/></td>
 				</tr>
 				<tr class="editor">
 					<th colspan="2" style="padding:0px;">
-						<textarea name="content" id="summernote">
-							${qna.qna_content }
+						<textarea name="board_content" id="summernote">
+							${board.board_content }
 						</textarea>
 					</th>
 				</tr>
@@ -167,12 +157,12 @@ function file_modify() {
 					<th>ATTACH FILE</th>
 					<td>
 						<p id="file_info">
-							${review.rev_photo }
-							<input type="hidden" name="qna_file2" value="${qna.qna_file }"/>
+							${board.board_photo }
+							<input type="hidden" name="board_photo2" value="${board.board_photo }"/>
 							<input type="button" value="수정" onclick="file_modify()"/>
 						</p>
 						<p id="file_add">
-							<input type="file" name="qna_file" accept="image/gif, image/jpeg, image/png">
+							<input type="file" name="board_photo" accept="image/gif, image/jpeg, image/png">
 						</p>
 					</td>
 				</tr>

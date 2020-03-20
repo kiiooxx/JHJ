@@ -28,39 +28,77 @@
 					<th scope="col">writer</th>
 					<th scope="col">date</th>
 				</tr>
-				<c:forEach var="list" items="${reviewList }" varStatus="i">
+				<c:forEach var="list" items="${boardList }" varStatus="i">
 				<tr>
-					<td>${list.rev_num }</td>
+					<td>${i.count }</td>
 					<td>
 						<a href="productDetail.pro?pro_num=${list.pro_num }">
-							<img src="<%= request.getContextPath() %>/upload/${list.pro_photo }" class="rev_thumb"/>
+							<img src="<%= request.getContextPath() %>/upload/${prdList[i.index].pro_photo }" class="rev_thumb"/>
 						</a>
 					</td>
 					<td style="text-align:left;">
-						<a href="reviewDetail.bo?&rev_num=${list.rev_num}&pro_num=${list.pro_num}">
-							${list.rev_subject }
+						<a href="boardViewAction.bo?&board_num=${list.board_num}&pro_num=${list.pro_num}&page=${pageInfo.page}&path=detail">
+							${list.board_title }
 						</a>
-						<c:if test="${!(list.rev_photo == null || list.rev_photo == '')}">
+						<c:if test="${!(list.board_photo == null || list.board_photo == '')}">
 							<img src="<%= request.getContextPath() %>/layout_image/pic_icon.gif"/>
 						</c:if>
 					</td>
 					<td>
 						<div class="starRev">
-						  <span class="starR ${list.score >= 1 ? 'on' : ''}">1</span>
-						  <span class="starR ${list.score >= 2 ? 'on' : ''}">2</span>
-						  <span class="starR ${list.score >= 3 ? 'on' : ''}">3</span>
-						  <span class="starR ${list.score >= 4 ? 'on' : ''}">4</span>
-						  <span class="starR ${list.score >= 5 ? 'on' : ''}">5</span>
+						  <span class="starR ${list.review_score >= 1 ? 'on' : ''}">1</span>
+						  <span class="starR ${list.review_score >= 2 ? 'on' : ''}">2</span>
+						  <span class="starR ${list.review_score >= 3 ? 'on' : ''}">3</span>
+						  <span class="starR ${list.review_score >= 4 ? 'on' : ''}">4</span>
+						  <span class="starR ${list.review_score >= 5 ? 'on' : ''}">5</span>
 						</div>
 					</td>
-					<td>${list.user_id }</td>
+					<td>${list.board_writer }</td>
 					<!-- 날짜 형식 바꿔주기 (yyyy-MM-dd) -->
-					<fmt:parseDate value="${list.rev_date}" var="rev_date" pattern="yyyy-MM-dd HH:mm:ss"/>
-					<fmt:formatDate var="dateFmt" value="${rev_date}" pattern="yyyy-MM-dd"/>
+					<fmt:parseDate value="${list.board_date}" var="board_date" pattern="yyyy-MM-dd HH:mm:ss"/>
+					<fmt:formatDate var="dateFmt" value="${board_date}" pattern="yyyy-MM-dd"/>
 					<td>${dateFmt }</td>
 				</tr>
 				</c:forEach>
 			</table>
 		</div>
+		
+			<!-- 페이지 리스트 -->
+			<div id="pageList">
+				<c:if test="${pageInfo.endPage > 0}">
+					<ol>
+					<c:choose>
+						<c:when test="${pageInfo.page <= 1 }">
+							<li> < </li>
+						</c:when>
+						<c:otherwise>
+							<li><a href="boardListAction.bo?board_type=review&page=${pageInfo.page-1 }"> < </a></li>
+						</c:otherwise>
+					</c:choose>
+					
+					
+					<c:forEach var="pglist" begin="${pageInfo.startPage }" end="${pageInfo.endPage }" step="1" varStatus="a">
+						<c:choose>
+							<c:when test="${a.count == pageInfo.page }">
+								<li>[${a.count }]</li>
+							</c:when>
+							<c:otherwise>
+								<li><a href="boardListAction.bo?board_type=review&page=${a.count }">[${a.count }]</a></li>
+							</c:otherwise>
+						</c:choose>
+					</c:forEach>
+					
+					
+					<c:choose>
+						<c:when test="${pageInfo.page>=pageInfo.maxPage }">
+							<li> > </li>
+						</c:when>
+						<c:otherwise>
+							<li><a href="boardListAction.bo?board_type=review&page=${pageInfo.page+1 }"> > </a></li>
+						</c:otherwise>
+					</c:choose>
+					</ol>
+				</c:if>
+			</div>
 	</div>
 </div>

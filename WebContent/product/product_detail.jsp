@@ -402,33 +402,33 @@ $(document).ready(function(){
 							<td>${size }</td>
 							<td style="text-align:left;">
 								<a href="#" id="rev_subject${i.count }">
-									${review_list.rev_subject }
+									${review_list.board_title }
 								</a>
-									<c:if test="${!(review_list.rev_photo == null || review_list.rev_photo == '')}">
+									<c:if test="${!(review_list.board_photo == null || review_list.board_photo == '')}">
 										<img src="<%= request.getContextPath() %>/layout_image/pic_icon.gif"/>
 									</c:if>
 							</td>
 							<td>
 								<div class="starRev">
-								  <span class="starR ${review_list.score >= 1 ? 'on' : ''}">1</span>
-								  <span class="starR ${review_list.score >= 2 ? 'on' : ''}">2</span>
-								  <span class="starR ${review_list.score >= 3 ? 'on' : ''}">3</span>
-								  <span class="starR ${review_list.score >= 4 ? 'on' : ''}">4</span>
-								  <span class="starR ${review_list.score >= 5 ? 'on' : ''}">5</span>
+								  <span class="starR ${review_list.review_score >= 1 ? 'on' : ''}">1</span>
+								  <span class="starR ${review_list.review_score >= 2 ? 'on' : ''}">2</span>
+								  <span class="starR ${review_list.review_score >= 3 ? 'on' : ''}">3</span>
+								  <span class="starR ${review_list.review_score >= 4 ? 'on' : ''}">4</span>
+								  <span class="starR ${review_list.review_score >= 5 ? 'on' : ''}">5</span>
 								</div>
 							</td>
-							<td>${review_list.user_id}</td>
+							<td>${review_list.board_writer}</td>
 							<!-- 날짜 형식 바꿔주기 (yyyy-MM-dd) -->
-							<fmt:parseDate value="${review_list.rev_date}" var="rev_date" pattern="yyyy-MM-dd HH:mm:ss"/>
-							<fmt:formatDate var="dateFmt" value="${rev_date}" pattern="yyyy-MM-dd"/>
+							<fmt:parseDate value="${review_list.board_date}" var="board_date" pattern="yyyy-MM-dd HH:mm:ss"/>
+							<fmt:formatDate var="dateFmt" value="${board_date}" pattern="yyyy-MM-dd"/>
 							<td>${dateFmt }</td>
 						</tr>
 						<tr class="editor" id="rev_content${i.count }">
 							<th colspan="5">
-								<c:if test="${!(review_list.rev_photo eq null || review_list.rev_photo eq '' )}">
-									<img src="<%= request.getContextPath() %>/upload/${review_list.rev_photo }"><br>
+								<c:if test="${!(review_list.board_photo eq null || review_list.board_photo eq '' )}">
+									<img src="<%= request.getContextPath() %>/upload/${review_list.board_photo }"><br>
 								</c:if>
-								${review_list.rev_content }
+								${review_list.board_content }
 							</th>
 						</tr>
 						<c:set var="size" value="${size-1 }"/>
@@ -438,7 +438,7 @@ $(document).ready(function(){
 			
 			<div class="order_button_area">
 				<p>
-					<a href="reviewList.bo" class="w">LIST</a>
+					<a href="boardListAction.bo?board_type=review" class="w">LIST</a>
 					<a href="reviewWriteForm.bo?pro_num=${prd.pro_num }" class="b">WRITE</a>
 				</p>
 			</div>
@@ -452,7 +452,7 @@ $(document).ready(function(){
 							<li> < </li>
 						</c:when>
 						<c:otherwise>
-							<li><a href="productList.pro?page=${reviewPageInfo.page-1 }"> < </a></li>
+							<li><a href="boardListAction.bo?board_type=review&page=${reviewPageInfo.page-1 }"> < </a></li>
 						</c:otherwise>
 					</c:choose>
 					
@@ -463,7 +463,7 @@ $(document).ready(function(){
 								<li>[${a.count }]</li>
 							</c:when>
 							<c:otherwise>
-								<li><a href="productList.pro?page=${a.count }">[${a.count }]</a></li>
+								<li><a href="boardListAction.bo?board_type=review&page=${a.count }">[${a.count }]</a></li>
 							</c:otherwise>
 						</c:choose>
 					</c:forEach>
@@ -474,7 +474,7 @@ $(document).ready(function(){
 							<li> > </li>
 						</c:when>
 						<c:otherwise>
-							<li><a href="productList.pro?page=${reviewPageInfo.page+1 }"> > </a></li>
+							<li><a href="boardListAction.bo?board_type=review&page=${reviewPageInfo.page+1 }"> > </a></li>
 						</c:otherwise>
 					</c:choose>
 					</ol>
@@ -500,7 +500,7 @@ $(document).ready(function(){
 						<th scope="col">no</th>
 						<th scope="col">type</th>
 						<th scope="col">subject</th>
-						<th scope="col">step</th>
+						<th scope="col">answer</th>
 						<th scope="col">writer</th>
 						<th scope="col">date</th>
 					</tr>
@@ -523,26 +523,26 @@ $(document).ready(function(){
 						</td>
 						<td style="text-align:left;">
 							<c:choose>
-								<c:when test="${qna_list.qna_open != 'N'.charAt(0) || grade=='A'.charAt(0)}">
-									<a href="qnaDetail.bo?&qna_num=${qna_list.qna_num}&pro_num=${qna_list.pro_num}">
-										${qna_list.qna_title}
+								<c:when test="${qna_list.qna_open != 'N' || grade=='A'}">
+									<a href="boardViewAction.bo?&board_num=${qna_list.board_num}&pro_num=${qna_list.pro_num}">
+										${qna_list.board_title}
 									</a>
 								</c:when>
 								<c:otherwise>
-									${qna_list.qna_title}
+									${qna_list.board_title}
 								</c:otherwise>
 							</c:choose>
-							<c:if test="${qna_list.qna_open == 'N'.charAt(0) }">
+							<c:if test="${qna_list.qna_open == 'N' }">
 								<img src="<%= request.getContextPath() %>/layout_image/lock_icon.png"/>
 							</c:if>
 						</td>
 						<td>
-							${qna_list.qna_step }
+							${qna_list.board_step }
 						</td>
-						<td>${qna_list.user_id }</td>
+						<td>${qna_list.board_writer }</td>
 						<!-- 날짜 형식 바꿔주기 (yyyy-MM-dd) -->
-						<fmt:parseDate value="${qna_list.qna_date}" var="qna_date" pattern="yyyy-MM-dd HH:mm:ss"/>
-						<fmt:formatDate var="dateFmt" value="${qna_date}" pattern="yyyy-MM-dd"/>
+						<fmt:parseDate value="${qna_list.board_date}" var="board_date" pattern="yyyy-MM-dd HH:mm:ss"/>
+						<fmt:formatDate var="dateFmt" value="${board_date}" pattern="yyyy-MM-dd"/>
 						<td>${dateFmt }</td>
 					</tr>
 					</c:forEach>
@@ -551,7 +551,7 @@ $(document).ready(function(){
 			
 			<div class="order_button_area">
 				<p>
-					<a href="qnaList.bo" class="w">LIST</a>
+					<a href="boardListAction.bo?board_type=qna" class="w">LIST</a>
 					<a href="qnaWriteForm.bo?pro_num=${prd.pro_num }" class="b">WRITE</a>
 				</p>
 			</div>
@@ -564,7 +564,7 @@ $(document).ready(function(){
 							<li> < </li>
 						</c:when>
 						<c:otherwise>
-							<li><a href="productList.pro?page=${qnaPageInfo.page-1 }"> < </a></li>
+							<li><a href="boardListAction.bo?board_type=qna&page=${qnaPageInfo.page-1 }"> < </a></li>
 						</c:otherwise>
 					</c:choose>
 					
@@ -575,7 +575,7 @@ $(document).ready(function(){
 								<li>[${a.count }]</li>
 							</c:when>
 							<c:otherwise>
-								<li><a href="productList.pro?page=${a.count }">[${a.count }]</a></li>
+								<li><a href="boardListAction.bo?board_type=qna&page=${a.count }">[${a.count }]</a></li>
 							</c:otherwise>
 						</c:choose>
 					</c:forEach>
@@ -586,7 +586,7 @@ $(document).ready(function(){
 							<li> > </li>
 						</c:when>
 						<c:otherwise>
-							<li><a href="productList.pro?page=${qnaPageInfo.page+1 }"> > </a></li>
+							<li><a href="boardListAction.bo?board_type=qna&page=${qnaPageInfo.page+1 }"> > </a></li>
 						</c:otherwise>
 					</c:choose>
 					</ol>

@@ -22,6 +22,7 @@ public class CategoryListAction implements Action {
 		
 		//세션으로 저장...
 		HttpSession session = request.getSession();
+		session.removeAttribute("categoryList");
 		session.setAttribute("categoryList", categoryList);
 		
 		ActionForward forward = new ActionForward("main.pro", true);

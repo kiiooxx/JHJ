@@ -29,32 +29,32 @@
 					</tr>
 					<c:forEach var="list" items="${reviewList }" varStatus="i">
 					<tr>
-						<td>${list.rev_num }</td>
+						<td>${i.count }</td>
 						<td>
 							<a href="productDetail.pro?pro_num=${list.pro_num }">
-								<img src="<%= request.getContextPath() %>/upload/${list.pro_photo }" class="rev_thumb"/>
+								<img src="<%= request.getContextPath() %>/upload/${prdList[i.index].pro_photo }" class="rev_thumb"/>
 							</a>
 						</td>
 						<td style="text-align:left;">
-							<a href="reviewDetail.bo?&rev_num=${list.rev_num}&pro_num=${list.pro_num}">
-								${list.rev_subject }
+							<a href="boardViewAction.bo?board_num=${list.board_num}&pro_num=${list.pro_num}&path=detail">
+								${list.board_title }
 							</a>
-							<c:if test="${!(list.rev_photo == null || list.rev_photo == '')}">
+							<c:if test="${!(list.board_photo == null || list.board_photo == '')}">
 								<img src="<%= request.getContextPath() %>/layout_image/pic_icon.gif"/>
 							</c:if>
 						</td>
 						<td>
 							<div class="starRev">
-							  <span class="starR ${list.score >= 1 ? 'on' : ''}">1</span>
-							  <span class="starR ${list.score >= 2 ? 'on' : ''}">2</span>
-							  <span class="starR ${list.score >= 3 ? 'on' : ''}">3</span>
-							  <span class="starR ${list.score >= 4 ? 'on' : ''}">4</span>
-							  <span class="starR ${list.score >= 5 ? 'on' : ''}">5</span>
+							  <span class="starR ${list.review_score >= 1 ? 'on' : ''}">1</span>
+							  <span class="starR ${list.review_score >= 2 ? 'on' : ''}">2</span>
+							  <span class="starR ${list.review_score >= 3 ? 'on' : ''}">3</span>
+							  <span class="starR ${list.review_score >= 4 ? 'on' : ''}">4</span>
+							  <span class="starR ${list.review_score >= 5 ? 'on' : ''}">5</span>
 							</div>
 						</td>
-						<td>${list.user_id }</td>
+						<td>${list.board_writer }</td>
 						<!-- 날짜 형식 바꿔주기 (yyyy-MM-dd) -->
-						<fmt:parseDate value="${list.rev_date}" var="rev_date" pattern="yyyy-MM-dd HH:mm:ss"/>
+						<fmt:parseDate value="${list.board_date}" var="rev_date" pattern="yyyy-MM-dd HH:mm:ss"/>
 						<fmt:formatDate var="dateFmt" value="${rev_date}" pattern="yyyy-MM-dd"/>
 						<td>${dateFmt }</td>
 					</tr>
@@ -72,7 +72,7 @@
 							<li> < </li>
 						</c:when>
 						<c:otherwise>
-							<li><a href="productList.pro?page=${reviewPageInfo.page-1 }"> < </a></li>
+							<li><a href="boardListAction.bo?board_type=review&page=${reviewPageInfo.page-1 }"> < </a></li>
 						</c:otherwise>
 					</c:choose>
 					
@@ -83,7 +83,7 @@
 								<li>[${a.count }]</li>
 							</c:when>
 							<c:otherwise>
-								<li><a href="productList.pro?page=${a.count }">[${a.count }]</a></li>
+								<li><a href="boardListAction.bo?board_type=review&page=${a.count }">[${a.count }]</a></li>
 							</c:otherwise>
 						</c:choose>
 					</c:forEach>
@@ -94,7 +94,7 @@
 							<li> > </li>
 						</c:when>
 						<c:otherwise>
-							<li><a href="productList.pro?page=${reviewPageInfo.page+1 }"> > </a></li>
+							<li><a href="boardListAction.bo?board_type=review&page=${reviewPageInfo.page+1 }"> > </a></li>
 						</c:otherwise>
 					</c:choose>
 					</ol>
@@ -120,7 +120,7 @@
 						<th scope="col">no</th>
 						<th scope="col">type</th>
 						<th scope="col">subject</th>
-						<th scope="col">step</th>
+						<th scope="col">answer</th>
 						<th scope="col">writer</th>
 						<th scope="col">date</th>
 					</tr>
@@ -142,20 +142,20 @@
 							</c:choose>
 						</td>
 						<td style="text-align:left;">
-							<a href="qnaDetail.bo?&qna_num=${qna_list.qna_num}&pro_num=${qna_list.pro_num}">
-								${qna_list.qna_title}
+							<a href="boardViewAction.bo?&board_num=${qna_list.board_num}&pro_num=${qna_list.pro_num}&path=detail">
+								${qna_list.board_title}
 							</a>
 							
-							<c:if test="${qna_list.qna_open == 'N'.charAt(0) }">
+							<c:if test="${qna_list.qna_open == 'N' }">
 								<img src="<%= request.getContextPath() %>/layout_image/lock_icon.png"/>
 							</c:if>
 						</td>
 						<td>
-							${qna_list.qna_step }
+							${qna_list.board_step }
 						</td>
-						<td>${qna_list.user_id }</td>
+						<td>${qna_list.board_writer }</td>
 						<!-- 날짜 형식 바꿔주기 (yyyy-MM-dd) -->
-						<fmt:parseDate value="${qna_list.qna_date}" var="qna_date" pattern="yyyy-MM-dd HH:mm:ss"/>
+						<fmt:parseDate value="${qna_list.board_date}" var="qna_date" pattern="yyyy-MM-dd HH:mm:ss"/>
 						<fmt:formatDate var="dateFmt" value="${qna_date}" pattern="yyyy-MM-dd"/>
 						<td>${dateFmt }</td>
 					</tr>
@@ -172,7 +172,7 @@
 							<li> < </li>
 						</c:when>
 						<c:otherwise>
-							<li><a href="productList.pro?page=${qnaPageInfo.page-1 }"> < </a></li>
+							<li><a href="boardListAction.bo?board_type=qna&page=${qnaPageInfo.page-1 }"> < </a></li>
 						</c:otherwise>
 					</c:choose>
 					
@@ -183,7 +183,7 @@
 								<li>[${a.count }]</li>
 							</c:when>
 							<c:otherwise>
-								<li><a href="productList.pro?page=${a.count }">[${a.count }]</a></li>
+								<li><a href="boardListAction.bo?board_type=qna&page=${a.count }">[${a.count }]</a></li>
 							</c:otherwise>
 						</c:choose>
 					</c:forEach>
@@ -194,7 +194,7 @@
 							<li> > </li>
 						</c:when>
 						<c:otherwise>
-							<li><a href="productList.pro?page=${qnaPageInfo.page+1 }"> > </a></li>
+							<li><a href="boardListAction.bo?board_type=qna&page=${qnaPageInfo.page+1 }"> > </a></li>
 						</c:otherwise>
 					</c:choose>
 					</ol>

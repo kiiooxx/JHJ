@@ -54,7 +54,7 @@ $(document).ready(function() {
 	});
 	
 	//제목 글자수 제한
-	$('#subject').on('keyup', function () {
+	$('#board_title').on('keyup', function () {
 	    var content = $(this).val();
 	    
 	    
@@ -82,15 +82,15 @@ $(document).ready(function() {
 
 var chkId = false;
 function chkForm(f) {
-	if (f.subject.value.trim() == "") {
+	if (f.board_title.value.trim() == "") {
 		alert("제목을 입력하세요.");
-		f.pass.focus();
+		f.board_title.focus();
 		return false;
 	}
     
-    if (f.content.value.trim() == "") {
+    if (f.board_content.value.trim() == "") {
         alert("내용을 입력해 주세요.");
-        f.name.focus();
+        f.board_content.focus();
         return false;
     }
 	
@@ -100,21 +100,13 @@ function chkForm(f) {
 
 
 </script>
-<style>
-	.editor th{
-		margin : 0px;
-		width : 100%;
-		padding : 0px;
-	}
-	
-</style>
-
 
 <div class="blank">
 </div>
 <jsp:include page="/common/loginCheck.jsp"/>
 <div id="join_form">
-	<form action="reviewRegist.bo" name="f" method="post" enctype="multipart/form-data">
+	<form action="boardRegistAction.bo" name="f" method="post" enctype="multipart/form-data">
+		<input type="hidden" name="board_type" value="review"/>
 		<input type="hidden" name="pro_num" value="${prd.pro_num }"/>
 		<!-- 상품 정보 -->
 		<div class="prd_info">
@@ -133,11 +125,11 @@ function chkForm(f) {
 			<table>
 				<tr>
 					<th>SUBJECT</th>
-					<td><input type="text" name="subject" id="subject" style="width:60%">(<span id="lengthCheck">0</span>/100)</td>
+					<td><input type="text" name="board_title" id="board_title" style="width:60%">(<span id="lengthCheck">0</span>/100)</td>
 				</tr>
 				<tr>
 					<th>WRITER</th>
-					<td><input type="text" name="user_id" value="${id }" readonly></td>
+					<td><input type="text" name="board_writer" value="${id }" readonly></td>
 				</tr>
 				<tr>
 					<th>SCORE</th>
@@ -149,19 +141,19 @@ function chkForm(f) {
 						  <span class="starR on">4</span>
 						  <span class="starR on">5</span>
 						  (<span id="star_text">5</span>)
-						  <input type="hidden" name="score" id="score" value="5"/>
+						  <input type="hidden" name="review_score" id="score" value="5"/>
 						</div>
 					</td>
 				</tr>
 				<tr class="editor">
 					<th colspan="2" style="padding:0px;">
-						<textarea name="content" id="summernote"></textarea>
+						<textarea name="board_content" id="summernote"></textarea>
 					</th>
 				</tr>
 				
 				<tr>
 					<th>ATTACH FILE</th>
-					<td><input type="file" name="rev_photo" accept="image/gif, image/jpeg, image/png"></td>
+					<td><input type="file" name="board_photo" accept="image/gif, image/jpeg, image/png"></td>
 				</tr>
 				
 			</table>

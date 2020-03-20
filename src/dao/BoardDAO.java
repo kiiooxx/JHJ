@@ -8,8 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import vo.QnABean;
-import vo.ReviewBean;
+import vo.BoardBean;
 
 public class BoardDAO {
 	Connection con;
@@ -32,640 +31,521 @@ public class BoardDAO {
 		
 		return boardDAO;
 	}
-
-	//리뷰 등록
-	public int insertReview(ReviewBean reviewBean) {
+	
+	//게시글 등록
+	public int insertBoard(BoardBean boardBean) {
 		// TODO Auto-generated method stub
 		PreparedStatement pstmt = null;
 		int insertCount = 0;
-		String sql = "insert into review select ifnull(max(rev_num)+1, 1), ?, ?, NOW(),";
-		sql += "?, ?, ?, ? from review";
+		String board_step = "";
+		if(!boardBean.getBoard_type().equals("notice")) {
+			board_step = "N";
+		}
+		
+		String sql = "insert into board(board_type, board_title, board_writer, board_content, board_date, "
+				+ "board_photo, pro_num, sel_num, board_step, qna_email, qna_type, qna_open, review_score) "
+				+ "values(?, ?, ?, ?, NOW(), ?, ?, ?, ?, ?, ?, ?, ?)";
 		
 		try {
 			
 			pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, reviewBean.getRev_subject());
-			pstmt.setString(2, reviewBean.getRev_content());
-			pstmt.setInt(3, reviewBean.getScore());
-			pstmt.setString(4, reviewBean.getUser_id());
-			pstmt.setInt(5, reviewBean.getPro_num());
-			pstmt.setString(6, reviewBean.getRev_photo());
+			pstmt.setString(1, boardBean.getBoard_type());
+			pstmt.setString(2, boardBean.getBoard_title());
+			pstmt.setString(3, boardBean.getBoard_writer());
+			pstmt.setString(4, boardBean.getBoard_content());
+			pstmt.setString(5, boardBean.getBoard_photo());
+			pstmt.setInt(6, boardBean.getPro_num());
+			pstmt.setString(7, boardBean.getSel_num());
+			pstmt.setString(8, board_step);
+			pstmt.setString(9, boardBean.getQna_email());
+			pstmt.setString(10, boardBean.getQna_type());
+			pstmt.setString(11, String.valueOf(boardBean.getQna_open()));
+			pstmt.setInt(12, boardBean.getReview_score());
 			
 			insertCount = pstmt.executeUpdate();
 		
 		}catch(SQLException e) {
-			System.out.println("리뷰 등록 에러 " + e);
+			System.out.println("게시글 등록 에러 " + e);
 		}finally {
 			close(pstmt);
 		}
 		return insertCount;
 	}
 
-	//전체 리뷰 개수 구하기
-	public int selectReviewListCount() {
-		// TODO Auto-generated method stub
-		int listCount = 0;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		try {
-			//전체 리뷰 구하기.
-			pstmt = con.prepareStatement("select count(*) from review");
-			rs = pstmt.executeQuery();
-			
-			if(rs.next()) {
-				listCount = rs.getInt(1);
-			}
-		}catch(Exception e) {
-			System.out.println("getReviewListCount 에러 : " + e);
-		}finally {
-			close(rs);
-			close(pstmt);
-		}
-		return listCount;
-	}
-
-	public ArrayList<ReviewBean> selectReviewList(int page, int limit) {
+	//게시글 수정
+	public boolean updateBoard(BoardBean boardBean, int board_num) {
 		// TODO Auto-generated method stub
 		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		ArrayList<ReviewBean> reviewList = new ArrayList<>();
-		ReviewBean reviewBean = null;
-		int startrow = (page-1)*limit;	//읽기 시작할 row 번호
-		
-		try {
-			pstmt = con.prepareStatement("select * from review a inner join pro_info b on a.pro_num = b.pro_num order by rev_num desc limit ?,?");
-			pstmt.setInt(1, startrow);
-			pstmt.setInt(2, limit);
-			
-			rs = pstmt.executeQuery();
-			
-			while(rs.next()) {
-				reviewBean = new ReviewBean();
-				reviewBean.setRev_num(rs.getInt("rev_num"));
-				reviewBean.setRev_subject(rs.getString("rev_subject"));
-				reviewBean.setRev_content(rs.getString("rev_content"));
-				reviewBean.setRev_date(rs.getString("rev_date"));
-				reviewBean.setScore(rs.getInt("score"));
-				reviewBean.setUser_id(rs.getString("user_id"));
-				reviewBean.setPro_num(rs.getInt("pro_num"));
-				reviewBean.setRev_photo(rs.getString("rev_photo"));
-				reviewBean.setPro_photo(rs.getString("pro_photo"));
-				reviewList.add(reviewBean);
-			}
-		}catch(Exception e) {
-			System.out.println("selectReviewList 에러 : " + e);
-		}finally {
-			close(rs);
-			close(pstmt);
-		}
-		
-		return reviewList;
-	}
-
-	//rev_num에 해당하는 리뷰 내용 불러오기
-	public ReviewBean selectReview(int rev_num) {
-		// TODO Auto-generated method stub
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		ReviewBean reviewBean = null;
-		
-		try {
-			pstmt = con.prepareStatement("select * from review where rev_num=?");
-			pstmt.setInt(1, rev_num);
-			
-			rs = pstmt.executeQuery();
-			
-			if(rs.next()) {
-				reviewBean = new ReviewBean();
-				reviewBean.setRev_num(rs.getInt("rev_num"));
-				reviewBean.setRev_subject(rs.getString("rev_subject"));
-				reviewBean.setRev_content(rs.getString("rev_content"));
-				reviewBean.setRev_date(rs.getString("rev_date"));
-				reviewBean.setScore(rs.getInt("score"));
-				reviewBean.setUser_id(rs.getString("user_id"));
-				reviewBean.setPro_num(rs.getInt("pro_num"));
-				reviewBean.setRev_photo(rs.getString("rev_photo"));
-			}
-		}catch(Exception e) {
-			System.out.println("selectReview 에러 : " + e);
-		}finally {
-			close(rs);
-			close(pstmt);
-		}
-		
-		return reviewBean;
-	}
-
-	//해당하는 상품 번호의 리뷰 리스트 불러오기
-	public int selectReviewListCount(int pro_num) {
-		// TODO Auto-generated method stub
-		int listCount = 0;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		try {
-			//전체 리뷰 구하기.
-			pstmt = con.prepareStatement("select count(*) from review where pro_num=?");
-			pstmt.setInt(1, pro_num);
-			rs = pstmt.executeQuery();
-			
-			if(rs.next()) {
-				listCount = rs.getInt(1);
-			}
-		}catch(Exception e) {
-			System.out.println("getReviewListCount 에러 : " + e);
-		}finally {
-			close(rs);
-			close(pstmt);
-		}
-		return listCount;
-	}
-
-	public ArrayList<ReviewBean> selectReviewList(int pro_num, int page, int limit) {
-		// TODO Auto-generated method stub
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		ArrayList<ReviewBean> reviewList = new ArrayList<>();
-		ReviewBean reviewBean = null;
-		int startrow = (page-1)*limit;	//읽기 시작할 row 번호
-		
-		try {
-			pstmt = con.prepareStatement("select * from review where pro_num=? order by rev_num desc limit ?,?");
-			pstmt.setInt(1, pro_num);
-			pstmt.setInt(2, startrow);
-			pstmt.setInt(3, limit);
-			
-			rs = pstmt.executeQuery();
-			
-			while(rs.next()) {
-				reviewBean = new ReviewBean();
-				reviewBean.setRev_num(rs.getInt("rev_num"));
-				reviewBean.setRev_subject(rs.getString("rev_subject"));
-				reviewBean.setRev_content(rs.getString("rev_content"));
-				reviewBean.setRev_date(rs.getString("rev_date"));
-				reviewBean.setScore(rs.getInt("score"));
-				reviewBean.setUser_id(rs.getString("user_id"));
-				reviewBean.setPro_num(rs.getInt("pro_num"));
-				reviewBean.setRev_photo(rs.getString("rev_photo"));
-				reviewList.add(reviewBean);
-			}
-		}catch(Exception e) {
-			System.out.println("selectReviewList 에러 : " + e);
-		}finally {
-			close(rs);
-			close(pstmt);
-		}
-		
-		return reviewList;
-	}
-
-	//문의 게시판 등록
-	public int insertQnA(QnABean qnaBean) {
-		// TODO Auto-generated method stub
-		PreparedStatement pstmt = null;
-		int insertCount = 0;
-		String sql = "insert into QnA select ifnull(max(qna_num)+1, 1), ?, ?, NOW(),";
-		sql += "?, ?, ?, ?, 'N', ?, ?, ? from QnA";
-		
-		try {
-			
-			pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, qnaBean.getQna_title());
-			pstmt.setString(2, qnaBean.getQna_content());
-			pstmt.setString(3, String.valueOf(qnaBean.getQna_open()));
-			pstmt.setString(4, qnaBean.getQna_file());
-			pstmt.setString(5, qnaBean.getQna_email());
-			pstmt.setString(6, qnaBean.getQna_type());
-			pstmt.setString(7, qnaBean.getUser_id());
-			pstmt.setInt(8, qnaBean.getPro_num());
-			pstmt.setString(9, qnaBean.getSel_num());
-			
-			insertCount = pstmt.executeUpdate();
-		
-		}catch(SQLException e) {
-			System.out.println("문의 등록 에러 " + e);
-		}finally {
-			close(pstmt);
-		}
-		return insertCount;
-	}
-
-	//QnA 글 개수
-	public int selectQnAListCount() {
-		// TODO Auto-generated method stub
-		int listCount = 0;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		try {
-			//전체 리뷰 구하기.
-			pstmt = con.prepareStatement("select count(*) from QnA");
-			rs = pstmt.executeQuery();
-			
-			if(rs.next()) {
-				listCount = rs.getInt(1);
-			}
-		}catch(Exception e) {
-			System.out.println("selectQnAListCount 에러 : " + e);
-		}finally {
-			close(rs);
-			close(pstmt);
-		}
-		return listCount;
-	}
-
-	//해당하는 상품번호의 QnA 글 개수 불러오기
-	public int selectQnAListCount(int pro_num) {
-		// TODO Auto-generated method stub
-		int listCount = 0;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		try {
-			//전체 리뷰 구하기.
-			pstmt = con.prepareStatement("select count(*) from QnA where pro_num=?");
-			pstmt.setInt(1, pro_num);
-			rs = pstmt.executeQuery();
-			
-			if(rs.next()) {
-				listCount = rs.getInt(1);
-			}
-		}catch(Exception e) {
-			System.out.println("getReviewListCount 에러 : " + e);
-		}finally {
-			close(rs);
-			close(pstmt);
-		}
-		return listCount;
-	}
-	
-	//전체 QnA 리스트 불러오기
-	public ArrayList<QnABean> selectQnAList(int page, int limit) {
-		// TODO Auto-generated method stub
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		ArrayList<QnABean> qnaList = new ArrayList<>();
-		QnABean qnaBean = null;
-		int startrow = (page-1)*limit;	//읽기 시작할 row 번호
-		
-		try {
-			pstmt = con.prepareStatement("select * from QnA order by qna_num desc limit ?,?");
-			pstmt.setInt(1, startrow);
-			pstmt.setInt(2, limit);
-			
-			rs = pstmt.executeQuery();
-			
-			while(rs.next()) {
-				qnaBean = new QnABean();
-				qnaBean.setQna_num(rs.getInt("qna_num"));
-				qnaBean.setQna_title(rs.getString("qna_title"));
-				qnaBean.setQna_content(rs.getString("qna_content"));
-				qnaBean.setQna_date(rs.getString("qna_date"));
-				qnaBean.setQna_open(rs.getString("qna_open").charAt(0));
-				qnaBean.setQna_file(rs.getString("qna_file"));
-				qnaBean.setQna_email(rs.getString("qna_email"));
-				qnaBean.setQna_type(rs.getString("qna_type"));
-				qnaBean.setQna_step(rs.getString("qna_step").charAt(0));
-				qnaBean.setUser_id(rs.getString("user_id"));
-				qnaBean.setPro_num(rs.getInt("pro_num"));
-				qnaBean.setSel_num(rs.getString("sel_num"));
-				qnaList.add(qnaBean);
-			}
-		}catch(Exception e) {
-			System.out.println("selectQnAList 에러 : " + e);
-		}finally {
-			close(rs);
-			close(pstmt);
-		}
-		
-		return qnaList;
-	}
-
-	
-	//선택한 상품의 QnA 목록
-	public ArrayList<QnABean> selectQnAList(int pro_num, int page, int limit) {
-		// TODO Auto-generated method stub
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		ArrayList<QnABean> qnaList = new ArrayList<>();
-		QnABean qnaBean = null;
-		int startrow = (page-1)*limit;	//읽기 시작할 row 번호
-		
-		try {
-			pstmt = con.prepareStatement("select * from QnA where pro_num=? order by qna_num desc limit ?,?");
-			pstmt.setInt(1, pro_num);
-			pstmt.setInt(2, startrow);
-			pstmt.setInt(3, limit);
-			
-			rs = pstmt.executeQuery();
-			
-			while(rs.next()) {
-				qnaBean = new QnABean();
-				qnaBean.setQna_num(rs.getInt("qna_num"));
-				qnaBean.setQna_title(rs.getString("qna_title"));
-				qnaBean.setQna_content(rs.getString("qna_content"));
-				qnaBean.setQna_date(rs.getString("qna_date"));
-				qnaBean.setQna_open(rs.getString("qna_open").charAt(0));
-				qnaBean.setQna_file(rs.getString("qna_file"));
-				qnaBean.setQna_email(rs.getString("qna_email"));
-				qnaBean.setQna_type(rs.getString("qna_type"));
-				qnaBean.setQna_step(rs.getString("qna_step").charAt(0));
-				qnaBean.setUser_id(rs.getString("user_id"));
-				qnaBean.setPro_num(rs.getInt("pro_num"));
-				qnaBean.setSel_num(rs.getString("sel_num"));
-				qnaList.add(qnaBean);
-			}
-		}catch(Exception e) {
-			System.out.println("selectQnAList 에러 : " + e);
-		}finally {
-			close(rs);
-			close(pstmt);
-		}
-		
-		return qnaList;
-	}
-
-	//qna_num에 해당하는 QnA 게시글 불러와서 QnABean에 넣기
-	public QnABean selectQnA(int qna_num) {
-		// TODO Auto-generated method stub
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		QnABean qnaBean = null;
-		
-		try {
-			pstmt = con.prepareStatement("select * from QnA where qna_num=?");
-			pstmt.setInt(1, qna_num);
-			
-			rs = pstmt.executeQuery();
-			
-			if(rs.next()) {
-				qnaBean = new QnABean();
-				qnaBean.setQna_num(qna_num);
-				qnaBean.setQna_title(rs.getString("qna_title"));
-				qnaBean.setQna_content(rs.getString("qna_content"));
-				qnaBean.setQna_date(rs.getString("qna_date"));
-				qnaBean.setQna_open(rs.getString("qna_open").charAt(0));
-				qnaBean.setQna_file(rs.getString("qna_file"));
-				qnaBean.setQna_email(rs.getString("qna_email"));
-				qnaBean.setQna_type(rs.getString("qna_type"));
-				qnaBean.setQna_step(rs.getString("qna_step").charAt(0));
-				qnaBean.setUser_id(rs.getString("user_id"));
-				qnaBean.setPro_num(rs.getInt("pro_num"));
-				qnaBean.setSel_num(rs.getString("sel_num"));
-			}
-		}catch(Exception e) {
-			System.out.println("selectQnA 에러 : " + e);
-		}finally {
-			close(rs);
-			close(pstmt);
-		}
-		
-		return qnaBean;
-	}
-
-	// id가 작성한 리뷰글 개수 가져오기
-	public int selectReviewListCount(String id) {
-		// TODO Auto-generated method stub
-		int listCount = 0;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		try {
-			//전체 리뷰 구하기.
-			pstmt = con.prepareStatement("select count(*) from review where user_id=?");
-			pstmt.setString(1, id);
-			rs = pstmt.executeQuery();
-			
-			if(rs.next()) {
-				listCount = rs.getInt(1);
-			}
-		}catch(Exception e) {
-			System.out.println("getReviewListCount 에러 : " + e);
-		}finally {
-			close(rs);
-			close(pstmt);
-		}
-		return listCount;
-	}
-
-	// id가 작성한 리뷰 글 목록 가져오기
-	public ArrayList<ReviewBean> selectReviewList(String id, int page, int limit) {
-		// TODO Auto-generated method stub
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		ArrayList<ReviewBean> reviewList = new ArrayList<>();
-		ReviewBean reviewBean = null;
-		int startrow = (page-1)*limit;	//읽기 시작할 row 번호
-		
-		try {
-			pstmt = con.prepareStatement("select * from review a inner join pro_info b on a.pro_num = b.pro_num where user_id=? order by rev_num desc limit ?,?");
-			pstmt.setString(1, id);
-			pstmt.setInt(2, startrow);
-			pstmt.setInt(3, limit);
-			
-			rs = pstmt.executeQuery();
-			
-			while(rs.next()) {
-				reviewBean = new ReviewBean();
-				reviewBean.setRev_num(rs.getInt("rev_num"));
-				reviewBean.setRev_subject(rs.getString("rev_subject"));
-				reviewBean.setRev_content(rs.getString("rev_content"));
-				reviewBean.setRev_date(rs.getString("rev_date"));
-				reviewBean.setScore(rs.getInt("score"));
-				reviewBean.setUser_id(rs.getString("user_id"));
-				reviewBean.setPro_num(rs.getInt("pro_num"));
-				reviewBean.setRev_photo(rs.getString("rev_photo"));
-				reviewBean.setPro_photo(rs.getString("pro_photo"));
-				reviewList.add(reviewBean);
-			}
-		}catch(Exception e) {
-			System.out.println("selectReviewList 에러 : " + e);
-		}finally {
-			close(rs);
-			close(pstmt);
-		}
-		
-		return reviewList;
-	}
-
-	//id가 작성한 QnA 글 개수 가져오기
-	public int selectQnAListCount(String id) {
-		// TODO Auto-generated method stub
-		int listCount = 0;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		try {
-			//전체 리뷰 구하기.
-			pstmt = con.prepareStatement("select count(*) from QnA where user_id=?");
-			pstmt.setString(1, id);
-			rs = pstmt.executeQuery();
-			
-			if(rs.next()) {
-				listCount = rs.getInt(1);
-			}
-		}catch(Exception e) {
-			System.out.println("getReviewListCount 에러 : " + e);
-		}finally {
-			close(rs);
-			close(pstmt);
-		}
-		return listCount;
-	}
-
-	//id가 작성한 QnA 글 목록 불러오기
-	public ArrayList<QnABean> selectQnAList(String id, int page, int limit) {
-		// TODO Auto-generated method stub
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		ArrayList<QnABean> qnaList = new ArrayList<>();
-		QnABean qnaBean = null;
-		int startrow = (page-1)*limit;	//읽기 시작할 row 번호
-		
-		try {
-			pstmt = con.prepareStatement("select * from QnA where user_id=? order by qna_num desc limit ?,?");
-			pstmt.setString(1, id);
-			pstmt.setInt(2, startrow);
-			pstmt.setInt(3, limit);
-			
-			rs = pstmt.executeQuery();
-			
-			while(rs.next()) {
-				qnaBean = new QnABean();
-				qnaBean.setQna_num(rs.getInt("qna_num"));
-				qnaBean.setQna_title(rs.getString("qna_title"));
-				qnaBean.setQna_content(rs.getString("qna_content"));
-				qnaBean.setQna_date(rs.getString("qna_date"));
-				qnaBean.setQna_open(rs.getString("qna_open").charAt(0));
-				qnaBean.setQna_file(rs.getString("qna_file"));
-				qnaBean.setQna_email(rs.getString("qna_email"));
-				qnaBean.setQna_type(rs.getString("qna_type"));
-				qnaBean.setQna_step(rs.getString("qna_step").charAt(0));
-				qnaBean.setUser_id(rs.getString("user_id"));
-				qnaBean.setPro_num(rs.getInt("pro_num"));
-				qnaBean.setSel_num(rs.getString("sel_num"));
-				qnaList.add(qnaBean);
-			}
-		}catch(Exception e) {
-			System.out.println("selectQnAList 에러 : " + e);
-		}finally {
-			close(rs);
-			close(pstmt);
-		}
-		
-		return qnaList;
-	}
-
-	//리뷰 삭제
-	public boolean deleteReview(int rev_num) {
-		// TODO Auto-generated method stub
-		PreparedStatement pstmt = null;
-		boolean isDeleteSuccess = false;
-		int deleteCount = 0;
-		try {
-			//전체 리뷰 구하기.
-			pstmt = con.prepareStatement("delete from review where rev_num=?");
-			pstmt.setInt(1, rev_num);
-			deleteCount = pstmt.executeUpdate();
-			
-			if(deleteCount > 0) {
-				isDeleteSuccess = true;
-			}
-		}catch(Exception e) {
-			System.out.println("ReviewDelete 에러 : " + e);
-		}finally {
-			close(pstmt);
-		}
-		return isDeleteSuccess;
-	}
-
-	//리뷰 수정
-	public boolean updateReview(ReviewBean reviewBean, int rev_num) {
-		// TODO Auto-generated method stub
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
 		int updateCount = 0;
 		boolean isUpdateSuccess = false;
 		
-		String sql = "update review set rev_subject=?, rev_content=?, score=?, ";
-		sql += "user_id=?, pro_num=?, rev_photo=? where rev_num=?";
+		String sql = "update board set board_title=?, board_content=?, board_photo=?, ";
+		sql += "qna_email=?, qna_type=?, qna_open=?, review_score=? where board_num=?";
 		
 		try {
 			pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, reviewBean.getRev_subject());
-			pstmt.setString(2, reviewBean.getRev_content());
-			pstmt.setInt(3, reviewBean.getScore());
-			pstmt.setString(4, reviewBean.getUser_id());
-			pstmt.setInt(5, reviewBean.getPro_num());
-			pstmt.setString(6, reviewBean.getRev_photo());
-			pstmt.setInt(7, rev_num);
+			pstmt.setString(1, boardBean.getBoard_title());
+			pstmt.setString(2, boardBean.getBoard_content());
+			pstmt.setString(3, boardBean.getBoard_photo());
+			pstmt.setString(4, boardBean.getQna_email());
+			pstmt.setString(5, boardBean.getQna_type());
+			pstmt.setString(6, String.valueOf(boardBean.getQna_open()));
+			pstmt.setInt(7, boardBean.getReview_score());
+			pstmt.setInt(8, board_num);
 			updateCount = pstmt.executeUpdate();
 			
 			if(updateCount > 0) {
 				isUpdateSuccess = true;
 			}
 		}catch(SQLException e) {
-			System.out.println("리뷰 수정 에러 " + e);
+			System.out.println("게시글 수정 에러 " + e);
 		}finally {
 			close(pstmt);
 		}
 		return isUpdateSuccess;
 	}
 
-	
-	//QnA 글 삭제
-	public boolean deleteQnA(int qna_num) {
+	//3. 게시글 삭제
+	public boolean deleteBoard(int board_num) {
 		// TODO Auto-generated method stub
 		PreparedStatement pstmt = null;
 		boolean isDeleteSuccess = false;
 		int deleteCount = 0;
 		try {
 			//전체 리뷰 구하기.
-			pstmt = con.prepareStatement("delete from QnA where qna_num=?");
-			pstmt.setInt(1, qna_num);
+			pstmt = con.prepareStatement("delete from board where board_num=?");
+			pstmt.setInt(1, board_num);
 			deleteCount = pstmt.executeUpdate();
 			
 			if(deleteCount > 0) {
 				isDeleteSuccess = true;
 			}
 		}catch(Exception e) {
-			System.out.println("QnADelete 에러 : " + e);
+			System.out.println("BoardDelete 에러 : " + e);
 		}finally {
 			close(pstmt);
 		}
 		return isDeleteSuccess;
 	}
 
-	//QnA 수정
-	public boolean updateQnA(QnABean qnaBean, int qna_num) {
+	//4. 게시글 가져오기
+	public BoardBean selectBoard(int board_num) {
 		// TODO Auto-generated method stub
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		int updateCount = 0;
-		boolean isUpdateSuccess = false;
+		BoardBean boardBean = null;
 		
-		String sql = "update QnA set qna_title=?, qna_content=?, qna_open=?, ";
-		sql += "qna_file=?, qna_email=?, qna_type=?, qna_step=?, user_id=?, pro_num=?, sel_num=? where qna_num=?";
+		try {
+			pstmt = con.prepareStatement("select * from board where board_num=?");
+			pstmt.setInt(1, board_num);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				boardBean = new BoardBean();
+				boardBean.setBoard_num(board_num);
+				boardBean.setBoard_type(rs.getString("board_type"));
+				boardBean.setBoard_title(rs.getString("board_title"));
+				boardBean.setBoard_writer(rs.getString("board_writer"));
+				boardBean.setBoard_content(rs.getString("board_content"));
+				boardBean.setBoard_date(rs.getString("board_date"));
+				boardBean.setBoard_photo(rs.getString("board_photo"));
+				boardBean.setPro_num(rs.getInt("pro_num"));
+				boardBean.setSel_num(rs.getString("sel_num"));
+				boardBean.setBoard_step(rs.getString("board_step"));
+				boardBean.setQna_email(rs.getString("qna_email"));
+				boardBean.setQna_type(rs.getString("qna_type"));
+				boardBean.setQna_open(rs.getString("qna_open"));
+				boardBean.setReview_score(rs.getInt("review_score"));
+			}
+		}catch(Exception e) {
+			System.out.println("selectBoard 에러 : " + e);
+		}finally {
+			close(rs);
+			close(pstmt);
+		}
+		
+		return boardBean;
+	}
+
+	
+	//board_type에 해당하는 게시글 개수
+	public int selectBoardListCount(String board_type) {
+		// TODO Auto-generated method stub
+		int listCount = 0;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			//전체 리뷰 구하기.
+			pstmt = con.prepareStatement("select count(*) from board where board_type=?");
+			pstmt.setString(1, board_type);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				listCount = rs.getInt(1);
+			}
+		}catch(Exception e) {
+			System.out.println("getBoardListCount 에러 : " + e);
+		}finally {
+			close(rs);
+			close(pstmt);
+		}
+		return listCount;
+	}
+
+	//board_type에 해당하는 게시글 목록
+	public ArrayList<BoardBean> selectBoardList(String board_type, int page, int limit) {
+		// TODO Auto-generated method stub
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		ArrayList<BoardBean> boardList = new ArrayList<>();
+		BoardBean boardBean = null;
+		int startrow = (page-1)*limit;	//읽기 시작할 row 번호
+		
+		try {
+			pstmt = con.prepareStatement("select * from board where board_type=? order by board_num desc limit ?,?");
+			pstmt.setString(1, board_type);
+			pstmt.setInt(2, startrow);
+			pstmt.setInt(3, limit);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				boardBean = new BoardBean();
+				boardBean.setBoard_num(rs.getInt("board_num"));
+				boardBean.setBoard_type(rs.getString("board_type"));
+				boardBean.setBoard_title(rs.getString("board_title"));
+				boardBean.setBoard_writer(rs.getString("board_writer"));
+				boardBean.setBoard_content(rs.getString("board_content"));
+				boardBean.setBoard_date(rs.getString("board_date"));
+				boardBean.setBoard_photo(rs.getString("board_photo"));
+				boardBean.setPro_num(rs.getInt("pro_num"));
+				boardBean.setSel_num(rs.getString("sel_num"));
+				boardBean.setBoard_step(rs.getString("board_step"));
+				boardBean.setQna_email(rs.getString("qna_email"));
+				boardBean.setQna_type(rs.getString("qna_type"));
+				boardBean.setQna_open(rs.getString("qna_open"));
+				boardBean.setReview_score(rs.getInt("review_score"));
+				boardList.add(boardBean);
+			}
+		}catch(Exception e) {
+			System.out.println("selectBoardList 에러 : " + e);
+		}finally {
+			close(rs);
+			close(pstmt);
+		}
+		
+		return boardList;
+	}
+
+	//pro_num(상품번호)에 해당하는 board_type(게시글 종류) 개수 불러오기
+	public int selectBoardListCount(int pro_num, String board_type) {
+		// TODO Auto-generated method stub
+		int listCount = 0;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			//전체 리뷰 구하기.
+			pstmt = con.prepareStatement("select count(*) from board where pro_num=? and board_type=?");
+			pstmt.setInt(1, pro_num);
+			pstmt.setString(2, board_type);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				listCount = rs.getInt(1);
+			}
+		}catch(Exception e) {
+			System.out.println("getBoardListCount 에러 : " + e);
+		}finally {
+			close(rs);
+			close(pstmt);
+		}
+		return listCount;
+	}
+
+	//pro_num(상품번호)에 해당하는 board_type(게시글 종류) 목록
+	public ArrayList<BoardBean> selectBoardList(int pro_num, String board_type, int page, int limit) {
+		// TODO Auto-generated method stub
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		ArrayList<BoardBean> boardList = new ArrayList<>();
+		BoardBean boardBean = null;
+		int startrow = (page-1)*limit;	//읽기 시작할 row 번호
+		
+		try {
+			pstmt = con.prepareStatement("select * from board where pro_num=? and board_type=? order by board_num desc limit ?,?");
+			pstmt.setInt(1, pro_num);
+			pstmt.setString(2, board_type);
+			pstmt.setInt(3, startrow);
+			pstmt.setInt(4, limit);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				boardBean = new BoardBean();
+				boardBean.setBoard_num(rs.getInt("board_num"));
+				boardBean.setBoard_type(rs.getString("board_type"));
+				boardBean.setBoard_title(rs.getString("board_title"));
+				boardBean.setBoard_writer(rs.getString("board_writer"));
+				boardBean.setBoard_content(rs.getString("board_content"));
+				boardBean.setBoard_date(rs.getString("board_date"));
+				boardBean.setBoard_photo(rs.getString("board_photo"));
+				boardBean.setPro_num(rs.getInt("pro_num"));
+				boardBean.setSel_num(rs.getString("sel_num"));
+				boardBean.setBoard_step(rs.getString("board_step"));
+				boardBean.setQna_email(rs.getString("qna_email"));
+				boardBean.setQna_type(rs.getString("qna_type"));
+				boardBean.setQna_open(rs.getString("qna_open"));
+				boardBean.setReview_score(rs.getInt("review_score"));
+				boardList.add(boardBean);
+			}
+		}catch(Exception e) {
+			System.out.println("selectBoardList 에러 : " + e);
+		}finally {
+			close(rs);
+			close(pstmt);
+		}
+		
+		return boardList;
+	}
+
+	//id(유저 아이디)에 해당하는 board_type(게시글 종류) 개수
+	public int selectBoardListCount(String id, String board_type) {
+		// TODO Auto-generated method stub
+		int listCount = 0;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			//전체 리뷰 구하기.
+			pstmt = con.prepareStatement("select count(*) from board where board_writer=? and board_type=?");
+			pstmt.setString(1, id);
+			pstmt.setString(2, board_type);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				listCount = rs.getInt(1);
+			}
+		}catch(Exception e) {
+			System.out.println("getBoardListCount 에러 : " + e);
+		}finally {
+			close(rs);
+			close(pstmt);
+		}
+		return listCount;
+	}
+
+	//id(유저 아이디)에 해당하는 board_type(게시글 종류) 목록
+	public ArrayList<BoardBean> selectBoardList(String id, String board_type, int page, int limit) {
+		// TODO Auto-generated method stub
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		ArrayList<BoardBean> boardList = new ArrayList<>();
+		BoardBean boardBean = null;
+		int startrow = (page-1)*limit;	//읽기 시작할 row 번호
+		
+		try {
+			pstmt = con.prepareStatement("select * from board where board_writer=? and board_type=? order by board_num desc limit ?,?");
+			pstmt.setString(1, id);
+			pstmt.setString(2, board_type);
+			pstmt.setInt(3, startrow);
+			pstmt.setInt(4, limit);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				boardBean = new BoardBean();
+				boardBean.setBoard_num(rs.getInt("board_num"));
+				boardBean.setBoard_type(rs.getString("board_type"));
+				boardBean.setBoard_title(rs.getString("board_title"));
+				boardBean.setBoard_writer(rs.getString("board_writer"));
+				boardBean.setBoard_content(rs.getString("board_content"));
+				boardBean.setBoard_date(rs.getString("board_date"));
+				boardBean.setBoard_photo(rs.getString("board_photo"));
+				boardBean.setPro_num(rs.getInt("pro_num"));
+				boardBean.setSel_num(rs.getString("sel_num"));
+				boardBean.setBoard_step(rs.getString("board_step"));
+				boardBean.setQna_email(rs.getString("qna_email"));
+				boardBean.setQna_type(rs.getString("qna_type"));
+				boardBean.setQna_open(rs.getString("qna_open"));
+				boardBean.setReview_score(rs.getInt("review_score"));
+				boardList.add(boardBean);
+			}
+		}catch(Exception e) {
+			System.out.println("selectBoardList 에러 : " + e);
+		}finally {
+			close(rs);
+			close(pstmt);
+		}
+		
+		return boardList;
+	}
+
+	
+	//게시글 검색 개수
+	public int selectBoardListCount(String board_date, String board_type, String search_type, String search_text,
+			String board_step, String board_photo) {
+		// TODO Auto-generated method stub
+		int listCount = 0;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = "select count(*) from board ";
+		int cnt = 0;
+		
+		if(!board_date.equals("all") || !board_type.equals("all") || !search_text.equals("") || !board_step.equals("all")
+				|| !board_photo.equals("all")) {
+			sql += "where ";
+		}
+				
+		if(!board_date.equals("all")) {
+			sql += "board_date > date_add(now(), interval " + board_date + " day)";
+			cnt++;
+		}
+		
+		if(!board_type.equals("all")) {
+			if(cnt > 0) {
+				sql += " and";
+			}
+			sql += " board_type = '" + board_type + "'";
+			cnt++;
+		}
+		
+		if(!search_text.equals("")) {
+			if(cnt > 0) {
+				sql += " and ";
+			}
+			sql += search_type + " like '%" + search_text + "%'";
+			cnt++;
+		}
+		if(!board_step.equals("all")) {
+			if(cnt > 0) {
+				sql += " and";
+			}
+			sql += " board_step = '" + board_step + "'";
+			cnt++;
+		}
+		if(!board_photo.equals("all")) {
+			if(cnt > 0) {
+				sql += " and";
+			}
+			if(board_photo.equals("Y")) {
+				sql += " board_photo != ''";
+			}else if(board_photo.equals("N")) {
+				sql += " board_photo = ''";
+			}
+			cnt++;
+		}
+		
+		
+		try {
+			//전체 리뷰 구하기.
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				listCount = rs.getInt(1);
+				System.out.println("카운트 : " + listCount);
+			}
+		}catch(Exception e) {
+			System.out.println("getBoardListCount 에러 : " + e);
+		}finally {
+			close(rs);
+			close(pstmt);
+		}
+		return listCount;
+	}
+
+	
+	public ArrayList<BoardBean> selectBoardList(String board_date, String board_type, String search_type,
+			String search_text, String board_step, String board_photo, int page, int limit) {
+		// TODO Auto-generated method stub
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		ArrayList<BoardBean> boardList = new ArrayList<>();
+		BoardBean boardBean = null;
+		int startrow = (page-1)*limit;	//읽기 시작할 row 번호
+		
+		String sql = "select * from board ";
+		
+		int cnt = 0;
+		
+		if(!board_date.equals("all") || !board_type.equals("all") || !search_text.equals("") || !board_step.equals("all")
+				|| !board_photo.equals("all")) {
+			sql += "where ";
+		}
+				
+		if(!board_date.equals("all")) {
+			sql += "board_date > date_add(now(), interval " + board_date + " day)";
+			cnt++;
+		}
+		
+		if(!board_type.equals("all")) {
+			if(cnt > 0) {
+				sql += " and";
+			}
+			sql += " board_type = '" + board_type + "'";
+			cnt++;
+		}
+		
+		if(!search_text.equals("")) {
+			if(cnt > 0) {
+				sql += " and ";
+			}
+			sql += search_type + " like '%" + search_text + "%'";
+			cnt++;
+		}
+		if(!board_step.equals("all")) {
+			if(cnt > 0) {
+				sql += " and";
+			}
+			sql += " board_step = '" + board_step + "'";
+			cnt++;
+		}
+		if(!board_photo.equals("all")) {
+			if(cnt > 0) {
+				sql += " and";
+			}
+			if(board_photo.equals("Y")) {
+				sql += " board_photo != ''";
+			}else if(board_photo.equals("N")) {
+				sql += " board_photo = ''";
+			}
+			cnt++;
+		}
+		sql += " order by board_num desc limit ?, ?";
 		
 		try {
 			pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, qnaBean.getQna_title());
-			pstmt.setString(2, qnaBean.getQna_content());
-			pstmt.setString(3, String.valueOf(qnaBean.getQna_open()));
-			pstmt.setString(4, qnaBean.getQna_file());
-			pstmt.setString(5, qnaBean.getQna_email());
-			pstmt.setString(6, qnaBean.getQna_type());
-			pstmt.setString(7, String.valueOf(qnaBean.getQna_step()));
-			pstmt.setString(8, qnaBean.getUser_id());
-			pstmt.setInt(9, qnaBean.getPro_num());
-			pstmt.setString(10, qnaBean.getSel_num());
-			pstmt.setInt(11, qna_num);
-			updateCount = pstmt.executeUpdate();
+			pstmt.setInt(1, startrow);
+			pstmt.setInt(2, limit);
 			
-			if(updateCount > 0) {
-				isUpdateSuccess = true;
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				boardBean = new BoardBean();
+				boardBean.setBoard_num(rs.getInt("board_num"));
+				boardBean.setBoard_type(rs.getString("board_type"));
+				boardBean.setBoard_title(rs.getString("board_title"));
+				boardBean.setBoard_writer(rs.getString("board_writer"));
+				boardBean.setBoard_content(rs.getString("board_content"));
+				boardBean.setBoard_date(rs.getString("board_date"));
+				boardBean.setBoard_photo(rs.getString("board_photo"));
+				boardBean.setPro_num(rs.getInt("pro_num"));
+				boardBean.setSel_num(rs.getString("sel_num"));
+				boardBean.setBoard_step(rs.getString("board_step"));
+				boardBean.setQna_email(rs.getString("qna_email"));
+				boardBean.setQna_type(rs.getString("qna_type"));
+				boardBean.setQna_open(rs.getString("qna_open"));
+				boardBean.setReview_score(rs.getInt("review_score"));
+				boardList.add(boardBean);
 			}
-		}catch(SQLException e) {
-			System.out.println("QnA 수정 에러 " + e);
+		}catch(Exception e) {
+			System.out.println("selectBoardList 에러 : " + e);
 		}finally {
+			close(rs);
 			close(pstmt);
 		}
-		return isUpdateSuccess;
+		
+		return boardList;
 	}
 
 	

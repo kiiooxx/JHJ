@@ -17,6 +17,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 
 import admin.svc.CategoryListService;
+import product.svc.CartAddService;
 import vo.ActionForward;
 import vo.Cart;
 import vo.CategoryBean;
@@ -62,6 +63,7 @@ public class addCart extends HttpServlet {
 
 
 		HttpSession session =request.getSession();
+		String id = (String)session.getAttribute("id");	//로그인 한 아이디
 		ArrayList<Cart> cartList = (ArrayList<Cart>)session.getAttribute("cartList");
 		
 		if(cartList == null) {
@@ -74,6 +76,10 @@ public class addCart extends HttpServlet {
 			Cart cart = new Cart();
 			bas_num = cart.getBas_num();
 		}
+		
+		//카트 추가 서비스
+		CartAddService cartAddService = new CartAddService();
+		
 		// 지금 장바구니에 담는 항목이 새로 추가되는 항목인지를 저장할 변수
 		boolean isNewCart = true;
 		
@@ -100,6 +106,10 @@ public class addCart extends HttpServlet {
 				System.out.println(pro_det_num[i]);
 				System.out.println(qnt[i]);
 				cartList.add(cart);
+				
+				if(id != null) {
+					cartAddService.addCart(cart);
+				}
 			}
 			
 			isNewCart = true;
@@ -108,6 +118,5 @@ public class addCart extends HttpServlet {
 		for(int i=0; i<cartList.size(); i++) {
 			System.out.println(cartList.get(i).getPro_det_num() + " : " + cartList.get(i).getBas_pro_qnt());
 		}
-		
 	}
 }

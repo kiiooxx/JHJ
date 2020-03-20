@@ -25,13 +25,13 @@
 						<th scope="col">no</th>
 						<th scope="col">type</th>
 						<th scope="col">subject</th>
-						<th scope="col">step</th>
+						<th scope="col">answer</th>
 						<th scope="col">writer</th>
 						<th scope="col">date</th>
 					</tr>
-					<c:forEach var="list" items="${qnaList }" varStatus="i">
+					<c:forEach var="list" items="${boardList }" varStatus="i">
 					<tr>
-						<td>${list.qna_num }</td>
+						<td>${i.count }</td>
 						<td>
 							<c:choose>
 								<c:when test="${list.qna_type == 'product_qna'}">
@@ -47,26 +47,26 @@
 						</td>
 						<td style="text-align:left;">
 							<c:choose>
-								<c:when test="${list.qna_open != 'N'.charAt(0) || grade=='A'.charAt(0)}">
-									<a href="qnaDetail.bo?&qna_num=${list.qna_num}&pro_num=${list.pro_num}">
-										${list.qna_title}
+								<c:when test="${list.qna_open != 'N' || grade=='A'}">
+									<a href="boardViewAction.bo?&board_num=${list.board_num}&pro_num=${list.pro_num}&path=detail">
+										${list.board_title}
 									</a>
 								</c:when>
 								<c:otherwise>
-									${list.qna_title}
+									${list.board_title}
 								</c:otherwise>
 							</c:choose>
-							<c:if test="${list.qna_open == 'N'.charAt(0) }">
+							<c:if test="${list.qna_open == 'N' }">
 								<img src="<%= request.getContextPath() %>/layout_image/lock_icon.png"/>
 							</c:if>
 						</td>
 						<td>
-							${list.qna_step }
+							${list.board_step }
 						</td>
-						<td>${list.user_id }</td>
+						<td>${list.board_writer }</td>
 						<!-- 날짜 형식 바꿔주기 (yyyy-MM-dd) -->
-						<fmt:parseDate value="${list.qna_date}" var="qna_date" pattern="yyyy-MM-dd HH:mm:ss"/>
-						<fmt:formatDate var="dateFmt" value="${qna_date}" pattern="yyyy-MM-dd"/>
+						<fmt:parseDate value="${list.board_date}" var="board_date" pattern="yyyy-MM-dd HH:mm:ss"/>
+						<fmt:formatDate var="dateFmt" value="${board_date}" pattern="yyyy-MM-dd"/>
 						<td>${dateFmt }</td>
 					</tr>
 					</c:forEach>
@@ -76,6 +76,44 @@
 						<a href="qnaWriteForm.bo" class="b">WRITE</a>
 					</p>
 				</div>
+			</div>
+			
+			<!-- 페이지 리스트 -->
+			<div id="pageList">
+				<c:if test="${pageInfo.endPage > 0}">
+					<ol>
+					<c:choose>
+						<c:when test="${pageInfo.page <= 1 }">
+							<li> < </li>
+						</c:when>
+						<c:otherwise>
+							<li><a href="boardListAction.bo?board_type=qna&page=${pageInfo.page-1 }"> < </a></li>
+						</c:otherwise>
+					</c:choose>
+					
+					
+					<c:forEach var="pglist" begin="${pageInfo.startPage }" end="${pageInfo.endPage }" step="1" varStatus="a">
+						<c:choose>
+							<c:when test="${a.count == pageInfo.page }">
+								<li>[${a.count }]</li>
+							</c:when>
+							<c:otherwise>
+								<li><a href="boardListAction.bo?board_type=qna&page=${a.count }">[${a.count }]</a></li>
+							</c:otherwise>
+						</c:choose>
+					</c:forEach>
+					
+					
+					<c:choose>
+						<c:when test="${pageInfo.page>=pageInfo.maxPage }">
+							<li> > </li>
+						</c:when>
+						<c:otherwise>
+							<li><a href="boardListAction.bo?board_type=qna&page=${pageInfo.page+1 }"> > </a></li>
+						</c:otherwise>
+					</c:choose>
+					</ol>
+				</c:if>
 			</div>
 		</div>
 	</div>

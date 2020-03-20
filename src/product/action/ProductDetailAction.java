@@ -6,15 +6,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import action.Action;
-import board.svc.QnAListService;
-import board.svc.ReviewListService;
+import board.svc.BoardListService;
 import product.svc.ProductDetailService;
 import vo.ActionForward;
+import vo.BoardBean;
 import vo.PageInfo;
 import vo.ProDetBean;
 import vo.ProductBean;
-import vo.QnABean;
-import vo.ReviewBean;
 
 public class ProductDetailAction implements Action {
 
@@ -25,8 +23,8 @@ public class ProductDetailAction implements Action {
 		ProductDetailService prdDetailService = new ProductDetailService();
 		ProductBean prd = prdDetailService.getProduct(pro_num);
 		ArrayList<ProDetBean> prdDetList = prdDetailService.getProductDetail(pro_num);
-		ArrayList<ReviewBean> reviewList = null;	//리뷰 리스트
-		ArrayList<QnABean> qnaList = null;	//QnA리스트
+		ArrayList<BoardBean> reviewList = null;	//리뷰 리스트
+		ArrayList<BoardBean> qnaList = null;	//QnA리스트
 		
 		int page = 1;
 		int limit = 10;	//페이지에 보여줄 목록 수
@@ -39,9 +37,10 @@ public class ProductDetailAction implements Action {
 		}
 		
 		//리뷰 목록
-		ReviewListService reviewListService = new ReviewListService();
-		review_listCount = reviewListService.getListCount(pro_num);
-		reviewList = reviewListService.getReviewList(pro_num, page, limit);
+		String board_type = "review";
+		BoardListService boardListService = new BoardListService();
+		review_listCount = boardListService.getBoardListCount(pro_num, board_type);
+		reviewList = boardListService.getBoardList(board_type, pro_num, page, limit);
 		int review_maxPage = (int)((double)review_listCount/limit+0.95);
 		int review_startPage = (((int)((double)page/limitPage+0.9)) -1) * limitPage + 1;
 		int review_endPage = review_startPage + limitPage-1;
@@ -55,9 +54,9 @@ public class ProductDetailAction implements Action {
 		review_pageInfo.setStartPage(review_startPage);
 		
 		//문의 목록
-		QnAListService qnaListService = new QnAListService();
-		qna_listCount = qnaListService.getListCount(pro_num);
-		qnaList = qnaListService.getQnAList(pro_num, page, limit);
+		board_type = "qna";
+		qna_listCount = boardListService.getBoardListCount(pro_num, board_type);
+		qnaList = boardListService.getBoardList(board_type, pro_num, page, limit);
 		int qna_maxPage = (int)((double)qna_listCount/limit+0.95);
 		int qna_startPage = (((int)((double)page/limitPage+0.9)) -1) * limitPage + 1;
 		int qna_endPage = qna_startPage + limitPage-1;

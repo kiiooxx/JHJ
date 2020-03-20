@@ -259,7 +259,7 @@ $(document).ready(function() {
 								<ion-icon name="chevron-back-outline"></ion-icon>
 							</c:when>
 							<c:otherwise>
-								<a href="productListManagement.ad?page=${pageInfo.page-1 }"><ion-icon name="chevron-back-outline"></ion-icon></a>
+								<a href="productListManagement.ad?search_type=${search_type }&search_text=${search_text }&cate_type=${cate_type }&ca_ref=${ca_ref }&pro_date=${pro_date }&active=${active }&page=${pageInfo.page-1 }"><ion-icon name="chevron-back-outline"></ion-icon></a>
 							</c:otherwise>
 						</c:choose>
 							
@@ -270,7 +270,7 @@ $(document).ready(function() {
 									[${a.count }]
 								</c:when>
 								<c:otherwise>
-									<a href="productListManagement.ad?page=${a.count }">[${a.count }]</a>
+									<a href="productListManagement.ad?search_type=${search_type }&search_text=${search_text }&cate_type=${cate_type }&ca_ref=${ca_ref }&pro_date=${pro_date }&active=${active }&page=${a.count }">[${a.count }]</a>
 								</c:otherwise>
 							</c:choose>
 						</c:forEach>
@@ -281,7 +281,7 @@ $(document).ready(function() {
 								<ion-icon name="chevron-forward-outline"></ion-icon>
 							</c:when>
 							<c:otherwise>
-								<a href="productListManagement.ad?page=${pageInfo.page+1 }"><ion-icon name="chevron-forward-outline"></ion-icon></li>
+								<a href="productListManagement.ad?search_type=${search_type }&search_text=${search_text }&cate_type=${cate_type }&ca_ref=${ca_ref }&pro_date=${pro_date }&active=${active }&page=${pageInfo.page+1 }"><ion-icon name="chevron-forward-outline"></ion-icon></li>
 							</c:otherwise>
 						</c:choose>
 					</div>
