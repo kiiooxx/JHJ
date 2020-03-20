@@ -34,7 +34,7 @@
 	<div class="mypage_inner">
 		<ul>
 			<li>
-				<h1><a href="#">ORDER</a></h1>
+				<h1><a href="order.mem">ORDER</a></h1>
 				고객님께서 주문하신 상품의 주문내역을 확인하실 수 있습니다.<br>
 				비회원의 경우, 주문서의 주문번호와 비밀번호로 주문조회가 가능합니다.
 			</li>

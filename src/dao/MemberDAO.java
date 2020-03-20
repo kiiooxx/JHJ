@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import javax.sql.DataSource;
 
 import vo.Member;
+import vo.Order;
 
 public class MemberDAO {
 
@@ -139,6 +140,52 @@ public class MemberDAO {
 			close(pstmt);
 		}
 		return result;
+	}
+
+	public ArrayList<Order> selectorder(String id) {
+		PreparedStatement pstmt = null;
+		Order order= null;
+		ResultSet  rs= null;
+		ArrayList<Order> orderList = new ArrayList<>();
+		
+		String sql= "select a.sel_num, d.pro_num, a.final_price,d.pro_name, d.pro_photo, a.cancel_req, b.pro_qnt, d.pro_price, a.sel_status, a.sel_date, c.pro_size, c.color From order_page as a " + 
+				"left join order_det as b on a.sel_num=b.sel_num " + 
+				"left join pro_det as c on b.pro_det_num=c.pro_det_num " + 
+				"left join pro_info as d on c.pro_num=d.pro_num " + 
+				"where user_id = ?";
+		// TODO Auto-generated method stub
+		
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, id);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) { 
+				order = new Order();
+
+				order.setPro_num(rs.getInt("pro_num"));
+				order.setSel_num(rs.getString("sel_num"));
+				order.setPro_name(rs.getString("pro_name"));
+				order.setPro_photo(rs.getString("pro_photo"));
+				order.setCancel_req(rs.getString("cancel_req").charAt(0));
+				order.setPro_qnt(rs.getInt("pro_qnt"));
+				order.setFinal_price(rs.getInt("final_price"));
+				order.setPro_price(rs.getInt("pro_price"));
+				order.setSel_status(rs.getString("sel_status"));
+				order.setSel_date(rs.getString("sel_date"));
+				order.setPro_size(rs.getString("pro_size"));
+				order.setColor(rs.getString("color"));
+				     
+				orderList.add(order);
+			}
+			
+		}catch(Exception ex) {
+			System.out.println("Order 에러 : " +ex);
+		}finally {
+			close(pstmt);
+		}
+		
+		return orderList;
 	}
 	
 }

@@ -14,6 +14,8 @@ import admin.action.MemberListAction;
 import member.action.MyInfoAction;
 import member.action.MyInfoModAction;
 import member.action.MyInfoQuitAction;
+import member.action.OrderAction;
+import member.action.OrderDetailAction;
 import member.action.IdCheckAction;
 import member.action.MemberJoinProAction;
 import member.action.MyInfoAction;
@@ -37,7 +39,6 @@ public class MemberController extends HttpServlet {
 			request.setAttribute("pagefile", "/member/accountForm.jsp");
 			forward = new ActionForward("/template.jsp", false);
 		
-
 		}
 
 		System.out.println(command);
@@ -66,6 +67,24 @@ public class MemberController extends HttpServlet {
 
 			forward = new ActionForward("/member/idCheck.jsp", false);
 
+		} else if (command.equals("/order.mem")){
+			action = new OrderAction();
+			try {
+				forward = action.execute(request, response);
+			} catch (Exception e) {
+				e.printStackTrace();
+				System.out.println("Controller error");
+			}
+		
+		} else if (command.equals("/orderdetail.mem")) {
+			action = new OrderDetailAction();
+			try {
+				forward = action.execute(request, response);
+			} catch (Exception e){
+				e.printStackTrace();
+				System.out.println("Controller error");
+			}
+	
 		} else if (command.equals("/myinfo.mem")) {
 
 			action = new MyInfoAction();

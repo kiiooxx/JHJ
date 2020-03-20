@@ -1134,7 +1134,7 @@ public class AdminDAO {
 					orderProView.setPro_qnt(rs.getInt("pro_qnt"));
 					orderProView.setSel_num(sel_num);
 					
-					orderProList.add(orderProView);
+					orderProList.add(orderProView);//리스트는 에드 해줘야한다.
 									
 				}
 				
