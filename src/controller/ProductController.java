@@ -102,6 +102,13 @@ public class ProductController extends HttpServlet {
 			}catch(Exception e) {
 				e.printStackTrace();
 			}
+    	}else if(command.equals("/directOrderPage.pro")) {
+			action = new DirectOrderPageAction();
+			try {
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
     	}else if(command.equals("/orderPage.pro")) {
 			action = new OrderPageAction();
 			try {
