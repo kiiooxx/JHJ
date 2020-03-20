@@ -4,18 +4,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<link rel="stylesheet" href="common.css" type="text/css">
-<link rel="stylesheet" href="style.css" type="text/css">
-<style>
-
-</style>
-<title>Insert title here</title>
-</head>
-<body>
 <div class="top">
 	<ul>
 		<li>
@@ -46,5 +34,3 @@
 		</li>
 	</ul>
 </div>
-</body>
-</html>

@@ -5,100 +5,80 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
-<link rel="stylesheet" type="text/css" href="slick/slick.css"/>
-<link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
-<script src="http://code.jquery.com/jquery-latest.js"></script>
-<script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
-<style>
-	#autoplay1 img, #autoplay2 img {
-		width: 338px;
-    	height : 450px;
-	}
-</style>
-</head>
-<body>
-	<div class="blank">
-	</div>
+<div class="blank">
+</div>
+
+<!-- 상품 목록 폼 -->
+<div class="product_list">
+	<!-- 카테고리 이름 -->
+	<h2>BEST</h2>
 	
+
+	<div id="autoplay1">
+		<c:forEach var="plist" items="${prdList }" varStatus="i">
+			<!-- 상품 진열 활성화 된것만-->
+			<c:if test="${plist.active eq 'Y'.charAt(0) && plist.main_nb eq 'B'.charAt(0)}">
+				<div>
+					<div>
+						<a href="productDetail.pro?pro_num=${plist.pro_num }"><img src="<%= request.getContextPath() %>/upload/${plist.pro_photo }"/></a>
+					</div>
+						
+					<div class="description2">
+						<p>${plist.pro_name }</p>
+						<fmt:formatNumber var="price" value="${plist.pro_price}" pattern="#,###"/>
+						<p>${price }</p>
+					</div>
+				</div>
+			</c:if>
+		</c:forEach>
+
+	</div>
+</div>
+
 	<!-- 상품 목록 폼 -->
-	<div class="product_list">
-		<!-- 카테고리 이름 -->
-		<h2>BEST</h2>
+<div class="product_list">
+	<!-- 카테고리 이름 -->
+	<h2>NEW</h2>
+	
+
+	<div id="autoplay2">
 		
-
-		<div id="autoplay1">
-			<c:forEach var="plist" items="${prdList }" varStatus="i">
-				<!-- 상품 진열 활성화 된것만-->
-				<c:if test="${plist.active eq 'Y'.charAt(0) && plist.main_nb eq 'B'.charAt(0)}">
+		<c:forEach var="plist" items="${prdList }" varStatus="i">
+			<!-- 상품 진열 활성화 된것만-->
+			<c:if test="${plist.active eq 'Y'.charAt(0) && plist.main_nb eq 'N'.charAt(0)}">
+				<div>
 					<div>
-						<div>
-							<a href="productDetail.pro?pro_num=${plist.pro_num }"><img src="<%= request.getContextPath() %>/upload/${plist.pro_photo }"/></a>
-						</div>
-							
-						<div class="description2">
-							<p>${plist.pro_name }</p>
-							<fmt:formatNumber var="price" value="${plist.pro_price}" pattern="#,###"/>
-							<p>${price }</p>
-						</div>
+						<a href="productDetail.pro?pro_num=${plist.pro_num }"><img src="<%= request.getContextPath() %>/upload/${plist.pro_photo }"/></a>
 					</div>
-				</c:if>
-			</c:forEach>
+						
+					<div class="description2">
+						<p>${plist.pro_name }</p>
+						<fmt:formatNumber var="price" value="${plist.pro_price}" pattern="#,###"/>
+						<p>${price }</p>
+					</div>
+				</div>
+			</c:if>
+		</c:forEach>
 
-		</div>
 	</div>
 	
-		<!-- 상품 목록 폼 -->
-	<div class="product_list">
-		<!-- 카테고리 이름 -->
-		<h2>NEW</h2>
+	<script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+	<script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+	<script type="text/javascript" src="slick/slick.min.js"></script>
+	
+	<script>
+		$('#autoplay1').slick({
+		  slidesToShow: 3,
+		  slidesToScroll: 1,
+		  autoplay: true,
+		  autoplaySpeed: 2000,
+		});
 		
-
-		<div id="autoplay2">
-			
-			<c:forEach var="plist" items="${prdList }" varStatus="i">
-				<!-- 상품 진열 활성화 된것만-->
-				<c:if test="${plist.active eq 'Y'.charAt(0) && plist.main_nb eq 'N'.charAt(0)}">
-					<div>
-						<div>
-							<a href="productDetail.pro?pro_num=${plist.pro_num }"><img src="<%= request.getContextPath() %>/upload/${plist.pro_photo }"/></a>
-						</div>
-							
-						<div class="description2">
-							<p>${plist.pro_name }</p>
-							<fmt:formatNumber var="price" value="${plist.pro_price}" pattern="#,###"/>
-							<p>${price }</p>
-						</div>
-					</div>
-				</c:if>
-			</c:forEach>
-
-		</div>
-		
-		<script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
-		<script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-		<script type="text/javascript" src="slick/slick.min.js"></script>
-		
-		<script>
-			$('#autoplay1').slick({
+		$('#autoplay2').slick({
 			  slidesToShow: 3,
 			  slidesToScroll: 1,
 			  autoplay: true,
 			  autoplaySpeed: 2000,
 			});
-			
-			$('#autoplay2').slick({
-				  slidesToShow: 3,
-				  slidesToScroll: 1,
-				  autoplay: true,
-				  autoplaySpeed: 2000,
-				});
-		</script>
-	</div>
-</body>
-</html>
+	</script>
+</div>

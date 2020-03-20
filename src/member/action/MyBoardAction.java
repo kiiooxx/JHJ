@@ -1,9 +1,10 @@
-package product.action;
+package member.action;
 
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import action.Action;
 import board.svc.QnAListService;
@@ -16,15 +17,14 @@ import vo.ProductBean;
 import vo.QnABean;
 import vo.ReviewBean;
 
-public class ProductDetailAction implements Action {
+public class MyBoardAction implements Action {
 
 	@Override
 	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		// TODO Auto-generated method stub
-		int pro_num = Integer.parseInt(request.getParameter("pro_num"));
-		ProductDetailService prdDetailService = new ProductDetailService();
-		ProductBean prd = prdDetailService.getProduct(pro_num);
-		ArrayList<ProDetBean> prdDetList = prdDetailService.getProductDetail(pro_num);
+		HttpSession session = request.getSession();
+		String id = (String) session.getAttribute("id");
+		
 		ArrayList<ReviewBean> reviewList = null;	//리뷰 리스트
 		ArrayList<QnABean> qnaList = null;	//QnA리스트
 		
@@ -40,8 +40,8 @@ public class ProductDetailAction implements Action {
 		
 		//리뷰 목록
 		ReviewListService reviewListService = new ReviewListService();
-		review_listCount = reviewListService.getListCount(pro_num);
-		reviewList = reviewListService.getReviewList(pro_num, page, limit);
+		review_listCount = reviewListService.getListCount(id);
+		reviewList = reviewListService.getReviewList(id, page, limit);
 		int review_maxPage = (int)((double)review_listCount/limit+0.95);
 		int review_startPage = (((int)((double)page/limitPage+0.9)) -1) * limitPage + 1;
 		int review_endPage = review_startPage + limitPage-1;
@@ -56,8 +56,8 @@ public class ProductDetailAction implements Action {
 		
 		//문의 목록
 		QnAListService qnaListService = new QnAListService();
-		qna_listCount = qnaListService.getListCount(pro_num);
-		qnaList = qnaListService.getQnAList(pro_num, page, limit);
+		qna_listCount = qnaListService.getListCount(id);
+		qnaList = qnaListService.getQnAList(id, page, limit);
 		int qna_maxPage = (int)((double)qna_listCount/limit+0.95);
 		int qna_startPage = (((int)((double)page/limitPage+0.9)) -1) * limitPage + 1;
 		int qna_endPage = qna_startPage + limitPage-1;
@@ -75,9 +75,7 @@ public class ProductDetailAction implements Action {
 		request.setAttribute("reviewList", reviewList);
 		request.setAttribute("qnaPageInfo", qna_pageInfo);
 		request.setAttribute("qnaList", qnaList);
-		request.setAttribute("prd", prd);
-		request.setAttribute("prdDetList", prdDetList);
-		request.setAttribute("pagefile", "/product/product_detail.jsp");
+		request.setAttribute("pagefile", "/member/myboard.jsp");
 		ActionForward forward = new ActionForward("/template.jsp", false);
 		return forward;
 	}

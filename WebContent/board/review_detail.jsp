@@ -2,32 +2,23 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
 
 <script type="text/javascript">
-
-
-</script>
-<style>
-	.editor th{
-		margin : 0px;
-		width : 100%;
-		padding : 0px;
+//삭제 버튼 눌렀을 때
+function del() {
+	if(confirm('정말 삭제하시겠습니까?')) {
+		location.href='reviewDelete.bo?rev_num='+${review.rev_num};
+	}else {
+		return false;
 	}
-	
+}
+</script>
 
-</style>
-</head>
-<body>
+
 <div class="blank">
 </div>
 
 <div id="join_form">
-	<form action="reviewRegist.bo" name="f" method="post" enctype="multipart/form-data">
 		<input type="hidden" name="pro_num" value="${prd.pro_num }"/>
 		<!-- 상품 정보 -->
 		<div class="prd_info">
@@ -77,10 +68,11 @@
 		</div>
 		<div class="order_button_area">
 			<p>
+				<c:if test="${review.user_id == id }">
+					<a href="reviewModifyForm.bo?rev_num=${review.rev_num }&pro_num=${prd.pro_num}" class="b">MODIFY</a>
+					<a href="#" class="b" onclick="del()">DELETE</a>
+				</c:if>
 				<a href="reviewList.bo" class="w">LIST</a>
 			</p>
 		</div>
-	</form>
 </div>
-</body>
-</html>

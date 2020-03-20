@@ -49,8 +49,7 @@ public class Notice_BoardModifyAction implements Action {
 				out.println("</script>");
 			}else {
 				request.setAttribute("article", article);
-				request.setAttribute("pagefile", "/board/notice_board_list.jsp");
-				forward = new ActionForward("template.jsp", false);
+				forward = new ActionForward("notice_boardList.bo", false);
 				return forward;
 			}
 		

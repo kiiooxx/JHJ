@@ -4,15 +4,9 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ page import="java.util.ArrayList" %>
-<%@ page import="vo.CategoryBean" %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>사이드바</title>
-</head>
-<body>
+
+
+
 <!-- 메인 사진 -->
 <p class="main_photo">
 	<a href="#"><img src="main.jpg"></a>
@@ -51,5 +45,3 @@
 	</div>
 	
 </div>
-</body>
-</html>

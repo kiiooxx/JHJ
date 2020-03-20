@@ -10,13 +10,12 @@ import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
 import action.Action;
-import board.svc.QnARegistService;
-import board.svc.ReviewRegistService;
+import board.svc.QnAModifyService;
 import vo.ActionForward;
 import vo.QnABean;
-import vo.ReviewBean;
 
-public class QnARegistAction implements Action {
+
+public class QnAModifyAction implements Action {
 
 	@Override
 	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -30,11 +29,13 @@ public class QnARegistAction implements Action {
 		ServletContext context = request.getServletContext();
 		realFolder = context.getRealPath(saveFolder);
 		MultipartRequest multi = new MultipartRequest(request, realFolder, fileSize, "UTF-8", new DefaultFileRenamePolicy());
+		int qna_num = Integer.parseInt(multi.getParameter("qna_num"));	//리뷰 번호 불러오기
+		
 		qnaBean = new QnABean();
 		qnaBean.setQna_title(multi.getParameter("subject"));	//제목
 		qnaBean.setQna_content(multi.getParameter("content"));	//내용
 		qnaBean.setQna_open(multi.getParameter("qna_open").charAt(0));	//공개여부
-		
+		qnaBean.setQna_step(multi.getParameter("qna_step").charAt(0));	//답변여부
 		qnaBean.setQna_email(multi.getParameter("email"));	//이메일
 		qnaBean.setQna_type(multi.getParameter("qna_type"));	//문의 타입
 		qnaBean.setUser_id(multi.getParameter("user_id"));	//작성자 아이디
@@ -52,22 +53,23 @@ public class QnARegistAction implements Action {
 		}
 		qnaBean.setSel_num(sel_num);	//주문 번호
 		
-		String qna_file = "";
-		if(multi.getFilesystemName("qna_file") != null) {
+		String qna_file = multi.getParameter("qna_file2");
+		if(!(multi.getFilesystemName("qna_file") == null || multi.getFilesystemName("qna_file").equals(""))) {
 			qna_file = multi.getFilesystemName("qna_file");	//파일
 		}
 		qnaBean.setQna_file(qna_file);
 		
-		QnARegistService qnaRegistService = new QnARegistService();
-		boolean isRegistSuccess = qnaRegistService.registQnA(qnaBean);
 		
-		if(isRegistSuccess) {
-			forward = new ActionForward("qnaList.bo", true);
+		QnAModifyService qnaModifyService = new QnAModifyService();
+		boolean isUpdateSuccess = qnaModifyService.modifyQnA(qnaBean, qna_num);
+		
+		if(isUpdateSuccess) {
+			forward = new ActionForward("qnaDetail.bo?qna_num="+qna_num+"&pro_num="+qnaBean.getPro_num(), true);
 		}else {
 			response.setContentType("text/html;charset=UTF-8");
 			PrintWriter out = response.getWriter();
 			out.println("<script>");
-			out.println("alert('등록실패');");
+			out.println("alert('수정실패');");
 			out.println("history.back()");
 			out.println("</script>");
 		}

@@ -874,7 +874,14 @@ table {
     vertical-align: middle;
 }
 
+/* 리뷰게시판 리스트 */
+
+.rev_thumb {
+	width : 50px;
+}
+
 /* 리뷰게시판 글 등록 폼 */
+
 .prd_info {
 	overflow: hidden;
     margin: 0 0 20px;
@@ -1000,4 +1007,10 @@ strong {
     font-size: 12px;
     color: #555;
     padding: 5px 0;
+}
+
+/* QnA 게시판 리스트 */
+#prdQnA {
+	float : left;
+	width : 100%;
 }

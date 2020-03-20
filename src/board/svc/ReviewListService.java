@@ -55,4 +55,28 @@ public class ReviewListService {
 		close(con);
 		return reviewList;
 	}
+
+	//id가 작성한 리뷰 글 개수 가져오기
+	public int getListCount(String id) {
+		// TODO Auto-generated method stub
+		int listCount = 0;
+		Connection con = getConnection();
+		BoardDAO boardDAO = BoardDAO.getInstance();
+		boardDAO.setConnection(con);
+		listCount = boardDAO.selectReviewListCount(id);
+		close(con);
+		return listCount;
+	}
+		
+	//id가 작성한 리뷰 글 불러오기.
+	public ArrayList<ReviewBean> getReviewList(String id, int page, int limit) {
+		// TODO Auto-generated method stub
+		ArrayList<ReviewBean> reviewList = null;
+		Connection con = getConnection();
+		BoardDAO boardDAO = BoardDAO.getInstance();
+		boardDAO.setConnection(con);
+		reviewList = boardDAO.selectReviewList(id, page, limit);
+		close(con);
+		return reviewList;
+	}
 }

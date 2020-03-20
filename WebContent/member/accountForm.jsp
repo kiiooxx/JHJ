@@ -1,12 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
+
 <jsp:include page="/common/loginCheck.jsp"/>
 <div class="mypage_top">
 	<h2>[ MY SHOPPING ]</h2>
@@ -48,7 +42,7 @@
 				적립금은 상품 구매 시 사용하실 수 있습니다.
 			</li>
 			<li>
-				<h1><a href="#">MY BOARD</a></h1>
+				<h1><a href="myboard.mem">MY BOARD</a></h1>
 				고객님께서 작성하신 게시물을 관리하는 공간입니다.<br>
 				고객님께서 작성하신 글을 한눈에 관리하실 수 있습니다.
 			</li>
@@ -59,5 +53,3 @@
 		</ul>
 	</div>
 </div>
-</body>
-</html>
