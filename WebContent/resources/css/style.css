@@ -912,7 +912,7 @@ table {
 
 
 /* 리뷰게시판 글 상세보기 */
-.editor {
+.editor>th {
 	padding: 50px 18px 50px 18px;
 	text-align : left;
 	font-size : 12px;

@@ -48,11 +48,11 @@ public class BoardViewAction implements Action {
 		//게시글 불러왔으면 조회수 +1
 		if(boardBean != null) {
 			isUpdateSuccess = boardViewService.updateHits(board_num);
-			
-			//답글 조회수도 +1
-			if(boardBean.getBoard_step().equals("Y")) {
-				isUpdateSuccess = boardViewService.updateHits(boardBean_answer.getBoard_num());
-			}
+//			
+//			//답글 조회수도 +1
+//			if(boardBean.getBoard_step().equals("Y")) {
+//				isUpdateSuccess = boardViewService.updateHits(boardBean_answer.getBoard_num());
+//			}
 		}
 		
 		
