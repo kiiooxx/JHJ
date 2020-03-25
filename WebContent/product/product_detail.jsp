@@ -473,8 +473,37 @@ $(document).ready(function(){
 									<img src="<%= request.getContextPath() %>/upload/${review_list.board_photo }"><br>
 								</c:if>
 								${review_list.board_content }
+								
+								
+								<!-- 답글있을때 -->
+								<c:if test="${review_list.board_step == 'Y'}">
+									<br><br><br>
+									<div class="comment_table">
+										<table>
+											<tr>
+												<th><strong class="name">관리자</strong></th>
+												<th><span class="comment_top_right">${reviewList_answer[i.index].board_date}</span></th>
+											</tr>
+											
+											<tr>
+												<th colspan="2">${reviewList_answer[i.index].board_title }</th>
+											</tr>
+											
+											<tr>
+												<th colspan="2">
+													<c:if test="${!(reviewList_answer[i.index].board_photo eq null || reviewList_answer[i.index].board_photo eq '' )}">
+														<img src="<%= request.getContextPath() %>/upload/${reviewList_answer[i.index].board_photo }"><br>
+													</c:if>
+														${reviewList_answer[i.index].board_content }
+												</th>
+											</tr>
+										</table>
+									</div>
+								</c:if>
+								
 							</th>
 						</tr>
+						
 						<c:set var="size" value="${size-1 }"/>
 					</c:forEach>
 				</table>

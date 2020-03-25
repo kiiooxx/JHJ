@@ -25,7 +25,7 @@ public class BoardRegistService {
 			//답글일 경우에
 			if(boardBean.getBoard_ref() != 0) {
 				//관련 게시글 board_step 'Y'
-				boolean isUpdateSuccess = boardDAO.updateBoardStep(boardBean.getBoard_ref());		
+				boolean isUpdateSuccess = boardDAO.updateBoardStep("Y", boardBean.getBoard_ref());		
 				if(!isUpdateSuccess) {
 					isRegistSuccess = false;
 				}	

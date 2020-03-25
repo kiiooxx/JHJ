@@ -181,7 +181,7 @@ function del() {
 				<th>DATE</th>
 				<td>${board.board_date }</td>
 			</tr>
-			<tr>
+			<tr class="editor">
 				<th colspan="2">
 					<c:if test="${!(board.board_photo eq null || board.board_photo eq '' )}">
 						<img src="<%= request.getContextPath() %>/upload/${board.board_photo }"><br>

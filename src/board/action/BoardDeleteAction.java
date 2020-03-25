@@ -16,7 +16,6 @@ public class BoardDeleteAction implements Action {
 		// TODO Auto-generated method stub
 		ActionForward forward = null;
 		String board_num[] = request.getParameter("board_num").split(",");
-//		int board_num = Integer.parseInt(request.getParameter("board_num"));
 		BoardDeleteService boardDeleteService = new BoardDeleteService();
 		boolean isDeleteSuccess = boardDeleteService.deleteBoard(board_num);
 		
@@ -33,7 +32,7 @@ public class BoardDeleteAction implements Action {
 			PrintWriter out = response.getWriter();
 			out.println("<script>");
 			out.println("alert('삭제되었습니다!');");
-			out.println("location.href='myboard.mem'");	
+			out.println("location.href = document.referrer;");	
 			out.println("</script>");
 			out.close();
 		}

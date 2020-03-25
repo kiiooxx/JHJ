@@ -470,18 +470,19 @@ public class BoardDAO {
 	}
 
 
-	//게시글 답글 등록 완료되면 board_step을 'Y'로 바꿔준다.
-	public boolean updateBoardStep(int board_num) {
+	//게시글 답글 등록 완료되면 board_step을 'Y/N' 로 바꿔준다.
+	public boolean updateBoardStep(String board_step, int board_num) {
 		// TODO Auto-generated method stub
 		PreparedStatement pstmt = null;
 		int updateCount = 0;
 		boolean isUpdateSuccess = false;
 		
-		String sql = "update board set board_step='Y' where board_num=?";
+		String sql = "update board set board_step=? where board_num=?";
 		
 		try {
 			pstmt = con.prepareStatement(sql);
-			pstmt.setInt(1, board_num);
+			pstmt.setString(1, board_step);
+			pstmt.setInt(2, board_num);
 			updateCount = pstmt.executeUpdate();
 			
 			if(updateCount > 0) {

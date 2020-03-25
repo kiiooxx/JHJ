@@ -96,7 +96,9 @@ function chkForm(f) {
     }
 	
 	f.submit();
-	
+	alert('답변이 등록되었습니다!');
+	opener.parent.location.reload();
+	self.close();
 }
 </script>
 </head>
