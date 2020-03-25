@@ -84,11 +84,23 @@ public class BoardModifyAction implements Action {
 		}
 		boardBean.setReview_score(review_score);
 		
+		//공지사항 등록 여부
+		String board_notice = "N";
+		if(!(multi.getParameter("board_notice") == null || multi.getParameter("board_notice").equals(""))) {
+			board_notice = multi.getParameter("board_notice");
+		}
+		boardBean.setBoard_notice(board_notice);
+		
 		BoardModifyService boardModifyService = new BoardModifyService();
 		boolean isUpdateSuccess = boardModifyService.modifyBoard(boardBean, board_num);
 		
+		String path = "/board/board_detail";
+		if(!(multi.getParameter("path") == null || multi.getParameter("path").equals(""))) {
+			path = multi.getParameter("path");
+		}
+		
 		if(isUpdateSuccess) {
-			forward = new ActionForward("boardViewAction.bo?board_num="+board_num+"&pro_num="+boardBean.getPro_num()+"&path=detail", true);
+			forward = new ActionForward("boardViewAction.bo?board_num="+board_num+"&pro_num="+boardBean.getPro_num()+"&path="+path, true);
 		}else {
 			response.setContentType("text/html;charset=UTF-8");
 			PrintWriter out = response.getWriter();

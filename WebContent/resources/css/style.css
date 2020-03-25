@@ -105,29 +105,6 @@ table {
 	color : #E8D4D3;
 }
 
-/* 경로 */
-.path {
-	overflow : hidden;
-	height: 50px;
-    line-height: 19px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-size: 10px;
-    font-family: arial,Arimo;
-    margin: 0px 0 0;
-}
-
-.path ol {
-	float: right;
-    margin: 0 0 0 0px;
-}
-
-.path li {
-	float: left;
-    padding: 0 0 0 12px;
-    margin: 0 0 0 8px;
-}
-
 
 /*블랭크*/
 .blank {
@@ -170,7 +147,6 @@ table {
 /* 푸터 */
 #down {
 	margin : 110px 0px 0;
-	
 }
 
 
@@ -816,8 +792,11 @@ table {
 }
 
 .order_button_area {
-	float:right;
-	margin: 10px 0 40px;
+	overflow: hidden;
+    margin: 20px 0 50px;
+    text-align: right;
+    font-size: 1%;
+    line-height: 1%;
 }
 
 .order_button_area a{
@@ -933,7 +912,7 @@ table {
 
 
 /* 리뷰게시판 글 상세보기 */
-.editor > th {
+.editor {
 	padding: 50px 18px 50px 18px;
 	text-align : left;
 	font-size : 12px;
@@ -1028,4 +1007,52 @@ strong {
 #prdQnA {
 	float : left;
 	width : 100%;
+}
+
+/* 게시판 답글 */
+.comment_top_right {
+	position: absolute;
+    top: 7px;
+    right: 20px;
+    color: #777;
+}
+
+.comment_table>table {
+	position: relative;
+    margin: 10px 0 0;
+    
+    border-top-color: #fff;
+    line-height: 1.5;
+    width: 100%;
+}
+
+.comment_table>table>tbody {
+	display: table-row-group;
+    vertical-align: middle;
+    border-color: inherit;
+    border-top: 1px solid #d7d5d5;
+}
+
+.comment_table>table>tbody>tr {
+	display: table-row;
+    vertical-align: inherit;
+    border-color: inherit;
+}
+
+.comment_table>table>tbody>tr>th {
+	width: 100px;
+	padding: 11px 0 10px 18px;
+    border: 0px solid #dfdfdf;
+    border-bottom-width: 0;
+    border-right-width: 0;
+    text-align: left;
+    font-weight: normal;
+    background-color: #fff;
+    vertical-align: top;
+}
+
+.comment_table>table>tbody>tr>td {
+	padding: 8px 10px 7px;
+	border-top: 0px solid #dfdfdf;
+    vertical-align: middle;
 }

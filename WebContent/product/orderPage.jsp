@@ -11,15 +11,6 @@
 	</c:otherwise>
 </c:choose>
 
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
 <script>
 function openPostcode(){
@@ -248,43 +239,36 @@ function chkForm(f){
 	
 }
 
-
-
-
 </script>
-</head>
-<style>
-img{
-	width: 92px;
-}
-.no-line{
-	border: 0;
-	text-align: right;
-}
-</style>
-<body>
 
-<form action="payProcess.pro" name="f" method="post">
-	<div class="order_list">
-		<table border="1">
-			<h3 class="order_list">주문내역</h3>
-			<tbody>
-				<tr>
-					
-					<th>상품이미지</th>
-					<th>상품정보</th>
-					<th>판매가</th>
-					<th>수량</th>
-					<th>배송비</th>
-					<th>합계</th>
-				</tr>
+<div class="cartPage">
+	<form action="payProcess.pro" name="f" method="post">
+	<div class="cartList">
+		<table class="cartTable">
+			<colgroup>
+				<col style="width:92px"/>
+				<col style="width:auto"/>
+				<col style="width:100px"/>
+				<col style="width:100px"/>
+				<col style="width:100px"/>
+				<col style="width:100px"/>
+			</colgroup>
+			<tr>
+				<th scope="col">IMAGE</th>
+				<th scope="col">INFO</th>
+				<th scope="col">PRICE</th>
+				<th scope="col">QTY</th>
+				<th scope="col">DELIVERY</th>
+				<th scope="col">TOTAL</th>
+			</tr>
+
 				<!-- 여기서부터 상품 리스트 출력 -->	
 				<c:choose>
 					<c:when test="${cartList2 ne null }">
 						<c:forEach var="list" items="${cartList2 }">
 						<tr>
 							<%-- <td><input type="checkbox" name="chk" value="${list.pro_det_num }" /></td> --%>
-							<td><img src="<%=request.getContextPath() %>/upload/${list.pro_photo }"></td>
+							<td><img src="<%=request.getContextPath() %>/upload/${list.pro_photo }" class="cartImage"></td>
 							<td>${list.pro_name }<br>[옵션 : ${list.color } / ${list.pro_size }]</td>
 							<fmt:formatNumber var="price" value="${list.pro_price}" pattern="#,###"/>
 							<td>${price }</td>
@@ -295,11 +279,12 @@ img{
 						</tr>
 						</c:forEach>
 					</c:when>
+					
 					<c:otherwise>
 						<c:forEach var="list" items="${cartList }">
 						<tr>
 							<%-- <td><input type="checkbox" name="chk" value="${list.pro_det_num }" /></td> --%>
-							<td><img src="<%=request.getContextPath() %>/upload/${list.pro_photo }"></td>
+							<td><img src="<%=request.getContextPath() %>/upload/${list.pro_photo }"  class="cartImage"></td>
 							<td>${list.pro_name }<br>[옵션 : ${list.color } / ${list.pro_size }]</td>
 							<fmt:formatNumber var="price" value="${list.pro_price}" pattern="#,###"/>
 							<td>${price }</td>
@@ -311,11 +296,7 @@ img{
 						</c:forEach>
 					</c:otherwise>
 				</c:choose>			
-				
 				<!-- 여기까지 상품 리스트 출력 -->
-				<tr>
-					<td colspan="7" style="text-align: left;">
-				</tr>
 				
 				<tr>
 					<fmt:formatNumber var="total3" value="${totalMoney }" pattern="#,###"/>
@@ -329,9 +310,9 @@ img{
 
 	<br><br>
 
-	<div class="order_table">
+	<div class="join_table">
 		<table border="1">
-			<h3 class="order_title">주문정보</h3>
+			<h3 class="join_title">주문정보</h3>
 			<tbody>
 				<tr>
 					<th><label for="name">주문하시는 분</label><b class="req">*</b></th>
@@ -357,11 +338,9 @@ img{
 		</table>
 	</div>
 
-<br><br>
-
-<div class="deli_table">
+	<div class="join_table">
 		<table border="1">
-			<h3 class="deli_title">배송정보</h3>
+			<h3 class="join_title">배송정보</h3>
 			<tbody>
 				<tr>
 					<th><label for="deli_add">배송지 선택</label></th>
@@ -394,40 +373,50 @@ img{
 		</table>
 	</div>
 	
-	<div class="term">
+	<div class="join_table">
+		
 		<table border="1">
-			<h3 class="term">추가 정보</h3>
+			<h3 class="join_title">추가 정보</h3>
 			<tbody>
 				<tr>
 					<th><label for="deli_add">구매 전 참고사항</label></th>
 					<td>
 						<label><input type="checkbox" name="termCheck1" id="termCheck1" value="termCheck1">동의합니다</label><br>
-						(① 배송 전 변경/취소는 오전 11시 이전 요청 건에 한해서 가능합니다. ② 주문 후 입금확인이 완료되면 상품 준비기간은 평균 2-5일(공휴일, 주말 제외) 정도 소요됩니다. ③ 당일발송 상품은 오후 3시 이전까지 결제 완료된 주문건에 한해 출고됩니다.)
+						<p>① 배송 전 변경/취소는 오전 11시 이전 요청 건에 한해서 가능합니다.</p>
+						<p>② 주문 후 입금확인이 완료되면 상품 준비기간은 평균 2-5일(공휴일, 주말 제외) 정도 소요됩니다.</p>
+						<p>③ 당일발송 상품은 오후 3시 이전까지 결제 완료된 주문건에 한해 출고됩니다.</p>
 					</td>
 				<tr>
 					<th><label for="deli_add">구매 전 참고사항</label></th>
 					<td>
 						<label><input type="checkbox" name="termCheck2" id="termCheck2" value="termCheck2">동의합니다</label><br>
-						(④ 적립금은 취소/반품 시 자동 소멸되오니, 신중한 구매 부탁드립니다:-) ⑤ 해외배송의 경우 주문 후 꼭! 1시간 이내로 게시판에 글 남겨주셔야 신속한 처리가 가능합니다. ⑥ 무통장 입금의 경우 주문일로부터 3일이내 입금해주셔야하며, 이후엔 주문건이 자동 취소됩니다.)
+						<p>④ 적립금은 취소/반품 시 자동 소멸되오니, 신중한 구매 부탁드립니다:-)</p>
+						<p>⑤ 해외배송의 경우 주문 후 꼭! 1시간 이내로 게시판에 글 남겨주셔야 신속한 처리가 가능합니다.</p>
+						<p>⑥ 무통장 입금의 경우 주문일로부터 3일이내 입금해주셔야하며, 이후엔 주문건이 자동 취소됩니다.</p>
 					</td>
 				</tr>
 			</tbody>
 		</table>
 	</div>
 	
-	<div class="payment">
+	<div class="join_table">
 		<table border="1">
-			<h3 class="term">결제 예정 금액</h3>
+			<h3 class="join_title">결제 예정 금액</h3>
 			<tbody>
+				<colgroup>
+					<col style="width:33%"/>
+					<col style="width:33%"/>
+					<col style="width:33%"/>
+				</colgroup>
 				<tr>
-					<th>총 주문 금액</th>
-					<th>사용 적립금</th>
-					<th>총 결제예정 금액</th>
+					<th scope="col">총 주문 금액</th>
+					<th scope="col">사용 적립금</th>
+					<th scope="col">총 결제예정 금액</th>
 				</tr>
 				<tr>
-					<td>${totalMoney + deliPrice }원</td>
-					<td>-&nbsp;<input type="text" id="point" value="0" size="3" class="no-line" readonly>원</td>
-					<td>=<input type="text" id="result" name="result" value="${totalMoney + deliPrice }" class="no-line" readonly>원</td>
+					<th>${totalMoney + deliPrice }원</th>
+					<th>-&nbsp;<input type="text" id="point" value="0" size="3" class="no-line" readonly>원</th>
+					<th>=<input type="text" id="result" name="result" value="${totalMoney + deliPrice }" class="no-line" readonly>원</th>
 				</tr>
 			</tbody>
 		</table>
@@ -442,9 +431,9 @@ img{
 		</table>
 	</div>
 	
-	<div class="pay_info">
+	<div class="join_table">
 		<table border="1">
-			<h3 class="pay_info">결제정보</h3>
+			<h3 class="join_title">결제정보</h3>
 			<tbody>
 				<tr>
 					
@@ -504,8 +493,5 @@ img{
 			</tbody>
 		</table>
 	</div>
-	
 	</form>
-					
-</body>
-</html>
+</div>

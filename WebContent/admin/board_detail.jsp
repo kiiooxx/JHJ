@@ -14,6 +14,23 @@
 
 <!-- js -->
 <jsp:include page="/resources/js.jsp"/>
+
+<script type="text/javascript">
+//삭제 버튼 눌렀을 때
+function del() {
+	if(confirm('정말 삭제하시겠습니까?')) {
+		location.href='boardDeleteAction.bo?board_num=${board.board_num}';
+		alert('삭제되었습니다! 창을 닫습니다.');
+		opener.parent.location.reload();
+		self.close();
+	}else {
+		return false;
+	}
+}
+
+
+</script>
+
 </head>
 <body>
 <div id="join_form">
@@ -95,8 +112,8 @@
 		</div>
 		<div class="order_button_area">
 			<p>
-				<c:if test="${board.board_writer == id }">
-					<a href="boardViewAction.bo?board_type=qna&board_num=${board.board_num }&pro_num=${prd.pro_num}&path=modify_form" class="b">MODIFY</a>
+				<c:if test="${board.board_writer == id || grade == 'A'.charAt(0) }">
+					<a href="boardViewAction.bo?board_type=qna&board_num=${board.board_num }&pro_num=${prd.pro_num}&path=/admin/board_modify_form" class="b">MODIFY</a>
 					<a href="#" class="b" onclick="del()">DELETE</a>
 				</c:if>
 			</p>
@@ -141,8 +158,8 @@
 		</div>
 		<div class="order_button_area">
 			<p>
-				<c:if test="${board.board_writer == id }">
-					<a href="boardViewAction.bo?board_type=review&board_num=${board.board_num }&pro_num=${prd.pro_num}&path=modify_form" class="b">MODIFY</a>
+				<c:if test="${board.board_writer == id || grade == 'A'.charAt(0) }">
+					<a href="boardViewAction.bo?board_type=review&board_num=${board.board_num }&pro_num=${prd.pro_num}&path=/admin/board_modify_form" class="b">MODIFY</a>
 					<a href="#" class="b" onclick="del()">DELETE</a>
 				</c:if>
 			</p>
@@ -177,12 +194,57 @@
 		<div class="order_button_area">
 			<p>
 				<c:if test="${grade == 'A'.charAt(0) }">
-					<a href="boardViewAction.bo?board_type=notice&board_num=${board.board_num }&pro_num=${prd.pro_num}&path=modify_form" class="b">MODIFY</a>
+					<a href="boardViewAction.bo?board_type=notice&board_num=${board.board_num }&pro_num=${prd.pro_num}&path=/admin/board_modify_form" class="b">MODIFY</a>
 					<a href="#" class="b" onclick="del()">DELETE</a>
 				</c:if>
 			</p>
 		</div>
 		</div>
+	</c:if>
+	
+	<!-- 답글있을때 -->
+	<c:if test="${board.board_step == 'Y' || board.board_type == 'answer' }">
+		<div class="comment_table">
+			<table>
+				<tr>
+					<th><strong class="name">관리자</strong></th>
+					<th><span class="comment_top_right">${board.board_type=='answer' ? board.board_date : board_answer.board_date}</span></th>
+				</tr>
+				
+				<tr>
+					<th colspan="2">${board.board_type=='answer' ? board.board_title : board_answer.board_title }</th>
+				</tr>
+				
+				<tr>
+					<th colspan="2">
+						<c:choose>
+							<c:when test="${board.board_type == 'answer' }">
+								<c:if test="${!(board.board_photo eq null || board.board_photo eq '' )}">
+									<img src="<%= request.getContextPath() %>/upload/${board.board_photo }"><br>
+								</c:if>
+							</c:when>
+							<c:otherwise>
+								<c:if test="${!(board_answer.board_photo eq null || board_answer.board_photo eq '' )}">
+									<img src="<%= request.getContextPath() %>/upload/${board_answer.board_photo }"><br>
+								</c:if>
+							</c:otherwise>
+						</c:choose>
+							${board.board_type=='answer' ? board.board_content : board_answer.board_content }
+					</th>
+				</tr>
+			</table>
+		</div>
+		
+		<c:if test="${board.board_type == 'answer' }">
+			<div class="order_button_area">
+				<p>
+					<c:if test="${board.board_writer == id || grade == 'A'.charAt(0) }">
+						<a href="boardViewAction.bo?board_type=answer&board_num=${board.board_num }&pro_num=${prd.pro_num}&path=/admin/board_modify_form" class="b">MODIFY</a>
+						<a href="#" class="b" onclick="del()">DELETE</a>
+					</c:if>
+				</p>
+			</div>
+		</c:if>
 	</c:if>
 </div>
 </body>

@@ -36,8 +36,9 @@
 							</a>
 						</td>
 						<td style="text-align:left;">
-							<a href="boardViewAction.bo?board_num=${list.board_num}&pro_num=${list.pro_num}&path=detail">
+							<a href="boardViewAction.bo?&board_num=${list.board_num}&pro_num=${list.pro_num}&page=${reviewPageInfo.page}&path=/board/board_detail">
 								${list.board_title }
+								${list.board_step == 'Y' ? '[1]' : '' }	<!-- 답글 여부 -->
 							</a>
 							<c:if test="${!(list.board_photo == null || list.board_photo == '')}">
 								<img src="<%= request.getContextPath() %>/layout_image/pic_icon.gif"/>
@@ -142,8 +143,9 @@
 							</c:choose>
 						</td>
 						<td style="text-align:left;">
-							<a href="boardViewAction.bo?&board_num=${qna_list.board_num}&pro_num=${qna_list.pro_num}&path=detail">
+							<a href="boardViewAction.bo?&board_num=${qna_list.board_num}&pro_num=${qna_list.pro_num}&page=${qnaPageInfo.page}&path=/board/board_detail">
 								${qna_list.board_title}
+								${qna_list.board_step == 'Y' ? '[1]' : '' }	<!-- 답글 여부 -->
 							</a>
 							
 							<c:if test="${qna_list.qna_open == 'N' }">

@@ -9,34 +9,32 @@ import java.sql.Connection;
 
 import dao.BoardDAO;
 
-public class BoardDeleteService {
+public class BoardNoticeService {
 
-	public boolean deleteBoard(String[] board_num) {
+	public boolean updateNoticeBoard(String[] board_num, String board_notice) {
 		// TODO Auto-generated method stub
 		Connection con = getConnection();
 		BoardDAO boardDAO = BoardDAO.getInstance();
 		boardDAO.setConnection(con);
-		boolean isDeleteSuccess = false;
+		boolean isUpdateSuccess = false;
 		
 		for(int i=0; i<board_num.length; i++) {
-			isDeleteSuccess = false;
-			isDeleteSuccess = boardDAO.deleteBoard(Integer.parseInt(board_num[i]));
-			if(!isDeleteSuccess) {
+			isUpdateSuccess = false;
+			isUpdateSuccess = boardDAO.updateNoticeBoard(Integer.parseInt(board_num[i]), board_notice);
+			if(!isUpdateSuccess) {
 				rollback(con);
 				break;
 			}
 		}
 		
-		if(isDeleteSuccess) {
+		if(isUpdateSuccess) {
 			commit(con);
 		}else {
 			rollback(con);
 		}
 		
 		close(con);
-		return isDeleteSuccess;
+		return isUpdateSuccess;
 	}
-
-	
 
 }

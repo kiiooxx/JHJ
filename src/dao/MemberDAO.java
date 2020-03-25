@@ -182,6 +182,7 @@ public class MemberDAO {
 		}catch(Exception ex) {
 			System.out.println("Order 에러 : " +ex);
 		}finally {
+			close(rs);
 			close(pstmt);
 		}
 		

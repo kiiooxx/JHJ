@@ -1,6 +1,6 @@
 package vo;
 
-public class BoardBean {
+public class BoardBean{
 	private int board_num;	// 게시글 시퀀스
 	private String board_type;	//게시글 종류 (공지사항, 리뷰게시판, QnA게시판)
 	private String board_title;	//게시글 제목
@@ -15,6 +15,29 @@ public class BoardBean {
 	private String qna_type;	//문의 구분
 	private String qna_open;	//공개 여부
 	private int review_score;	//리뷰 평점
+	private int board_ref;	//관련 글 번호
+	private int board_hits;	//조회수
+	private String board_notice;	//공지 등록 여부
+	
+	
+	public String getBoard_notice() {
+		return board_notice;
+	}
+	public void setBoard_notice(String board_notice) {
+		this.board_notice = board_notice;
+	}
+	public int getBoard_hits() {
+		return board_hits;
+	}
+	public void setBoard_hits(int board_hits) {
+		this.board_hits = board_hits;
+	}
+	public int getBoard_ref() {
+		return board_ref;
+	}
+	public void setBoard_ref(int board_ref) {
+		this.board_ref = board_ref;
+	}
 	public int getBoard_num() {
 		return board_num;
 	}

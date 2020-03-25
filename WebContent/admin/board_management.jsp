@@ -14,33 +14,6 @@
 
 <script>
 window.name="openPage";
-$(function() {
-	$('#setSelectBox').change(function() {
-		var param = 'ca_ref='+$(this).val();
-		$.ajax({
-			url : '<%=request.getContextPath()%>/subCategoryList',
-			dataType : 'json',
-			type : 'POST',
-			data : param,
-			cache: false,
-			contentType : 'application/x-www-form-urlencoded; charset=UTF-8',
-	        processData: false,
-			success : function(data) {
-				var html = '<option value="none" selected disabled hidden>--[소분류]--</option>';
-				$.each(data, function(index, item){
-					var result = '';
-					result += index + " : " + item.cate_num;
-					html += '<option value="' + item.cate_num + '">' + item.category + '</option>'; 
-				})
-				$('#cate_sub').empty();
-				$('#cate_sub').append(html);
-			},
-			error : function() {
-				console.log("에러");
-			}
-		});
-	});
-});
 
 $(document).ready(function() {
 	//전체 선택 체크박스 눌렀을 때
@@ -54,9 +27,9 @@ $(document).ready(function() {
 	
 	
 	//삭제 버튼 눌렀을 때
-	$('#del').click(function() {
+	$('#del').on('click', function() {
 		if($('input[name=chk]').is(":checked") == false){
-			alert("상품번호를 선택하세요.");
+			alert("게시글번호를 선택하세요.");
 			return false;
 		}else {
 			if(confirm('정말 삭제하시겠습니까?')) {
@@ -70,40 +43,28 @@ $(document).ready(function() {
 		}
 	});
 	
-	//진열 select 변경했을 때
-	$('#activeBox').change(function() {
+	//공지 등록 버튼 눌렀을 때
+	$('#notice_add').on('click', function() {
 		if($('input[name=chk]').is(":checked") == false){
-			alert("상품번호를 선택하세요.");
+			alert("게시글번호를 선택하세요.");
 			return false;
 		}else {
 			var items=[];
 			$('input[name=chk]:checkbox:checked').each(function(){items.push($(this).val());});
 			var tmp = items.join(',');
-			var select = $('select[name=activeBox]').val();
-			location.href='productListUpdate.ad?pro_num='+tmp+'&active='+select;
+			location.href='boardNoticeAction.bo?board_num='+tmp+"&board_notice=Y";
 		}
 	});
-	
-	//메인상품진열 수정
-	$('#main_nb').change(function() {
-		if($('input[name=chk]').is(":checked") == false){
-			alert("상품번호를 선택하세요.");
-			return false;
-		}else {
-			var items=[];
-			$('input[name=chk]:checkbox:checked').each(function(){items.push($(this).val());});
-			var tmp = items.join(',');
-			var select = $('select[name=main_nb]').val();
-			location.href='productListUpdate.ad?pro_num='+tmp+'&main_nb='+select;
-		}
-	});
-	
+
 });
 </script>
 <style>
 	th {background : #F6F6F6;}
 	.col {margin-bottom : 40px;}
 	#pageList {text-align : center;}
+	#bottom>a {
+		margin-right : 20px;
+	}
 </style>
 </head>
 <body>
@@ -167,6 +128,14 @@ $(document).ready(function() {
 								<input type="radio" name="board_photo" value="N"/>없음
 							</td>
 						</tr>
+						<tr>
+							<th>공지등록 여부</th>
+							<td>
+								<input type="radio" name="board_notice" value="all" checked/>전체보기&nbsp;&nbsp;
+								<input type="radio" name="board_notice" value="Y"/>등록&nbsp;&nbsp;
+								<input type="radio" name="board_notice" value="N"/>미등록
+							</td>
+						</tr>
 					</table>
 					
 					<div align="center">
@@ -192,6 +161,7 @@ $(document).ready(function() {
 							<th>답변상태</th>
 							<th>답변하기</th>
 							<th>작성자</th>
+							<th>조회수</th>
 							<th>작성일</th>
 						</tr>
 			
@@ -199,7 +169,10 @@ $(document).ready(function() {
 						<c:forEach var="list" items="${boardList }" varStatus="i">
 							<tr>
 								<td><input type="checkbox" name="chk" value="${list.board_num }"/></td>
-								<td>${list.board_num }</td>
+								<td>
+									${list.board_num }
+									${list.board_notice == 'Y' ? '[공지]' : '' }
+								</td>
 								<td>
 										<c:if test="${list.board_type == 'notice'}">
 											공지사항
@@ -212,24 +185,34 @@ $(document).ready(function() {
 										</c:if>
 								</td>
 								
-								<td><a href="javascript:void(0);" onclick="window.open('boardView.ad?path=board_view&board_num=${list.board_num}&pro_num=${list.pro_num }', ' ', 'width=700, height=500')">
+								<td>
+									<c:if test="${list.board_num != list.board_ref }">
+										└>[답변] : 
+									</c:if>
+									<a href="javascript:void(0);" onclick="window.name='opener'; window.open('boardViewAction.bo?path=/admin/board_detail&board_num=${list.board_num}&pro_num=${list.pro_num }', 'view', 'width=700, height=500')">
 										${list.board_title }
 									</a>
 								</td>
 								<td>
-									<c:if test="${list.board_type == 'notice' }">
-										-
-									</c:if>
-									${list.board_step }
+									<c:choose>
+										<c:when test="${list.board_step eq '' || list.board_notice == 'Y'}">
+											-
+										</c:when>
+										<c:otherwise>
+										${list.board_step }
+										</c:otherwise>
+									</c:choose>
 								</td>
 								<td>
-									<c:if test="${list.board_type != 'notice' }">
-										<a href="javascript:void(0);" onclick="window.open('boardView.ad?path=board_answer_form&board_num=${list.board_num}&pro_num=${list.pro_num }', ' ', 'width=600, height=800')">답변하기</a>
+									<c:if test="${list.board_step == 'N' && list.board_notice == 'N'}">
+										<a href="javascript:void(0);" onclick="window.open('boardViewAction.bo?path=/admin/board_answer_form&board_num=${list.board_num}&pro_num=${list.pro_num }', ' ', 'width=800, height=800')">답변하기</a>
 									</c:if>
 								</td>
 								<td>${list.board_writer }</td>
+								<td>${list.board_hits }</td>
 								<td>${list.board_date }</td>
 							</tr>
+							
 						</c:forEach>
 					</table>
 					
@@ -268,6 +251,8 @@ $(document).ready(function() {
 					
 					<div id="bottom">
 						<a href="#" id="del">삭제</a>
+						<a href="#" id="notice_add">공지등록</a>
+						<a href="#" id="notice_del">공지해제</a>
 					</div>
 				</div>
 			</div>

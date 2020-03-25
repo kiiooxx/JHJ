@@ -166,8 +166,8 @@ public class AdminDAO {
 		}catch(SQLException e) {
 			System.out.println("상품 등록 에러 " + e);
 		}finally {
-			close(pstmt);
 			close(rs);
+			close(pstmt);
 		}
 		return num;
 	}
@@ -207,7 +207,6 @@ public class AdminDAO {
 	public boolean updateCategory(int ca_ref, String cate_name, int cate_num) {
 		// TODO Auto-generated method stub
 		PreparedStatement pstmt = null;
-		ResultSet rs = null;
 		int updateCount = 0;
 		boolean isUpdateSuccess = false;
 		
@@ -285,8 +284,8 @@ public class AdminDAO {
 		}catch(SQLException e) {
 			System.out.println("상품 상세 코드 색상 순서 불러오기 에러  " + e);
 		}finally {
-			close(pstmt);
 			close(rs);
+			close(pstmt);
 		}
 		return color_num;
 	}
@@ -314,8 +313,8 @@ public class AdminDAO {
 		}catch(SQLException e) {
 			System.out.println("오늘 등록한 재고 번호의 개수 구하기 에러 " + e);
 		}finally {
-			close(pstmt);
 			close(rs);
+			close(pstmt);
 		}
 		return stock_num;
 		
@@ -325,7 +324,6 @@ public class AdminDAO {
 	public int insertPro_Det(int pro_num, String pro_det_num, String stock_num, String color, String size, int stock) {
 		// TODO Auto-generated method stub
 		PreparedStatement pstmt = null;
-		ResultSet rs = null;
 		int insertCount = 0;
 		
 		try {
@@ -669,7 +667,6 @@ public class AdminDAO {
 	public boolean updateActive(int pro_num, String active) {
 		// TODO Auto-generated method stub
 		PreparedStatement pstmt = null;
-		ResultSet rs = null;
 		int updateCount = 0;
 		boolean isUpdateSuccess = false;
 		
@@ -694,7 +691,6 @@ public class AdminDAO {
 	public boolean updateMain_nb(int pro_num, String main_nb) {
 		// TODO Auto-generated method stub
 		PreparedStatement pstmt = null;
-		ResultSet rs = null;
 		int updateCount = 0;
 		boolean isUpdateSuccess = false;
 		
@@ -1478,23 +1474,4 @@ public class AdminDAO {
 			
 			return stockList;
 		}
-
-		
-
-		
-
-		
-
-		
-
-		
-
-		
-
-		
-
-		
-
-		
-
 }

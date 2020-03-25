@@ -441,10 +441,16 @@ $(document).ready(function(){
 							<td style="text-align:left;">
 								<a href="#" id="rev_subject${i.count }">
 									${review_list.board_title }
+									${review_list.board_step == 'Y' ? '[1]' : '' }	<!-- 답글 여부 -->
 								</a>
-									<c:if test="${!(review_list.board_photo == null || review_list.board_photo == '')}">
-										<img src="<%= request.getContextPath() %>/layout_image/pic_icon.gif"/>
-									</c:if>
+									<!-- 조회수 10 넘으면 Hit 아이콘 -->
+								<c:if test="${review_list.board_hits > 10}">
+									<img src="<%= request.getContextPath() %>/layout_image/hit_icon.png">
+								</c:if>
+								<!-- 사진 있으면 사진 아이콘 -->
+								<c:if test="${!(review_list.board_photo == null || review_list.board_photo == '')}">
+									<img src="<%= request.getContextPath() %>/layout_image/pic_icon.gif"/>
+								</c:if>
 							</td>
 							<td>
 								<div class="starRev">
@@ -477,7 +483,7 @@ $(document).ready(function(){
 			<div class="order_button_area">
 				<p>
 					<a href="boardListAction.bo?board_type=review" class="w">LIST</a>
-					<a href="reviewWriteForm.bo?pro_num=${prd.pro_num }" class="b">WRITE</a>
+					<a href="boardWriteForm.bo?board_type=review&pro_num=${prd.pro_num }" class="b">WRITE</a>
 				</p>
 			</div>
 			
@@ -562,7 +568,7 @@ $(document).ready(function(){
 						<td style="text-align:left;">
 							<c:choose>
 								<c:when test="${qna_list.qna_open != 'N' || grade=='A'}">
-									<a href="boardViewAction.bo?&board_num=${qna_list.board_num}&pro_num=${qna_list.pro_num}">
+									<a href="boardViewAction.bo?&board_num=${qna_list.board_num}&pro_num=${qna_list.pro_num}&path=/board/board_detail">
 										${qna_list.board_title}
 									</a>
 								</c:when>
@@ -570,6 +576,7 @@ $(document).ready(function(){
 									${qna_list.board_title}
 								</c:otherwise>
 							</c:choose>
+							${qna_list.board_step == 'Y' ? '[1]' : '' }	<!-- 답글 여부 -->
 							<c:if test="${qna_list.qna_open == 'N' }">
 								<img src="<%= request.getContextPath() %>/layout_image/lock_icon.png"/>
 							</c:if>
@@ -590,7 +597,7 @@ $(document).ready(function(){
 			<div class="order_button_area">
 				<p>
 					<a href="boardListAction.bo?board_type=qna" class="w">LIST</a>
-					<a href="qnaWriteForm.bo?pro_num=${prd.pro_num }" class="b">WRITE</a>
+					<a href="boardWriteForm.bo?board_type=qna&pro_num=${prd.pro_num }" class="b">WRITE</a>
 				</p>
 			</div>
 			<!-- 페이지 리스트 -->

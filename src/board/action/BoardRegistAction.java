@@ -31,7 +31,12 @@ public class BoardRegistAction implements Action {
 		MultipartRequest multi = new MultipartRequest(request, realFolder, fileSize, "UTF-8", new DefaultFileRenamePolicy());
 		boardBean = new BoardBean();
 		
-		boardBean.setBoard_type(multi.getParameter("board_type"));	//게시글 종류
+		String board_type = "";
+		if(!(multi.getParameter("board_type") == null || multi.getParameter("board_type").equals(""))) {
+			board_type = multi.getParameter("board_type");	
+		}
+		boardBean.setBoard_type(board_type);	//게시글 종류
+		
 		boardBean.setBoard_title(multi.getParameter("board_title"));	//게시글 제목
 		boardBean.setBoard_writer(multi.getParameter("board_writer"));	//작성자
 		boardBean.setBoard_content(multi.getParameter("board_content"));	//게시글 내용
@@ -84,7 +89,20 @@ public class BoardRegistAction implements Action {
 			review_score = Integer.parseInt(multi.getParameter("review_score"));
 		}
 		boardBean.setReview_score(review_score);
-			
+		
+		//관련 게시글 번호
+		int board_ref = 0;
+		if(!(multi.getParameter("board_ref") == null || multi.getParameter("board_ref").equals(""))) {
+			board_ref = Integer.parseInt(multi.getParameter("board_ref"));
+		}
+		boardBean.setBoard_ref(board_ref);
+		
+		//공지사항 등록 여부
+		String board_notice = "N";
+		if(!(multi.getParameter("board_notice") == null || multi.getParameter("board_notice").equals(""))) {
+			board_notice = multi.getParameter("board_notice");
+		}
+		boardBean.setBoard_notice(board_notice);
 		
 		BoardRegistService boardRegistService = new BoardRegistService();
 		boolean isRegistSuccess = boardRegistService.registBoard(boardBean);

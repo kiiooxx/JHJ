@@ -33,12 +33,14 @@ public class BoardListAction implements Action {
 		}
 		
 		String board_type = request.getParameter("board_type");	//게시판 타입
+		String id = "";
+		int pro_num = 0;	
 		
 		//전체 리뷰 목록
 		BoardListService boardListService = new BoardListService();
-		listCount = boardListService.getBoardListCount(board_type);
+		listCount = boardListService.getBoardListCount(board_type, id, pro_num);
 		//총 리스트 수를 받아옴
-		boardList = boardListService.getBoardList(board_type, page, limit);
+		boardList = boardListService.getBoardList(board_type, id, pro_num, page, limit);
 		//리스트를 받아옴
 		//총 페이지 수
 		int maxPage = (int)((double)listCount/limit+0.95);
@@ -74,17 +76,10 @@ public class BoardListAction implements Action {
 		request.setAttribute("prdList", prdList);
 		request.setAttribute("pageInfo", pageInfo);
 		request.setAttribute("boardList", boardList);
-		
+		request.setAttribute("board_type", board_type);
 		//경로
-		String path = "";
-		if(board_type.equals("notice")) {
-			path = "/board/notice_list.jsp";
-		}else if(board_type.equals("review")) {
-			path = "/board/review_list.jsp";
-		}else if(board_type.equals("qna")) {
-			path = "/board/qna_list.jsp";
-		}
-		request.setAttribute("pagefile", path);
+
+		request.setAttribute("pagefile", "/board/board_list.jsp");
 		ActionForward forward = new ActionForward("/template.jsp", false);
 		return forward;
 	}
