@@ -8,6 +8,11 @@
 <title>Insert title here</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>
+//숫자만 입력가능
+function onlyNumber(){
+    if((event.keyCode<48)||(event.keyCode>57))
+       event.returnValue=false;
+}
 
 //적립금 지급 시점 설정
 $(document).ready(function(){
@@ -15,6 +20,7 @@ $(document).ready(function(){
 });
 
 function setPointDate(){
+	$("#pointDate").append("<option value='0'>즉시</option>");
 	$("#pointDate").append("<option value='1'>익일</option>");
 	for(var i = 2; i <= 14; i++){
 		$("#pointDate").append("<option value='" + i + "'>" + i +"일 후</option>");
@@ -38,6 +44,26 @@ $(function(){
 	$("#markOption").val("${pointMan.p_mark }").prop("selected", true);
 	$("#usePointOption").val("${pointMan.p_stand }").prop("selected", true);
 });
+
+$(function(){
+	 $('input:checkbox[id="chk"]').each(function() {
+	     if(${pointMan.p_review} != 0){
+	            this.checked = true;
+	      }else{
+	    	  this.checked = false;
+	      }
+	 });
+	});
+	
+$(function(){
+	 $('input:text[id="reviewP"]').each(function() {
+	     if(${pointMan.p_review} == 0){
+	            this.disabled = true;
+	      }else{
+	    	  this.disabled = false;
+	      }
+	 });
+	});
 </script>
 </head>
 <style>
@@ -78,7 +104,7 @@ tr{
 	</tr>
 	<tr>
 		<th>기본설정 적립금 비율</th>
-		<td>구매 가격의 <input type="text" name="rate" value="${pointMan.p_rate }">%</td>
+		<td>구매 가격의 <input type="text" name="rate" value="${pointMan.p_rate }" pattern="\d{1,2}.\d{1}" title="xx.x%" required>%</td>
 	</tr>
 	<tr>
 		<th>적립금으로 구매 시 적립기준 설정</th>
@@ -92,25 +118,25 @@ tr{
 	</tr>
 	<tr>
 		<th>회원가입 시 적립금 설정</th>
-		<td>신규 회원 가입 시 <input type="text" value="${pointMan.p_newmem }" name="newMem">원 적립</td>
+		<td>신규 회원 가입 시 <input type="text" value="${pointMan.p_newmem }" name="newMem" onkeypress="onlyNumber();">원 적립</td>
 	</tr>
 	<tr>
 		<th>적립금 사용 가능 최소 상품 구매 합계액 설정</th>
-		<td>상품 구매 합계액 최소 <input type="text" value="${pointMan.p_pricelimit }" name="priceLimit">원 이상일 때 적립금 사용 가능</td>
+		<td>상품 구매 합계액 최소 <input type="text" value="${pointMan.p_pricelimit }" name="priceLimit" onkeypress="onlyNumber();">원 이상일 때 적립금 사용 가능</td>
 	</tr>
 	<tr>
 		<th>적립금 사용 가능 최소 누적 적립금액 설정</th>
-		<td>누적 적립금액 최소 <input type="text" value="${pointMan.p_pointlimit }" name="pointLimit">원 이상일 때 적립금 사용 가능</td>
+		<td>누적 적립금액 최소 <input type="text" value="${pointMan.p_pointlimit }" name="pointLimit" onkeypress="onlyNumber();">원 이상일 때 적립금 사용 가능</td>
 	</tr>
 	<tr>
 		<th rowspan="2">리뷰 작성 시 적립금 설정</th><!-- 체크박스 체크하면 적립 설정칸 활성화  -->
-		<td><input type="checkbox" name="chk" id="chk" value="true"
-		<c:if test="${pointMan.p_review ne 0}">checked</c:if>
+		<td><input type="checkbox" name="chk" id="chk" value="true" onkeypress="onlyNumber();"
+		<%-- <c:if test="${pointMan.p_review ne 0}">checked</c:if> --%>
 		>사용하기</td>
 	</tr>
 	<tr>
-		<td rowspan="2">리뷰 작성 시 <input type="text" id="reviewP" name="reviewP" value="${pointMan.p_review }" 
-		 <c:if test="${pointMan.p_review eq 0}">disabled</c:if>
+		<td rowspan="2">리뷰 작성 시 <input type="text" id="reviewP" name="reviewP" value="${pointMan.p_review }" onkeypress="onlyNumber();"
+		 <%-- <c:if test="${pointMan.p_review eq 0}">disabled</c:if> --%>
 		>원 적립</td>
 	</tr>	
 </table>

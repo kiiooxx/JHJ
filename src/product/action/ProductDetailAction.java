@@ -37,10 +37,9 @@ public class ProductDetailAction implements Action {
 		}
 		
 		//리뷰 목록
-		String board_type = "review";
 		BoardListService boardListService = new BoardListService();
-		review_listCount = boardListService.getBoardListCount(pro_num, board_type);
-		reviewList = boardListService.getBoardList(board_type, pro_num, page, limit);
+		review_listCount = boardListService.getBoardListCount("review", "", pro_num);
+		reviewList = boardListService.getBoardList("review", "", pro_num, page, limit);
 		int review_maxPage = (int)((double)review_listCount/limit+0.95);
 		int review_startPage = (((int)((double)page/limitPage+0.9)) -1) * limitPage + 1;
 		int review_endPage = review_startPage + limitPage-1;
@@ -54,9 +53,8 @@ public class ProductDetailAction implements Action {
 		review_pageInfo.setStartPage(review_startPage);
 		
 		//문의 목록
-		board_type = "qna";
-		qna_listCount = boardListService.getBoardListCount(pro_num, board_type);
-		qnaList = boardListService.getBoardList(board_type, pro_num, page, limit);
+		qna_listCount = boardListService.getBoardListCount("qna", "", pro_num);
+		qnaList = boardListService.getBoardList("qna", "", pro_num, page, limit);
 		int qna_maxPage = (int)((double)qna_listCount/limit+0.95);
 		int qna_startPage = (((int)((double)page/limitPage+0.9)) -1) * limitPage + 1;
 		int qna_endPage = qna_startPage + limitPage-1;

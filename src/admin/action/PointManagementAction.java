@@ -4,7 +4,6 @@ import java.io.PrintWriter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import action.Action;
 import admin.svc.PointManagementService;
@@ -16,7 +15,6 @@ public class PointManagementAction implements Action {
 	@Override
 	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
-		HttpSession session = request.getSession();
 		ActionForward forward = null;
 		
 		int pointDate = Integer.parseInt(request.getParameter("pointDate"));
@@ -56,14 +54,17 @@ public class PointManagementAction implements Action {
 			out.println("history.back()");
 			out.println("</script>");
 		}else {
-			request.setAttribute("pointMan", pointMan);
-			request.setAttribute("pagefile", "/admin/point_management.jsp");
-			forward = new ActionForward("/admin_template.jsp", false);
+			//request.setAttribute("pointMan", pointMan);
+			
 			response.setContentType("text/html;charset=UTF-8");
 			PrintWriter out = response.getWriter();
 			out.println("<script>");
 			out.println("alert('설정이 저장되었습니다.')");
+			out.println("location.href='pointManagementForm.ad?seq=1';");
 			out.println("</script>");
+			
+			//request.setAttribute("pagefile", "/admin/point_management.jsp");
+			//forward = new ActionForward("/admin_template.jsp", false);
 		}
 		
 		

@@ -30,32 +30,9 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
-<!-- <link rel="stylesheet" href="/css/jquery-ui.min.css">
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" />
-<script
-	src="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
-<script type='text/javascript' src='//code.jquery.com/jquery-1.8.3.js'></script>
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/css/bootstrap-datepicker3.min.css">
-<script type='text/javascript'
-	src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.min.js"></script>
-<script src="/js/bootstrap-datepicker.kr.js" charset="UTF-8"></script> -->
+
 <script>
-	$(function() {
-		$('.input-group.date').datepicker({
-			calendarWeeks : false,
-			todayHighlight : true,
 
-			autoclose : true,
-
-			format : "yyyy-mm-dd",
-
-			language : "kr"
-
-		});
-
-	});
 </script>
 <style>
 <
@@ -141,6 +118,7 @@ style>th {
 						<td>상품명</td>
 						<td>결제금액</td>
 						<td>상태</td>
+						<td>취소요청</td>
 					</tr>
 
 					<!-- 여기서부터 검색결과 -->
@@ -185,11 +163,13 @@ style>th {
 									<c:if test="${order.sel_status eq 'order_confirm' }">
 										구매확정
 									</c:if>
+									</td>
+									<td>
 									<c:if test="${fn:contains(order.cancel_req,'Y')}">
 										<span style="color:red">취소요청</span>
 									</c:if>
 									<c:if test="${fn:contains(order.cancel_req,'C')}">
-										취소완료
+										<span style="color:blue">취소완료</span>
 									</c:if>
 									</td>
 								</tr>

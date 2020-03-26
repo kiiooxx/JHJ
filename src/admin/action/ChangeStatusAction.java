@@ -33,7 +33,7 @@ public class ChangeStatusAction implements Action {
 			out.println("</script>");
 			out.close();
 		}else {
-			
+			//구매확정 시 적립금 지급
 			if(deliStatus.equals("order_confirm")) {
 				PointService pointService = new PointService();
 				pointService.orderPoint(sel_num, user_id);

@@ -5,6 +5,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import vo.Point;
+
 
 public class PointDAO {
 	Connection con;
@@ -194,7 +196,9 @@ public class PointDAO {
 	// 리뷰작성 시 point_man 테이블에서 리뷰적립금 설정 여부 확인, if p_review >0 이면 point테이블에 값 넣기
 	public int checkReviewOption(String user_id) {
 		int insertCount = 0;
-		PreparedStatement pstmt = null;
+		PreparedStatement pstmt1 = null;
+		PreparedStatement pstmt2 = null;
+		PreparedStatement pstmt3 = null;
 		ResultSet rs = null;
 		int pReview = 0;//리뷰 적립금
 		int afterPoint = 0; //가장 최근 적립금 + 리뷰 적립금
@@ -204,21 +208,21 @@ public class PointDAO {
 				+ "VALUES (NOW(), ?, ?,'+', ?, '리뷰적립')";
 			
 		try {
-				pstmt = con.prepareStatement(sql1);
-				rs = pstmt.executeQuery();
+				pstmt1 = con.prepareStatement(sql1);
+				rs = pstmt1.executeQuery();
 				
 				if(rs.next()) {
 					pReview = rs.getInt("p_review");				
 					if(pReview > 0) {
-						pstmt = con.prepareStatement(sql2);
-						pstmt.setString(1, user_id);
+						pstmt2 = con.prepareStatement(sql2);
+						pstmt2.setString(1, user_id);
 						afterPoint = rs.getInt("point_final");
 						
-						pstmt = con.prepareStatement(sql3);
-						pstmt.setInt(1,pReview);
-						pstmt.setInt(2, afterPoint);
-						pstmt.setString(3, user_id);
-						insertCount = pstmt.executeUpdate();
+						pstmt3 = con.prepareStatement(sql3);
+						pstmt3.setInt(1,pReview);
+						pstmt3.setInt(2, afterPoint);
+						pstmt3.setString(3, user_id);
+						insertCount = pstmt3.executeUpdate();
 					}
 				}
 				
@@ -228,10 +232,42 @@ public class PointDAO {
 				System.out.println("sql:"+sql2);
 			}finally {
 				close(rs);
-				close(pstmt);
+				close(pstmt1);
+				close(pstmt2);
+				close(pstmt3);
 			}
 		
 			return insertCount;
+	}
+	
+	//회원 적립금 조회
+	public Point selectMemberPoint(String user_id) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		Point memberPoint = null;
+		
+		try {
+			pstmt = con.prepareStatement("SELECT * FROM point WHERE user_id=?");
+			pstmt.setString(1, user_id);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				memberPoint = new Point();
+				memberPoint.setPoint_num(rs.getInt("point_num"));
+				memberPoint.setPoint_date(rs.getString("point_date"));
+				memberPoint.setPoint_price(rs.getInt("point_price"));
+				memberPoint.setPoint_final(rs.getInt("point_final"));
+				memberPoint.setIncrease(rs.getString("increase").charAt(0));
+				memberPoint.setUser_id(user_id);
+				memberPoint.setPoint_reason(rs.getString("point_reason"));
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+			System.out.println("PointDAO - selectMemberPoint error");
+		}finally {
+			close(rs);
+			close(pstmt);
+		}
+		return memberPoint;
 	}
 	
 }

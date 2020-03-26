@@ -5,6 +5,21 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+$(function(){
+ $('input:checkbox[id="fChk"]').each(function() {
+     if(this.value == 1){
+            this.checked = true;
+      }else{
+    	  this.checked = false;
+      }
+ });
+});
+
+
+
+</script>
 </head>
 <style>
 table{
@@ -22,6 +37,7 @@ tr{
 }
 
 </style>
+
 <body>
 <form action="mailManagement.ad" method="post">
 <table>
@@ -32,47 +48,54 @@ tr{
 	</tr>
 	<tr>
 		<td>신규회원가입</td>
-		<td><input type="checkbox" name="A" value="T"/></td>
-		<td>수정 | 미리보기</td>
+		<td><input type="checkbox" name="A" value="${mailOption.new_mem }" id="fChk"/></td>
+		<td><a href="#" title="새창 열림" class="btnNormal" onclick="popup()">수정</a> | 
+			<a href="#" title="새창 열림" class="btnNormal" onclick="popup()">미리보기</a>
+		</td>
 	</tr>
 	<tr>
 		<td>회원탈퇴</td>
-		<td><input type="checkbox" name="B" value="T"/></td>
+		<td><input type="checkbox" name="B" value="${mailOption.quit_mem }" id="fChk"/></td>
 		<td>수정 | 미리보기</td>
 	</tr>
 	<tr>
 		<td>신규주문내역</td>
-		<td><input type="checkbox" name="C" value="T"/></td>
+		<td><input type="checkbox" name="C" value="${mailOption.order_info }" id="fChk"/></td>
 		<td>수정 | 미리보기</td>
 	</tr>
 	<tr>
 		<td>결제확인</td>
-		<td><input type="checkbox" name="D" value="T"/></td>
+		<td><input type="checkbox" name="D" value="${mailOption.check_paid }" id="fChk"/></td>
 		<td>수정 | 미리보기</td>
 	</tr>
 	<tr>
 		<td>상품발송</td>
-		<td><input type="checkbox" name="E" value="T"/></td>
+		<td><input type="checkbox" name="E" value="${mailOption.send_pro }" id="fChk"/></td>
 		<td>수정 | 미리보기</td>
 	</tr>
 	<tr>
 		<td>배송중</td>
-		<td><input type="checkbox" name="F" value="T"/></td>
+		<td><input type="checkbox" name="F" value="${mailOption.deli_ing }" id="fChk"/></td>
 		<td>수정 | 미리보기</td>
 	</tr>
 	<tr>
 		<td>배송완료</td>
-		<td><input type="checkbox" name="G" value="T"/></td>
+		<td><input type="checkbox" name="G" value="${mailOption.deli_fin }" id="fChk"/></td>
 		<td>수정 | 미리보기</td>
 	</tr>
 	<tr>
 		<td>구매확정</td>
-		<td><input type="checkbox" name="H" value="T"/></td>
+		<td><input type="checkbox" name="H" value="${mailOption.confirm_order }" id="fChk"/></td>
 		<td>수정 | 미리보기</td>
 	</tr>
 	<tr>
 		<td>주문취소승인</td>
-		<td><input type="checkbox" name="I" value="T"/></td>
+		<td><input type="checkbox" name="I" value="${mailOption.acc_cancel }" id="fChk"/></td>
+		<td>수정 | 미리보기</td>
+	</tr>
+	<tr>
+		<td>문의글 답변알림</td>
+		<td><input type="checkbox" name="J" value="${mailOption.qna_re }" id="fChk"/></td>
 		<td>수정 | 미리보기</td>
 	</tr>	
 </table>

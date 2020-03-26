@@ -302,7 +302,8 @@ function chkForm(f) {
 	
 /*     f.target = "openPage"; */
 	f.submit();
-	alert('창을 닫습니다');
+	alert('수정되었습니다! 창을 닫습니다.');
+	opener.parent.location.reload();
 	self.close();
 }
 

@@ -219,6 +219,44 @@ $(document).ready(function(){
 		});
 	});
 	
+	//바로주문
+	$('#buy').on('click', function() {
+		 var pro_num = "${prd.pro_num}";
+		 var photo = "${prd.pro_photo}";
+		 var pro_name = "${prd.pro_name}";
+		 var pro_price = "${prd.pro_price}";
+		 
+		 var size = $("input[name='pro_det_num']").length;
+		 var prodetnum = new Array(size);
+		 for(var i=0; i<size; i++){                          
+			 prodetnum[i] = $("input[name='pro_det_num']")[i].value;
+		 }
+
+		 var size2 = $("input[name='qnt']").length;
+		 var qnt = new Array(size2);
+		 for(var i=0; i<size2; i++){                          
+			 qnt[i] = $("input[name='qnt']")[i].value;
+		 }
+		 
+		 var size3 = $("input[name='color']").length;
+		 var color = new Array(size3);
+		 for(var i=0; i<size3; i++){                          
+			 color[i] = $("input[name='color']")[i].value;
+		 }
+		 
+		 var size4 = $("input[name='size']").length;
+		 var pro_size = new Array(size4);
+		 for(var i=0; i<size4; i++){                          
+			 pro_size[i] = $("input[name='size']")[i].value;
+		 }
+		 
+		 location.href='directOrderPage.pro?' + 
+		 		'pro_det_num='+prodetnum+'&qnt='+qnt+'&pro_num='+pro_num
+				+'&pro_photo='+photo+'&pro_name='+pro_name+'&pro_price='+pro_price
+				+'&color='+color+'&pro_size='+pro_size;
+
+	});
+	
 	//리뷰 제목 클릭했을 때
 	$("[id^=rev_subject]").on('click', function(event){
 		var id = $(this).attr("id")
@@ -360,7 +398,7 @@ $(document).ready(function(){
 			<!-- 주문, 장바구니버튼 -->
 			<div id="btnArea">
 				<ul>
-					<li><a href="#" class="btn_b">BUY</a></li>
+					<li><a href="#" class="btn_b" id="buy">BUY</a></li>
 					<li><a href="#" class="btn_w" id="cart">SHOPPING CART</a></li>
 				</ul>
 			</div>
@@ -403,10 +441,16 @@ $(document).ready(function(){
 							<td style="text-align:left;">
 								<a href="#" id="rev_subject${i.count }">
 									${review_list.board_title }
+									${review_list.board_step == 'Y' ? '[1]' : '' }	<!-- 답글 여부 -->
 								</a>
-									<c:if test="${!(review_list.board_photo == null || review_list.board_photo == '')}">
-										<img src="<%= request.getContextPath() %>/layout_image/pic_icon.gif"/>
-									</c:if>
+									<!-- 조회수 10 넘으면 Hit 아이콘 -->
+								<c:if test="${review_list.board_hits > 10}">
+									<img src="<%= request.getContextPath() %>/layout_image/hit_icon.png">
+								</c:if>
+								<!-- 사진 있으면 사진 아이콘 -->
+								<c:if test="${!(review_list.board_photo == null || review_list.board_photo == '')}">
+									<img src="<%= request.getContextPath() %>/layout_image/pic_icon.gif"/>
+								</c:if>
 							</td>
 							<td>
 								<div class="starRev">
@@ -429,8 +473,37 @@ $(document).ready(function(){
 									<img src="<%= request.getContextPath() %>/upload/${review_list.board_photo }"><br>
 								</c:if>
 								${review_list.board_content }
+								
+								
+								<!-- 답글있을때 -->
+								<c:if test="${review_list.board_step == 'Y'}">
+									<br><br><br>
+									<div class="comment_table">
+										<table>
+											<tr>
+												<th><strong class="name">관리자</strong></th>
+												<th><span class="comment_top_right">${reviewList_answer[i.index].board_date}</span></th>
+											</tr>
+											
+											<tr>
+												<th colspan="2">${reviewList_answer[i.index].board_title }</th>
+											</tr>
+											
+											<tr>
+												<th colspan="2">
+													<c:if test="${!(reviewList_answer[i.index].board_photo eq null || reviewList_answer[i.index].board_photo eq '' )}">
+														<img src="<%= request.getContextPath() %>/upload/${reviewList_answer[i.index].board_photo }"><br>
+													</c:if>
+														${reviewList_answer[i.index].board_content }
+												</th>
+											</tr>
+										</table>
+									</div>
+								</c:if>
+								
 							</th>
 						</tr>
+						
 						<c:set var="size" value="${size-1 }"/>
 					</c:forEach>
 				</table>
@@ -439,7 +512,7 @@ $(document).ready(function(){
 			<div class="order_button_area">
 				<p>
 					<a href="boardListAction.bo?board_type=review" class="w">LIST</a>
-					<a href="reviewWriteForm.bo?pro_num=${prd.pro_num }" class="b">WRITE</a>
+					<a href="boardWriteForm.bo?board_type=review&pro_num=${prd.pro_num }" class="b">WRITE</a>
 				</p>
 			</div>
 			
@@ -524,7 +597,7 @@ $(document).ready(function(){
 						<td style="text-align:left;">
 							<c:choose>
 								<c:when test="${qna_list.qna_open != 'N' || grade=='A'}">
-									<a href="boardViewAction.bo?&board_num=${qna_list.board_num}&pro_num=${qna_list.pro_num}">
+									<a href="boardViewAction.bo?&board_num=${qna_list.board_num}&pro_num=${qna_list.pro_num}&path=/board/board_detail">
 										${qna_list.board_title}
 									</a>
 								</c:when>
@@ -532,6 +605,7 @@ $(document).ready(function(){
 									${qna_list.board_title}
 								</c:otherwise>
 							</c:choose>
+							${qna_list.board_step == 'Y' ? '[1]' : '' }	<!-- 답글 여부 -->
 							<c:if test="${qna_list.qna_open == 'N' }">
 								<img src="<%= request.getContextPath() %>/layout_image/lock_icon.png"/>
 							</c:if>
@@ -552,7 +626,7 @@ $(document).ready(function(){
 			<div class="order_button_area">
 				<p>
 					<a href="boardListAction.bo?board_type=qna" class="w">LIST</a>
-					<a href="qnaWriteForm.bo?pro_num=${prd.pro_num }" class="b">WRITE</a>
+					<a href="boardWriteForm.bo?board_type=qna&pro_num=${prd.pro_num }" class="b">WRITE</a>
 				</p>
 			</div>
 			<!-- 페이지 리스트 -->

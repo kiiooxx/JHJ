@@ -6,7 +6,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import action.Action;
-import admin.svc.ProductListManagementService;
 import board.svc.BoardListService;
 import vo.ActionForward;
 import vo.BoardBean;
@@ -56,6 +55,11 @@ public class BoardManagementFormAction implements Action {
 			board_photo = request.getParameter("board_photo");
 		}
 		
+		String board_notice = "all";
+		if(request.getParameter("board_notice") != null) {
+			board_notice = request.getParameter("board_notice");
+		}
+		
 		ArrayList<BoardBean> boardList = new ArrayList<>();
 		
 		int page = 1;
@@ -68,8 +72,8 @@ public class BoardManagementFormAction implements Action {
 		}
 		
 		BoardListService boardListService = new BoardListService();
-		listCount = boardListService.getBoardListCount(board_date, board_type, search_type, search_text, board_step, board_photo);
-		boardList = boardListService.getBoardList(board_date, board_type, search_type, search_text, board_step, board_photo, page, limit);
+		listCount = boardListService.getBoardListCount(board_date, board_type, search_type, search_text, board_step, board_photo, board_notice);
+		boardList = boardListService.getBoardList(board_date, board_type, search_type, search_text, board_step, board_photo, board_notice, page, limit);
 		
 		//총 페이지 수
 		int maxPage = (int)((double)listCount/limit+0.95);
@@ -92,6 +96,9 @@ public class BoardManagementFormAction implements Action {
 		request.setAttribute("pageInfo", pageInfo);
 		request.setAttribute("boardList", boardList);
 		
+		for(int i=0; i<boardList.size(); i++) {
+			System.out.println("제목 : " + boardList.get(i).getBoard_title());
+		}
 		//검색 조건 넘기기
 		request.setAttribute("board_date", board_date);
 		request.setAttribute("board_type", board_type);

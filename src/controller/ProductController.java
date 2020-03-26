@@ -53,6 +53,7 @@ public class ProductController extends HttpServlet {
 		Action action = null;
 		ActionForward forward = null;
 		
+	
 		//===================상품==================
 		//1. 메인 상품
 		if(command.equals("/main.pro")) {
@@ -137,6 +138,14 @@ public class ProductController extends HttpServlet {
 		
 		//===================주문==================
 		//1. 주문 페이지
+		else if(command.equals("/directOrderPage.pro")) {
+			action = new DirectOrderPageAction();
+			try {
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
 		else if(command.equals("/orderPage.pro")) {
 			action = new OrderPageAction();
 			try {
@@ -154,6 +163,8 @@ public class ProductController extends HttpServlet {
 				e.printStackTrace();
 			}
     	}
+		
+			
 		
 		//3.포워딩
 		if(forward != null) {

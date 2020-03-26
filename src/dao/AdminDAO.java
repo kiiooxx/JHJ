@@ -166,8 +166,8 @@ public class AdminDAO {
 		}catch(SQLException e) {
 			System.out.println("상품 등록 에러 " + e);
 		}finally {
-			close(pstmt);
 			close(rs);
+			close(pstmt);
 		}
 		return num;
 	}
@@ -207,7 +207,6 @@ public class AdminDAO {
 	public boolean updateCategory(int ca_ref, String cate_name, int cate_num) {
 		// TODO Auto-generated method stub
 		PreparedStatement pstmt = null;
-		ResultSet rs = null;
 		int updateCount = 0;
 		boolean isUpdateSuccess = false;
 		
@@ -285,8 +284,8 @@ public class AdminDAO {
 		}catch(SQLException e) {
 			System.out.println("상품 상세 코드 색상 순서 불러오기 에러  " + e);
 		}finally {
-			close(pstmt);
 			close(rs);
+			close(pstmt);
 		}
 		return color_num;
 	}
@@ -314,8 +313,8 @@ public class AdminDAO {
 		}catch(SQLException e) {
 			System.out.println("오늘 등록한 재고 번호의 개수 구하기 에러 " + e);
 		}finally {
-			close(pstmt);
 			close(rs);
+			close(pstmt);
 		}
 		return stock_num;
 		
@@ -325,7 +324,6 @@ public class AdminDAO {
 	public int insertPro_Det(int pro_num, String pro_det_num, String stock_num, String color, String size, int stock) {
 		// TODO Auto-generated method stub
 		PreparedStatement pstmt = null;
-		ResultSet rs = null;
 		int insertCount = 0;
 		
 		try {
@@ -669,7 +667,6 @@ public class AdminDAO {
 	public boolean updateActive(int pro_num, String active) {
 		// TODO Auto-generated method stub
 		PreparedStatement pstmt = null;
-		ResultSet rs = null;
 		int updateCount = 0;
 		boolean isUpdateSuccess = false;
 		
@@ -694,7 +691,6 @@ public class AdminDAO {
 	public boolean updateMain_nb(int pro_num, String main_nb) {
 		// TODO Auto-generated method stub
 		PreparedStatement pstmt = null;
-		ResultSet rs = null;
 		int updateCount = 0;
 		boolean isUpdateSuccess = false;
 		
@@ -961,6 +957,7 @@ public class AdminDAO {
 					order.setPoint_use(rs.getInt("point_use"));
 					order.setFinal_price(rs.getInt("final_price"));
 					order.setPro_name(rs.getString("a.pro_name"));
+					order.setCancel_req(rs.getString("cancel_req").charAt(0));
 					orderList.add(order);
 									
 				}
@@ -1087,8 +1084,8 @@ public class AdminDAO {
 					order.setSel_date(rs.getString("sel_date"));
 					order.setDeli_num(rs.getString("deli_num"));
 					order.setSel_status(rs.getString("sel_status"));
-					//order.setDeli_price(rs.getInt("deli_price"));
-					//order.setPoint_use(rs.getInt("point_use"));
+					order.setDeli_price(rs.getInt("deli_price"));
+					order.setPoint_use(rs.getInt("point_use"));
 					order.setFinal_price(rs.getInt("final_price"));
 					order.setPro_name(rs.getString("pro_name"));
 					order.setCancel_req(rs.getString("cancel_req").charAt(0));
@@ -1118,7 +1115,7 @@ public class AdminDAO {
 			
 			
 			try {
-				pstmt = con.prepareStatement("SELECT * FROM order_detail_view WHERE sel_num=?");
+				pstmt = con.prepareStatement("SELECT * FROM order_detail_view WHERE sel_num=?");//뷰테이블 사용
 				pstmt.setString(1, sel_num);
 				rs = pstmt.executeQuery();
 				
@@ -1212,7 +1209,7 @@ public class AdminDAO {
 			return payInfo;
 		}
 		
-		//주문상세페이지 - 주문 정보(주문상품 제외), 배송상태 및 취소요청여부
+		//주문상세페이지 - 주문 정보(주문상품 제외), 배송상태 및 취소요청여부,취소사유
 		public Order selectOrderInfo(String sel_num) {
 			PreparedStatement pstmt = null;
 			ResultSet rs = null;
@@ -1234,6 +1231,7 @@ public class AdminDAO {
 					orderInfo.setFinal_price(rs.getInt("final_price"));
 					orderInfo.setUser_name(rs.getString("user_name"));
 					orderInfo.setCancel_req(rs.getString("cancel_req").charAt(0));
+					orderInfo.setCancel_reason(rs.getString("cancel_reason"));
 				}
 						
 			}catch(Exception e) {
@@ -1268,13 +1266,91 @@ public class AdminDAO {
 			return updateCount;
 		}
 		
-		//자동메일옵션 설정저장
-		public ArrayList<MailOption> updateMailOption(char newMem, char quitMem, char newOrder, char checkPaid,
-				char sendPro, char deliIng, char deliFin, char confirmOrder, char accCancel) {
+		//주문상세 - 주문 취소 승인
+		public int updateCancelReq(String sel_num) {
+			int updateCount = 0;
 			PreparedStatement pstmt = null;
-			//String sql = "UPDATE mail_option SET "
-			return null;
+			String sql = "UPDATE order_page SET cancel_req='C' WHERE sel_num=?";
+			
+			try {
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, sel_num);
+				updateCount = pstmt.executeUpdate();
+			}catch(Exception e) {
+				e.printStackTrace();
+				System.out.println("AdminDAO - updateCancelReq error:" + e);
+			}finally {
+				close(pstmt);
+			}
+			return updateCount;
 		}
+		
+		
+		//자동메일옵션 폼 불러오기
+		public MailOption viewMailOption(int seq) {
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+			MailOption mailOption = null;
+			
+			try {
+				pstmt = con.prepareStatement("SELECT * FROM mail_option WHERE seq=?");
+				pstmt.setInt(1, seq);
+				rs = pstmt.executeQuery();
+				if(rs.next()) {
+					mailOption = new MailOption();
+					mailOption.setSeq(seq);
+					mailOption.setNew_mem(rs.getInt("new_mem"));
+					mailOption.setQuit_mem(rs.getInt("quit_mem"));
+					mailOption.setOrder_info(rs.getInt("order_info"));
+					mailOption.setCheck_paid(rs.getInt("check_paid"));
+					mailOption.setSend_pro(rs.getInt("send_pro"));
+					mailOption.setDeli_ing(rs.getInt("deli_ing"));
+					mailOption.setDeli_fin(rs.getInt("deli_fin"));
+					mailOption.setConfirm_order(rs.getInt("confirm_order"));
+					mailOption.setAcc_cancel(rs.getInt("acc_cancel"));
+					mailOption.setQna_re(rs.getInt("qna_re"));
+				}
+			}catch(Exception e) {
+				e.printStackTrace();
+				System.out.println("AdminDAO - viewMailOption error :" + e);
+			}finally {
+				close(rs);
+				close(pstmt);
+			}
+			return mailOption;
+		}
+		
+		//자동메일옵션 설정저장
+		public int updateMailOption(int newMem, int quitMem, int newOrder, int checkPaid,
+				int sendPro, int deliIng, int deliFin, int confirmOrder, int accCancel, int qnaRe) {
+			int updateCount = 0;
+			PreparedStatement pstmt = null;
+			String sql = "UPDATE mail_option SET new_mem=?, quit_mem=?, order_info=?, check_paid=?, "
+					+ "send_pro=?, deli_ing=?, deli_fin=?, confirm_order=?, acc_cancel=?, qna_re=? WHERE seq=1";
+
+			try {
+				pstmt = con.prepareStatement(sql);
+				pstmt.setInt(1, newMem);
+				pstmt.setInt(2, quitMem);
+				pstmt.setInt(3, newOrder);
+				pstmt.setInt(4, checkPaid);
+				pstmt.setInt(5, sendPro);
+				pstmt.setInt(6, deliIng);
+				pstmt.setInt(7, deliFin);
+				pstmt.setInt(8, confirmOrder);
+				pstmt.setInt(9, accCancel);
+				pstmt.setInt(10, qnaRe);
+				updateCount = pstmt.executeUpdate();
+			}catch(Exception e) {
+				e.printStackTrace();
+				System.out.println("AdminDAO - updateMailOption error : " + e );
+			}finally {
+				close(pstmt);
+			}
+			
+			return updateCount;
+		}
+		
 		//적립금 설정 페이지(설정값 불러오기)
 		public PointMan viewPointOption(int seq) {
 			PreparedStatement pstmt = null;
@@ -1287,9 +1363,10 @@ public class AdminDAO {
 				rs = pstmt.executeQuery();
 				if(rs.next()) {
 					pointMan = new PointMan();
+					pointMan.setP_seq(seq);
 					pointMan.setP_date(rs.getInt("p_date"));
 					pointMan.setP_mark(rs.getString("p_mark"));
-					pointMan.setP_rate(rs.getInt("p_rate"));
+					pointMan.setP_rate(rs.getFloat("p_rate"));
 					pointMan.setP_stand(rs.getString("p_stand"));
 					pointMan.setP_newmem(rs.getInt("p_newmem"));
 					pointMan.setP_pricelimit(rs.getInt("p_pricelimit"));
@@ -1298,7 +1375,7 @@ public class AdminDAO {
 				}
 			}catch(Exception e) {
 				e.printStackTrace();
-				System.out.println("AdminDAO - viewPointOption error");
+				System.out.println("AdminDAO - viewPointOption error");  
 			}finally {
 				close(rs);
 				close(pstmt);
@@ -1397,21 +1474,4 @@ public class AdminDAO {
 			
 			return stockList;
 		}
-
-		
-
-		
-
-		
-
-		
-
-		
-
-		
-
-		
-
-		
-
 }

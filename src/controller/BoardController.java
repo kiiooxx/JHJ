@@ -13,10 +13,10 @@ import action.Action;
 import board.action.BoardDeleteAction;
 import board.action.BoardListAction;
 import board.action.BoardModifyAction;
+import board.action.BoardNoticeAction;
 import board.action.BoardRegistAction;
 import board.action.BoardViewAction;
-import board.action.QnAWriteFormAction;
-import board.action.ReviewWriteFormAction;
+import board.action.BoardWriteFormAction;
 import vo.ActionForward;
 
 /**
@@ -95,38 +95,25 @@ public class BoardController extends HttpServlet {
 				e.printStackTrace();
 			}
     	}
-		
-		//====================리뷰====================
-		//1. 리뷰 글 쓰기 폼
-		if(command.equals("/reviewWriteForm.bo")) {
-			action = new ReviewWriteFormAction();
+		//6. 게시판 글 쓰기 폼
+		if(command.equals("/boardWriteForm.bo")) {
+			action = new BoardWriteFormAction();
 			try {
 				forward = action.execute(request, response);
 			}catch(Exception e) {
 				e.printStackTrace();
 			}
     	}
-		
-		//====================QnA====================
-		//1. QnA 게시판 등록 폼
-		else if(command.equals("/qnaWriteForm.bo")) {
-			action = new QnAWriteFormAction();
+		//7. 게시판 공지사항 등록
+		if(command.equals("/boardNoticeAction.bo")) {
+			action = new BoardNoticeAction();
 			try {
 				forward = action.execute(request, response);
 			}catch(Exception e) {
 				e.printStackTrace();
 			}
     	}
-		
-		
-		//====================공지사항====================
-		//1. 공지사항 등록 폼
-		if(command.equals("/noticeWriteForm.bo")) {
-    		request.setAttribute("pagefile", "/board/notice_write_form.jsp");
-    		forward = new ActionForward("/template.jsp",false);
-    		
-    	}
-		
+
 		
 		//3.포워딩
 		if(forward != null) {

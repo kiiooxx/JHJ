@@ -18,12 +18,24 @@ public class BoardRegistService {
 		BoardDAO boardDAO = BoardDAO.getInstance();
 		Connection con = getConnection();
 		boardDAO.setConnection(con);
-		boolean isRegistSuccess = false;
+		boolean isRegistSuccess = true;
 		int insertCount = boardDAO.insertBoard(boardBean);
 		
 		if(insertCount > 0) {
+			//답글일 경우에
+			if(boardBean.getBoard_ref() != 0) {
+				//관련 게시글 board_step 'Y'
+				boolean isUpdateSuccess = boardDAO.updateBoardStep("Y", boardBean.getBoard_ref());		
+				if(!isUpdateSuccess) {
+					isRegistSuccess = false;
+				}	
+			}
+		}else {
+			isRegistSuccess = false;
+		}
+		
+		if(isRegistSuccess) {
 			commit(con);
-			isRegistSuccess = true;
 		}else {
 			rollback(con);
 		}

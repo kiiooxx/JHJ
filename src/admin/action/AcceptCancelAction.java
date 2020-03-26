@@ -1,4 +1,5 @@
-package board.action;
+package admin.action;
+
 
 import java.io.PrintWriter;
 
@@ -6,40 +7,44 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import action.Action;
-import board.svc.BoardDeleteService;
+import admin.svc.AcceptCancelService;
 import vo.ActionForward;
 
-public class BoardDeleteAction implements Action {
+public class AcceptCancelAction implements Action {
 
 	@Override
 	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		// TODO Auto-generated method stub
-		ActionForward forward = null;
-		String board_num[] = request.getParameter("board_num").split(",");
-		BoardDeleteService boardDeleteService = new BoardDeleteService();
-		boolean isDeleteSuccess = boardDeleteService.deleteBoard(board_num);
 		
-		if(!isDeleteSuccess) {
+		
+		ActionForward forward = null;
+		String sel_num = request.getParameter("sel_num");
+		
+		AcceptCancelService acceptCancelService = new AcceptCancelService();
+		boolean isSuccess = acceptCancelService.acceptCancel(sel_num);
+		
+		if(!isSuccess) {
 			response.setContentType("text/html;charset=UTF-8");
 			PrintWriter out = response.getWriter();
 			out.println("<script>");
-			out.println("alert('Fail');");
-			out.println("history.back();");
+			out.println("alert('취소승인 실패')");
+			out.println("history.back()");
 			out.println("</script>");
-			out.close();
 		}else {
+			
 			response.setContentType("text/html;charset=UTF-8");
 			PrintWriter out = response.getWriter();
 			out.println("<script>");
-			out.println("alert('삭제되었습니다!');");
-			out.println("location.href = document.referrer;");	
+			out.println("alert('주문이 취소되었습니다.')");
+			out.println("opener.location.reload();");
+			out.println("self.close();");
 			out.println("</script>");
-			out.close();
 		}
 		
-		//forward = new ActionForward("myboard.mem", true);
-
+		
+		
 		return forward;
 	}
+	
+	
 
 }

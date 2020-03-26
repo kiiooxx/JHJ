@@ -114,6 +114,12 @@ public class Order {
 	public void setCancel_req(char cancel_req) {
 		this.cancel_req = cancel_req;
 	}
+	public String getCancel_reason() {
+		return cancel_reason;
+	}
+	public void setCancel_reason(String cancel_reason) {
+		this.cancel_reason = cancel_reason;
+	}
 	public String getUser_name() {
 		return user_name;
 	}

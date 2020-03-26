@@ -1,4 +1,3 @@
-
 package controller;
 
 import java.io.IOException;
@@ -71,14 +70,14 @@ public class MemberController extends HttpServlet {
 
 		}
 
-		// ===================마이페이지====================
-		// 1. 마이페이지 홈
+		//===================마이페이지====================
+		//1. 마이페이지 홈
 		if (command.equals("/account.mem")) {
 			request.setAttribute("pagefile", "/member/accountForm.jsp");
 			forward = new ActionForward("/template.jsp", false);
 		}
-		// ===================MY INFO===================
-		// 2. 내 정보 페이지
+		//===================MY INFO===================
+		//2. 내 정보 페이지
 		else if (command.equals("/myinfo.mem")) {
 
 			action = new MyInfoAction();
@@ -89,37 +88,37 @@ public class MemberController extends HttpServlet {
 				System.out.println("Controller error");
 			}
 		}
-		// 3. 내 정보 수정 액션
-		else if (command.equals("/myinfomodify.mem")) {
-			action = new MyInfoModAction();
-			try {
-				forward = action.execute(request, response);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
-		}
-		// 4. 회원 탈퇴
-		else if (command.equals("/myinfoquit.mem")) {
-			action = new MyInfoQuitAction();
-			try {
-				forward = action.execute(request, response);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
-		}
-		// ===================MY BOARD===================
-		// 1. 내가 쓴 게시물 보기 페이지
-		else if (command.equals("/myboard.mem")) {
-			action = new MyBoardAction();
-			try {
-				forward = action.execute(request, response);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
-		}
+		//3. 내 정보 수정 액션
+		else if(command.equals("/myinfomodify.mem")){
+    		action = new MyInfoModAction();
+    		try {
+    			forward = action.execute(request, response);
+    		}catch(Exception e) {
+    			e.printStackTrace();
+    		}	
+    		
+    	}
+		//4. 회원 탈퇴
+		else if(command.equals("/myinfoquit.mem")){
+    		action = new MyInfoQuitAction();
+    		try {
+    			forward = action.execute(request, response);
+    		}catch(Exception e) {
+    			e.printStackTrace();
+    		}	
+    		
+    	}
+		//===================MY BOARD===================
+		//1. 내가 쓴 게시물 보기 페이지
+		else if(command.equals("/myboard.mem")){
+    		action = new MyBoardAction();
+    		try {
+    			forward = action.execute(request, response);
+    		}catch(Exception e) {
+    			e.printStackTrace();
+    		}	
+    		
+    	}
 
 		//1. 사용자 주문내역 페이지
 		else if (command.equals("/order.mem")) {

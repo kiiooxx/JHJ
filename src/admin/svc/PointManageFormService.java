@@ -15,7 +15,7 @@ public class PointManageFormService {
 		AdminDAO adminDAO = AdminDAO.getInstance();
 		adminDAO.setConnection(con);
 		pointMan = adminDAO.viewPointOption(seq);
-		
+		close(con);
 		return pointMan;
 	}
 
