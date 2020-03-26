@@ -25,10 +25,10 @@
 				</colgroup>
 				
 				<tr>
-					<td>NO</td>
-					<td>SUBJECT</td>
-					<td>WRITER</td>
-					<td>DATE</td>
+					<td scope="col">NO</td>
+					<td scope="col">SUBJECT</td>
+					<td scope="col">WRITER</td>
+					<td scope="col">DATE</td>
 				</tr>
 				
 				<c:forEach var="list" items="${boardList }" varStatus="i">

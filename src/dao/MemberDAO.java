@@ -142,22 +142,26 @@ public class MemberDAO {
 		return result;
 	}
 
-	public ArrayList<Order> selectorder(String id) {
+	public ArrayList<Order> selectOrderList(String id, int page, int limit) {
 		PreparedStatement pstmt = null;
 		Order order= null;
 		ResultSet  rs= null;
 		ArrayList<Order> orderList = new ArrayList<>();
 		
-		String sql= "select a.sel_num, d.pro_num, a.final_price,d.pro_name, d.pro_photo, a.cancel_req, b.pro_qnt, d.pro_price, a.sel_status, a.sel_date, c.pro_size, c.color From order_page as a " + 
+		String sql= "select * From order_page as a " + 
 				"left join order_det as b on a.sel_num=b.sel_num " + 
 				"left join pro_det as c on b.pro_det_num=c.pro_det_num " + 
 				"left join pro_info as d on c.pro_num=d.pro_num " + 
-				"where user_id = ?";
+				"where user_id = ? order by a.sel_date desc limit ?,?";
 		// TODO Auto-generated method stub
+		
+		int startrow = (page-1)*limit;	//읽기 시작할 row 번호
 		
 		try {
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, id);
+			pstmt.setInt(2, startrow);
+			pstmt.setInt(3, limit);
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) { 
@@ -187,6 +191,32 @@ public class MemberDAO {
 		}
 		
 		return orderList;
+	}
+
+	//id에 해당하는 주문내역 개수
+	public int selectOrderListCount(String id) {
+		// TODO Auto-generated method stub
+		int listCount = 0;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = "select count(*) from order_page where user_id=?";
+		
+		try {
+			//전체 리뷰 구하기.
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, id);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				listCount = rs.getInt(1);
+			}
+		}catch(Exception e) {
+			System.out.println("getOrderListCount 에러 : " + e);
+		}finally {
+			close(rs);
+			close(pstmt);
+		}
+		return listCount;
 	}
 	
 }

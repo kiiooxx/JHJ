@@ -1056,3 +1056,23 @@ strong {
 	border-top: 0px solid #dfdfdf;
     vertical-align: middle;
 }
+
+
+/* 주문 내역 페이지*/
+#OrderHistoryForm fieldset {
+	margin: 20px auto;
+    padding: 23px 20px;
+    border: 2px solid #e8e8e8;
+    text-align: center;
+}
+
+.fText {
+	width: 72px;
+    height: 22px;
+    margin: 0 0 0 2px;
+    padding: 0 6px;
+    border: 1px solid #d5d5d5;
+    line-height: 22px;
+    font-family: verdana,sans-serif;
+    font-size: 11px;
+}

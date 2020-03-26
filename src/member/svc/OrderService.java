@@ -12,17 +12,30 @@ import vo.Order;
 
 public class OrderService {
 
-	public ArrayList<Order> selectorder(String id) {
+	public int getOrderListCount(String id) {
+		// TODO Auto-generated method stub
+		int listCount = 0;
+		Connection con = getConnection();
+		MemberDAO memberDAO = MemberDAO.getInstance();
+		memberDAO.setConnection(con);
+		listCount = memberDAO.selectOrderListCount(id);
+		close(con);
+		return listCount;
+	}
+	
+	public ArrayList<Order> selectOrderList(String id, int page, int limit) {
 		// TODO Auto-generated method stub
 		ArrayList<Order> orderList = new ArrayList<>();
 		MemberDAO memberDAO = MemberDAO.getInstance();
 		
 		Connection con = getConnection();
 		memberDAO.setConnection(con);
-		orderList = memberDAO.selectorder(id);
+		orderList = memberDAO.selectOrderList(id, page, limit);
 		
 		close(con);
 		return orderList;
 	}
+
+	
 
 }

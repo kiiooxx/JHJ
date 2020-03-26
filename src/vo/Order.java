@@ -22,31 +22,6 @@ public class Order {
 	private int pro_num;
 	
 	
-	
-	public String getCancel_reason() {
-		return cancel_reason;
-	}
-	public void setCancel_reason(String cancel_reason) {
-		this.cancel_reason = cancel_reason;
-	}
-	public int getPro_num() {
-		return pro_num;
-	}
-	public void setPro_num(int pro_num) {
-		this.pro_num = pro_num;
-	}
-	public int getPro_qnt() {
-		return pro_qnt;
-	}
-	public void setPro_qnt(int pro_qnt) {
-		this.pro_qnt = pro_qnt;
-	}
-	public int getPro_price() {
-		return pro_price;
-	}
-	public void setPro_price(int pro_price) {
-		this.pro_price = pro_price;
-	}
 	public String getSel_num() {
 		return sel_num;
 	}
@@ -95,7 +70,6 @@ public class Order {
 	public void setFinal_price(int final_price) {
 		this.final_price = final_price;
 	}
-	
 	public String getPro_name() {
 		return pro_name;
 	}
@@ -125,14 +99,19 @@ public class Order {
 	}
 	public void setUser_name(String user_name) {
 		this.user_name = user_name;
-	} 
+	}
 	public String getPro_photo() {
 		return pro_photo;
 	}
 	public void setPro_photo(String pro_photo) {
 		this.pro_photo = pro_photo;
 	}
-	
+	public int getPro_qnt() {
+		return pro_qnt;
+	}
+	public void setPro_qnt(int pro_qnt) {
+		this.pro_qnt = pro_qnt;
+	}
 	public String getPro_size() {
 		return pro_size;
 	}
@@ -144,6 +123,17 @@ public class Order {
 	}
 	public void setColor(String color) {
 		this.color = color;
-	} 
-	
+	}
+	public int getPro_price() {
+		return pro_price;
+	}
+	public void setPro_price(int pro_price) {
+		this.pro_price = pro_price;
+	}
+	public int getPro_num() {
+		return pro_num;
+	}
+	public void setPro_num(int pro_num) {
+		this.pro_num = pro_num;
+	}
 }

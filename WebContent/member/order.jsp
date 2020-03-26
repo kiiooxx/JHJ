@@ -1,135 +1,147 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <style>
-.thumb {
-	width: 50px;
-}
-
-
-var windowWidth = 200;
-var windowHeight = 200;
-var windowLeft = parseInt((screen.availWidth/2) - (windowWidth/2));
-var windowTop = parseInt((screen.availHeight/2) - (windowHeight/2));
-var windowSize = "width=" + windowWidth + ",height=" + windowHeight + "left=" + windowLeft + ",top=" + windowTop + "screenX=" + windowLeft + ",screenY=" + windowTop;
-
-
-
+	.board_table tr, .board_table th {
+		 border : 1px solid #ddd;
+	}
+	
+	.item_info {
+		text-align : left;
+	}
+	
+	.small_btn {
+		border : 1px solid #ddd;
+		
+	}
+	
+	.orderhistorytab {
+		height: 38px;
+   		text-align: center;
+	}
+	
+	.orderhistorytab li {
+		display: inline-block;
+	}
+	.orderhistorytab li a {
+	    
+	    display: block;
+	    min-width: 168px;
+	    height: 38px;
+	    padding: 0 15px;
+	    color: #999;
+	    line-height: 38px;
+	    text-decoration: none;
+	    text-align: center;
+	    border: 1px solid #ccc;
+	    box-sizing: border-box;
+	    border-radius: 20px;
+	}
+	
+	.orderhisorytab li a:hover {
+		position: relative;
+    	color: #000;
+    	border: 1px solid #000;
+	}
 </style>
-</head>
-<body>
 
+<div class="orderArea">
+	<h3>ORDER</h3>
 
-
-	<div class="titleArea">
-		<h2>ORDER</h2>
-	</div>
-
-	<div class="orderhistorytab ">
+	<div class="orderhistorytab">
 		<ul>
 			<li class="tab_class"><a href="##">주문내역조회 (0)</a></li>
 			<li class="tab_class_cs"><a href="##">취소내역 (0)</a></li>
-			<li class="tab_class_old displaynone"><a href="##">이전 주문내역
-					(0)</a></li>
 		</ul>
 	</div>
 
-	<form action="order.mem" method="post" id="OrderHistoryForm"
-		name="OrderHistoryForm">
-		<div class="xans-element- xans-myshop xans-myshop-orderhistoryhead ">
+	<!-- 날짜 검색 -->
+	<div id="OrderHistoryForm">
+		<form action="order.mem" method="post" name="OrderHistoryForm">
+		
 			<fieldset>
-				<legend>검색기간설정</legend>
-				<span> <a href="#none" class="btnNormal" days="00"><img
-						src="http://img.echosting.cafe24.com/skin/base_ko_KR/myshop/btn_date1.gif"
-						offimage="http://img.echosting.cafe24.com/skin/base_ko_KR/myshop/btn_date1.gif"
-						onimage="http://img.echosting.cafe24.com/skin/base_ko_KR/myshop/btn_date1_on.gif"
-						alt="오늘" /></a> <a href="#none" class="btnNormal" days="07"><img
-						src="http://img.echosting.cafe24.com/skin/base_ko_KR/myshop/btn_date2.gif"
-						offimage="http://img.echosting.cafe24.com/skin/base_ko_KR/myshop/btn_date2.gif"
-						onimage="http://img.echosting.cafe24.com/skin/base_ko_KR/myshop/btn_date2_on.gif"
-						alt="1주일" /></a> <a href="#none" class="btnNormal" days="30"><img
-						src="http://img.echosting.cafe24.com/skin/base_ko_KR/myshop/btn_date3.gif"
-						offimage="http://img.echosting.cafe24.com/skin/base_ko_KR/myshop/btn_date3.gif"
-						onimage="http://img.echosting.cafe24.com/skin/base_ko_KR/myshop/btn_date3_on.gif"
-						alt="1개월" /></a> <a href="#none" class="btnNormal" days="90"><img
-						src="http://img.echosting.cafe24.com/skin/base_ko_KR/myshop/btn_date4.gif"
-						offimage="http://img.echosting.cafe24.com/skin/base_ko_KR/myshop/btn_date4.gif"
-						onimage="http://img.echosting.cafe24.com/skin/base_ko_KR/myshop/btn_date4_on.gif"
-						alt="3개월" /></a> <a href="#none" class="btnNormal" days="180"><img
-						src="http://img.echosting.cafe24.com/skin/base_ko_KR/myshop/btn_date5.gif"
-						offimage="http://img.echosting.cafe24.com/skin/base_ko_KR/myshop/btn_date5.gif"
-						onimage="http://img.echosting.cafe24.com/skin/base_ko_KR/myshop/btn_date5_on.gif"
-						alt="6개월" /></a>
-				</span> <input id="history_start_date" name="history_start_date"
-					class="fText" readonly="readonly" size="10" value="2019-12-18"
-					type="text" /> ~ <input id="history_end_date"
-					name="history_end_date" class="fText" readonly="readonly" size="10"
-					value="2020-03-17" type="text" /> <input alt="조회"
-					id="order_search_btn" type="image"
-					src="//img.echosting.cafe24.com/skin/admin_ko_KR/myshop/btn_search.gif" />
-			</fieldset>
-		</div>
-		<input id="mode" name="mode" value="" type="hidden" /> <input
-			id="term" name="term" value="" type="hidden" />
-		<!-- </form> -->
+				<span>
+					<a href="#" class="small_btn">오늘</a>
+					<a href="#" class="small_btn">1주일</a>
+					<a href="#" class="small_btn">1개월</a>
+					<a href="#" class="small_btn">3개월</a>
+					<a href="#" class="small_btn">6개월</a>
+				</span>
+				<input id="history_start_date" name="history_start_date" class="fText" readonly="readonly" size="10" value="2019-12-18" type="text" />
+					~ 
+				<input id="history_end_date" name="history_end_date" class="fText" readonly="readonly" size="10" value="2020-03-17" type="text" />
+				<a href="#" class="small_btn">조회</a>
+			</fieldset>	
+		</form>
+	</div>
 	
-			<!--
-        $login_url = /member/login.html
-    -->
-			<table border="1" summary="">
-				<caption>주문 상품 정보</caption>
-				<thead>
-					<tr>
-						<th>ORDER NO</th>
-						<th>-</th>
-						<th>ITEM</th>
-						<th>TOTAL PRICE</th>
-						<th>상태</th>
-						<th>주문취소</th>
-						<th>  </th>
-						
-						
-						
-						
-						
-					</tr>
-				</thead>
+	
+	<div class="board_table">
+		<table>
+			<colgroup>
+				<col style="width:90px;">
+				<col style="width:92px;">	
+				<col style="width:auto;">
+				<col style="width:100px;">
+				<col style="width:100px;">
+				<col style="width:100px;">
+			</colgroup>
 
+			<tr>
+				<th scope="col">ORDER NO</th>
+				<th scope="col">IMAGE</th>
+				<th scope="col">ITEM</th>
+				<th scope="col">TOTAL PRICE</th>
+				<th scope="col">상태</th>
+				<th scope="col">주문취소</th>
+			</tr>
+			
+			<c:if test="${orderList != null }">
 				<c:forEach var="orderlist" items="${orderList }" varStatus="i">
-					<c:if test="${orderlist.sel_num != null }">
-						<tr>
-
-							<c:choose>
-								<c:when test="${i.index == 0 || sel_num != orderlist.sel_num }">
-									<c:set var="sel_num" value="${orderlist.sel_num }" />
-									<td><a href="orderdetail.mem?sel_num=${orderlist.sel_num}">
-									${orderlist.sel_num }</td>
-								</c:when>
-								<c:otherwise>
-									<td></td>
-								</c:otherwise>
-							</c:choose>
-
-							<td><a href="productDetail.pro?pro_num=${orderlist.pro_num}"><img
-								src="<%=request.getContextPath() %>/upload/${orderlist.pro_photo}"
-								class="thumb"></a>
-								
-							</td>
-
-							<td>
-								${orderlist.pro_name }
-								<br>
-								${orderlist.pro_price} / ${orderlist.pro_qnt}개
-							</td>
+					<c:set var="new_sel_num" value="false"/>
+					
+					
+					<c:if test="${i.index == 0 || sel_num != orderlist.sel_num }">
+						<c:set var="new_sel_num" value="true"/>
+					</c:if>
+					<c:set var="sel_num" value="${orderlist.sel_num }" />
+					<c:set var="row_cnt" value="${0 }"/>
+					<c:forEach var="orderlist2" items="${orderList }" varStatus="j">
+						<c:if test="${orderlist2.sel_num == sel_num }">
+							<c:set var="row_cnt" value="${row_cnt + 1 }"/>
+						</c:if>
+					</c:forEach>
+					
+					
+					<tr>
+						<c:if test="${new_sel_num == true }">
+							<th rowspan="${row_cnt }">
+								<a href="orderdetail.mem?sel_num=${orderlist.sel_num}">${orderlist.sel_num }</a>
+							</th>
+						</c:if>
+						
+						<th>
+							<a href="producthetail.pro?pro_num=${orderlist.pro_num}">
+							<img src="<%=request.getContextPath() %>/upload/${orderlist.pro_photo}" class="cartImage"></a>
+						</th>
+		
+						<th class="item_info">
+							&nbsp;${orderlist.pro_name }
+							<br>
+							<!-- 가격 형식 -->
+							<fmt:formatNumber var="price" value="${orderlist.pro_price}" pattern="#,###"/>
+							&nbsp;${price} / ${orderlist.pro_qnt}개
+						</th>
+						
+							<!-- 가격 형식 -->
+							<fmt:formatNumber var="final_price" value="${orderlist.final_price}" pattern="#,###"/>
+						<th>${final_price}</th>
 							
-							<td>${orderlist.final_price}</td>
 							
-							<td>
+						<c:if test="${new_sel_num == true }">
+							<th rowspan="${row_cnt }">
 								<c:if test="${orderlist.cancel_req == 'N'.charAt(0) }">
 									<c:if test="${orderlist.sel_status eq 'order_done' }">주문완료</c:if>
 									<c:if test="${orderlist.sel_status eq 'check_paid' }">결제확인</c:if>
@@ -140,62 +152,72 @@ var windowSize = "width=" + windowWidth + ",height=" + windowHeight + "left=" + 
 								</c:if>
 								<c:if test="${orderlist.cancel_req == 'Y'.charAt(0) }">주문취소 요청중</c:if>
 								<c:if test="${orderlist.cancel_req == 'C'.charAt(0) }">주문취소 완료</c:if>
-							</td>
+							</th>
 							
-							<c:if test="${orderlist.cancel_req == 'N'.charAt(0) }">
-							<td>
-									<a href="ordercancel.mem?sel_num=${orderlist.sel_num }" class="displaynone" onclick=""><img src="http://img.echosting.cafe24.com/skin/base_ko_KR/myshop/btn_order_cancel.gif" alt="주문취소"/></a>
-							</td>
-							</c:if>
-							
-							<c:if test="${orderlist.sel_status eq 'deli_ing' || orderlist.sel_status eq 'deli_ing' }" >
-							<a href="ordercheck.mem?sel_num=${orderlist.sel_num }" class="displaynone" onclick="">구매확정</a></td>
-							</c:if>
-						</tr>
-					</c:if>
-				</c:forEach>
-
-
-
-				
-				<tbody class="">
-					<tr>
-						<td colspan="7" class="empty">주문 내역이 없습니다</td>
+										
+							<th rowspan="${row_cnt }">
+								<c:choose>
+									<c:when test="${orderlist.sel_status eq 'deli_ing' || orderlist.sel_status eq 'deli_fin'}">
+										<a href="ordercheck.mem?sel_num=${orderlist.sel_num }" class="small_btn" onclick="">구매확정</a>
+									</c:when>
+										
+									<c:when test="${orderlist.cancel_req == 'N'.charAt(0) }">
+										<a href="ordercancel.mem?sel_num=${orderlist.sel_num }" class="small_btn" onclick="">주문취소</a>
+									</c:when>
+								</c:choose>
+							</th>
+						</c:if>
+						
 					</tr>
-				</tbody>
-			</table>
+		
+					
+				</c:forEach>
+			</c:if>
+
+			<c:if test="${orderList == null }">
+				<tr>
+					<td colspan="6" class="empty">주문 내역이 없습니다</td>
+				</tr>
+			</c:if>
+		</table>
+	</div>
+
+
+		<!-- 페이지 리스트 -->
+		<div id="pageList">
+			<c:if test="${pageInfo.endPage > 0}">
+				<ol>
+				<c:choose>
+					<c:when test="${pageInfo.page <= 1 }">
+						<li> < </li>
+					</c:when>
+					<c:otherwise>
+						<li><a href="order.mem?page=${pageInfo.page-1 }"> < </a></li>
+					</c:otherwise>
+				</c:choose>
+				
+				
+				<c:forEach var="pglist" begin="${pageInfo.startPage }" end="${pageInfo.endPage }" step="1" varStatus="a">
+					<c:choose>
+						<c:when test="${a.count == pageInfo.page }">
+							<li>[${a.count }]</li>
+						</c:when>
+						<c:otherwise>
+							<li><a href="order.mem?page=${a.count }">[${a.count }]</a></li>
+						</c:otherwise>
+					</c:choose>
+				</c:forEach>
+				
+				
+				<c:choose>
+					<c:when test="${pageInfo.page>=pageInfo.maxPage }">
+						<li> > </li>
+					</c:when>
+					<c:otherwise>
+						<li><a href="order.mem?page=${pageInfo.page+1 }"> > </a></li>
+					</c:otherwise>
+				</c:choose>
+				</ol>
+			</c:if>
 		</div>
-
-
-		<div id="Page_Nav"
-			class="xans-element- xans-myshop xans-myshop-orderhistorypaging">
-			<span><a
-				href="?page=1&history_start_date=2019-12-18&history_end_date=2020-03-17&past_year=2019">&lt;&lt;</a></span>
-			<span><a href="">&lt;</a></span>
-			<ol>
-				<li class="xans-record-"><a
-					href="?page=1&history_start_date=2019-12-18&history_end_date=2020-03-17&past_year=2019"
-					class="this">1</a></li>
-			</ol>
-			<span><a
-				href="?page=1&history_start_date=2019-12-18&history_end_date=2020-03-17&past_year=2019">&gt;</a></span>
-			<span><a
-				href="?page=1&history_start_date=2019-12-18&history_end_date=2020-03-17&past_year=2019">&gt;&gt;</a></span>
-		</div>
-		</div>
-		</div>
-		<div id="footer" class="xans-element- xans-layout xans-layout-footer ">
-			<ul class="xans-element- xans-layout xans-layout-info left ">
-				C/S
-				<br />
-
-
-
-
-
-			</ul>
-		</div>
-	</form>
-
-</body>
-</html>
+</div>
