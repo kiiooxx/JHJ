@@ -1,6 +1,7 @@
 package log.action;
 
 import java.io.PrintWriter;
+import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -8,7 +9,10 @@ import javax.servlet.http.HttpSession;
 
 import action.Action;
 import log.svc.LoginService;
+import product.svc.CartListService;
+import product.svc.CartQtyService;
 import vo.ActionForward;
+import vo.Cart;
 import vo.Member;
 
 public class LoginAction implements Action {
@@ -44,8 +48,17 @@ public class LoginAction implements Action {
 				HttpSession session = request.getSession();
 				session.setAttribute("id", id);
 				session.setAttribute("grade", member.getGrade());
-				System.out.println("로그인성공?");
-		
+				
+				CartListService cartListService = new CartListService();
+				CartQtyService cartQtyService = new CartQtyService();
+				
+				ArrayList<Cart> cartList = cartListService.getCartList(request);
+				ArrayList<Cart> cartList2 = cartListService.getCartList(id);	//로그인한 아이디의 장바구니 불러오기
+				
+				if(cartList != null) {
+					cartList2 = cartQtyService.addCart(cartList2, cartList, id);	//세션에 있는 장바구니를 DB에 넣기
+				}
+				
 				forward = new ActionForward("main.pro", true);
 			}
 		}

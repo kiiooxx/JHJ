@@ -11,9 +11,24 @@ public class Cart {
    private int pro_price;
    private String color;
    private String pro_size;
+   private int mem_bas_num;
+   private String user_id;
    
    
-   public String getPro_name() {
+   
+   public int getMem_bas_num() {
+	return mem_bas_num;
+	}
+	public void setMem_bas_num(int mem_bas_num) {
+		this.mem_bas_num = mem_bas_num;
+	}
+	public String getUser_id() {
+		return user_id;
+	}
+	public void setUser_id(String user_id) {
+		this.user_id = user_id;
+	}
+	public String getPro_name() {
 	return pro_name;
 	}
 	public void setPro_name(String pro_name) {

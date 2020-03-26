@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import action.Action;
 import board.svc.BoardListService;
+import board.svc.BoardViewService;
 import product.svc.ProductDetailService;
 import vo.ActionForward;
 import vo.BoardBean;
@@ -24,6 +25,8 @@ public class ProductDetailAction implements Action {
 		ProductBean prd = prdDetailService.getProduct(pro_num);
 		ArrayList<ProDetBean> prdDetList = prdDetailService.getProductDetail(pro_num);
 		ArrayList<BoardBean> reviewList = null;	//리뷰 리스트
+		ArrayList<BoardBean> reviewList_answer = new ArrayList<>();	//리뷰 답글
+		BoardViewService boardViewService = new BoardViewService();
 		ArrayList<BoardBean> qnaList = null;	//QnA리스트
 		
 		int page = 1;
@@ -40,6 +43,19 @@ public class ProductDetailAction implements Action {
 		BoardListService boardListService = new BoardListService();
 		review_listCount = boardListService.getBoardListCount("review", "", pro_num);
 		reviewList = boardListService.getBoardList("review", "", pro_num, page, limit);
+		
+		String where = "board_ref = ? and board_num != board_ref";
+		BoardBean boardBean_answer = new BoardBean();
+		//답글이 있으면 불러오기
+		for(int i=0; i<reviewList.size(); i++) {
+			boardBean_answer = null;
+			if(reviewList.get(i).getBoard_step().equals("Y")) {
+				boardBean_answer = boardViewService.getBoard(reviewList.get(i).getBoard_num(), where);
+				
+			}
+			reviewList_answer.add(boardBean_answer);
+		}
+		
 		int review_maxPage = (int)((double)review_listCount/limit+0.95);
 		int review_startPage = (((int)((double)page/limitPage+0.9)) -1) * limitPage + 1;
 		int review_endPage = review_startPage + limitPage-1;
@@ -51,6 +67,7 @@ public class ProductDetailAction implements Action {
 		review_pageInfo.setMaxPage(review_maxPage);
 		review_pageInfo.setPage(page);
 		review_pageInfo.setStartPage(review_startPage);
+		
 		
 		//문의 목록
 		qna_listCount = boardListService.getBoardListCount("qna", "", pro_num);
@@ -67,9 +84,10 @@ public class ProductDetailAction implements Action {
 		qna_pageInfo.setPage(page);
 		qna_pageInfo.setStartPage(qna_startPage);
 		
-				
+	
 		request.setAttribute("reviewPageInfo", review_pageInfo);
 		request.setAttribute("reviewList", reviewList);
+		request.setAttribute("reviewList_answer", reviewList_answer);
 		request.setAttribute("qnaPageInfo", qna_pageInfo);
 		request.setAttribute("qnaList", qnaList);
 		request.setAttribute("prd", prd);

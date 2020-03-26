@@ -167,56 +167,68 @@ $(document).ready(function(){
 		 var pro_price = "${prd.pro_price}";
 		 
 		 var size = $("input[name='pro_det_num']").length;
-		 var prodetnum = new Array(size);
-		 for(var i=0; i<size; i++){                          
-			 prodetnum[i] = $("input[name='pro_det_num']")[i].value;
-		 }
-
-		 var size2 = $("input[name='qnt']").length;
-		 var qnt = new Array(size2);
-		 for(var i=0; i<size2; i++){                          
-			 qnt[i] = $("input[name='qnt']")[i].value;
-		 }
-		 
-		 var size3 = $("input[name='color']").length;
-		 var color = new Array(size3);
-		 for(var i=0; i<size3; i++){                          
-			 color[i] = $("input[name='color']")[i].value;
-		 }
-		 
-		 var size4 = $("input[name='size']").length;
-		 var pro_size = new Array(size4);
-		 for(var i=0; i<size4; i++){                          
-			 pro_size[i] = $("input[name='size']")[i].value;
-		 }
-
-		$.ajax({
-			url : '<%=request.getContextPath()%>/addCart',
-			type : 'POST',
-			data : 'pro_det_num='+prodetnum+'&qnt='+qnt+'&pro_num='+pro_num
-				+'&pro_photo='+photo+'&pro_name='+pro_name+'&pro_price='+pro_price
-				+'&color='+color+'&pro_size='+pro_size,
-			cache: false,
-			contentType : 'application/x-www-form-urlencoded; charset=UTF-8',
-	        processData: false,
-			success : function() {
-				swal({
-					  title: "장바구니로 이동하시겠습니까?",
-					  text: "장바구니에 상품을 담았습니다!",
-					  icon: "success",
-					  buttons: true,
-					  dangerMode: false,
-				})
-					.then((willCart) => {
-					  if (willCart) {
-					    location.href="cartList.pro";
-					  }
+		 //선택한 값이 없으면
+		 if(size == 0) {
+			 swal({
+				  title: "주문 실패!",
+				  text: "상품을 선택하세요!",
+				  icon: "error",
 				});
-			},
-			error : function() {
-				console.log("에러");
-			}
-		});
+			 return false;
+		 }else {
+			 var prodetnum = new Array(size);
+			 for(var i=0; i<size; i++){                          
+				 prodetnum[i] = $("input[name='pro_det_num']")[i].value;
+			 }
+
+			 var size2 = $("input[name='qnt']").length;
+			 var qnt = new Array(size2);
+			 for(var i=0; i<size2; i++){                          
+				 qnt[i] = $("input[name='qnt']")[i].value;
+			 }
+			 
+			 var size3 = $("input[name='color']").length;
+			 var color = new Array(size3);
+			 for(var i=0; i<size3; i++){                          
+				 color[i] = $("input[name='color']")[i].value;
+			 }
+			 
+			 var size4 = $("input[name='size']").length;
+			 var pro_size = new Array(size4);
+			 for(var i=0; i<size4; i++){                          
+				 pro_size[i] = $("input[name='size']")[i].value;
+			 }
+
+			$.ajax({
+				url : '<%=request.getContextPath()%>/cartAdd.pro',
+				type : 'POST',
+				data : 'pro_det_num='+prodetnum+'&qnt='+qnt+'&pro_num='+pro_num
+					+'&pro_photo='+photo+'&pro_name='+pro_name+'&pro_price='+pro_price
+					+'&color='+color+'&pro_size='+pro_size,
+				cache: false,
+				contentType : 'application/x-www-form-urlencoded; charset=UTF-8',
+		        processData: false,
+				success : function() {
+					swal({
+						  title: "장바구니로 이동하시겠습니까?",
+						  text: "장바구니에 상품을 담았습니다!",
+						  icon: "success",
+						  buttons: true,
+						  dangerMode: false,
+					})
+						.then((willCart) => {
+						  if (willCart) {
+						    location.href="cartList.pro";
+						  }
+					});
+				},
+				error : function() {
+					console.log("에러");
+				}
+			});
+		 }
+		 
+		
 	});
 	
 	//바로주문
@@ -227,34 +239,43 @@ $(document).ready(function(){
 		 var pro_price = "${prd.pro_price}";
 		 
 		 var size = $("input[name='pro_det_num']").length;
-		 var prodetnum = new Array(size);
-		 for(var i=0; i<size; i++){                          
-			 prodetnum[i] = $("input[name='pro_det_num']")[i].value;
-		 }
+		 
+		 if(size == 0) {
+			 swal({
+				  title: "장바구니 담기 실패!",
+				  text: "상품을 선택하세요!",
+				  icon: "error",
+				});
+			 return false;
+		 }else {
+			 var prodetnum = new Array(size);
+			 for(var i=0; i<size; i++){                          
+				 prodetnum[i] = $("input[name='pro_det_num']")[i].value;
+			 }
 
-		 var size2 = $("input[name='qnt']").length;
-		 var qnt = new Array(size2);
-		 for(var i=0; i<size2; i++){                          
-			 qnt[i] = $("input[name='qnt']")[i].value;
+			 var size2 = $("input[name='qnt']").length;
+			 var qnt = new Array(size2);
+			 for(var i=0; i<size2; i++){                          
+				 qnt[i] = $("input[name='qnt']")[i].value;
+			 }
+			 
+			 var size3 = $("input[name='color']").length;
+			 var color = new Array(size3);
+			 for(var i=0; i<size3; i++){                          
+				 color[i] = $("input[name='color']")[i].value;
+			 }
+			 
+			 var size4 = $("input[name='size']").length;
+			 var pro_size = new Array(size4);
+			 for(var i=0; i<size4; i++){                          
+				 pro_size[i] = $("input[name='size']")[i].value;
+			 }
+			 
+			 location.href='directOrderPage.pro?' + 
+			 		'pro_det_num='+prodetnum+'&qnt='+qnt+'&pro_num='+pro_num
+					+'&pro_photo='+photo+'&pro_name='+pro_name+'&pro_price='+pro_price
+					+'&color='+color+'&pro_size='+pro_size;
 		 }
-		 
-		 var size3 = $("input[name='color']").length;
-		 var color = new Array(size3);
-		 for(var i=0; i<size3; i++){                          
-			 color[i] = $("input[name='color']")[i].value;
-		 }
-		 
-		 var size4 = $("input[name='size']").length;
-		 var pro_size = new Array(size4);
-		 for(var i=0; i<size4; i++){                          
-			 pro_size[i] = $("input[name='size']")[i].value;
-		 }
-		 
-		 location.href='directOrderPage.pro?' + 
-		 		'pro_det_num='+prodetnum+'&qnt='+qnt+'&pro_num='+pro_num
-				+'&pro_photo='+photo+'&pro_name='+pro_name+'&pro_price='+pro_price
-				+'&color='+color+'&pro_size='+pro_size;
-
 	});
 	
 	//리뷰 제목 클릭했을 때

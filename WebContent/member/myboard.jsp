@@ -31,9 +31,11 @@
 					<tr>
 						<td>${i.count }</td>
 						<td>
-							<a href="productDetail.pro?pro_num=${list.pro_num }">
-								<img src="<%= request.getContextPath() %>/upload/${prdList[i.index].pro_photo }" class="rev_thumb"/>
-							</a>
+							<c:if test="${list.pro_num != 0 }">
+								<a href="productDetail.pro?pro_num=${list.pro_num }">
+									<img src="<%= request.getContextPath() %>/upload/${prdList[i.index].pro_photo }" class="rev_thumb"/>
+								</a>
+							</c:if>
 						</td>
 						<td style="text-align:left;">
 							<a href="boardViewAction.bo?&board_num=${list.board_num}&pro_num=${list.pro_num}&page=${reviewPageInfo.page}&path=/board/board_detail">

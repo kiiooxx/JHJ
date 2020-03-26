@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import action.Action;
 import admin.action.CategoryListAction;
+import product.action.CartAddAction;
 import product.action.CartDeleteAction;
 import product.action.CartListAction;
 import product.action.CartQtyDownAction;
@@ -128,6 +129,16 @@ public class ProductController extends HttpServlet {
 		//4. 장바구니 삭제
 		else if(command.equals("/cartDelete.pro")) {
 			action = new CartDeleteAction();
+			//프로젝트명+기능+형태(?)
+			try {
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+    	}
+		//5. 장바구니 추가
+		else if(command.equals("/cartAdd.pro")) {
+			action = new CartAddAction();
 			//프로젝트명+기능+형태(?)
 			try {
 				forward = action.execute(request, response);

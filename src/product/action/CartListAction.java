@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 
 import action.Action;
 import product.svc.CartListService;
+import product.svc.CartQtyService;
 import vo.ActionForward;
 import vo.Cart;
 
@@ -17,13 +18,14 @@ public class CartListAction implements Action {
 	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		// TODO Auto-generated method stub
 		CartListService cartListService = new CartListService();
+		
 		ArrayList<Cart> cartList = cartListService.getCartList(request);
 		
 		HttpSession session =request.getSession();
 		String id = (String)session.getAttribute("id");	//로그인한 아이디 확인
 		
 		if(id != null) {
-			
+			cartList = cartListService.getCartList(id);	//로그인한 아이디의 장바구니 불러오기
 		}
 		
 		//총 금액 계산
@@ -39,7 +41,7 @@ public class CartListAction implements Action {
 		
 		
 		request.setAttribute("totalPrice", totalPrice);
-		request.setAttribute("cartList", cartList);
+		session.setAttribute("cartList", cartList);
 		request.setAttribute("pagefile", "/product/cartList.jsp");
 		ActionForward forward = new ActionForward("/template.jsp", false);
 		

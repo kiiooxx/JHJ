@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import vo.Cart;
 import vo.CategoryBean;
 import vo.ProDetBean;
 import vo.ProductBean;
@@ -283,5 +284,135 @@ public class ProductDAO {
 		}
 		
 		return prdList;
+	}
+
+	//1. 장바구니 등록
+	public int addCart(Cart cart, String id) {
+		// TODO Auto-generated method stub
+		PreparedStatement pstmt1 = null;
+		PreparedStatement pstmt2 = null;
+		ResultSet rs = null;
+		
+		int insertCount = 0;
+		
+		int mem_bas_num = 0;
+		
+		//장바구니 번호 불러오기
+		String sql1 = "select ifnull(max(mem_bas_num)+1, 1) from basket where user_id = '" + id + "'";
+		
+		String sql2 = "insert into basket(mem_bas_num, pro_det_num, user_id, bas_pro_qnt) values(?, ?, ?, ?)";
+		
+		try {
+			pstmt1 = con.prepareStatement(sql1);
+			rs = pstmt1.executeQuery();
+			
+			if(rs.next()) {
+				mem_bas_num = rs.getInt(1);
+				
+				pstmt2 = con.prepareStatement(sql2);
+				pstmt2.setInt(1, mem_bas_num);
+				pstmt2.setString(2, cart.getPro_det_num());
+				pstmt2.setString(3, id);
+				pstmt2.setInt(4, cart.getBas_pro_qnt());
+				
+				insertCount = pstmt2.executeUpdate();
+				
+			}
+
+		}catch(SQLException e) {
+			System.out.println("장바구니 추가 에러 " + e);
+		}finally {
+			close(rs);
+			close(pstmt2);
+			close(pstmt1);
+		}
+		return insertCount;
+	}
+
+	//2. 장바구니 수량 수정
+	public int updateQntCart(Cart cart, String id) {
+		// TODO Auto-generated method stub
+		PreparedStatement pstmt = null;
+		
+		int updateCount = 0;
+		
+		String sql = "update basket set bas_pro_qnt=? where pro_det_num=? and user_id=?";
+		
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, cart.getBas_pro_qnt());
+			pstmt.setString(2, cart.getPro_det_num());
+			pstmt.setString(3, id);
+			updateCount = pstmt.executeUpdate();
+		}catch(SQLException e) {
+			System.out.println("장바구니 수량 수정 에러 " + e);
+		}finally {
+			close(pstmt);
+		}
+		return updateCount;
+	}
+
+	//3. 장바구니 삭제
+	public int deleteCart(Cart cart, String id) {
+		// TODO Auto-generated method stub
+		PreparedStatement pstmt = null;
+		
+		int deleteCount = 0;
+		
+		String sql = "delete from basket where pro_det_num=? and user_id=?";
+		
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, cart.getPro_det_num());
+			pstmt.setString(2, id);
+			deleteCount = pstmt.executeUpdate();
+		}catch(SQLException e) {
+			System.out.println("장바구니 삭제 에러 " + e);
+		}finally {
+			close(pstmt);
+		}
+		return deleteCount;
+	}
+
+	//4. 로그인한 아이디의 장바구니 불러오기
+	public ArrayList<Cart> selectCartList(String id) {
+		// TODO Auto-generated method stub
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		String sql = "select * from basket a inner join pro_det b on a.pro_det_num = b.pro_det_num " +
+				 	"inner join pro_info c on b.pro_num = c.pro_num where a.user_id=? order by a.mem_bas_num desc";
+		ArrayList<Cart> cartList = new ArrayList<Cart>();
+		Cart cart = null;
+
+		try {	
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, id);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				cart = new Cart();
+				cart.setBas_num(rs.getInt("bas_num"));
+				cart.setMem_bas_num(rs.getInt("mem_bas_num"));
+				cart.setPro_num(rs.getInt("pro_num"));
+				cart.setPro_name(rs.getString("pro_name"));
+				cart.setPro_price(rs.getInt("pro_price"));
+				cart.setPro_photo(rs.getString("pro_photo"));
+				cart.setColor(rs.getString("color"));
+				cart.setPro_size(rs.getString("pro_size"));
+				cart.setPro_det_num(rs.getString("pro_det_num"));
+				cart.setBas_pro_qnt(rs.getInt("bas_pro_qnt"));
+				cart.setUser_id(rs.getString("user_id"));
+			
+				cartList.add(cart);
+			}
+		}catch(Exception e) {
+			System.out.println("getCartList 에러 : " + e);
+		}finally {
+			close(rs);
+			close(pstmt);
+		}
+		
+		return cartList;
 	}
 }

@@ -1,5 +1,8 @@
 package product.action;
- 
+
+import java.io.PrintWriter;
+import java.util.ArrayList;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -7,20 +10,20 @@ import javax.servlet.http.HttpSession;
 import action.Action;
 import product.svc.CartQtyService;
 import vo.ActionForward;
+import vo.Cart;
 
-public class CartQtyUpAction implements Action {
+public class CartAddAction implements Action {
 
 	@Override
 	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		// TODO Auto-generated method stub
-		String pro_det_num = request.getParameter("pro_det_num");
+		ActionForward forward = null;
+		
+		//카트 추가 서비스
 		CartQtyService cartQtyService = new CartQtyService();
-		
-		
-		cartQtyService.upCartQty(pro_det_num, request);
-		
-		ActionForward forward = new ActionForward("cartList.pro", true);
-		
+
+		ArrayList<Cart> cartList = cartQtyService.addCart(request);
+
 		return forward;
 	}
 

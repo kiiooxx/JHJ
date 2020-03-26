@@ -1,10 +1,15 @@
 package product.svc;
 
+import static db.JdbcUtil.close;
+import static db.JdbcUtil.getConnection;
+
+import java.sql.Connection;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import dao.ProductDAO;
 import vo.Cart;
 
 public class CartListService {
@@ -49,6 +54,18 @@ public class CartListService {
 			System.out.println("ㅋㅋㅋ" + cartList2.get(i).getPro_det_num());
 		}
 		return cartList2;
+	}
+
+	//로그인한 아이디의 장바구니 불러오기
+	public ArrayList<Cart> getCartList(String id) {
+		// TODO Auto-generated method stub
+		ArrayList<Cart> cartList = null;
+		Connection con = getConnection();
+		ProductDAO productDAO = ProductDAO.getInstance();
+		productDAO.setConnection(con);
+		cartList = productDAO.selectCartList(id);
+		close(con);
+		return cartList;
 	}
 
 	
