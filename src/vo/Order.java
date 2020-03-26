@@ -12,6 +12,7 @@ public class Order {
 	private String pro_name;
 	private int pro_count;
 	private char cancel_req;
+	private String cancel_reason;
 	private String user_name;
 	private String pro_photo;
 	private int pro_qnt;
@@ -22,6 +23,12 @@ public class Order {
 	
 	
 	
+	public String getCancel_reason() {
+		return cancel_reason;
+	}
+	public void setCancel_reason(String cancel_reason) {
+		this.cancel_reason = cancel_reason;
+	}
 	public int getPro_num() {
 		return pro_num;
 	}

@@ -17,6 +17,8 @@ import member.action.MyInfoModAction;
 import member.action.MyInfoQuitAction;
 import member.action.OrderAction;
 import member.action.OrderDetailAction;
+import member.action.OrderCancelFormAction;
+import member.action.OrderCancelProAction;
 import member.action.IdCheckAction;
 import member.action.MemberJoinProAction;
 import member.action.MyBoardAction;
@@ -36,14 +38,14 @@ public class MemberController extends HttpServlet {
 		ActionForward forward = null;
 		Action action = null;
 
-		//===================회원가입=====================
-		//1. 회원가입 페이지
+		// ===================회원가입=====================
+		// 1. 회원가입 페이지
 		if (command.equals("/joinForm.mem")) {
 			request.setAttribute("pagefile", "/member/joinForm.jsp");
 			forward = new ActionForward("/template.jsp", false);
 
-		} 
-		//2. 회원가입 액션
+		}
+		// 2. 회원가입 액션
 		else if (command.equals("/memberJoinProcess.mem")) {
 			action = new MemberJoinProAction();
 			try {
@@ -53,7 +55,7 @@ public class MemberController extends HttpServlet {
 				System.out.println("Controller error");
 			}
 		}
-		//3. 회원가입 - 아이디 중복 체크 액션
+		// 3. 회원가입 - 아이디 중복 체크 액션
 		else if (command.equals("/idCheck.mem")) {
 			action = new IdCheckAction();
 			try {
@@ -62,22 +64,21 @@ public class MemberController extends HttpServlet {
 
 			}
 		}
-		//4. 회원가입 - 아이디 중복 체크 페이지
+		// 4. 회원가입 - 아이디 중복 체크 페이지
 		else if (command.equals("/idCheckForm.mem")) {
 
 			forward = new ActionForward("/member/idCheck.jsp", false);
 
 		}
-		
-		
-		//===================마이페이지====================
-		//1. 마이페이지 홈
+
+		// ===================마이페이지====================
+		// 1. 마이페이지 홈
 		if (command.equals("/account.mem")) {
 			request.setAttribute("pagefile", "/member/accountForm.jsp");
 			forward = new ActionForward("/template.jsp", false);
 		}
-		//===================MY INFO===================
-		//2. 내 정보 페이지
+		// ===================MY INFO===================
+		// 2. 내 정보 페이지
 		else if (command.equals("/myinfo.mem")) {
 
 			action = new MyInfoAction();
@@ -88,39 +89,40 @@ public class MemberController extends HttpServlet {
 				System.out.println("Controller error");
 			}
 		}
-		//3. 내 정보 수정 액션
-		else if(command.equals("/myinfomodify.mem")){
-    		action = new MyInfoModAction();
-    		try {
-    			forward = action.execute(request, response);
-    		}catch(Exception e) {
-    			e.printStackTrace();
-    		}	
-    		
-    	}
-		//4. 회원 탈퇴
-		else if(command.equals("/myinfoquit.mem")){
-    		action = new MyInfoQuitAction();
-    		try {
-    			forward = action.execute(request, response);
-    		}catch(Exception e) {
-    			e.printStackTrace();
-    		}	
-    		
-    	}
-		//===================MY BOARD===================
-		//1. 내가 쓴 게시물 보기 페이지
-		else if(command.equals("/myboard.mem")){
-    		action = new MyBoardAction();
-    		try {
-    			forward = action.execute(request, response);
-    		}catch(Exception e) {
-    			e.printStackTrace();
-    		}	
-    		
-    	}
-		
-		else if (command.equals("/order.mem")){
+		// 3. 내 정보 수정 액션
+		else if (command.equals("/myinfomodify.mem")) {
+			action = new MyInfoModAction();
+			try {
+				forward = action.execute(request, response);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+		}
+		// 4. 회원 탈퇴
+		else if (command.equals("/myinfoquit.mem")) {
+			action = new MyInfoQuitAction();
+			try {
+				forward = action.execute(request, response);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+		}
+		// ===================MY BOARD===================
+		// 1. 내가 쓴 게시물 보기 페이지
+		else if (command.equals("/myboard.mem")) {
+			action = new MyBoardAction();
+			try {
+				forward = action.execute(request, response);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+		}
+
+		//1. 사용자 주문내역 페이지
+		else if (command.equals("/order.mem")) {
 			action = new OrderAction();
 			try {
 				forward = action.execute(request, response);
@@ -128,18 +130,39 @@ public class MemberController extends HttpServlet {
 				e.printStackTrace();
 				System.out.println("Controller error");
 			}
-		
-		} else if (command.equals("/orderdetail.mem")) {
+
+		}
+		//2. 주문내역 상세 페이지
+		 else if (command.equals("/orderdetail.mem")) {
 			action = new OrderDetailAction();
 			try {
 				forward = action.execute(request, response);
-			} catch (Exception e){
+			} catch (Exception e) {
 				e.printStackTrace();
 				System.out.println("Controller error");
 			}
-	
+		}
+		//3. 주문 취소 페이지
+		 else if (command.equals("/ordercancel.mem")) {
+			action = new OrderCancelFormAction();
+			try {
+				forward = action.execute(request, response);
+			} catch (Exception e) {
+				e.printStackTrace();
+				System.out.println("Controller error");
+			}
+		}else if (command.equals("/ordercancelpro.mem")) {
+			action = new OrderCancelProAction();
+			try {
+				forward = action.execute(request, response);
+			} catch (Exception e) {
+				e.printStackTrace();
+				System.out.println("Controller error");
+			}
+
 		}
 		
+
 		if (forward != null) {
 
 			if (forward.isRedirect()) {
@@ -165,4 +188,3 @@ public class MemberController extends HttpServlet {
 	}
 
 }
-

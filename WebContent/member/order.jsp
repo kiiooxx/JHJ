@@ -33,7 +33,7 @@ var windowSize = "width=" + windowWidth + ",height=" + windowHeight + "left=" + 
 	<div class="orderhistorytab ">
 		<ul>
 			<li class="tab_class"><a href="##">주문내역조회 (0)</a></li>
-			<li class="tab_class_cs"><a href="##">취소/반품/교환 내역 (0)</a></li>
+			<li class="tab_class_cs"><a href="##">취소내역 (0)</a></li>
 			<li class="tab_class_old displaynone"><a href="##">이전 주문내역
 					(0)</a></li>
 		</ul>
@@ -82,7 +82,7 @@ var windowSize = "width=" + windowWidth + ",height=" + windowHeight + "left=" + 
         $login_url = /member/login.html
     -->
 			<table border="1" summary="">
-				<caption>주문주문 상품 정보 상품 정보 목록</caption>
+				<caption>주문 상품 정보</caption>
 				<thead>
 					<tr>
 						<th>ORDER NO</th>
@@ -91,6 +91,7 @@ var windowSize = "width=" + windowWidth + ",height=" + windowHeight + "left=" + 
 						<th>TOTAL PRICE</th>
 						<th>상태</th>
 						<th>주문취소</th>
+						<th>  </th>
 						
 						
 						
@@ -128,14 +129,28 @@ var windowSize = "width=" + windowWidth + ",height=" + windowHeight + "left=" + 
 							
 							<td>${orderlist.final_price}</td>
 							
-							<td><c:if test="${orderlist.sel_status eq 'order_done' }">주문완료</c:if>
-								<c:if test="${orderlist.sel_status eq 'check_paid' }">결제확인</c:if>
-								<c:if test="${orderlist.sel_status eq 'send_pro' }">상품발송</c:if>
-								<c:if test="${orderlist.sel_status eq 'deli_ing' }">배송중</c:if> <c:if
-									test="${orderlist.sel_status eq 'deli_fin' }">배송완료</c:if> <c:if
-									test="${orderlist.sel_status eq 'order_confirm' }">구매확정</c:if></td>
-							<td>${orderlist.cancel_req}
-							<a href="#none" class="displaynone" onclick=""><img src="http://img.echosting.cafe24.com/skin/base_ko_KR/myshop/btn_order_cancel.gif" alt="주문취소"/></a></td>
+							<td>
+								<c:if test="${orderlist.cancel_req == 'N'.charAt(0) }">
+									<c:if test="${orderlist.sel_status eq 'order_done' }">주문완료</c:if>
+									<c:if test="${orderlist.sel_status eq 'check_paid' }">결제확인</c:if>
+									<c:if test="${orderlist.sel_status eq 'send_pro' }">상품발송</c:if>
+									<c:if test="${orderlist.sel_status eq 'deli_ing' }">배송중</c:if> 
+									<c:if test="${orderlist.sel_status eq 'deli_fin' }">배송완료</c:if> 
+									<c:if test="${orderlist.sel_status eq 'order_confirm' }">구매확정</c:if>
+								</c:if>
+								<c:if test="${orderlist.cancel_req == 'Y'.charAt(0) }">주문취소 요청중</c:if>
+								<c:if test="${orderlist.cancel_req == 'C'.charAt(0) }">주문취소 완료</c:if>
+							</td>
+							
+							<c:if test="${orderlist.cancel_req == 'N'.charAt(0) }">
+							<td>
+									<a href="ordercancel.mem?sel_num=${orderlist.sel_num }" class="displaynone" onclick=""><img src="http://img.echosting.cafe24.com/skin/base_ko_KR/myshop/btn_order_cancel.gif" alt="주문취소"/></a>
+							</td>
+							</c:if>
+							
+							<c:if test="${orderlist.sel_status eq 'deli_ing' || orderlist.sel_status eq 'deli_ing' }" >
+							<a href="ordercheck.mem?sel_num=${orderlist.sel_num }" class="displaynone" onclick="">구매확정</a></td>
+							</c:if>
 						</tr>
 					</c:if>
 				</c:forEach>

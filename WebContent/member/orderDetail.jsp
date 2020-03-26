@@ -46,12 +46,18 @@
 					<tr>
 					<tr>
 						<th>주문처리상태</th>
-						<td><c:if test="${orderInfo.sel_status eq 'order_done' }">주문완료</c:if>
+<c:if test="${orderInfo.cancel_req == 'N'.charAt(0) }">
+<td><c:if test="${orderInfo.sel_status eq 'order_done' }">주문완료</c:if>
 <c:if test="${orderInfo.sel_status eq 'check_paid' }">결제확인</c:if>
 <c:if test="${orderInfo.sel_status eq 'send_pro' }">상품발송</c:if>
 <c:if test="${orderInfo.sel_status eq 'deli_ing' }">배송중</c:if>
 <c:if test="${orderInfo.sel_status eq 'deli_fin' }">배송완료</c:if>
 <c:if test="${orderInfo.sel_status eq 'order_confirm' }">구매확정</c:if></td>	
+	</c:if>
+	<c:if test="${orderInfo.cancel_req =='Y'.charAt(0) }">주문취소 요청중</c:if>
+	<c:if test="${orderInfo.cancel_req =='C'.charAt(0) }">주문취소 완료</c:if>
+
+				
 					</tbody>
 				</table>
 			</div>
@@ -95,19 +101,27 @@
 			주문처리상태  : 
 		
 			
-		<strong><c:if test="${orderInfo.sel_status eq 'order_done' }">주문완료</c:if>
+		<strong>
+		<c:if test="${orderInfo.cancel_req == 'N'.charAt(0) }">
+<c:if test="${orderInfo.sel_status eq 'order_done' }">주문완료</c:if>
 <c:if test="${orderInfo.sel_status eq 'check_paid' }">결제확인</c:if>
 <c:if test="${orderInfo.sel_status eq 'send_pro' }">상품발송</c:if>
 <c:if test="${orderInfo.sel_status eq 'deli_ing' }">배송중</c:if>
 <c:if test="${orderInfo.sel_status eq 'deli_fin' }">배송완료</c:if>
-<c:if test="${orderInfo.sel_status eq 'order_confirm' }">구매확정</c:if></strong><br><br>
-				
-								<a href="javascript:void(0);" name="orderCancel" id="orderCancel"
-								class="btn"
-								onclick="window.open('idCheckForm.mem?openInit=true','','width=300, height=200')">주문취소</a>
-									<a href="javascript:void(0);" name="orderConfirm" id="orderConfirm"
-								class="btn"
-								onclick="window.open('idCheckForm.mem?openInit=true','','width=300, height=200')">구매확정</a>
+<c:if test="${orderInfo.sel_status eq 'order_confirm' }">구매확정</c:if>
+</c:if>
+<c:if test="${orderInfo.cancel_req =='Y'.charAt(0) }">주문취소 요청중</c:if>
+	<c:if test="${orderInfo.cancel_req =='C'.charAt(0) }">주문취소 완료</c:if>
+</strong><br><br>
+ 	
+	
+	<c:if test="${orderInfo.cancel_req == 'N'.charAt(0) }">
+	<a href="ordercancel.mem?sel_num=${orderInfo.sel_num }" class="displaynone" onclick=""><img src="http://img.echosting.cafe24.com/skin/base_ko_KR/myshop/btn_order_cancel.gif" alt="주문취소"/></a></td>
+	</c:if>
+
+							
+							
+							<a href="#none" class="displaynone" onclick="">구매확정</a></td>
 							
 						
 				
