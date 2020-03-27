@@ -13,6 +13,11 @@ public class MailOption {
 	private int confirm_order;
 	private int acc_cancel;
 	private int qna_re;
+	private String col_title;
+	private String col_content;
+	private String title;
+	private String content;
+	
 	
 	public int getSeq() {
 		return seq;
@@ -79,6 +84,30 @@ public class MailOption {
 	}
 	public void setQna_re(int qna_re) {
 		this.qna_re = qna_re;
+	}
+	public String getCol_title() {
+		return col_title;
+	}
+	public void setCol_title(String col_title) {
+		this.col_title = col_title;
+	}
+	public String getCol_content() {
+		return col_content;
+	}
+	public void setCol_content(String col_content) {
+		this.col_content = col_content;
+	}
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	public String getContent() {
+		return content;
+	}
+	public void setContent(String content) {
+		this.content = content;
 	}
 
 }

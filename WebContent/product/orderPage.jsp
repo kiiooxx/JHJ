@@ -49,78 +49,81 @@ function openPostcode(){
 	        document.getElementById('recPostcode').value = data.zonecode;
 	        document.getElementById("recAddr1").value = addr + extraAddr;
 	        // 커서를 상세주소 필드로 이동한다.
-	        document.getElementById("redAddr2").focus();
+	        document.getElementById("recAddr2").focus();
 	    }
 	}).open();
 }
 
-function inqPoint(){
-	
-	var priceLimit = ${pointMan.p_pricelimit };/* 적립금 사용가능 최소상품 구매 합계액 */
-	var pointLimit = ${pointMan.p_pointlimit };/* 적립금 사용가능 최소누적 적립금액 */
-	
-	var po = document.getElementById('usePoint').value; /* 적립금 사용자입력 */
-	var memPoint = ${memberPoint.point_final}; /* 사용자의 보유 적립금액 */
-	var total = ${totalMoney + deliPrice} - po;	/* 총액+배송비-적립금 //최종걸제액 */
-	
-	var totalAct = ${totalMoney - deliPrice} - po;	/* 실결제액기준 적립계산과정 (총액 - 배송비 - 적립금) */
-	var totalAs = ${totalMoney - deliPrice}; /* 적립금포함 계산금액기준 적립계산과정(총액 - 배송비) */
-	
-	var totalNo = 0; /* 적립금사용시 적립안함 옵션 */
-	
-	var rate = ${pointMan.p_rate }; /* 적립비율 */
-	var totalAct_point = Math.floor(totalAct*(rate/100));	/* 실결제액기준 적립금 계산결과 (총액 - 배송비 - 적립금)*적립비율 */
-	var totalAs_point = Math.floor(totalAs*(rate/100));	/* 적립금포함기준 적립금 계산결과 (총액 - 배송비)*적립비율 */
-	
-	
-	if(${totalMoney} < priceLimit){
-		alert('구매 합계액이 '+priceLimit+ '원 이상일 경우 적립금 사용이 가능합니다.');
-		document.getElementById('usePoint').value = 0;
-		return false;
-	}
-	if(memPoint < pointLimit){
-		alert('누적 적립금액이 ' + pointLimit + '원 이상일 경우 적립금 사용이 가능합니다.');
-		document.getElementById('usePoint').value = 0;
-		return false;
-	}
-	if(po > ${memberPoint.point_final}){
-		alert('보유 적립금 이상 사용은 불가능 합니다.');
-		return false;
-	}else{
-		document.getElementById('point').value = po;/* 적립금 */
-		document.getElementById('result').value = total; /* 계산금액(=최종결제액) */
-		document.getElementById('result2').value = total; /* 최종결제액(=계산금액) */
+ function inqPoint(){
+	if(${memberPoint.point_final} != null){
 		
-		/* 적립금 사용 시 - 적립금 포함 계산일 경우 */
-		if(${pointMan.p_stand == 'as'}){
-			if(${pointMan.p_mark == 'won'}){
-				$("#r3").text(totalAs_point+"원");
-			}else if(${pointMan.p_mark == 'per'}){
-				$("#r3").text("구매금액의 "+rate+"%");
-			}else if(${pointMan.p_mark == 'double'}){
-				$("#r3").text(totalAs_point + "원(" + rate +  "%)");
-			}
-		} 
-		/* 적립금 사용 시 - 적립금 미포함 계산(실결제액기준)일 경우 */
-		else if(${pointMan.p_stand == 'act'}){
-			if(${pointMan.p_mark == 'won'}){
-				$("#r3").text(totalAct_point+"원");
-			}else if(${pointMan.p_mark == 'per'}){
-				$("#r3").text("구매금액의 "+rate+"%");
-			}else if(${pointMan.p_mark == 'double'}){
-				$("#r3").text(totalAct_point + "원(" + rate +  "%)");
-			}
-			
+		var priceLimit = ${pointMan.p_pricelimit };/* 적립금 사용가능 최소상품 구매 합계액 */
+		var pointLimit = ${pointMan.p_pointlimit };/* 적립금 사용가능 최소누적 적립금액 */
+		
+		var po = document.getElementById('usePoint').value; /* 적립금 사용자입력 */
+		var memPoint = ${memberPoint.point_final}; /* 사용자의 보유 적립금액 */
+		var total = ${totalMoney + deliPrice} - po;	/* 총액+배송비-적립금 //최종걸제액 */
+		
+		var totalAct = ${totalMoney - deliPrice} - po;	/* 실결제액기준 적립계산과정 (총액 - 배송비 - 적립금) */
+		var totalAs = ${totalMoney - deliPrice}; /* 적립금포함 계산금액기준 적립계산과정(총액 - 배송비) */
+		
+		var totalNo = 0; /* 적립금사용시 적립안함 옵션 */
+		
+		var rate = ${pointMan.p_rate }; /* 적립비율 */
+		var totalAct_point = Math.floor(totalAct*(rate/100));	/* 실결제액기준 적립금 계산결과 (총액 - 배송비 - 적립금)*적립비율 */
+		var totalAs_point = Math.floor(totalAs*(rate/100));	/* 적립금포함기준 적립금 계산결과 (총액 - 배송비)*적립비율 */
+		
+		
+		if(${totalMoney} < priceLimit){
+			alert('구매 합계액이 '+priceLimit+ '원 이상일 경우 적립금 사용이 가능합니다.');
+			document.getElementById('usePoint').value = 0;
+			return false;
 		}
-		/* 적립금 사용 시 - 적립안할 경우 */
-		else if(${pointMan.p_stand == 'no'}){
-			$("#r3").text(totalNo+"원");
-			
+		if(memPoint < pointLimit){
+			alert('누적 적립금액이 ' + pointLimit + '원 이상일 경우 적립금 사용이 가능합니다.');
+			document.getElementById('usePoint').value = 0;
+			return false;
 		}
+		if(po > ${memberPoint.point_final}){
+			alert('보유 적립금 이상 사용은 불가능 합니다.');
+			return false;
+		}else{
+			document.getElementById('point').value = po;/* 적립금 */
+			document.getElementById('result').value = total; /* 계산금액(=최종결제액) */
+			document.getElementById('result2').value = total; /* 최종결제액(=계산금액) */
+			
+			/* 적립금 사용 시 - 적립금 포함 계산일 경우 */
+			if(${pointMan.p_stand == 'as'}){
+				if(${pointMan.p_mark == 'won'}){
+					$("#r3").text(totalAs_point+"원");
+				}else if(${pointMan.p_mark == 'per'}){
+					$("#r3").text("구매금액의 "+rate+"%");
+				}else if(${pointMan.p_mark == 'double'}){
+					$("#r3").text(totalAs_point + "원(" + rate +  "%)");
+				}
+			} 
+			/* 적립금 사용 시 - 적립금 미포함 계산(실결제액기준)일 경우 */
+			else if(${pointMan.p_stand == 'act'}){
+				if(${pointMan.p_mark == 'won'}){
+					$("#r3").text(totalAct_point+"원");
+				}else if(${pointMan.p_mark == 'per'}){
+					$("#r3").text("구매금액의 "+rate+"%");
+				}else if(${pointMan.p_mark == 'double'}){
+					$("#r3").text(totalAct_point + "원(" + rate +  "%)");
+				}
 				
+			}
+			/* 적립금 사용 시 - 적립안할 경우 */
+			else if(${pointMan.p_stand == 'no'}){
+				$("#r3").text(totalNo+"원");
+				
+			}
+					
+		}
+		
 	}
 
-}
+} 
 
 
 //적립금 입력칸에 숫자만 입력되도록
@@ -426,7 +429,7 @@ function chkForm(f){
 			<tr>
 				<th>적립금 사용</th>
 				<td><input type="text" name="usePoint" id="usePoint" value="0" size="5" onkeypress="onlyNumber();" >원 
-				<a href="javascript:void(0);" onclick="inqPoint();" class="small_btn">사용하기</a>(현재 적립금:${memberPoint.point_final }원)
+				<a href="javascript:void(0);" onclick="inqPoint();" class="small_btn">사용하기</a>(현재 적립금:${memberPoint.point_final == null ? '0' : memberPoint.point_final }원)
 				<br>※(적립금 포함으로 결제하실 경우, 해당 주문건은 적립금이 지급되지 않습니다.)
 				</td>
 			</tr>

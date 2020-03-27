@@ -70,7 +70,7 @@ public class MemberDAO {
 
 		try {
 
-			pstmt = con.prepareStatement("INSERT INTO member VALUES (?,?,?,?,?,?,?,?,?,?,NOW(),'N')");
+			pstmt = con.prepareStatement("INSERT INTO member VALUES (?,?,?,?,?,?,?,?,?,?,NOW(),'N', 'N')");
 			pstmt.setString(1, member.getUser_id());
 			pstmt.setString(2, member.getUser_pw());
 			pstmt.setString(3, member.getUser_name());
@@ -81,7 +81,6 @@ public class MemberDAO {
 			pstmt.setString(8, member.getAddr2());
 			pstmt.setString(9, member.getEmail());
 			pstmt.setString(10, member.getBirth());
-
 			insertCount = pstmt.executeUpdate();
 
 		} catch (Exception e) {

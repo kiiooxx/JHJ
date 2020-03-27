@@ -14,7 +14,7 @@ public class ChangeStatusService {
 		AdminDAO adminDAO = AdminDAO.getInstance();
 		adminDAO.setConnection(con);
 		int updateCount = adminDAO.updateDeliStatus(selNum, deliStatus);
-		System.out.println("updateCount:"+updateCount);
+
 		if(updateCount > 0) {
 			commit(con);
 			isChangeSuccess = true;
