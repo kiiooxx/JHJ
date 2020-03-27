@@ -67,8 +67,7 @@ public class LoginAction implements Action {
 					cartList2 = cartQtyService.addCart(cartList2, cartList, id);	//세션에 있는 장바구니를 DB에 넣기
 				}
 				
-				
-				
+				session.setAttribute("cartList", cartList2);
 				forward = new ActionForward("main.pro", true);
 			}
 		
