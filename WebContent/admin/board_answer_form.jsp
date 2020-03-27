@@ -213,6 +213,11 @@ function chkForm(f) {
 		<input type="hidden" name="board_num" value="${board.board_num }"/>
 		<input type="hidden" name="board_ref" value="${board.board_ref }"/>
 		<input type="hidden" name="board_writer" value="${id }"/>
+		
+		<input type="hidden" name="col" value="qna_re">
+		<input type="hidden" name="col_title" value="qna_re_title">
+		<input type="hidden" name="col_content" value="qna_re_content">
+		
 		<div class="join_table">
 			<h1>답글</h1>
 			<table>
