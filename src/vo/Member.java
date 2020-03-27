@@ -13,7 +13,7 @@ public class Member {
 	private String birth;
 	private String joindate;
 	private char grade;
-	
+	private char user_del;
 	public String getUser_id() {
 		return user_id;
 	}
@@ -86,11 +86,12 @@ public class Member {
 	public void setGrade(char grade) {
 		this.grade = grade;
 	}
-	public void setGrade(String string) {
-		// TODO Auto-generated method stub
-		
+	public char getUser_del() {
+		return user_del;
 	}
-
+	public void setUser_del(char user_del) {
+		this.user_del = user_del;
+	}
 
 
 }
