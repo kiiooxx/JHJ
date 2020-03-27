@@ -1076,3 +1076,41 @@ strong {
     font-family: verdana,sans-serif;
     font-size: 11px;
 }
+
+.item_info {
+	text-align : left;
+}
+
+.small_btn {
+	border : 1px solid #ddd;
+	
+}
+
+.orderhistorytab {
+	height: 38px;
+  		text-align: center;
+}
+
+.orderhistorytab li {
+	display: inline-block;
+}
+.orderhistorytab li a {
+    
+    display: block;
+    min-width: 168px;
+    height: 38px;
+    padding: 0 15px;
+    color: #999;
+    line-height: 38px;
+    text-decoration: none;
+    text-align: center;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    border-radius: 20px;
+}
+
+.orderhisorytab li a:hover {
+	position: relative;
+   	color: #000;
+   	border: 1px solid #000;
+}

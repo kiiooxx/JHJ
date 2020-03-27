@@ -300,8 +300,10 @@ function chkForm(f){
 				
 				<tr>
 					<fmt:formatNumber var="total3" value="${totalMoney }" pattern="#,###"/>
-					<td colspan="8" style="text-align: right;">상품구매금액 (${totalMoney }) + 배송비 (${deliPrice })
-						= 합계: ${totalMoney + deliPrice}원</td>
+					<fmt:formatNumber var="deli_price" value="${deliPrice }" pattern="#,###"/>
+					<fmt:formatNumber var="total4" value="${totalMoney+deliPrice }" pattern="#,###"/>
+					<td colspan="8" style="text-align: right;">상품구매금액 (${total3 }) + 배송비 (${deli_price })
+						= 합계: ${total4}원</td>
 				</tr>
 
 			</tbody>
@@ -322,7 +324,7 @@ function chkForm(f){
 				<tr>
 					<th>주소<b class="req">*</b></th>
 					<td><input type="text" value="${member.postcode }" name="postcode" id="postcode" size="6" readonly /> 
-					<a href="javascript:void(0);" id="zipSearch" class="btn" >우편번호</a><br>
+					<a href="javascript:void(0);" id="zipSearch" class="small_btn" >우편번호</a><br>
 						<input type="text" value="${member.addr1 }" name="addr1" id="addr1" size=50 readonly />기본주소<br>
 						<input type="text" value="${member.addr2 }" name="addr2" id="addr2" size=50 required/> 상세주소</td>
 				</tr>
@@ -357,7 +359,7 @@ function chkForm(f){
 				<tr>
 					<th>주소<b class="req">*</b></th>
 					<td><input type="text" name="recPostcode" id="recPostcode" value="" size="6" readonly/> 
-					<a href="javascript:void(0);" name="zipSearch" id="zipSearch" class="btn" onClick="openPostcode()">우편번호</a><br>
+					<a href="javascript:void(0);" name="zipSearch" id="zipSearch" class="small_btn" onClick="openPostcode()">우편번호</a><br>
 						<input type="text" name="recAddr1" id="recAddr1" size=50 readonly /> 기본주소<br>
 						<input type="text" name="recAddr2" id="redAddr2" size=50 required/>상세주소</td>
 				</tr>
@@ -414,7 +416,7 @@ function chkForm(f){
 					<th scope="col">총 결제예정 금액</th>
 				</tr>
 				<tr>
-					<th>${totalMoney + deliPrice }원</th>
+					<th>${total4 }원</th>
 					<th>-&nbsp;<input type="text" id="point" value="0" size="3" class="no-line" readonly>원</th>
 					<th>=<input type="text" id="result" name="result" value="${totalMoney + deliPrice }" class="no-line" readonly>원</th>
 				</tr>
@@ -424,7 +426,7 @@ function chkForm(f){
 			<tr>
 				<th>적립금 사용</th>
 				<td><input type="text" name="usePoint" id="usePoint" value="0" size="5" onkeypress="onlyNumber();" >원 
-				<a href="javascript:void(0);" onclick="inqPoint();">사용하기</a>(현재 적립금:${memberPoint.point_final }원)
+				<a href="javascript:void(0);" onclick="inqPoint();" class="small_btn">사용하기</a>(현재 적립금:${memberPoint.point_final }원)
 				<br>※(적립금 포함으로 결제하실 경우, 해당 주문건은 적립금이 지급되지 않습니다.)
 				</td>
 			</tr>
