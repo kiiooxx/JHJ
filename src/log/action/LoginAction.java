@@ -29,21 +29,29 @@ public class LoginAction implements Action {
 		
 		
 		
-		if(member == null) {
+		if(member == null ) {
 			response.setContentType("text/html;charset=UTF-8");
 			PrintWriter out = response.getWriter();
 			out.println("<script>");
 			out.println("alert('아이디가 존재하지 않습니다.')");
 			out.println("history.back()");
 			out.println("</script>");
-		}else {
-			if(!member.getUser_pw().equals(request.getParameter("pass"))) {
+		}else if(!member.getUser_pw().equals(request.getParameter("pass"))) {
 				response.setContentType("text/html;charset=UTF-8");
 				PrintWriter out = response.getWriter();
 				out.println("<script>");
 				out.println("alert('아이디나 비밀번호가 잘못되었습니다.')");
 				out.println("history.back()");
 				out.println("</script>");
+		}else {
+			if(member.getUser_del()=='Y') {
+				response.setContentType("text/html;charset=UTF-8");
+				PrintWriter out = response.getWriter();
+				out.println("<script>");
+				out.println("alert('탈퇴한 회원입니다.')");
+				out.println("history.back()");
+				out.println("</script>");
+				
 			}else {
 				HttpSession session = request.getSession();
 				session.setAttribute("id", id);
@@ -59,10 +67,12 @@ public class LoginAction implements Action {
 					cartList2 = cartQtyService.addCart(cartList2, cartList, id);	//세션에 있는 장바구니를 DB에 넣기
 				}
 				
+				
+				
 				forward = new ActionForward("main.pro", true);
 			}
+		
 		}
-
 		return forward;
 	}
 

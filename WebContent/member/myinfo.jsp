@@ -24,6 +24,23 @@
 </c:choose>
 
 <script>
+//탈퇴버튼 눌렀을때 
+$(document).ready(function() {
+ 
+	$('#memberdelbtn').on('click', function(){
+		if(confirm('정말 탈퇴하시겠습니까?')) {
+			location.href='myinfoquit.mem';
+		}else{
+			return false;
+		}
+ 	});
+ });
+ 
+
+
+
+
+
 	//생년월일
 $(document).ready(function() {
 	setDateBox();
@@ -210,6 +227,6 @@ function sample6_execDaumPostcode() {
 		
 		<div class="info_btn_area">
         	<a href="javascript:myinfomod.submit()" class="medium_btn" onclick="sendit()">회원정보수정</a>
-        	<a href="myinfoquit.mem" class="medium_btn_w">회원 탈퇴</a>
+        	<a href="#" id="memberdelbtn"class="medium_btn_w">회원 탈퇴</a>
         </div>
  </form>      

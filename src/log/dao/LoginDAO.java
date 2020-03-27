@@ -42,6 +42,7 @@ public class LoginDAO {
 		try {
 			pstmt = con.prepareStatement("select * from member where USER_ID=?");
 			pstmt.setString(1, id);
+		
 			rs = pstmt.executeQuery();
 			
 			if(rs.next()) {
@@ -57,6 +58,7 @@ public class LoginDAO {
 				member.setGrade(rs.getString("GRADE").charAt(0));
 				member.setAddr1(rs.getString("ADDR1"));
 				member.setAddr2(rs.getString("ADDR2"));
+				member.setUser_del(rs.getString("USER_DEL").charAt(0));
 				
 			
 			}
@@ -93,7 +95,7 @@ public class LoginDAO {
 				member.setJoindate(rs.getString("JOINDATE"));
 				member.setSex(rs.getString("SEX"));
 				member.setEmail(rs.getString("EMAIL"));
-				member.setGrade(rs.getString("GRADE"));
+				member.setGrade(rs.getString("GRADE").charAt(0));
 				member.setAddr1(rs.getString("ADDR1"));
 				member.setAddr2(rs.getString("ADDR2"));
 				
@@ -130,7 +132,7 @@ public class LoginDAO {
 				member1.setJoindate(rs.getString("JOINDATE"));
 				member1.setSex(rs.getString("SEX"));
 				member1.setEmail(rs.getString("EMAIL"));
-				member1.setGrade(rs.getString("GRADE"));
+				member1.setGrade(rs.getString("GRADE").charAt(0));
 				member1.setAddr1(rs.getString("ADDR1"));
 				member1.setAddr2(rs.getString("ADDR2"));
 				
@@ -169,7 +171,7 @@ public class LoginDAO {
 				member3.setJoindate(rs.getString("JOINDATE"));
 				member3.setSex(rs.getString("SEX"));
 				member3.setEmail(rs.getString("EMAIL"));
-				member3.setGrade(rs.getString("GRADE"));
+				member3.setGrade(rs.getString("GRADE").charAt(0));
 				member3.setAddr1(rs.getString("ADDR1"));
 				member3.setAddr2(rs.getString("ADDR2"));
 								
@@ -232,7 +234,7 @@ public class LoginDAO {
 				member.setJoindate(rs.getString("JOINDATE"));
 				member.setSex(rs.getString("SEX"));
 				member.setEmail(rs.getString("EMAIL"));
-				member.setGrade(rs.getString("GRADE"));
+				member.setGrade(rs.getString("GRADE").charAt(0));
 				member.setPostcode(rs.getString("POSTCODE"));
 				member.setAddr1(rs.getString("ADDR1"));
 				member.setAddr2(rs.getString("ADDR2"));

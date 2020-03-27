@@ -11,23 +11,23 @@ import dao.MemberDAO;
 
 public class MemberQuitService {
 
-	public boolean memberDel(String delete_id) {
+	public boolean memberDelUpdate(String delete_id) {
 		// TODO Auto-generated method stub
 		// TODO Auto-generated method stub
-				boolean isRemoveSuccess = false;
+				boolean isUpdateSuccess = false;
 				Connection con = getConnection();
 				MemberDAO memberDAO = MemberDAO.getInstance();
 				memberDAO.setConnection(con);
-				int deleteCount = memberDAO.memberDelete(delete_id);
+				int updateCount = memberDAO.memberDeleteUpdate(delete_id);
 				
-				if(deleteCount > 0) {
+				if(updateCount  > 0) {
 					commit(con);
-					isRemoveSuccess = true;
+					isUpdateSuccess = true;
 				}else {
 					rollback(con);
 				}
 				close(con);
-				return isRemoveSuccess;
+				return isUpdateSuccess;
 			}
 
 		}
