@@ -96,7 +96,7 @@ public class MemberListAction implements Action{
 			int startPage = (((int)((double)page/limitPage+0.9))-1)*limitPage+1;
 			int endPage = startPage+ limitPage - 1;
 			if(endPage>maxPage) endPage=maxPage;
-			
+			 
 			
 			PageInfo pageInfo = new PageInfo();
 			pageInfo.setEndPage(endPage);

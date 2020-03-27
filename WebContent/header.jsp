@@ -23,7 +23,7 @@
 			<a href="account.mem">ACCOUNT</a>
 		</li>
 		<li>
-			<a href="#">ORDER</a>
+			<a href="order.mem">ORDER</a>
 		</li>
 		<li>
 			<a href="cartList.pro">CART</a>

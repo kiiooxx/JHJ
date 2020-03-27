@@ -116,12 +116,14 @@
  	
 	
 	<c:if test="${orderInfo.cancel_req == 'N'.charAt(0) }">
+	<a href="ordercheck.mem?sel_num=${orderInfo.sel_num }" class="displaynone" onclick="">구매확정</a></td>
 	<a href="ordercancel.mem?sel_num=${orderInfo.sel_num }" class="displaynone" onclick=""><img src="http://img.echosting.cafe24.com/skin/base_ko_KR/myshop/btn_order_cancel.gif" alt="주문취소"/></a></td>
 	</c:if>
 
 							
 							
-							<a href="#none" class="displaynone" onclick="">구매확정</a></td>
+							
+						
 							
 						
 				

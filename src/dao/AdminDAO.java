@@ -1474,4 +1474,35 @@ public class AdminDAO {
 			
 			return stockList;
 		}
+		public int updateGrade(String grade, String user_id) {
+			int updateCount = 0;
+			PreparedStatement pstmt =null;
+			
+			try {
+				pstmt = con.prepareStatement("update member set grade=? where user_id=? ");
+				pstmt.setString(1, grade);
+				pstmt.setString(2,user_id );
+				updateCount = pstmt.executeUpdate();
+				
+			} catch (Exception ex) {
+				System.out.println("updateGrade 에러 :" +ex);
+			} finally {
+				close(pstmt);
+			}
+			
+			return updateCount;
+			
+			
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 }
