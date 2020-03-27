@@ -5,17 +5,19 @@ import static db.JdbcUtil.*;
 import dao.AdminDAO;
 import vo.MailOption;
 
-public class MailManageFormService {
+public class MailModifyFormService {
 
-	public MailOption getMailOption(int seq) {
-		
+	public MailOption getMailForm(String col_title, String col_content) {
+
 		MailOption mailOption = null;
 		Connection con = getConnection();
 		AdminDAO adminDAO = AdminDAO.getInstance();
 		adminDAO.setConnection(con);
-		mailOption = adminDAO.viewMailOption(seq);
+		mailOption = adminDAO.selectMailForm(col_title, col_content);
 		close(con);
 		return mailOption;
 	}
+
+	
 
 }

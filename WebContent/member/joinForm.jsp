@@ -157,6 +157,9 @@ function chkForm(f) {
 
 <div id="join_form">
 	<form action="memberJoinProcess.mem" id="joinform" name="f" method="post">
+	<input type="hidden" name="col" value="new_mem">
+	<input type="hidden" name="col_title" value="new_mem_title">
+	<input type="hidden" name="col_content" value="new_mem_content">
 		
 		<div class="join_table">
 			<table border="1" summary>

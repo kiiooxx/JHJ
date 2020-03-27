@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ page import="vo.Member" %>    
 <%@ page import="vo.Order" %>
 <c:set var="pageInfo" value="${requestScope.pageInfo }"/>
@@ -94,7 +95,7 @@ th, td{
 
 	<table>
 		<tr>
-			<td>주문번호 </td><td>주문일자</td><td>주문상품정보</td><td>결제금액</td><td>상태</td>
+			<td>주문번호 </td><td>주문일자</td><td>주문상품정보</td><td>결제금액</td><td>상태</td><td>비고</td>
 		</tr>
 	<!-- 여기서부터 데이터 뿌려주기 -->
 		<c:choose>
@@ -113,6 +114,14 @@ th, td{
 					<c:if test="${order.sel_status eq 'deli_ing' }">배송중</c:if>
 					<c:if test="${order.sel_status eq 'deli_fin' }">배송완료</c:if>
 					<c:if test="${order.sel_status eq 'order_confirm' }">구매확정</c:if>
+					</td>
+					<td>
+					<c:if test="${fn:contains(order.cancel_req,'Y')}">
+					<span style="color:red">취소요청</span>
+					</c:if>
+					<c:if test="${fn:contains(order.cancel_req,'C')}">
+					<span style="color:blue">취소완료</span>
+					</c:if>
 					</td>
 				</tr>	
 			</c:forEach>

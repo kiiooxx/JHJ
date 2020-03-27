@@ -54,10 +54,8 @@ public class MemberJoinProAction implements Action {
 		}else {
 			SendMailAction sendMailAction = new SendMailAction();
 			sendMailAction.mailling(request, response);
-			PointService pointService = new PointService();
-			pointService.pointForNewmem(user_id);
-			//PointAction pointAction = new PointAction();
-			//pointAction.newMemPoint(request, response);
+			PointAction pointAction = new PointAction();
+			pointAction.newMemPoint(request, response);
 			request.setAttribute("pagefile", "/main.jsp");
 			forward = new ActionForward("/main.pro", false);
 			
