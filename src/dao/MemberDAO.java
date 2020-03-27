@@ -121,24 +121,23 @@ public class MemberDAO {
 		return updateCount;
 	}
 
-	public int memberDelete(String delete_id) {
+	public int memberDeleteUpdate(String delete_id) {
 		PreparedStatement pstmt = null;
-		Member member = null;
-		boolean isMemberDel = false;
-	
-		int result = 0;
-		try { System.out.println("회원탈퇴 :"+delete_id);
-			pstmt = con.prepareStatement("DELETE FROM member WHERE user_id=?");
+		int updateCount = 0;
+		
+		
+	try { 
+			pstmt = con.prepareStatement("update member set USER_DEL='Y' where user_id=?");
 			pstmt.setString(1, delete_id);
-			result = pstmt.executeUpdate();
+			updateCount = pstmt.executeUpdate();
 			
 			
 		}catch(Exception ex) {
-			System.out.println("idCheckMember 에러 : " + ex);
+			System.out.println("memberDeleteUpdate 에러 : " + ex);
 		}finally {
 			close(pstmt);
 		}
-		return result;
+		return updateCount;
 	}
 
 	public ArrayList<Order> selectOrderList(String id, int page, int limit) {
