@@ -14,18 +14,7 @@ import vo.OrderCancel;
 
 public class OrderCancelService {
 	
-		public static ArrayList<OrderCancel> getOrderCancel(String sel_num) {
-			
-			ArrayList<OrderCancel> orderCancelList = null;
-			Connection con = getConnection();
-			OrderDAO orderDAO = OrderDAO.getInstance();
-			orderDAO.setConnection(con);
-			
-			orderCancelList = orderDAO.selectOrderCancel(sel_num);
-			close(con);
-		
-			return orderCancelList;
-		}
+
 
 		public boolean cancelReq(String cancel_reason, String sel_num) throws Exception {
 			// TODO Auto-generated method stub

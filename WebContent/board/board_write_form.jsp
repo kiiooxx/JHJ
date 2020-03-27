@@ -100,6 +100,7 @@ function chkForm(f) {
 }
 </script>
 
+<jsp:include page="/common/loginCheck.jsp"/>
 <div class="blank">
 </div>
 
@@ -120,7 +121,7 @@ function chkForm(f) {
 			</div>
 		</div>
 	</c:if>
-	
+		<input type="hidden" name="sel_num" value="${sel_num }"/>
 		<input type="hidden" name="board_type" value="${board_type }"/>
 		<input type="hidden" name="board_writer" value="${id }"/>
 		<div class="join_table">

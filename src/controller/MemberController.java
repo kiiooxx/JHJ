@@ -18,6 +18,7 @@ import member.action.OrderAction;
 import member.action.OrderDetailAction;
 import member.action.OrderCancelFormAction;
 import member.action.OrderCancelProAction;
+import member.action.OrderCheckAction;
 import member.action.IdCheckAction;
 import member.action.MemberJoinProAction;
 import member.action.MyBoardAction;
@@ -160,7 +161,17 @@ public class MemberController extends HttpServlet {
 			}
 
 		}
-		
+		//4. 구매 확정 페이지
+
+		else if (command.equals("/ordercheck.mem")) {
+			action = new OrderCheckAction();
+			try {
+				forward = action.execute(request, response);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 
 		if (forward != null) {
 

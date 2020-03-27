@@ -533,7 +533,6 @@ $(document).ready(function(){
 			<div class="order_button_area">
 				<p>
 					<a href="boardListAction.bo?board_type=review" class="w">LIST</a>
-					<a href="boardWriteForm.bo?board_type=review&pro_num=${prd.pro_num }" class="b">WRITE</a>
 				</p>
 			</div>
 			

@@ -23,14 +23,16 @@
 			<a href="account.mem">ACCOUNT</a>
 		</li>
 		<li>
-			<a href="#">ORDER</a>
+			<a href="order.mem">ORDER</a>
 		</li>
 		<li>
-			<a href="cartList.pro">CART</a>
+			<a href="cartList.pro">CART(${fn:length(cartList) })</a>
 		</li>
 		<!-- 관리자일때만 admin메뉴 보이게 -->
-		<li>
-			<a href="adminPage.ad">ADMIN</a>
-		</li>
+		<c:if test="${grade == 'A'.charAt(0) }">
+			<li>
+				<a href="adminPage.ad">ADMIN</a>
+			</li>
+		</c:if>
 	</ul>
 </div>

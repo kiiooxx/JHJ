@@ -23,6 +23,7 @@ import admin.action.MailManageFormAction;
 import admin.action.MailManagementAction;
 import admin.action.MailModifyAction;
 import admin.action.MailModifyFormAction;
+import admin.action.MemberGradeManagementAction;
 import admin.action.MemberInfoAction;
 import admin.action.MemberListAction;
 import admin.action.OrderManageDetailAction;
@@ -354,7 +355,15 @@ public class AdminController extends HttpServlet {
 				e.printStackTrace();
 			}
     	}
-		
+		//================
+    	else if(command.equals("/memberGradeManagement.ad"))
+    		action = new MemberGradeManagementAction();
+		try {
+			forward = action.execute(request, response);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	
 		
 		System.out.println(command);
 		//3.포워딩
