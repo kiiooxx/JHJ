@@ -10,7 +10,9 @@ import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
 import action.Action;
+import admin.action.SendMailAction;
 import board.svc.BoardRegistService;
+import board.svc.BoardViewService;
 import vo.ActionForward;
 import vo.BoardBean;
 
@@ -108,6 +110,19 @@ public class BoardRegistAction implements Action {
 		boolean isRegistSuccess = boardRegistService.registBoard(boardBean);
 		
 		if(isRegistSuccess) {
+			if(board_type.equals("answer")) {
+				
+				BoardViewService boardViewService = new BoardViewService();
+				BoardBean boardBean_ref = boardViewService.getBoard(board_ref, "board_num = ?");
+				
+				//관련글이 문의게시판일 경우
+				if(boardBean_ref.getBoard_type().equals("qna")) {
+					SendMailAction sendMailAction = new SendMailAction();
+					request.setAttribute("boardBean_ref", boardBean_ref);
+					request.setAttribute("boardBean", boardBean);
+					sendMailAction.mailling(request, response);
+				}
+			}
 			forward = new ActionForward("boardListAction.bo?board_type="+boardBean.getBoard_type(), true);
 		}else {
 			response.setContentType("text/html;charset=UTF-8");
