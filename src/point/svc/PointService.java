@@ -56,6 +56,8 @@ public class PointService {
 		pointDAO.setConnection(con);
 		memberPoint = pointDAO.selectMemberPoint(user_id);
 		
+		close(con);
+		
 		return memberPoint;
 		
 	}

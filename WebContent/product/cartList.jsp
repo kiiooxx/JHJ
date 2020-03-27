@@ -29,7 +29,6 @@ $(document).ready(function() {
 		}else {
 			if(confirm('정말 삭제하시겠습니까?')) {
 				var items=[];
-				alert($(this).val());
 				$('input[name=chk]:checkbox:checked').each(function(){items.push($(this).val());});
 				var tmp = items.join(',');
 				location.href='cartDelete.pro?pro_det_num='+tmp;

@@ -105,6 +105,7 @@ function file_modify() {
 }
 </script>
 
+<jsp:include page="/common/loginCheck.jsp"/>
 <div class="blank">
 </div>
 

@@ -125,7 +125,12 @@ function sample6_execDaumPostcode() {
 </script>
 
 
-<p>저희 쇼핑몰을 이용해 주셔서 감사합니다. ${member.user_name} 님은 [${grade1}] 회원이십니다.</p>
+<div class="info_grade">
+	<p class="info_thumb">
+		<img src="//img.echosting.cafe24.com/skin/base_ko_KR/member/img_member_default.gif" alt="" onerror="this.src='//img.echosting.cafe24.com/skin/base/member/img_member_default.gif';">
+	</p>
+	저희 쇼핑몰을 이용해 주셔서 감사합니다. ${member.user_name} 님은 [${grade1}] 회원이십니다.
+</div>
 
 
 <form action="myinfomodify.mem" id="myinfomod" name="f" method="post">
@@ -203,8 +208,8 @@ function sample6_execDaumPostcode() {
 			</table>
 		</div>
 		
-		<p class="btx">
-        	<a href="javascript:myinfomod.submit()" class="login_btn" onclick="sendit()">회원정보수정</a>
-        	<a href="myinfoquit.mem" class="join_btn">회원 탈퇴</a>
-        </p> 
+		<div class="info_btn_area">
+        	<a href="javascript:myinfomod.submit()" class="medium_btn" onclick="sendit()">회원정보수정</a>
+        	<a href="myinfoquit.mem" class="medium_btn_w">회원 탈퇴</a>
+        </div>
  </form>      

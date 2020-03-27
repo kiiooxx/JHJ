@@ -7,44 +7,7 @@
 	.board_table tr, .board_table th {
 		 border : 1px solid #ddd;
 	}
-	
-	.item_info {
-		text-align : left;
-	}
-	
-	.small_btn {
-		border : 1px solid #ddd;
-		
-	}
-	
-	.orderhistorytab {
-		height: 38px;
-   		text-align: center;
-	}
-	
-	.orderhistorytab li {
-		display: inline-block;
-	}
-	.orderhistorytab li a {
-	    
-	    display: block;
-	    min-width: 168px;
-	    height: 38px;
-	    padding: 0 15px;
-	    color: #999;
-	    line-height: 38px;
-	    text-decoration: none;
-	    text-align: center;
-	    border: 1px solid #ccc;
-	    box-sizing: border-box;
-	    border-radius: 20px;
-	}
-	
-	.orderhisorytab li a:hover {
-		position: relative;
-    	color: #000;
-    	border: 1px solid #000;
-	}
+
 </style>
 
 <div class="orderArea">
@@ -87,6 +50,7 @@
 				<col style="width:100px;">
 				<col style="width:100px;">
 				<col style="width:100px;">
+				<col style="width:100px;">
 			</colgroup>
 
 			<tr>
@@ -96,9 +60,10 @@
 				<th scope="col">TOTAL PRICE</th>
 				<th scope="col">상태</th>
 				<th scope="col">주문취소</th>
+				<th scope="col">문의/리뷰</th>
 			</tr>
 			
-			<c:if test="${orderList != null }">
+			<c:if test="${orderInfo != null }">
 				<c:forEach var="orderlist" items="${orderList }" varStatus="i">
 					<c:set var="new_sel_num" value="false"/>
 					
@@ -153,30 +118,35 @@
 								<c:if test="${orderlist.cancel_req == 'Y'.charAt(0) }">주문취소 요청중</c:if>
 								<c:if test="${orderlist.cancel_req == 'C'.charAt(0) }">주문취소 완료</c:if>
 							</th>
-							
-										
+
 							<th rowspan="${row_cnt }">
 								<c:choose>
 									<c:when test="${orderlist.sel_status eq 'deli_ing' || orderlist.sel_status eq 'deli_fin'}">
 										<a href="ordercheck.mem?sel_num=${orderlist.sel_num }" class="small_btn" onclick="">구매확정</a>
 									</c:when>
-										
+									
 									<c:when test="${orderlist.cancel_req == 'N'.charAt(0) }">
 										<a href="ordercancel.mem?sel_num=${orderlist.sel_num }" class="small_btn" onclick="">주문취소</a>
 									</c:when>
 								</c:choose>
 							</th>
 						</c:if>
-						
+								
+						<th>
+							<c:if test="${orderlist.sel_status eq 'order_confirm' }">
+								<a href="boardWriteForm.bo?board_type=review&pro_num=${orderlist.pro_num }" class="small_btn">리뷰작성</a><br><br>
+							</c:if>
+							<a href="boardWriteForm.bo?board_type=qna&pro_num=${orderlist.pro_num }&sel_num=${orderlist.sel_num}" class="small_btn">문의작성</a>
+						</th>
 					</tr>
 		
 					
 				</c:forEach>
 			</c:if>
 
-			<c:if test="${orderList == null }">
+			<c:if test="${orderInfo == null }">
 				<tr>
-					<td colspan="6" class="empty">주문 내역이 없습니다</td>
+					<td colspan="7" class="empty">주문 내역이 없습니다</td>
 				</tr>
 			</c:if>
 		</table>

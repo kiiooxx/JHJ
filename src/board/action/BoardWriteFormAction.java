@@ -21,9 +21,16 @@ public class BoardWriteFormAction implements Action {
 			ProductDetailService prdDetailService = new ProductDetailService();
 			prd = prdDetailService.getProduct(pro_num);	//상품 정보 불러오기
 		}
+		//주문 번호
+		String sel_num = "";
+		if(!(request.getParameter("sel_num") == null || request.getParameter("sel_num").equals(""))) {
+			sel_num = request.getParameter("sel_num");
+		}
+				
 		String board_type = request.getParameter("board_type");
 		
 		request.setAttribute("board_type", board_type);
+		request.setAttribute("sel_num", sel_num);
 		request.setAttribute("prd", prd);
 		request.setAttribute("pagefile", "/board/board_write_form.jsp");
 		ActionForward forward = new ActionForward("/template.jsp", false);

@@ -1114,3 +1114,55 @@ strong {
    	color: #000;
    	border: 1px solid #000;
 }
+
+/* 주문 완료 페이지 */
+.orderInfo {
+	margin: 0 0 20px;
+    padding: 0px 0 10px 0px;
+    text-align: right;
+    font-size: 12px;
+    line-height: 1.6;
+	
+}
+
+/* 내정보 페이지*/
+.info_grade {
+	clear: both;
+    margin: 0 0 20px;
+    line-height: 170%;
+}
+
+.info_thumb {
+	max-width: 70px;
+    max-height: 70px;
+    margin: 0 0 20px;
+}
+
+.info_btn_area {
+	margin: 20px 0 0;
+	padding: 10px 0;
+    text-align: center;
+}
+
+[class^=medium_btn] {
+	display: inline-block;
+    margin: 0px 0 0 0px;
+    padding: 0 50px 0 51px;
+    height: 24px;
+    border-radius: 2px;
+    line-height: 24px;
+    background: #000;
+    border: 1px solid #222;
+    color: #fff;
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 10px;
+    letter-spacing: 1px;
+}
+
+.medium_btn_w {
+	background: #fff;
+    border: 1px solid #ddd;
+    color: #000;
+}
+
