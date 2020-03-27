@@ -21,6 +21,8 @@ import admin.action.CategoryUpdateAction;
 import admin.action.ChangeStatusAction;
 import admin.action.MailManageFormAction;
 import admin.action.MailManagementAction;
+import admin.action.MailModifyAction;
+import admin.action.MailModifyFormAction;
 import admin.action.MemberInfoAction;
 import admin.action.MemberListAction;
 import admin.action.OrderManageDetailAction;
@@ -303,6 +305,23 @@ public class AdminController extends HttpServlet {
     	}
     	else if(command.equals("/mailManagement.ad")) {
 			action = new MailManagementAction();
+			try {
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+    	}
+		//====================자동메일 폼 수정.미리보기=======================
+    	else if(command.equals("/mailModifyForm.ad")) {
+			action = new MailModifyFormAction();
+			try {
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+    	}
+    	else if(command.equals("/mailModify.ad")) {
+			action = new MailModifyAction();
 			try {
 				forward = action.execute(request, response);
 			}catch(Exception e) {
