@@ -945,9 +945,17 @@ public class AdminDAO {
 				pstmt.setInt(3, limit);
 				rs = pstmt.executeQuery();
 				
+				
 				while(rs.next()) {
 					
 					order = new Order();
+					order.setPro_num(rs.getInt("pro_num"));
+					order.setPro_photo(rs.getString("pro_photo"));
+					order.setPro_qnt(rs.getInt("pro_qnt"));
+					order.setPro_price(rs.getInt("pro_price"));
+					order.setPro_size(rs.getString("pro_size"));
+					order.setColor(rs.getString("color"));
+					
 					order.setUser_id(rs.getString("user_id"));
 					order.setSel_num(rs.getString("sel_num"));
 					order.setSel_date(rs.getString("sel_date"));

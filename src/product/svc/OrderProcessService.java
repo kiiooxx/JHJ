@@ -33,6 +33,8 @@ public class OrderProcessService {
 			rollback(con);
 		}
 		
+		close(con);
+		
 		return addOrderSuccess;
 		
 	}
