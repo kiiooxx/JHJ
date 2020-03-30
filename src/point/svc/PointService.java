@@ -12,6 +12,7 @@ import vo.Point;
 
 public class PointService {
 
+	//신규회원 적립금 지급
 	public boolean pointForNewmem(String user_id) {
 		boolean isPoint = false;
 		Connection con = getConnection();
@@ -30,6 +31,7 @@ public class PointService {
 		return isPoint;
 	}
 
+	//구매확정 적립금 지급
 	public boolean orderPoint(String sel_num, String user_id) {
 		boolean isPoint = false;
 		Connection con = getConnection();
@@ -48,6 +50,7 @@ public class PointService {
 		return isPoint;
 	}
 	
+	//회원 적립금 조회
 	public Point memberPoint(String user_id) {
 		
 		Point memberPoint = null;
@@ -60,6 +63,24 @@ public class PointService {
 		
 		return memberPoint;
 		
+	}
+	
+	public boolean usePoint(String sel_num) {
+		boolean isUse = false;
+		Connection con = getConnection();
+		PointDAO pointDAO = PointDAO.getInstance();
+		pointDAO.setConnection(con);
+		int insertCount = pointDAO.orderUsePoint(sel_num);
+		System.out.println("PointService insertCount: " + insertCount);
+		if(insertCount > 0) {
+			commit(con);
+			isUse = true;
+		}else {
+			rollback(con);
+		}
+		close(con);
+		
+		return isUse;
 	}
 
 }
