@@ -4,13 +4,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
-<style>
-	.board_table tr, .board_table th {
-		 border : 1px solid #ddd;
-	}
-
-</style>
-
 <div class="orderArea">
 	<h3>ORDER</h3>
 
@@ -42,113 +35,94 @@
 	</div>
 	
 	
-	<div class="board_table">
+	<div class="orderList_table">
 		<table>
 			<colgroup>
-				<col style="width:90px;">
+				<col style="width:150px;">
 				<col style="width:92px;">	
 				<col style="width:auto;">
 				<col style="width:100px;">
-				<col style="width:100px;">
+				<col style="width:120px;">
 				<col style="width:100px;">
 				<col style="width:100px;">
 			</colgroup>
 
 			<tr>
-				<th scope="col">ORDER NO</th>
-				<th scope="col">IMAGE</th>
-				<th scope="col">ITEM</th>
-				<th scope="col">TOTAL PRICE</th>
+				<th scope="col">주문일자<br>(주문번호)</th>
+				<th scope="col">이미지</th>
+				<th scope="col">상품정보</th>
+				<th scope="col">총 금액</th>
 				<th scope="col">상태</th>
-				<th scope="col">주문취소</th>
-				<th scope="col">문의/리뷰</th>
+				<th scope="col">문의</th>
 			</tr>
 			
 			<c:set var="size" value="${fn:length(order) }"/>
-			<c:if test="${size > 0 }">
+			<c:if test="${size>0 }">
 				<c:forEach var="list" items="${order }" varStatus="i">
-					<c:set var="new_sel_num" value="false"/>
-					
-					
-					<c:if test="${i.index == 0 || sel_num != list.sel_num }">
-						<c:set var="new_sel_num" value="true"/>
-					</c:if>
-					<c:set var="sel_num" value="${list.sel_num }" />
-					<c:set var="row_cnt" value="${0 }"/>
-					<c:forEach var="list2" items="${order }" varStatus="j">
-						<c:if test="${list2.sel_num == sel_num }">
-							<c:set var="row_cnt" value="${row_cnt + 1 }"/>
-						</c:if>
-					</c:forEach>
-					
 					
 					<tr>
-						<c:if test="${new_sel_num == true }">
-							<th rowspan="${row_cnt }">
-								<a href="orderdetail.mem?sel_num=${list.sel_num}">${list.sel_num }</a>
-							</th>
-						</c:if>
+						<td rowspan="${row_cnt }">
+							<!-- 날짜 형식 바꿔주기 (yyyy-MM-dd) -->
+							<fmt:parseDate value="${list.sel_date }" var="sel_date" pattern="yyyy-MM-dd HH:mm:ss"/>
+							<fmt:formatDate var="dateFmt" value="${sel_date}" pattern="yyyy-MM-dd"/>
+							${dateFmt}<br>
+							<a href="orderdetail.mem?sel_num=${list.sel_num}">[${list.sel_num }]</a>
+						</td>
 						
-						<th>
-							<a href="productDetail.pro?pro_num=${list.pro_num}">
+						<td>
+							<a href="producthetail.pro?pro_num=${list.pro_num}">
 							<img src="<%=request.getContextPath() %>/upload/${list.pro_photo}" class="cartImage"></a>
-						</th>
+						</td>
 		
-						<th class="item_info">
+						<td class="item_info">
 							&nbsp;${list.pro_name }
 							<br>
 							<!-- 가격 형식 -->
 							<fmt:formatNumber var="price" value="${list.pro_price}" pattern="#,###"/>
 							&nbsp;${price} / ${list.pro_qnt}개
-						</th>
+						</td>
 						
-							<!-- 가격 형식 -->
-							<fmt:formatNumber var="final_price" value="${list.final_price}" pattern="#,###"/>
-						<th>${final_price}</th>
+						<!-- 가격 형식 -->
+						<fmt:formatNumber var="final_price" value="${list.final_price}" pattern="#,###"/>
+						<td>${final_price}</td>
 							
 							
-						<c:if test="${new_sel_num == true }">
-							<th rowspan="${row_cnt }">
-								<c:if test="${list.cancel_req == 'N'.charAt(0) }">
-									<c:if test="${list.sel_status eq 'order_done' }">주문완료</c:if>
-									<c:if test="${list.sel_status eq 'check_paid' }">결제확인</c:if>
-									<c:if test="${list.sel_status eq 'send_pro' }">상품발송</c:if>
-									<c:if test="${list.sel_status eq 'deli_ing' }">배송중</c:if> 
-									<c:if test="${list.sel_status eq 'deli_fin' }">배송완료</c:if> 
-									<c:if test="${list.sel_status eq 'order_confirm' }">구매확정</c:if>
-								</c:if>
-								<c:if test="${list.cancel_req == 'Y'.charAt(0) }">주문취소 요청중</c:if>
-								<c:if test="${list.cancel_req == 'C'.charAt(0) }">주문취소 완료</c:if>
-							</th>
-
-							<th rowspan="${row_cnt }">
-								<c:choose>
-									<c:when test="${list.sel_status eq 'deli_ing' || list.sel_status eq 'deli_fin'}">
-										<a href="ordercheck.mem?sel_num=${list.sel_num }" class="small_btn" onclick="">구매확정</a>
-									</c:when>
-									
-									<c:when test="${list.cancel_req == 'N'.charAt(0) }">
-										<a href="ordercancel.mem?sel_num=${list.sel_num }" class="small_btn" onclick="">주문취소</a>
-									</c:when>
-								</c:choose>
-							</th>
-						</c:if>
-								
-						<th>
-							<c:if test="${list.sel_status eq 'order_confirm' }">
-								<a href="boardWriteForm.bo?board_type=review&pro_num=${list.pro_num }" class="small_btn">리뷰작성</a><br><br>
+						<td rowspan="${row_cnt }">
+							<c:if test="${list.cancel_req == 'N'.charAt(0) }">
+								<c:if test="${list.sel_status eq 'order_done' }">주문완료</c:if>
+								<c:if test="${list.sel_status eq 'check_paid' }">결제확인</c:if>
+								<c:if test="${list.sel_status eq 'send_pro' }">상품발송</c:if>
+								<c:if test="${list.sel_status eq 'deli_ing' }">배송중</c:if> 
+								<c:if test="${list.sel_status eq 'deli_fin' }">배송완료</c:if> 
+								<c:if test="${list.sel_status eq 'order_confirm' }">구매확정</c:if>
 							</c:if>
+							<c:if test="${list.cancel_req == 'Y'.charAt(0) }">주문취소 요청중</c:if>
+							<c:if test="${list.cancel_req == 'C'.charAt(0) }">주문취소 완료</c:if>
+							
+							<c:choose>
+								<c:when test="${list.sel_status eq 'deli_ing' || list.sel_status eq 'deli_fin'}">
+									<br><a href="ordercheck.mem?sel_num=${list.sel_num }" class="small_btn" onclick="">구매확정</a>
+								</c:when>
+								
+								<c:when test="${list.sel_status eq 'order_done' }">
+									<br><a href="ordercancel.mem?sel_num=${list.sel_num }" class="small_btn" onclick="">주문취소</a>
+								</c:when>
+							</c:choose>
+						</td>
+								
+						<td>
 							<a href="boardWriteForm.bo?board_type=qna&pro_num=${list.pro_num }&sel_num=${list.sel_num}" class="small_btn">문의작성</a>
-						</th>
+						</td>
+						
 					</tr>
 		
 					
 				</c:forEach>
 			</c:if>
 
-			<c:if test="${size == 0 }">
+			<c:if test="${size==0 }">
 				<tr>
-					<td colspan="7" class="empty">주문 내역이 없습니다</td>
+					<td colspan="6" class="empty">주문 내역이 없습니다</td>
 				</tr>
 			</c:if>
 		</table>

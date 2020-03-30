@@ -934,7 +934,7 @@ public class AdminDAO {
 			Order order = null;
 			int startRow = (page-1)*limit;
 			String sql = "SELECT * FROM pro_info AS a INNER JOIN pro_det AS b ON a.pro_num=b.pro_num INNER JOIN order_det AS c "
-					+ "ON b.pro_det_num=c.pro_det_num INNER JOIN order_page AS d ON c.sel_num=d.sel_num WHERE d.user_id=? GROUP BY d.sel_date LIMIT ?,?";
+					+ "ON b.pro_det_num=c.pro_det_num INNER JOIN order_page AS d ON c.sel_num=d.sel_num WHERE d.user_id=? GROUP BY d.sel_date ORDER BY d.sel_date desc LIMIT ?,?";
 			
 			try {
 				pstmt = con.prepareStatement(sql);
@@ -946,6 +946,14 @@ public class AdminDAO {
 				while(rs.next()) {
 					
 					order = new Order();
+					
+					order.setPro_num(rs.getInt("pro_num"));
+					order.setPro_photo(rs.getString("pro_photo"));
+					order.setPro_price(rs.getInt("pro_price"));
+					order.setPro_qnt(rs.getInt("pro_qnt"));
+					order.setPro_size(rs.getString("pro_size"));
+					order.setColor(rs.getString("color"));
+					
 					order.setUser_id(rs.getString("user_id"));
 					order.setSel_num(rs.getString("sel_num"));
 					order.setSel_date(rs.getString("sel_date"));

@@ -1077,9 +1077,7 @@ strong {
     font-size: 11px;
 }
 
-.item_info {
-	text-align : left;
-}
+
 
 .small_btn {
 	border : 1px solid #ddd;
@@ -1113,6 +1111,34 @@ strong {
 	position: relative;
    	color: #000;
    	border: 1px solid #000;
+}
+
+.orderList_table table{
+	position: relative;
+    margin: 10px 0 0;
+    border: 1px solid #d7d5d5;
+    line-height: 1.5;
+}
+
+.orderList_table table th {
+	padding: 11px 0 10px;
+    border-left: 1px solid #dfdfdf;
+    border-bottom: 1px solid #dfdfdf;
+    vertical-align: middle;
+    font-weight: normal;
+    background: #fff;
+}
+
+
+.orderList_table>table>tbody>tr>td {
+	text-align: center;
+	padding: 8px 10px 7px;
+	border : 1px solid #dfdfdf;
+	vertical-align: middle;
+}
+
+.item_info {
+	text-align : left;
 }
 
 /* 주문 완료 페이지 */
