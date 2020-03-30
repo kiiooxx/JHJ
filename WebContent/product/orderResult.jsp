@@ -7,8 +7,16 @@
 <div id="join_form">
 
 	<div class="orderInfo">
+	<fmt:formatNumber var="reviewPoint" value="${reviewPoint}" pattern="#,###"/>
 		<h1>주문이 완료되었습니다!<br>
-			구매확정 시, 00원 적립예정 <br> 리뷰 작성 시, 00원 추가 적립
+			구매확정 시,
+			<c:choose>
+				<c:when test="${pointMan.p_mark eq 'per'}">구매금액의 ${pointMan.p_rate }</c:when>
+				<c:when test="${pointMan.p_mark eq 'won'}">${confrimPoint}</c:when>
+				<c:when test="${pointMan.p_mark eq 'double'}">${confrimPoint}</c:when>
+			</c:choose>
+			원 적립예정<br>
+			리뷰 작성 시, ${reviewPoint }원 추가 적립
 		</h1>
 	</div>
 
@@ -122,7 +130,8 @@
 				
 			<tr>
 				<th>총 상품금액</th>
-				<td>${total2 } 원</td>
+				<%-- <fmt:formatNumber var="total" value="${totalMoney}" pattern="#,###"/> --%>
+				<td>${total1 }원</td>
 			</tr>
 			
 			<tr>
@@ -137,8 +146,7 @@
 			</tr>
 			<tr>
 				<th>결제금액</th>
-				<fmt:formatNumber var="total" value="${totalMoney}" pattern="#,###"/>
-				<td>${total }원</td>
+				<td>${result2}원</td>
 			</tr>
 		</table>
 	</div>

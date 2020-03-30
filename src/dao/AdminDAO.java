@@ -933,8 +933,6 @@ public class AdminDAO {
 			ArrayList<Order> orderList = new ArrayList<Order>();
 			Order order = null;
 			int startRow = (page-1)*limit;
-			System.out.println("startRow" + startRow);
-			//String sql = "SELECT * FROM order_page WHERE user_id=? LIMIT ?, ?";
 			String sql = "SELECT * FROM pro_info AS a INNER JOIN pro_det AS b ON a.pro_num=b.pro_num INNER JOIN order_det AS c "
 					+ "ON b.pro_det_num=c.pro_det_num INNER JOIN order_page AS d ON c.sel_num=d.sel_num WHERE d.user_id=? GROUP BY d.sel_date LIMIT ?,?";
 			
@@ -945,17 +943,9 @@ public class AdminDAO {
 				pstmt.setInt(3, limit);
 				rs = pstmt.executeQuery();
 				
-				
 				while(rs.next()) {
 					
 					order = new Order();
-					order.setPro_num(rs.getInt("pro_num"));
-					order.setPro_photo(rs.getString("pro_photo"));
-					order.setPro_qnt(rs.getInt("pro_qnt"));
-					order.setPro_price(rs.getInt("pro_price"));
-					order.setPro_size(rs.getString("pro_size"));
-					order.setColor(rs.getString("color"));
-					
 					order.setUser_id(rs.getString("user_id"));
 					order.setSel_num(rs.getString("sel_num"));
 					order.setSel_date(rs.getString("sel_date"));
@@ -991,7 +981,7 @@ public class AdminDAO {
 			
 			String inputText =  "%" + searchText.trim() + "%";
 			
-			String sql = "SELECT COUNT(*) FROM order_page WHERE ? LIKE ?";
+			String sql = "SELECT COUNT(*) FROM order_manage_main WHERE " + searchType + " LIKE ?";
 			
 			if(!(orderDate == null || orderDate.trim().equals(""))) {
 				sql += " AND sel_date='" + orderDate + "'";
@@ -999,11 +989,11 @@ public class AdminDAO {
 			
 			if(!(deliStatus == null)) {
 				
-				if(deliStatus.length<=0) {
-					sql += " AND (sel_status='" + deliStatus + "')";
-				}else if(deliStatus.length <0) {
+				if(deliStatus.length == 1) {
+					sql += " AND (sel_status='" + deliStatus[0] + "')";
+				}else if(deliStatus.length > 1) {
 					
-					sql += " AND (sel_status='" + deliStatus + "')";
+					sql += " AND (sel_status='" + deliStatus[0] + "')";
 					
 					for(int i = 1; i < deliStatus.length; i++) {
 						
@@ -1017,8 +1007,7 @@ public class AdminDAO {
 			
 			try {
 				pstmt = con.prepareStatement(sql);
-				pstmt.setString(1, searchType);
-				pstmt.setString(2, inputText);
+				pstmt.setString(1, inputText);
 				rs = pstmt.executeQuery();
 				
 				if(rs.next()) {
@@ -1048,7 +1037,6 @@ public class AdminDAO {
 			int startRow = (page-1)*limit;
 			String inputText =  "%" + searchText.trim() + "%";
 			
-			System.out.println("startRow" + startRow);
 			String sql = "SELECT * FROM order_manage_main WHERE " + searchType  + " LIKE ?";
 			
 			if(!(orderDate == null || orderDate.trim().equals(""))) {
@@ -1058,21 +1046,16 @@ public class AdminDAO {
 			
 			
 			if(!(deliStatus == null)) {
-				System.out.println("AdminDAO - deliStatus:"+deliStatus[0]);
-				System.out.println("AdminDAO - deliStatus.length:"+deliStatus.length);
-				if(deliStatus.length==1) {
+				if(deliStatus.length == 1) {
 					sql += " AND (sel_status='" + deliStatus[0] + "')";
-				}else if(deliStatus.length > 1) {
 					
+				}else if(deliStatus.length > 1) {
 					sql += " AND (sel_status='" + deliStatus[0] + "')";
 					
 					for(int i = 1; i < deliStatus.length; i++) {
-						
 						sql += " OR (sel_status='" + deliStatus[i] + "')";
-						
 					}
 				}	
-					
 			}
 			sql +=  " GROUP BY sel_date ORDER BY sel_date DESC LIMIT ?, ?";
 			

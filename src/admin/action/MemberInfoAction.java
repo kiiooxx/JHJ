@@ -32,11 +32,6 @@ public class MemberInfoAction implements Action{
 			out.println("</script>");
 		}else {
 			
-			
-			int page = 1;
-			int limit = 10;
-			int limitPage = 5;
-			
 			//회원개인정보
 			String user_id = request.getParameter("user_id");
 			MemberInfoService memberInfoService = new MemberInfoService();
@@ -45,9 +40,17 @@ public class MemberInfoAction implements Action{
 			
 			
 			//회원주문내역
+			int page = 1;
+			int limit = 10;
+			int limitPage = 5;
+			
+			if(request.getParameter("page") != null) {
+				page = Integer.parseInt(request.getParameter("page"));
+			}
+			
 			OrderManageListService orderListService = new OrderManageListService();
 			int listCount = orderListService.getOrderListCount(user_id);
-			ArrayList<Order> order = orderListService.getOrderList(user_id,page, limit);
+			ArrayList<Order> order = orderListService.getOrderList(user_id, page, limit);
 			
 			int maxPage = (int)((double)listCount/limit+0.95);
 			int startPage = (((int)((double)page/limitPage+0.9))-1)*limitPage+1;
@@ -66,6 +69,7 @@ public class MemberInfoAction implements Action{
 			request.setAttribute("order", order);
 			request.setAttribute("user_id", user_id);
 			System.out.println("오더리스트액션");
+			System.out.println("MemberInfoAction-user_id: "+user_id);
 			
 			
 			request.setAttribute("pagefile", "admin/member_info.jsp");

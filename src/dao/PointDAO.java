@@ -33,9 +33,10 @@ public class PointDAO {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		int newMem = 0;
+		String point_reason = "회원가입 축하";
 		String sql1 = "SELECT p_newmem FROM point_man WHERE p_seq=1";
 		String sql2 = "INSERT INTO point (point_date, point_price, point_final, increase, user_id, point_reason) "
-				+ "VALUES (NOW(), ?, ?,'+', ?, '회원가입축하')";
+				+ "VALUES (NOW(), ?, ?,'+', ?, ?)";
 			
 		try {
 				pstmt = con.prepareStatement(sql1);
@@ -43,13 +44,16 @@ public class PointDAO {
 				
 				if(rs.next()) {
 					newMem = rs.getInt("p_newmem");				
-					if(newMem > 0) {
-						pstmt = con.prepareStatement(sql2);
-						pstmt.setInt(1,newMem);
-						pstmt.setInt(2, newMem);
-						pstmt.setString(3, user_id);
-						insertCount = pstmt.executeUpdate();
+					if(newMem == 0) {
+						point_reason = "";
 					}
+					pstmt = con.prepareStatement(sql2);
+					pstmt.setInt(1,newMem);
+					pstmt.setInt(2, newMem);
+					pstmt.setString(3, user_id);
+					pstmt.setString(4, point_reason);
+					insertCount = pstmt.executeUpdate();
+					
 				}
 				
 			}catch(Exception e) {
@@ -85,16 +89,24 @@ public class PointDAO {
 				usePoint = rs.getInt("point_use");
 				user_id = rs.getString("user_id");
 				if(usePoint > 0) {
+					System.out.println("hi");
 					pstmt = con.prepareStatement(sql2);
 					pstmt.setString(1, user_id);
-					beforeFinal = rs.getInt("point_final");
-					afterFinal = beforeFinal-usePoint;
+					rs = pstmt.executeQuery();
+					System.out.println("hi");
+					if(rs.next()) {
+						System.out.println("bye");
+						beforeFinal = rs.getInt("point_final");
+						afterFinal = beforeFinal-usePoint;
+						
+						pstmt = con.prepareStatement(sql3);
+						pstmt.setInt(1, usePoint);
+						pstmt.setInt(2, afterFinal);
+						pstmt.setString(3, user_id);
+						insertCount = pstmt.executeUpdate();
+						System.out.println("inner insertCount:"+insertCount);
+					}
 					
-					pstmt = con.prepareStatement(sql3);
-					pstmt.setInt(1, usePoint);
-					pstmt.setInt(2, afterFinal);
-					pstmt.setString(3, user_id);
-					insertCount = pstmt.executeUpdate();
 				}
 			}
 		}catch(Exception e) {
@@ -158,14 +170,14 @@ public class PointDAO {
 					rs = pstmt.executeQuery();
 					
 					if(rs.next()) {
-						pointFinal = rs.getInt("point_final")+applyRate;
+						pointFinal += rs.getInt("point_final")+applyRate;
 						
 						pstmt = con.prepareStatement(sql4);
 						pstmt.setInt(1, applyRate);
 						pstmt.setInt(2, pointFinal);
 						pstmt.setString(3,user_id);
 						insertCount = pstmt.executeUpdate();
-						System.out.println("in if insertCount?????:" +insertCount);
+						
 					}else {//회원가입적립금 설정 되어있지 않은 경우, 가입 후 첫 적립 시 point테이블에 값이 없다
 						pstmt = con.prepareStatement(sql4);
 						pstmt.setInt(1, applyRate);
@@ -245,9 +257,9 @@ public class PointDAO {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		Point memberPoint = null;
-		
+		String sql = "SELECT * FROM point WHERE user_id=? order by point_date desc limit 1";
 		try {
-			pstmt = con.prepareStatement("SELECT * FROM point WHERE user_id=?");
+			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, user_id);
 			rs = pstmt.executeQuery();
 			if(rs.next()) {

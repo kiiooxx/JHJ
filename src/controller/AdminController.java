@@ -356,16 +356,16 @@ public class AdminController extends HttpServlet {
 			}
     	}
 		//================
-    	else if(command.equals("/memberGradeManagement.ad"))
+    	else if(command.equals("/memberGradeManagement.ad")) { 
     		action = new MemberGradeManagementAction();
 		try {
 			forward = action.execute(request, response);
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
-	
+    	}
 		
-		System.out.println(command);
+		System.out.println("AdminController:"+command);
 		//3.포워딩
 		if(forward != null) {
 			if(forward.isRedirect()) {

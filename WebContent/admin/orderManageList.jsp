@@ -49,7 +49,6 @@ style>th {
 }
 </style>
 
-</style>
 </head>
 <body>
 	<div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -190,7 +189,7 @@ style>th {
 							[이전]&nbsp;	
 						</c:when>
 						<c:otherwise>
-							<a href="orderList.ad?page=${pageInfo.page-1 }&searchType=${searchType}&searchText=${searchText}&orderDate=${orderDate}&deliStatus=
+							<a href="orderManageList.ad?page=${pageInfo.page-1 }&searchType=${searchType}&searchText=${searchText}&orderDate=${orderDate}&deliStatus=
 							<c:if test="${deliStatus ne null }">
 								<c:forEach items="${deliStatus }" var="deliStatus">
 								${deliStatus}
@@ -200,15 +199,14 @@ style>th {
 						</c:otherwise>
 					</c:choose>
 
-					<c:forEach var="a" begin="${pageInfo.startPage }"
-						end="${pageInfo.endPage }" step="1">
+					<c:forEach var="a" begin="${pageInfo.startPage }" end="${pageInfo.endPage }" step="1">
 
 						<c:choose>
 							<c:when test="${a eq pageInfo.page }"> 
 								[${a}]				<!-- 현재페이지는 링크 안걸어도 되니까. -->
 							</c:when>
 							<c:otherwise>
-								<a href="orderList.ad?page=${a}&searchType=${searchType}&searchText=${searchText}&orderDate=${orderDate}&deliStatus=
+								<a href="orderManageList.ad?page=${a}&searchType=${searchType}&searchText=${searchText}&orderDate=${orderDate}&deliStatus=
 									<c:if test="${deliStatus ne null }">
 										<c:forEach items="${deliStatus }" var="deliStatus">
 										${deliStatus}
@@ -223,7 +221,7 @@ style>th {
 							&nbsp;[다음]
 						</c:when>
 						<c:otherwise>
-							<a href="orderList.ad?page=${pageInfo.page+1 }&searchType=${searchType}&searchText=${searchText}&orderDate=${orderDate}&deliStatus=
+							<a href="orderManageList.ad?page=${pageInfo.page+1 }&searchType=${searchType}&searchText=${searchText}&orderDate=${orderDate}&deliStatus=
 							<c:if test="${deliStatus ne null }">
 								<c:forEach items="${deliStatus }" var="deliStatus">
 									${deliStatus}
@@ -236,7 +234,7 @@ style>th {
 			</div>
 		</div>
 	</div>
-	</div>
+
 
 	<!-- 여기까지 페이징 -->
 

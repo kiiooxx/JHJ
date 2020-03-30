@@ -5,10 +5,9 @@ import static db.JdbcUtil.*;
 import java.sql.Connection;
 import java.util.ArrayList;
 
-import javax.servlet.http.HttpServletRequest;
 
 import dao.AdminDAO;
-import vo.Cart;
+
 import vo.Order;
 
 public class OrderManageListService {
@@ -59,12 +58,6 @@ public class OrderManageListService {
 		ArrayList<Order> orderList = null;
 		orderList = adminDAO.selectOrderList(searchType, searchText, orderDate, deliStatus, page, limit);
 		close(con);
-		if(deliStatus != null) {
-			for(int i = 0; i < deliStatus.length; i++) {
-				System.out.println("여기는서비스~deliStatus["+i+"]:"+deliStatus[i]);
-			}
-			
-		}
 		
 		
 		return orderList;

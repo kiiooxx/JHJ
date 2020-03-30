@@ -54,7 +54,13 @@ function openPostcode(){
 	}).open();
 }
 
+function numberFormat(inputNumber) {
+	   return inputNumber.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	}
+	
  function inqPoint(){
+	 
+	 
 	if(${memberPoint.point_final} != null){
 		
 		var priceLimit = ${pointMan.p_pricelimit };/* 적립금 사용가능 최소상품 구매 합계액 */
@@ -73,6 +79,11 @@ function openPostcode(){
 		var totalAct_point = Math.floor(totalAct*(rate/100));	/* 실결제액기준 적립금 계산결과 (총액 - 배송비 - 적립금)*적립비율 */
 		var totalAs_point = Math.floor(totalAs*(rate/100));	/* 적립금포함기준 적립금 계산결과 (총액 - 배송비)*적립비율 */
 		
+		totalAs_point = numberFormat(totalAs_point);/* 천단위 콤마 */
+		totalAct_point = numberFormat(totalAct_point);/* 천단위 콤마 */
+		po = numberFormat(po);/* 천단위 콤마 */
+		total = numberFormat(total);/* 천단위 콤마 */
+		rate = rate.toFixed(1);/* 퍼센트 소수점 하나 찍기 */
 		
 		if(${totalMoney} < priceLimit){
 			alert('구매 합계액이 '+priceLimit+ '원 이상일 경우 적립금 사용이 가능합니다.');
@@ -84,7 +95,7 @@ function openPostcode(){
 			document.getElementById('usePoint').value = 0;
 			return false;
 		}
-		if(po > ${memberPoint.point_final}){
+		if(po > ${memberPoint.point_final}){ 
 			alert('보유 적립금 이상 사용은 불가능 합니다.');
 			return false;
 		}else{
@@ -96,31 +107,38 @@ function openPostcode(){
 			if(${pointMan.p_stand == 'as'}){
 				if(${pointMan.p_mark == 'won'}){
 					$("#r3").text(totalAs_point+"원");
+					$("#confrimPoint").val(totalAs_point+"원");
 				}else if(${pointMan.p_mark == 'per'}){
 					$("#r3").text("구매금액의 "+rate+"%");
+					$("#confrimPoint").val("구매금액의 "+rate+"%");
 				}else if(${pointMan.p_mark == 'double'}){
 					$("#r3").text(totalAs_point + "원(" + rate +  "%)");
+					$("#confrimPoint").val(totalAs_point + "원(" + rate +  "%)");
 				}
 			} 
 			/* 적립금 사용 시 - 적립금 미포함 계산(실결제액기준)일 경우 */
 			else if(${pointMan.p_stand == 'act'}){
 				if(${pointMan.p_mark == 'won'}){
 					$("#r3").text(totalAct_point+"원");
+					$("#confirmPoint").val(totalAct_point+"원");
 				}else if(${pointMan.p_mark == 'per'}){
 					$("#r3").text("구매금액의 "+rate+"%");
+					$("#confirmPoint").val("구매금액의 "+rate+"%");
 				}else if(${pointMan.p_mark == 'double'}){
 					$("#r3").text(totalAct_point + "원(" + rate +  "%)");
+					$("#confirmPoint").val(totalAct_point + "원(" + rate +  "%)");
 				}
 				
 			}
 			/* 적립금 사용 시 - 적립안할 경우 */
 			else if(${pointMan.p_stand == 'no'}){
 				$("#r3").text(totalNo+"원");
+				$("#confrimPoint").val(totalNo+"원");
 				
 			}
 					
 		}
-		
+		 
 	}
 
 } 
@@ -243,7 +261,7 @@ function chkForm(f){
 }
 
 </script>
-
+<jsp:include page="/common/loginCheck.jsp"/>
 <div class="cartPage">
 	<form action="payProcess.pro" name="f" method="post">
 	<div class="cartList">
@@ -421,7 +439,8 @@ function chkForm(f){
 				<tr>
 					<th>${total4 }원</th>
 					<th>-&nbsp;<input type="text" id="point" value="0" size="3" class="no-line" readonly>원</th>
-					<th>=<input type="text" id="result" name="result" value="${totalMoney + deliPrice }" class="no-line" readonly>원</th>
+					<fmt:formatNumber var="result" value="${totalMoney + deliPrice}" pattern="#,###"/>
+					<th>=<input type="text" id="result" name="result" value="${result}" class="no-line" readonly>원</th>
 				</tr>
 			</tbody>
 		</table>
@@ -429,7 +448,8 @@ function chkForm(f){
 			<tr>
 				<th>적립금 사용</th>
 				<td><input type="text" name="usePoint" id="usePoint" value="0" size="5" onkeypress="onlyNumber();" >원 
-				<a href="javascript:void(0);" onclick="inqPoint();" class="small_btn">사용하기</a>(현재 적립금:${memberPoint.point_final == null ? '0' : memberPoint.point_final }원)
+				<fmt:formatNumber var="point" value="${memberPoint.point_final == null ? '0' : memberPoint.point_final }" pattern="#,###"/>
+				<a href="javascript:void(0);" onclick="inqPoint();" class="small_btn">사용하기</a>(현재 적립금:${point}원)
 				<br>※(적립금 포함으로 결제하실 경우, 해당 주문건은 적립금이 지급되지 않습니다.)
 				</td>
 			</tr>
@@ -449,7 +469,8 @@ function chkForm(f){
 					</td>
 					<td rowspan="3" style="text-align: right;">			
 						최종결제금액<br>
-						<input type="text" id="result2" name="result2" value="${totalMoney + deliPrice }" class="no-line" readonly>원<br>
+						<fmt:formatNumber var="result2" value="${totalMoney + deliPrice}" pattern="#,###"/>
+						<input type="text" id="result2" name="result2" value="${result2}" class="no-line" readonly>원<br>
 						<input type="checkbox" id="termCheck3" name="termCheck3"/>결제정보를 확인하였으며, 구매진행에 동의합니다.<br>
 						
 						<a href="javascript:chkForm(document.f);">결제하기</a>
@@ -464,7 +485,9 @@ function chkForm(f){
 						</c:choose>
 						</span>
 						&nbsp;적립 예정
-					</td>	
+						
+					</td>
+						
 				
 				<div id="mutong" style="display: none;">	
 				
@@ -497,6 +520,10 @@ function chkForm(f){
 				
 			</tbody>
 		</table>
+		<input type="hidden" name="total1" value="${total3 }"><!-- orderResult.jsp 총 상품금액 -->
+		<!--name=result2 orderResult.jsp 최종결제금액 -->
+		<input type="hidden" name="reviewPoint" id="reviewPoint" value="${pointMan.p_review }">
+		<input type="hidden" name="confrimPoint" id="confrimPoint" value="${applyRate }">
 	</div>
 	</form>
 </div>

@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import action.Action;
+import admin.svc.PointManageFormService;
+import point.svc.PointService;
 import product.svc.CartListService;
 import product.svc.CartQtyService;
 import product.svc.OrderProcessService;
@@ -20,6 +22,7 @@ import vo.DeliInfo;
 import vo.Order;
 import vo.OrderDet;
 import vo.PayInfo;
+import vo.PointMan;
 
 public class OrderProcessAction implements Action {
 
@@ -31,6 +34,12 @@ public class OrderProcessAction implements Action {
 		//현재 로그인되어있는 아이디 = 주문자 아이디
 		HttpSession session = request.getSession();
 		String user_id = (String)session.getAttribute("id");
+		
+		//예정 적립금
+		String confrimPoint = request.getParameter("confrimPoint");
+		String reviewPoint = request.getParameter("reviewPoint");
+		String total1 = request.getParameter("total1"); //상품총금액
+		String result2 = request.getParameter("result2"); //최종결제금액
 		
 		//주문번호 주문일 format 설정
 		SimpleDateFormat ForSelNum = new SimpleDateFormat("yyMMddHHmmss");
@@ -46,10 +55,7 @@ public class OrderProcessAction implements Action {
 		String sel_num = ForSelNum.format(now);
 		String sel_date = ForSelDate.format(now);
 		String pay_exp = ForExpDate.format(cal.getTime());
-		
-		//orderpage에 있는 상품정보, 배송정보, 결제정보 가져와서 객체에 저장
-		
-		
+
 		
 		CartListService cartListService = new CartListService();
 		ArrayList<Cart> cartList = cartListService.getCartList(request);
@@ -88,7 +94,7 @@ public class OrderProcessAction implements Action {
 			totalMoney = totalMoney - usePoint;
 		}
 		
-		//배송정보 db에 넣을거
+		//배송정보 db에 넣을 내용
 		DeliInfo deliInfo = new DeliInfo();
 		deliInfo.setDeli_num("D"+sel_num);
 		deliInfo.setUser_id(user_id);
@@ -99,7 +105,7 @@ public class OrderProcessAction implements Action {
 		deliInfo.setRec_tel(request.getParameter("recTel"));
 		deliInfo.setDeli_content(request.getParameter("deli_content"));
 		
-		//주문서 db에 넣을거
+		//주문서 db에 넣을 내용
 		Order order = new Order();
 		order.setSel_num(sel_num);
 		order.setSel_date(sel_date);
@@ -110,7 +116,7 @@ public class OrderProcessAction implements Action {
 		order.setPoint_use(Integer.parseInt(request.getParameter("usePoint")));
 		order.setFinal_price(totalMoney);
 		
-		//주문 상세 db에 넣을거 - 
+		//주문 상세 db에 넣을 내용 
 		ArrayList<OrderDet> orderDet2 = new ArrayList<OrderDet>();
 		
 		if(cartList != null) {
@@ -126,7 +132,7 @@ public class OrderProcessAction implements Action {
 		//결제정보 db에 넣을거
 		PayInfo payInfo = new PayInfo();
 		payInfo.setSel_num(sel_num);
-		//payInfo.setPay_date("");//결제일은 주문일이랑 다르니까 이건 비워놔야할듯? 지금은 무통장만 있으니까,,카드는 거의 동시에 될듯
+		//payInfo.setPay_date("");//카드,실시간 이체 등 즉시 결제할 경우 사용
 		payInfo.setPay_type(request.getParameter("payment"));
 		payInfo.setAcc_name(request.getParameter("account_name"));
 		payInfo.setAcc_bank(request.getParameter("bank"));
@@ -134,9 +140,18 @@ public class OrderProcessAction implements Action {
 		
 		
 		OrderProcessService orderProcessService = new OrderProcessService();
-		
 		boolean addOrderSuccess = orderProcessService.addOrder(deliInfo, order, orderDet2, payInfo);
 
+		if(usePoint > 0) {
+			PointService pointService = new PointService();
+			boolean isUse = pointService.usePoint(sel_num);
+			if(!isUse) {
+				System.out.println("적립금 마이너스 실패");
+			}else {
+				System.out.println("적립금 마이너스 성공");
+			}
+		}
+		
 		
 		if(!addOrderSuccess) {
 			response.setContentType("text/html;charset=UTF-8");
@@ -147,13 +162,20 @@ public class OrderProcessAction implements Action {
 			out.println("</script>");
 			
 		}else {
-			//다 입력 성공하면 아래에 있는거 가져가서 orderResult.jsp에 보여주기??
+			PointManageFormService pointManageFormService = new PointManageFormService();
+			PointMan pointMan = pointManageFormService.getPointOption(1);
 			request.setAttribute("totalMoney", totalMoney);
 			request.setAttribute("deliInfo", deliInfo);
 			request.setAttribute("order", order);
 			request.setAttribute("orderDet", orderDet2);
 			request.setAttribute("payInfo", payInfo);
 			request.setAttribute("cartList", cartList);
+			request.setAttribute("confrimPoint", confrimPoint);
+			request.setAttribute("reviewPoint", reviewPoint);
+			request.setAttribute("pointMan", pointMan);
+			request.setAttribute("total1", total1);
+			request.setAttribute("result2", result2);
+			
 			
 			request.setAttribute("pagefile", "/product/orderResult.jsp");
 			forward = new ActionForward("/template.jsp", false);
