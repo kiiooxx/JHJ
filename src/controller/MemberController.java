@@ -16,6 +16,7 @@ import member.action.MyInfoModAction;
 import member.action.MyInfoQuitAction;
 import member.action.OrderAction;
 import member.action.OrderDetailAction;
+import point.action.MyPointAction;
 import member.action.OrderCancelFormAction;
 import member.action.OrderCancelProAction;
 import member.action.OrderCheckAction;
@@ -172,7 +173,23 @@ public class MemberController extends HttpServlet {
 				e.printStackTrace();
 			}
 		}
-
+		//===========MY POINT==========
+		
+		else if (command.equals("/mypoint.mem")) {
+			action = new MyPointAction();
+			try {
+				forward = action.execute(request, response);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		
+		
+		
+		
+		
 		if (forward != null) {
 
 			if (forward.isRedirect()) {
