@@ -2,65 +2,62 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>적립금내역확인</title>
-</head>
-<body>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
-<table border = "1">
-
-	<th>총 적립금</th>
-		
+<div class="pointArea">
+	<h3>POINT</h3>
+	
+	<div class="pointInfo">
+		<uL>
+			<li>
+				<strong class="title">총 적립금</strong>
+				<!-- 가격 형식 -->
+				<fmt:formatNumber var="point_final" value="${memberPoint.point_final}" pattern="#,###"/>
+				<span class="data"><strong>${point_final}</strong>원</span>
+			</li>
+		</uL>
+	</div>
 
 	
-	<td>총 ${memberPoint.point_final}원</td>
+	<div class="orderList_table">
+		<table>
+			<colgroup>
+				<col style="width:150px;">
+				<col style="width:auto;">
+				<col style="width:120px;">
+			</colgroup>
+			<tr>
+				<th>적립날짜</th>
+				<th>적립내용</th>
+				<th>적립금</th>
+			</tr>
 
-	
-</tr>
-</table>
-
-	<br><br>
-
-	<thead>
-	<tr>
-	<td>적립날짜</td>
-	<td>적립내용</td>
-	<td>증감여부</td>
-	<td>적립금</td>
-	</tr>
-	</thead>
-
-
-<table border = "1">
-		
-
-	<tbody>
-	<c:forEach var="myPoint2" items="${myPointList}" varStatus="i">
-		<tr>
-			<td>${myPoint2.point_date}</td>
-			<td>${myPoint2.point_reason}</td>	
-			<td>${myPoint2.increase }</td>
-			<td>${myPoint2.point_price}원</td>
-		</tr>
-	</tbody>
-	<br>
-	
-	<c:if test="${myPoint2.point_num == null }">
-				<tr>
-				
+			<c:set var="size" value="${fn:length(myPointList) }"/>
+			<c:if test="${size > 0 }">
+				<c:forEach var="myPoint2" items="${myPointList}" varStatus="i">
+					<tr>
+						<td>
+							<fmt:parseDate value="${myPoint2.point_date}" var="date" pattern="yyyy-MM-dd HH:mm:ss"/>
+							<fmt:formatDate var="dateFmt" value="${date}" pattern="yyyy-MM-dd"/>
+							${dateFmt}
+						</td>
+						<td style="text-align:left">${myPoint2.point_reason}</td>	
+						<td style="text-align:right">
+							${myPoint2.increase }
+							<fmt:formatNumber var="point_price" value="${myPoint2.point_price}" pattern="#,###"/>
+							${point_price}원
+						</td>
+					</tr>
+				</c:forEach>
+			</c:if>
 			
-					<td>적립 내역이 없습니다</td>
+			<c:if test="${size==0 }">
+				<tr>
+					<td colspan="4">적립 내역이 없습니다</td>
 				</tr>
 			</c:if>
-		
-</table>
-
-	</c:forEach>
-
-
+		</table>
+	</div>
 	
 	
 	
@@ -78,13 +75,13 @@
 				</c:choose>
 				
 				
-				<c:forEach var="pglist" begin="${pageInfo.startPage }" end="${pageInfo.endPage }" step="1" varStatus="a">
+				<c:forEach var="a" begin="${pageInfo.startPage }" end="${pageInfo.endPage }" step="1">
 					<c:choose>
-						<c:when test="${a.count == pageInfo.page }">
-							<li>[${a.count }]</li>
+						<c:when test="${a == pageInfo.page }">
+							<li>[${a}]</li>
 						</c:when>
 						<c:otherwise>
-							<li><a href="mypoint.mem?page=${a.count }">[${a.count }]</a></li>
+							<li><a href="mypoint.mem?page=${a}">[${a}]</a></li>
 						</c:otherwise>
 					</c:choose>
 				</c:forEach>
@@ -101,7 +98,4 @@
 				</ol>
 			</c:if>
 		</div>
-</div>	
-	
-</body>
-</html>
+</div>

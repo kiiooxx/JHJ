@@ -6,34 +6,6 @@
 
 <div class="orderArea">
 	<h3>ORDER</h3>
-
-	<div class="orderhistorytab">
-		<ul>
-			<li class="tab_class"><a href="##">주문내역조회 (0)</a></li>
-			<li class="tab_class_cs"><a href="##">취소내역 (0)</a></li>
-		</ul>
-	</div>
-
-	<!-- 날짜 검색 -->
-	<div id="OrderHistoryForm">
-		<form action="order.mem" method="post" name="OrderHistoryForm">
-		
-			<fieldset>
-				<span>
-					<a href="#" class="small_btn">오늘</a>
-					<a href="#" class="small_btn">1주일</a>
-					<a href="#" class="small_btn">1개월</a>
-					<a href="#" class="small_btn">3개월</a>
-					<a href="#" class="small_btn">6개월</a>
-				</span>
-				<input id="history_start_date" name="history_start_date" class="fText" readonly="readonly" size="10" value="2019-12-18" type="text" />
-					~ 
-				<input id="history_end_date" name="history_end_date" class="fText" readonly="readonly" size="10" value="2020-03-17" type="text" />
-				<a href="#" class="small_btn">조회</a>
-			</fieldset>	
-		</form>
-	</div>
-	
 	
 	<div class="orderList_table">
 		<table>

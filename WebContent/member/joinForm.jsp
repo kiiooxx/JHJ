@@ -193,7 +193,7 @@ function chkForm(f) {
 					<td><input type="text" name="postcode" id="postcode" size="6"
 						readonly /> <a
 						href="javascript:void(0);" name="zipSearch" id="zipSearch"
-						class="btn"
+						class="small_btn"
 						onclick="sample6_execDaumPostcode()">우편번호</a><br>
 						<input type="text" name="addr1" id="addr1"
 						value="<%//=rs.getString("addr1")%>" size=50 readonly /> 기본주소<br>

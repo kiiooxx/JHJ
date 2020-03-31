@@ -24,6 +24,18 @@ table {
 	width : 100%;
 }
 
+select {
+	height: 22px;
+    border: 1px solid #d5d5d5;
+}
+
+input, text, select, textarea {
+	font-size: 100%;
+    font-family: 'Nanum Gothic',AppleGothic,sans-serif;
+    color: #000;
+    vertical-align: middle;
+}
+
 /* 템플릿 */
 #template {
 	margin : 0 auto;
@@ -572,6 +584,15 @@ table {
     border-top-color: #fff;
     line-height: 1.5;
     width: 100%;
+}
+
+.join_table input[type=text], .join_table input[type=tel] {
+	height: 18px;
+    line-height: 20px;
+    padding: 1px 4px;
+    border: 1px solid #d5d5d5;
+    color: #353535;
+    font-size: 11px;
 }
 
 .join_table tbody {
@@ -1192,3 +1213,35 @@ strong {
     color: #000;
 }
 
+/*적립금 내역 */
+.pointInfo {
+	position: relative;
+    padding: 20px 0;
+    margin: 0 0 40px;
+}
+
+.pointInfo>ul>li {
+	float: left;
+    margin: 5px 0;
+    padding: 0 45px;
+    width: 50%;
+    height: 16px;
+    font-size: 11px;
+    line-height: 1.6;
+    vertical-align: top;
+    box-sizing: border-box;
+}
+
+.pointInfo>ul>li>.data {
+    width: 50%;
+    padding: 0 10px 0 10px;
+    text-align: right;
+    box-sizing: border-box;
+}
+
+.pointInfo>ul>li>.strong {
+    width: 50%;
+    padding: 0 0 0 10px;
+    font-weight: normal;
+    box-sizing: border-box;
+}
