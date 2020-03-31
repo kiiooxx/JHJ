@@ -8,7 +8,8 @@
 <c:set var="member" value="${requestScope.member }"/>
 <c:set var="order" value="${requestScope.order }"/>
 
-
+<!-- ionicons -->
+<script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
 <!DOCTYPE html>
 <html>
 <head>
@@ -146,13 +147,13 @@ th, td{
       </c:choose>
          
          
-      <c:forEach var="pglist" begin="${pageInfo.startPage }" end="${pageInfo.endPage }" step="1" varStatus="a">
+      <c:forEach var="a" begin="${pageInfo.startPage }" end="${pageInfo.endPage }" step="1">
          <c:choose>
-            <c:when test="${a.count == pageInfo.page }">
-               [${a.count }]
+            <c:when test="${a == pageInfo.page }">
+               [${a}]
             </c:when>
             <c:otherwise>
-               <a href="memberInfo.ad?&user_id=${user_id }&page=${a.count }">[${a.count }]</a>
+               <a href="memberInfo.ad?&user_id=${user_id }&page=${a}">[${a}]</a>
             </c:otherwise>
          </c:choose>
       </c:forEach>

@@ -80,13 +80,13 @@
 					</c:choose>
 					
 					
-					<c:forEach var="pglist" begin="${reviewPageInfo.startPage }" end="${reviewPageInfo.endPage }" step="1" varStatus="a">
+					<c:forEach var="a" begin="${reviewPageInfo.startPage }" end="${reviewPageInfo.endPage }" step="1">
 						<c:choose>
-							<c:when test="${a.count == reviewPageInfo.page }">
-								<li>[${a.count }]</li>
+							<c:when test="${a == reviewPageInfo.page }">
+								<li>[${a}]</li>
 							</c:when>
 							<c:otherwise>
-								<li><a href="boardListAction.bo?board_type=review&page=${a.count }">[${a.count }]</a></li>
+								<li><a href="boardListAction.bo?board_type=review&page=${a}">[${a}]</a></li>
 							</c:otherwise>
 						</c:choose>
 					</c:forEach>
@@ -181,13 +181,13 @@
 					</c:choose>
 					
 					
-					<c:forEach var="pglist" begin="${qnaPageInfo.startPage }" end="${qnaPageInfo.endPage }" step="1" varStatus="a">
+					<c:forEach var="a" begin="${qnaPageInfo.startPage }" end="${qnaPageInfo.endPage }" step="1">
 						<c:choose>
-							<c:when test="${a.count == qnaPageInfo.page }">
-								<li>[${a.count }]</li>
+							<c:when test="${a == qnaPageInfo.page }">
+								<li>[${a}]</li>
 							</c:when>
 							<c:otherwise>
-								<li><a href="boardListAction.bo?board_type=qna&page=${a.count }">[${a.count }]</a></li>
+								<li><a href="boardListAction.bo?board_type=qna&page=${a}">[${a}]</a></li>
 							</c:otherwise>
 						</c:choose>
 					</c:forEach>

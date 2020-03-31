@@ -227,13 +227,13 @@ $(document).ready(function() {
 						</c:choose>
 							
 							
-						<c:forEach var="pglist" begin="${pageInfo.startPage }" end="${pageInfo.endPage }" step="1" varStatus="a">
+						<c:forEach var="a" begin="${pageInfo.startPage }" end="${pageInfo.endPage }" step="1">
 							<c:choose>
-								<c:when test="${a.count == pageInfo.page }">
-									[${a.count }]
+								<c:when test="${a == pageInfo.page }">
+									[${a}]
 								</c:when>
 								<c:otherwise>
-									<a href="boardManagementForm.ad?board_date=${board_date }&board_type=${board_type }&search_type=${search_type }&search_text=${search_text }&board_step=${board_step }&board_photo=${board_photo }&page=${a.count }">[${a.count }]</a>
+									<a href="boardManagementForm.ad?board_date=${board_date }&board_type=${board_type }&search_type=${search_type }&search_text=${search_text }&board_step=${board_step }&board_photo=${board_photo }&page=${a}">[${a}]</a>
 								</c:otherwise>
 							</c:choose>
 						</c:forEach>

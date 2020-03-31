@@ -70,7 +70,7 @@
 						</td>
 						
 						<td>
-							<a href="producthetail.pro?pro_num=${list.pro_num}">
+							<a href="productDetail.pro?pro_num=${list.pro_num}">
 							<img src="<%=request.getContextPath() %>/upload/${list.pro_photo}" class="cartImage"></a>
 						</td>
 		
@@ -143,13 +143,13 @@
 				</c:choose>
 				
 				
-				<c:forEach var="pglist" begin="${pageInfo.startPage }" end="${pageInfo.endPage }" step="1" varStatus="a">
+				<c:forEach var="a" begin="${pageInfo.startPage }" end="${pageInfo.endPage }" step="1">
 					<c:choose>
-						<c:when test="${a.count == pageInfo.page }">
-							<li>[${a.count }]</li>
+						<c:when test="${a == pageInfo.page }">
+							<li>[${a}]</li>
 						</c:when>
 						<c:otherwise>
-							<li><a href="order.mem?page=${a.count }">[${a.count }]</a></li>
+							<li><a href="order.mem?page=${a}">[${a}]</a></li>
 						</c:otherwise>
 					</c:choose>
 				</c:forEach>
