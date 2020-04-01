@@ -49,7 +49,6 @@ $(document).ready(function() {
 			//체크한 상품상세코드만 배열로 만들어서 pro_det_num 값으로 보내고, 주문 페이지로 이동
 			$('input[name=chk]:checkbox:checked').each(function(){items.push($(this).val());});
 			var tmp = items.join(',');
-			alert(tmp);
 			location.href='orderPage.pro?pro_det_num='+tmp;
 		}
 	});

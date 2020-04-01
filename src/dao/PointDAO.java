@@ -4,6 +4,7 @@ import static db.JdbcUtil.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 import vo.Point;
 
@@ -282,4 +283,74 @@ public class PointDAO {
 		return memberPoint;
 	}
 	
+
+
+	//회원적립금 내역 확인
+	public ArrayList<Point> selectMyPoint(String user_id, int page, int limit) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		ArrayList<Point> pointList = new ArrayList<>();
+		Point point = null;
+		
+		int startrow = (page-1)*limit;	//읽기 시작할 row 번호
+		
+		try {
+			pstmt = con.prepareStatement("select * from point where user_id=? order by point_date desc limit ?,?");
+			pstmt.setString(1, user_id);
+			pstmt.setInt(2, startrow);
+			pstmt.setInt(3, limit);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				point = new Point();
+				point.setUser_id(user_id);
+				point.setPoint_num(rs.getInt("point_num"));
+				point.setPoint_final(rs.getInt("point_final"));
+				point.setPoint_date(rs.getString("point_date"));
+				point.setPoint_price(rs.getInt("point_price"));
+				point.setPoint_reason(rs.getString("point_reason"));
+				point.setIncrease(rs.getString("increase").charAt(0));
+				
+				pointList.add(point);
+			}
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+			System.out.println("MemberDAO - selectMyPoint error");
+		}finally {
+			close(rs);
+			close(pstmt);
+		}
+		return pointList;
+	}
+	
+
+
+
+	public int selectPointListCount(String user_id) {
+		// TODO Auto-generated method stub
+		int listCount = 0;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = "select count(*) from point where user_id=?";
+		
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, user_id);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				listCount = rs.getInt(1);
+			}
+		}catch(Exception e) {
+			System.out.println("getPointListCount 에러 : " +e);
+		}finally {
+			close(rs);
+			close(pstmt);
+		}
+		return listCount;
+	}
+	
 }
+	
+	

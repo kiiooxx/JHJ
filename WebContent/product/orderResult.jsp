@@ -38,12 +38,11 @@
 	</div>
 	
 	<div class="cartList">
-		<table class="cart_table">
+		<table class="cartTable">
 			<h3 class="join_title">주문 상품 정보</h3>
 			<colgroup>
 					<col style="width:92px"/>
 					<col style="width:auto"/>
-					<col style="width:100px"/>
 					<col style="width:100px"/>
 					<col style="width:100px"/>
 					<col style="width:100px"/>
@@ -58,15 +57,19 @@
 			
 			<c:forEach var="list" items="${cartList }">
 				<tr>
-					<td><img src="<%=request.getContextPath() %>/upload/${list.pro_photo }" class="cartImage"></td>
-					<td>${list.pro_name }<br>[옵션 : ${list.color } / ${list.pro_size }]</td>
+					<td>
+						<a href="productDetail.pro?pro_num=${orderProList.pro_num }" >
+							<img src="<%=request.getContextPath() %>/upload/${list.pro_photo }" class="cartImage">
+						</a>
+					</td>
+					<td class="left">
+						${list.pro_name }<br>[옵션 : ${list.color } / ${list.pro_size }]</td>
 					<td>${list.pro_price }</td>
 					<td>${list.bas_pro_qnt }</td>
 					<fmt:formatNumber var="total2" value="${list.pro_price * list.bas_pro_qnt }" pattern="#,###"/>
 					<td>${total2 }</td>
 				</tr>
 			</c:forEach>
-			
 		</table>
 	</div>
 	

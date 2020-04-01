@@ -24,6 +24,18 @@ table {
 	width : 100%;
 }
 
+select {
+	height: 22px;
+    border: 1px solid #d5d5d5;
+}
+
+input, text, select, textarea {
+	font-size: 100%;
+    font-family: 'Nanum Gothic',AppleGothic,sans-serif;
+    color: #000;
+    vertical-align: middle;
+}
+
 /* 템플릿 */
 #template {
 	margin : 0 auto;
@@ -574,6 +586,15 @@ table {
     width: 100%;
 }
 
+.join_table input[type=text], .join_table input[type=tel] {
+	height: 18px;
+    line-height: 20px;
+    padding: 1px 4px;
+    border: 1px solid #d5d5d5;
+    color: #353535;
+    font-size: 11px;
+}
+
 .join_table tbody {
 	display: table-row-group;
     vertical-align: middle;
@@ -1077,9 +1098,7 @@ strong {
     font-size: 11px;
 }
 
-.item_info {
-	text-align : left;
-}
+
 
 .small_btn {
 	border : 1px solid #ddd;
@@ -1113,6 +1132,34 @@ strong {
 	position: relative;
    	color: #000;
    	border: 1px solid #000;
+}
+
+.orderList_table table{
+	position: relative;
+    margin: 10px 0 0;
+    border: 1px solid #d7d5d5;
+    line-height: 1.5;
+}
+
+.orderList_table table th {
+	padding: 11px 0 10px;
+    border-left: 1px solid #dfdfdf;
+    border-bottom: 1px solid #dfdfdf;
+    vertical-align: middle;
+    font-weight: normal;
+    background: #fff;
+}
+
+
+.orderList_table>table>tbody>tr>td {
+	text-align: center;
+	padding: 8px 10px 7px;
+	border : 1px solid #dfdfdf;
+	vertical-align: middle;
+}
+
+.item_info {
+	text-align : left;
 }
 
 /* 주문 완료 페이지 */
@@ -1166,3 +1213,35 @@ strong {
     color: #000;
 }
 
+/*적립금 내역 */
+.pointInfo {
+	position: relative;
+    padding: 20px 0;
+    margin: 0 0 40px;
+}
+
+.pointInfo>ul>li {
+	float: left;
+    margin: 5px 0;
+    padding: 0 45px;
+    width: 50%;
+    height: 16px;
+    font-size: 11px;
+    line-height: 1.6;
+    vertical-align: top;
+    box-sizing: border-box;
+}
+
+.pointInfo>ul>li>.data {
+    width: 50%;
+    padding: 0 10px 0 10px;
+    text-align: right;
+    box-sizing: border-box;
+}
+
+.pointInfo>ul>li>.strong {
+    width: 50%;
+    padding: 0 0 0 10px;
+    font-weight: normal;
+    box-sizing: border-box;
+}

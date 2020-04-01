@@ -180,7 +180,7 @@ function sample6_execDaumPostcode() {
 					<th>주소<b class="req">*</b></th>
 					<td><input type="text" name="postcode" id="postcode" size="6"
 						value="${member.postcode}" /> <a href="javascript:void(0);"
-						name="zipSearch" id="zipSearch" class="btn"
+						name="zipSearch" id="zipSearch" class="small_btn"
 						onclick="sample6_execDaumPostcode()">우편번호</a><br> 
 							
 						<input type="text" name="addr1" id="addr1" value="${member.addr1}" size=50 readonly /> 

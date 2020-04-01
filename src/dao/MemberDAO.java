@@ -11,6 +11,7 @@ import javax.sql.DataSource;
 
 import vo.Member;
 import vo.Order;
+import vo.Point;
 
 public class MemberDAO {
 
@@ -217,4 +218,7 @@ public class MemberDAO {
 		return listCount;
 	}
 	
+	//i
 }
+	
+	

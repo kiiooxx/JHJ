@@ -261,13 +261,13 @@ $(document).ready(function() {
 						</c:choose>
 							
 							
-						<c:forEach var="pglist" begin="${pageInfo.startPage }" end="${pageInfo.endPage }" step="1" varStatus="a">
+						<c:forEach var="a" begin="${pageInfo.startPage }" end="${pageInfo.endPage }" step="1">
 							<c:choose>
-								<c:when test="${a.count == pageInfo.page }">
-									[${a.count }]
+								<c:when test="${a == pageInfo.page }">
+									[${a}]
 								</c:when>
 								<c:otherwise>
-									<a href="stockListManagement.ad?search_type=${search_type }&search_text=${search_text }&cate_type=${cate_type }&ca_ref=${ca_ref }&pro_date=${pro_date }&active=${active }&page=${a.count }">[${a.count }]</a>
+									<a href="stockListManagement.ad?search_type=${search_type }&search_text=${search_text }&cate_type=${cate_type }&ca_ref=${ca_ref }&pro_date=${pro_date }&active=${active }&page=${a}">[${a}]</a>
 								</c:otherwise>
 							</c:choose>
 						</c:forEach>
