@@ -290,7 +290,12 @@ function chkForm(f){
 						<input type="hidden" name="directOrder" value="true"/>
 						<input type="hidden" name="pro_det_num" value="${list.pro_det_num }" />
 						<input type="hidden" name="bas_pro_qnt" value="${list.bas_pro_qnt }"/>
-						
+						<input type="hidden" name="pro_price" value="${list.pro_price }"/>
+						<input type="hidden" name="color" value="${list.color }"/>
+						<input type="hidden" name="pro_size" value="${list.pro_size }"/>
+						<input type="hidden" name="pro_num" value="${list.pro_num }"/>
+						<input type="hidden" name="pro_name" value="${list.pro_name }"/>
+						<input type="hidden" name="pro_photo" value="${list.pro_photo }"/>
 							<td><img src="<%=request.getContextPath() %>/upload/${list.pro_photo }" class="cartImage"></td>
 							<td>${list.pro_name }<br>[옵션 : ${list.color } / ${list.pro_size }]</td>
 							<fmt:formatNumber var="price" value="${list.pro_price}" pattern="#,###"/>

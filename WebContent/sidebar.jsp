@@ -5,11 +5,15 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
-
-
+<style>
+	.main_img {
+		width : 260px;
+		height : 191px;
+	}
+</style>
 <!-- 메인 사진 -->
 <p class="main_photo">
-	<a href="#"><img src="main.jpg"></a>
+	<a href="main.pro"><img src="main2.png" class="main_img"></a>
 </p>
 
 <div class="wleft">
