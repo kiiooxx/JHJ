@@ -10,6 +10,7 @@
 <c:set var="searchText" />
 <c:set var="orderDate" />
 <c:set var="deliStatus" />
+<c:set var="cancelReq"/>
 
 <c:if test="${searchType ne null }">
 	<c:set var="searchType" value="${requestScope.searchType }" />
@@ -22,6 +23,9 @@
 </c:if>
 <c:if test="${deliStatus ne null }">
 	<c:set var="deliStatus" value="${requestScope.deliStatus }" />
+</c:if>
+<c:if test="${cancelReq ne null }">
+	<c:set var="cancelReq" value="${requestScope.cancelReq }"/>
 </c:if>
 
 <!DOCTYPE html>
@@ -86,7 +90,7 @@ style>th {
 							<tr>
 								<th>주문일</th>
 								<td>
-									<input type="date" name="orderDate">
+									<input type="date" name="orderDate" value="">
 								</td>
 							</tr>
 							<tr>
@@ -114,6 +118,7 @@ style>th {
 			</form>
 		</div>
 	</div>
+
 
 	<div class="row">
 		<div class="col">
@@ -219,10 +224,16 @@ style>th {
 								<a href="orderManageList.ad?page=${a}&searchType=${searchType}&searchText=${searchText}&orderDate=${orderDate}&deliStatus=
 									<c:if test="${deliStatus ne null }">
 										<c:forEach items="${deliStatus }" var="deliStatus">
-										${deliStatus}
+										${deliStatus }
 										</c:forEach>
 									</c:if>
-								&cancel_req=${cancel_req}">[${a}]</a>
+								&cancel_req=
+									<c:if test="${cancelReq ne null }">
+										<c:forEach items="${cancelReq }" var="cancelReq">
+										${cancelReq }
+										</c:forEach>
+									</c:if>
+								">[${a}]</a>
 							</c:otherwise>
 						</c:choose>
 					</c:forEach>
@@ -237,7 +248,13 @@ style>th {
 									${deliStatus}
 								</c:forEach>
 							</c:if>
-							&cancel_req=${cancel_req}">[다음]</a>
+							&cancel_req=
+								<c:if test="${cancelReq ne null }">
+										<c:forEach items="${cancelReq }" var="cancelReq">
+										${cancelReq }
+										</c:forEach>
+									</c:if>
+							">[다음]</a>
 						</c:otherwise>
 					</c:choose>
 				</section>

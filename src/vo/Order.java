@@ -20,6 +20,7 @@ public class Order {
 	private String color;
 	private int pro_price;	//상품 가격
 	private int pro_num;
+	private String rec_name;
 	
 	
 	public String getSel_num() {
@@ -135,5 +136,11 @@ public class Order {
 	}
 	public void setPro_num(int pro_num) {
 		this.pro_num = pro_num;
+	}
+	public String getRec_name() {
+		return rec_name;
+	}
+	public void setRec_name(String rec_name) {
+		this.rec_name = rec_name;
 	}
 }

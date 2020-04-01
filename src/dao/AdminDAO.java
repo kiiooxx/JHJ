@@ -989,10 +989,10 @@ public class AdminDAO {
 			
 			String inputText =  "%" + searchText.trim() + "%";
 			
-			String sql = "SELECT COUNT(*) FROM order_manage_main WHERE " + searchType + " LIKE ?";
+			String sql = "SELECT COUNT(*) FROM order_manage_list WHERE " + searchType + " LIKE ?";
 			
 			if(!(orderDate == null || orderDate.trim().equals(""))) {
-				sql += " AND sel_date='" + orderDate + "'";
+				sql += " AND sel_date LIKE '" + orderDate + "%'";
 			}
 			
 			if(!(deliStatus == null)) {
@@ -1043,7 +1043,11 @@ public class AdminDAO {
 		//주문관리에서 보는 주문 리스트 
 		public ArrayList<Order> selectOrderList(String searchType, String searchText, String orderDate,
 				String deliStatus[], String[] cancelReq, int page, int limit) {
-			
+			System.out.println("DAO =  searchType : "+searchType);
+			System.out.println("DAO =  searchText : "+searchText);
+			System.out.println("DAO =  orderDate : "+orderDate);
+			System.out.println("DAO =  cancelReq : "+cancelReq);
+			System.out.println("DAO =  deliStatus : "+deliStatus);
 			PreparedStatement pstmt = null;
 			ResultSet rs = null;
 			ArrayList<Order> orderList = new ArrayList<Order>();
@@ -1051,10 +1055,10 @@ public class AdminDAO {
 			int startRow = (page-1)*limit;
 			String inputText =  "%" + searchText.trim() + "%";
 			
-			String sql = "SELECT * FROM order_manage_main WHERE " + searchType  + " LIKE ?";
+			String sql = "SELECT * FROM order_manage_list WHERE " + searchType  + " LIKE ?";
 			
 			if(!(orderDate == null || orderDate.trim().equals(""))) {
-				sql += " AND sel_date='" + orderDate + "'";
+				sql += " AND sel_date LIKE '" + orderDate + "%'";
 			}
 			
 			
@@ -1093,12 +1097,12 @@ public class AdminDAO {
 					
 					order = new Order();
 					order.setUser_id(rs.getString("user_id"));
+					order.setUser_name(rs.getString("user_name"));
+					order.setRec_name(rs.getString("rec_name"));
 					order.setSel_num(rs.getString("sel_num"));
 					order.setSel_date(rs.getString("sel_date"));
 					order.setDeli_num(rs.getString("deli_num"));
 					order.setSel_status(rs.getString("sel_status"));
-					order.setDeli_price(rs.getInt("deli_price"));
-					order.setPoint_use(rs.getInt("point_use"));
 					order.setFinal_price(rs.getInt("final_price"));
 					order.setPro_name(rs.getString("pro_name"));
 					order.setCancel_req(rs.getString("cancel_req").charAt(0));
@@ -1144,7 +1148,7 @@ public class AdminDAO {
 					orderProView.setPro_qnt(rs.getInt("pro_qnt"));
 					orderProView.setSel_num(sel_num);
 					
-					orderProList.add(orderProView);//리스트는 에드 해줘야한다.
+					orderProList.add(orderProView);
 									
 				}
 				
