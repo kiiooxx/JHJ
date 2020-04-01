@@ -64,7 +64,8 @@
 					</td>
 					<td class="left">
 						${list.pro_name }<br>[옵션 : ${list.color } / ${list.pro_size }]</td>
-					<td>${list.pro_price }</td>
+						<fmt:formatNumber var="price" value="${list.pro_price}" pattern="#,###"/>
+					<td>${price }</td>
 					<td>${list.bas_pro_qnt }</td>
 					<fmt:formatNumber var="total2" value="${list.pro_price * list.bas_pro_qnt }" pattern="#,###"/>
 					<td>${total2 }</td>

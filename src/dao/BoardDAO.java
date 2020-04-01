@@ -383,7 +383,12 @@ public class BoardDAO {
 		}
 				
 		if(!board_date.equals("all")) {
-			sql += "board_date > date_add(now(), interval " + board_date + " day)";
+			
+			if(board_date.equals("-0")) {
+				sql += "DATE_FORMAT(board_date, \"%Y-%m-%d\") = CURDATE()";
+			}else {
+				sql += "board_date > date_add(now(), interval " + board_date + " day)";
+			}
 			cnt++;
 		}
 		

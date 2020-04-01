@@ -81,7 +81,6 @@
          <p class="btx">
          	<a href="javascript:loginform.submit()" class="login_btn" onclick="sendit()">LOGIN</a>
          	<a href="joinForm.mem" class="join_btn">JOIN MEMBER</a>
-         	<jsp:include page="/log/index.html"></jsp:include>
          </p>
         
          

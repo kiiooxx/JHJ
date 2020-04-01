@@ -61,40 +61,39 @@ public class OrderProcessAction implements Action {
 		
 		CartListService cartListService = new CartListService();
 		ArrayList<Cart> cartList = new ArrayList<Cart>();
-//		ArrayList<Cart> cartList = cartListService.getCartList(request);
-		String pro_det_num[] = null;
-		String bas_pro_qnt[] = null;
-		int bas_pro_qnt2[] = null; //본격 넣을 값
-//		CartQtyService cartQtyService = new CartQtyService();
+		String pro_det_num[] = request.getParameterValues("pro_det_num");	//상품 상세 코드
+		CartQtyService cartQtyService = new CartQtyService();
 		
+		//바로 주문 했을 시
 		if(request.getParameter("directOrder").equals("true")) {
-			pro_det_num = request.getParameterValues("pro_det_num");
-			bas_pro_qnt = request.getParameterValues("bas_pro_qnt");
-			
-			if(bas_pro_qnt != null) {
-				bas_pro_qnt2 = new int[bas_pro_qnt.length];
-				for(int i = 0; i < bas_pro_qnt2.length; i++) {
-					bas_pro_qnt2[i] = Integer.parseInt(bas_pro_qnt[i]);
-				}
-			}
+			String bas_pro_qnt[] = request.getParameterValues("bas_pro_qnt");
+			String color[] = request.getParameterValues("color");
+			String size[] = request.getParameterValues("pro_size");
+			String pro_num[] = request.getParameterValues("pro_num");
+			String pro_name[] = request.getParameterValues("pro_name");
+			String pro_photo[] = request.getParameterValues("pro_photo");
+			String pro_price[] = request.getParameterValues("pro_price");
+
 			for(int i = 0; i < pro_det_num.length; i++) {
 				Cart cart = new Cart();
+				cart.setBas_num(i+1);
 				cart.setPro_det_num(pro_det_num[i]);
-				cart.setBas_pro_qnt(bas_pro_qnt2[i]);
+				cart.setBas_pro_qnt(Integer.parseInt(bas_pro_qnt[i]));
+				cart.setPro_num(Integer.parseInt(pro_num[i]));
+				cart.setPro_name(pro_name[i]);
+				cart.setPro_price(Integer.parseInt(pro_price[i]));
+				cart.setPro_photo(pro_photo[i]);
+				cart.setColor(color[i]);
+				cart.setPro_size(size[i]);
+				cart.setPro_det_num(pro_det_num[i]);
+
 				cartList.add(cart);
 			}
-			
-		}else if(request.getParameter("directOrder").equals("false")){
-			if(!(request.getParameter("pro_det_num") == null || request.getParameter("pro_det_num").equals(""))) {
-				//장바구니에서 선택한 상품만 주문할 경우 
-				pro_det_num = request.getParameter("pro_det_num").split(",");
-				cartList = cartListService.getCheckedCartList(pro_det_num, request);
-//				cartQtyService.delCartQty(pro_det_num, request);
-			}else {
-				//장바구니에서 전체 상품을 주문할 경우
-				cartList = cartListService.getCartList(request);
-//				cartQtyService.delAllCartQty(request);
-			}
+		}
+		//장바구니에서 주문했을 경우
+		else if(request.getParameter("directOrder").equals("false")){
+			cartList = cartListService.getCheckedCartList(pro_det_num, request);
+			cartQtyService.delCartQty(pro_det_num, request);	//주문한 상품 삭제
 		}
 		
 		int totalMoney = 0;//총 결제금액
