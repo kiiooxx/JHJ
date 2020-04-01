@@ -973,7 +973,7 @@ public class AdminDAO {
 		
 		
 		//주문관리에서 보는 주문 리스트 카운트 
-		public int selectOrderListCount(String searchType, String searchText, String orderDate, String[] deliStatus) {
+		public int selectOrderListCount(String searchType, String searchText, String orderDate, String[] deliStatus, String[] cancelReq) {
 			
 			int listCount = 0; 
 			PreparedStatement pstmt = null;
@@ -1001,7 +1001,13 @@ public class AdminDAO {
 						
 					}
 				}	
-					
+			}
+			if(!(cancelReq == null)) {
+				if(cancelReq.length == 1) {
+					sql += " AND (cancel_req='" + cancelReq[0] + "')";
+				}else if(cancelReq.length > 1) {
+					sql += " AND (cancel_req='" + cancelReq[0] + "') OR cancel_req ='" + cancelReq[1] + "')";
+				}
 			}
 			
 			
@@ -1028,7 +1034,7 @@ public class AdminDAO {
 
 		//주문관리에서 보는 주문 리스트 
 		public ArrayList<Order> selectOrderList(String searchType, String searchText, String orderDate,
-				String deliStatus[], int page, int limit) {
+				String deliStatus[], String[] cancelReq, int page, int limit) {
 			
 			PreparedStatement pstmt = null;
 			ResultSet rs = null;
@@ -1040,7 +1046,7 @@ public class AdminDAO {
 			String sql = "SELECT * FROM order_manage_main WHERE " + searchType  + " LIKE ?";
 			
 			if(!(orderDate == null || orderDate.trim().equals(""))) {
-				sql += " AND sel_date LIKE'" + orderDate + "%'";
+				sql += " AND sel_date='" + orderDate + "'";
 			}
 			
 			
@@ -1056,6 +1062,14 @@ public class AdminDAO {
 						sql += " OR (sel_status='" + deliStatus[i] + "')";
 					}
 				}	
+			}
+			
+			if(!(cancelReq == null)) {
+				if(cancelReq.length==1) {
+					sql += " AND (cancel_req='" + cancelReq[0] + "')";
+				}else if(cancelReq.length > 1) {
+					sql += " AND (cancel_req='" + cancelReq[0] + "') OR (cancel_req='" + cancelReq[1] + "')";
+				}
 			}
 			sql +=  " GROUP BY sel_date ORDER BY sel_date DESC LIMIT ?, ?";
 			

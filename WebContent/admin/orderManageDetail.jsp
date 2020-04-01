@@ -4,8 +4,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<%-- <c:set var="orderView" value="${requestScope.orderView }" /> --%>
-
 
 <!DOCTYPE html>
 <html>
@@ -13,13 +11,16 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
+<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
 <style>
-img{
+/* img{
 	width: 92px;
 }
 table{
 	width: 70%;
-}
+} */
 
 </style>
 <script>
@@ -39,7 +40,11 @@ function showPopup() {
 }
 </script>
 <body>
-<!-- <form action="orderManageDetail.ad" method="post"> -->
+
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+<h2 class="h3 mb-0 text-gray-800">주문 상세 내역</h2>
+</div>
+
 <h2>주문 상세 내역</h2>
 <table border=1>
 	<tr>

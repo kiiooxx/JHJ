@@ -1,4 +1,4 @@
-package controller;
+package product.action;
 
 import java.util.ArrayList;
 
@@ -31,6 +31,7 @@ public class DirectOrderPageAction implements Action {
 		String pro_photo = request.getParameter("pro_photo");
 		int pro_price = Integer.parseInt(request.getParameter("pro_price"));
 		
+		//CartListService cartListService = new CartListService();
 		
 		ArrayList<Cart> cartList2 = new ArrayList<>();	//바로 주문하기 누른 상품 리스트
 		int bas_num = 0;
@@ -46,12 +47,10 @@ public class DirectOrderPageAction implements Action {
 			cart.setPro_size(size[i]);
 			cart.setPro_det_num(pro_det_num[i]);
 			cart.setBas_pro_qnt(Integer.parseInt(qnt[i]));
-			System.out.println(pro_det_num[i]);
-			System.out.println(qnt[i]);
 			cartList2.add(cart);
-
 		}
 		
+
 		Member member = null;
 		HttpSession session = request.getSession();
 		String user_id = (String)session.getAttribute("id");
@@ -67,10 +66,13 @@ public class DirectOrderPageAction implements Action {
 			}
 		}
 		
+		
 		OrderPageService orderPageService = new OrderPageService();
 		member = orderPageService.getOrderUserInfo(user_id);
+		
+		
 		PointManageFormService pointManageFormService = new PointManageFormService();
-		PointMan pointMan = pointManageFormService.getPointOption(1);
+		PointMan pointMan = pointManageFormService.getPointOption(1);	
 		PointService pointService = new PointService();
 		Point memberPoint = pointService.memberPoint(user_id);
 		request.setAttribute("memberPoint", memberPoint);

@@ -16,6 +16,7 @@ import product.action.CartDeleteAction;
 import product.action.CartListAction;
 import product.action.CartQtyDownAction;
 import product.action.CartQtyUpAction;
+import product.action.DirectOrderPageAction;
 import product.action.MainListAction;
 import product.action.ProductDetailAction;
 import product.action.ProductListAction;

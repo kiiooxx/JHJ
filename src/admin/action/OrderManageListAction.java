@@ -37,6 +37,7 @@ public class OrderManageListAction implements Action {
 		String orderDate = "";
 		String deliChecked = "";//주문상태 체크된 값을 String으로 받고
 		String[] deliStatus = null;//StringTokenizer로 나눈 문자들을 넣을 배열
+		String[] cancelReq = null;
 		
 		if(!(request.getParameter("searchType")==null || request.getParameter("searchType").trim().equals(""))) {
 			searchType = request.getParameter("searchType");
@@ -64,6 +65,10 @@ public class OrderManageListAction implements Action {
 				deliStatus[i++] = st.nextToken();	
 			}			
 		}
+		if(request.getParameter("cancel_req") != null) {
+			cancelReq = request.getParameterValues("cancel_req");
+		}
+		
 		ArrayList<Order> orderList = new ArrayList<Order>();
 		
 		int page = 1;
@@ -76,8 +81,8 @@ public class OrderManageListAction implements Action {
 		
 		
 		OrderManageListService orderListService = new OrderManageListService();
-		int listCount = orderListService.getOrderListCount(searchType, searchText, orderDate, deliStatus);
-		orderList = orderListService.getOrderList(searchType, searchText, orderDate, deliStatus, page, limit);
+		int listCount = orderListService.getOrderListCount(searchType, searchText, orderDate, deliStatus, cancelReq);
+		orderList = orderListService.getOrderList(searchType, searchText, orderDate, deliStatus, cancelReq, page, limit);
 		
 		
 		int maxPage = (int)((double)listCount/limit+0.95);
@@ -98,6 +103,7 @@ public class OrderManageListAction implements Action {
 		request.setAttribute("searchText", searchText);
 		request.setAttribute("orderDate", orderDate);
 		request.setAttribute("deliStatus", deliStatus);
+		request.setAttribute("cancelReq", cancelReq);
 		
 		request.setAttribute("pagefile", "/admin/orderManageList.jsp");
 		forward = new ActionForward("/admin_template.jsp", false);

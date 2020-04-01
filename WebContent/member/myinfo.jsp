@@ -209,11 +209,11 @@ function sample6_execDaumPostcode() {
 				<tr>
 					<th><label for="gender"></label>성별</th>
 					<td><input type="radio" name="sex" id="gender1"  
-					value="남자" ${member.sex == "남" ? 'checked' : '' } />
+					value="남" ${member.sex == "남" ? 'checked' : '' } />
 
 							남자
 					 <input type="radio" name="sex" value="여"
-						id="gender2" value="여자" ${member.sex == "여" ? 'checked' : ''}/>여자</td>
+						id="gender2" value="여" ${member.sex == "여" ? 'checked' : ''}/>여자</td>
 				</tr>
 				<tr>
 					<th><label for="birth">생년월일</label></th>

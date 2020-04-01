@@ -30,12 +30,21 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>
-
+$(function(){
+	$("#exceptCancel").change(function(){
+		if($("#exceptCancel").prop("checked")){
+			$(".cancel").prop("checked", false);
+			$(".cancel").attr("disabled", true);
+		}else{
+			$(".cancel").attr("disabled", false);
+		}
+	});
+});
 </script>
 <style>
-<
+
 style>th {
 	background: #F6F6F6;
 }
@@ -77,24 +86,25 @@ style>th {
 							<tr>
 								<th>주문일</th>
 								<td>
-									<div class="container">
-										<div class="input-group date">
-											<input type="text" name="orderDate" class="form-control">
-											<span class="input-group-addon"> <i
-												class="glyphicon glyphicon-calendar"></i></span>
-										</div>
-									</div>
+									<input type="date" name="orderDate">
 								</td>
 							</tr>
 							<tr>
 								<th>주문상태</th>
-								<td><input type="checkbox" name="deliStatus" value="order_done">주문완료 
-									<input type="checkbox" name="deliStatus" value="check_paid">입금확인
-									<input type="checkbox" name="deliStatus" value="send_pro">상품발송 
-									<input type="checkbox" name="deliStatus" value="deli_ing">배송중
-									<input type="checkbox" name="deliStatus" value="deli_fin">배송완료
+								<td><input type="checkbox" name="deliStatus" value="order_done">주문완료 &nbsp;
+									<input type="checkbox" name="deliStatus" value="check_paid">입금확인 &nbsp;
+									<input type="checkbox" name="deliStatus" value="send_pro">상품발송 &nbsp;
+									<input type="checkbox" name="deliStatus" value="deli_ing">배송중 &nbsp;
+									<input type="checkbox" name="deliStatus" value="deli_fin">배송완료 &nbsp;
 									<input type="checkbox" name="deliStatus" value="order_confirm">구매확정
-									<input type="checkbox" name="deliStatus" value="cancel_req">취소요청
+								</td>
+							</tr>
+							<tr>
+								<th>주문취소신청</th>
+								<td>
+									<input type="checkbox" name="cancel_req" class="cancel" value="Y">취소요청 &nbsp;
+									<input type="checkbox" name="cancel_req" class="cancel" value="C">취소완료 &nbsp;
+									<input type="checkbox" name="cancel_req" id="exceptCancel" value="N">취소요청/완료상태 제외하고 보기
 								</td>
 							</tr>
 						</table>
@@ -195,7 +205,7 @@ style>th {
 								${deliStatus}
 								</c:forEach>
 							</c:if>
-							">[이전]</a>&nbsp;	
+							&cancel_req=${cancel_req}">[이전]</a>&nbsp;	
 						</c:otherwise>
 					</c:choose>
 
@@ -212,7 +222,7 @@ style>th {
 										${deliStatus}
 										</c:forEach>
 									</c:if>
-								">[${a}]</a>
+								&cancel_req=${cancel_req}">[${a}]</a>
 							</c:otherwise>
 						</c:choose>
 					</c:forEach>
@@ -227,7 +237,7 @@ style>th {
 									${deliStatus}
 								</c:forEach>
 							</c:if>
-							">[다음]</a>
+							&cancel_req=${cancel_req}">[다음]</a>
 						</c:otherwise>
 					</c:choose>
 				</section>

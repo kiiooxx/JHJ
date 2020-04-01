@@ -23,8 +23,11 @@ public class CartListService {
 	public ArrayList<Cart> getCheckedCartList(String[] pro_det_num, HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		
+		System.out.println("cartListService pro_Det_num[0]:" + pro_det_num[0]);
+		System.out.println("pro_det_num.length: " + pro_det_num.length);
 		ArrayList<Cart> cartList = (ArrayList<Cart>)session.getAttribute("cartList");
-		System.out.println(cartList);
+		System.out.println("CartListService cartList:"+ cartList);
+		System.out.println("CartListService cartListSize!!!!: "+ cartList.size());
 		ArrayList<Cart> cartList2 = new ArrayList<Cart>();
 		int bas_num = 0;
 		

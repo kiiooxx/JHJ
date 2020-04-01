@@ -46,6 +46,9 @@
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script type="text/javascript" src="//code.jquery.com/jquery-2.1.1.min.js"></script>
 
+<script src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script>
 
 
 <script>
@@ -82,53 +85,7 @@ $(document).ready(function() {
 		}
 	});
    
-    //datepicker 한국어로 사용하기 위한 언어설정
-    $.datepicker.setDefaults($.datepicker.regional['ko']);     
 
-    // Datepicker            
-    $(".datepicker").datepicker({
-        showButtonPanel: true,
-        dateFormat: "yy-mm-dd",
-        onClose : function ( selectedDate ) {
-        
-            var eleId = $(this).attr("id");
-            var optionName = "";
-
-            if(eleId.indexOf("startDate") > 0) {
-                eleId = eleId.replace("startDate", "endDate");
-                optionName = "minDate";
-            } else {
-                eleId = eleId.replace("endDate", "startDate");
-                optionName = "maxDate";
-            }
-
-            $("#"+eleId).datepicker( "option", optionName, selectedDate );        
-            $(".searchDate").find(".chkbox2").removeClass("on"); 
-        }
-    }); 
-
-    //시작일.
-    /*$('#searchStartDate').datepicker("option","onClose", function( selectedDate ) {    
-        // 시작일 datepicker가 닫힐때
-        // 종료일의 선택할수있는 최소 날짜(minDate)를 선택한 시작일로 지정
-        $("#searchEndDate").datepicker( "option", "minDate", selectedDate );
-        $(".searchDate").find(".chkbox2").removeClass("on");
-    });
-    */
-
-    //종료일.
-    /*$('#searchEndDate').datepicker("option","onClose", function( selectedDate ) {    
-        // 종료일 datepicker가 닫힐때
-        // 시작일의 선택할수있는 최대 날짜(maxDate)를 선택한 종료일로 지정 
-        $("#searchStartDate").datepicker( "option", "maxDate", selectedDate );
-        $(".searchDate").find(".chkbox2").removeClass("on");
-    });
-    */
-
-    $(".dateclick").dateclick();    // DateClick
-    $(".searchDate").schDate();        // searchDate
-    
-});
 
 // Search Date
 jQuery.fn.schDate = function(){
@@ -255,64 +212,11 @@ function checkAll(theForm){
                   <tr>
                           <th>주문일</th>
                           <td>
-                              <ul class="searchDate">
-                                  <li>
-                                      <span class="chkbox2">
-                                          <input type="radio" name="dateType" id="dateType1" onclick="setSearchDate('0d')"/>
-                                          <label for="dateType1">당일</label>
-                                      </span>
-                                  </li>
-                                  <li>
-                                      <span class="chkbox2">
-                                          <input type="radio" name="dateType" id="dateType2" onclick="setSearchDate('3d')"/>
-                                          <label for="dateType2">3일</label>
-                                      </span>
-                                  </li>
-                                  <li>
-                                      <span class="chkbox2">
-                                          <input type="radio" name="dateType" id="dateType3" onclick="setSearchDate('1w')"/>
-                                          <label for="dateType3">1주</label>
-                                      </span>
-                                  </li>
-                                  <li>
-                                      <span class="chkbox2">
-                                          <input type="radio" name="dateType" id="dateType4" onclick="setSearchDate('2w')"/>
-                                          <label for="dateType4">2주</label>
-                                      </span>
-                                  </li>
-                                  <li>
-                                      <span class="chkbox2">
-                                          <input type="radio" name="dateType" id="dateType5" onclick="setSearchDate('1m')"/>
-                                          <label for="dateType5">1개월</label>
-                                      </span>
-                                  </li>
-                                  <li>
-                                      <span class="chkbox2">
-                                          <input type="radio" name="dateType" id="dateType6" onclick="setSearchDate('3m')"/>
-                                          <label for="dateType6">3개월</label>
-                                      </span>
-                                  </li>
-                                  <li>
-                                      <span class="chkbox2">
-                                          <input type="radio" name="dateType" id="dateType7" onclick="setSearchDate('6m')"/>
-                                          <label for="dateType7">6개월</label>
-                                      </span>
-                                  </li>
-                              </ul>
-                              
-                              <div class="clearfix">
                                   <!-- 시작일 -->
-                                  <span class="dset">
-                                      <input type="text" class="datepicker inpType" name="startDate" id="startDate" >
-                                      <a href="#none" class="btncalendar dateclick">달력</a>
-                                  </span>
+                                      <input type="date" name="startDate" id="startDate">
                                   <span class="demi">~</span>
                                   <!-- 종료일 -->
-                                  <span class="dset">
-                                      <input type="text" class="datepicker inpType" name="endDate" id="endDate" >
-                                      <a href="#none" class="btncalendar dateclick">달력</a>
-                                  </span>
-                              </div>    
+                                      <input type="date" name="endDate" id="endDate">
                           </td>
                       </tr>   
                </table>

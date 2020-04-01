@@ -39,24 +39,24 @@ public class OrderManageListService {
 	}
 
 	//관리자페이지에서 주문관리 목록
-	public int getOrderListCount(String searchType, String searchText, String orderDate, String[] deliStatus) {
+	public int getOrderListCount(String searchType, String searchText, String orderDate, String[] deliStatus, String[] cancelReq) {
 		int listCount = 0;
 		Connection con = getConnection();
 		AdminDAO adminDAO = AdminDAO.getInstance();
 		adminDAO.setConnection(con);
-		listCount = adminDAO.selectOrderListCount(searchType, searchText, orderDate, deliStatus);
+		listCount = adminDAO.selectOrderListCount(searchType, searchText, orderDate, deliStatus, cancelReq);
 		close(con);
 		
 		
 		return listCount;
 	}
 
-	public ArrayList<Order> getOrderList(String searchType, String searchText, String orderDate, String[] deliStatus, int page, int limit) {
+	public ArrayList<Order> getOrderList(String searchType, String searchText, String orderDate, String[] deliStatus, String[] cancelReq, int page, int limit) {
 		Connection con = getConnection();
 		AdminDAO adminDAO = AdminDAO.getInstance();
 		adminDAO.setConnection(con);
 		ArrayList<Order> orderList = null;
-		orderList = adminDAO.selectOrderList(searchType, searchText, orderDate, deliStatus, page, limit);
+		orderList = adminDAO.selectOrderList(searchType, searchText, orderDate, deliStatus, cancelReq, page, limit);
 		close(con);
 		
 		

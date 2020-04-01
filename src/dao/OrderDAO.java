@@ -105,12 +105,14 @@ public class OrderDAO {
 				pstmt.setString(2, orderDet2.get(i).getPro_det_num());
 				pstmt.setInt(3, orderDet2.get(i).getPro_qnt()); 
 				insertCount = pstmt.executeUpdate();
+				System.out.println("OrderDAO insertCount in:" + insertCount);
 			}
 			
 		}catch(Exception e){
 			e.printStackTrace();
 			System.out.println("orderDAO error  - orderDet");
 		}
+		System.out.println("OrderDAO insertCount out:" + insertCount);
 		return insertCount;
 	}
 	

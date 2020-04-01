@@ -3,8 +3,10 @@ package product.action;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.StringTokenizer;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -58,20 +60,41 @@ public class OrderProcessAction implements Action {
 
 		
 		CartListService cartListService = new CartListService();
-		ArrayList<Cart> cartList = cartListService.getCartList(request);
+		ArrayList<Cart> cartList = new ArrayList<Cart>();
+//		ArrayList<Cart> cartList = cartListService.getCartList(request);
 		String pro_det_num[] = null;
+		String bas_pro_qnt[] = null;
+		int bas_pro_qnt2[] = null; //본격 넣을 값
 //		CartQtyService cartQtyService = new CartQtyService();
 		
-		if(!(request.getParameter("pro_det_num") == null || request.getParameter("pro_det_num").equals(""))) {
-			//장바구니에서 선택한 상품만 주문할 경우 
-			pro_det_num = request.getParameter("pro_det_num").split(",");
-			cartList = cartListService.getCheckedCartList(pro_det_num, request);
+		if(request.getParameter("directOrder").equals("true")) {
+			pro_det_num = request.getParameterValues("pro_det_num");
+			bas_pro_qnt = request.getParameterValues("bas_pro_qnt");
 			
-//			cartQtyService.delCartQty(pro_det_num, request);
-		}else {
-			//장바구니에서 전체 상품을 주문할 경우
-			cartList = cartListService.getCartList(request);
-//			cartQtyService.delAllCartQty(request);
+			if(bas_pro_qnt != null) {
+				bas_pro_qnt2 = new int[bas_pro_qnt.length];
+				for(int i = 0; i < bas_pro_qnt2.length; i++) {
+					bas_pro_qnt2[i] = Integer.parseInt(bas_pro_qnt[i]);
+				}
+			}
+			for(int i = 0; i < pro_det_num.length; i++) {
+				Cart cart = new Cart();
+				cart.setPro_det_num(pro_det_num[i]);
+				cart.setBas_pro_qnt(bas_pro_qnt2[i]);
+				cartList.add(cart);
+			}
+			
+		}else if(request.getParameter("directOrder").equals("false")){
+			if(!(request.getParameter("pro_det_num") == null || request.getParameter("pro_det_num").equals(""))) {
+				//장바구니에서 선택한 상품만 주문할 경우 
+				pro_det_num = request.getParameter("pro_det_num").split(",");
+				cartList = cartListService.getCheckedCartList(pro_det_num, request);
+//				cartQtyService.delCartQty(pro_det_num, request);
+			}else {
+				//장바구니에서 전체 상품을 주문할 경우
+				cartList = cartListService.getCartList(request);
+//				cartQtyService.delAllCartQty(request);
+			}
 		}
 		
 		int totalMoney = 0;//총 결제금액
@@ -83,7 +106,6 @@ public class OrderProcessAction implements Action {
 			money = cartList.get(i).getPro_price()*cartList.get(i).getBas_pro_qnt();
 			System.out.println(money);
 			totalMoney += money;
-			System.out.println("cartList:"+cartList);
 		}
 		
 		if(totalMoney < 50000) {
@@ -119,7 +141,7 @@ public class OrderProcessAction implements Action {
 		//주문 상세 db에 넣을 내용 
 		ArrayList<OrderDet> orderDet2 = new ArrayList<OrderDet>();
 		
-		if(cartList != null) {
+		if(!cartList.isEmpty()) {
 			for(int i=0; i<cartList.size(); i++) {
 				OrderDet orderDet = new OrderDet();
 				orderDet.setSel_num(sel_num);
@@ -128,6 +150,7 @@ public class OrderProcessAction implements Action {
 				orderDet2.add(orderDet);
 			}
 		}
+		
 		
 		//결제정보 db에 넣을거
 		PayInfo payInfo = new PayInfo();

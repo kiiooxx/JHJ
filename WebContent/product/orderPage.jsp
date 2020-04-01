@@ -11,7 +11,6 @@
 	</c:otherwise>
 </c:choose>
 
-
 <script>
 function openPostcode(){
 	new daum.Postcode({
@@ -288,7 +287,10 @@ function chkForm(f){
 					<c:when test="${cartList2 ne null }">
 						<c:forEach var="list" items="${cartList2 }">
 						<tr>
-							<%-- <td><input type="checkbox" name="chk" value="${list.pro_det_num }" /></td> --%>
+						<input type="hidden" name="directOrder" value="true"/>
+						<input type="hidden" name="pro_det_num" value="${list.pro_det_num }" />
+						<input type="hidden" name="bas_pro_qnt" value="${list.bas_pro_qnt }"/>
+						
 							<td><img src="<%=request.getContextPath() %>/upload/${list.pro_photo }" class="cartImage"></td>
 							<td>${list.pro_name }<br>[옵션 : ${list.color } / ${list.pro_size }]</td>
 							<fmt:formatNumber var="price" value="${list.pro_price}" pattern="#,###"/>
@@ -305,6 +307,8 @@ function chkForm(f){
 						<c:forEach var="list" items="${cartList }">
 						<tr>
 							<%-- <td><input type="checkbox" name="chk" value="${list.pro_det_num }" /></td> --%>
+							<input type="hidden" name="directOrder" value="false"/>
+							<input type="hidden" name="pro_det_num" value="${list.pro_det_num }" />
 							<td><img src="<%=request.getContextPath() %>/upload/${list.pro_photo }"  class="cartImage"></td>
 							<td>${list.pro_name }<br>[옵션 : ${list.color } / ${list.pro_size }]</td>
 							<fmt:formatNumber var="price" value="${list.pro_price}" pattern="#,###"/>
@@ -524,6 +528,7 @@ function chkForm(f){
 		<!--name=result2 orderResult.jsp 최종결제금액 -->
 		<input type="hidden" name="reviewPoint" id="reviewPoint" value="${pointMan.p_review }">
 		<input type="hidden" name="confrimPoint" id="confrimPoint" value="${applyRate }">
+	
 	</div>
 	</form>
 </div>
