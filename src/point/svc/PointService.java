@@ -50,6 +50,24 @@ public class PointService {
 		return isPoint;
 	}
 	
+	public boolean reviewPoint(String user_id) {
+		boolean isPoint = false;
+		Connection con = getConnection();
+		PointDAO pointDAO = PointDAO.getInstance();
+		pointDAO.setConnection(con);
+		int insertCount = pointDAO.checkReviewOption(user_id);
+		
+		if(insertCount > 0) {
+			commit(con);
+			isPoint = true;
+		}else {
+			rollback(con);
+		}
+		close(con);
+		
+		return isPoint;
+	}
+	
 	//회원 적립금 조회
 	public Point memberPoint(String user_id) {
 		
