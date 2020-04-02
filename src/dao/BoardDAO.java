@@ -240,14 +240,15 @@ public class BoardDAO {
 		if(pro_num != 0) {
 			sql += " and pro_num = " + pro_num;
 		}
-		sql += " order by board_notice='Y' desc, board_num desc limit ?,?";
+		sql += " order by board_notice='Y' desc, board_num desc ";
 		
+		if(limit != 0) {
+			sql += "limit " + startrow + "," + limit;
+		}
 		try {
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, board_type);
-			pstmt.setInt(2, startrow);
-			pstmt.setInt(3, limit);
-			
+
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
@@ -299,7 +300,11 @@ public class BoardDAO {
 		}
 				
 		if(!board_date.equals("all")) {
-			sql += "board_date > date_add(now(), interval " + board_date + " day)";
+			if(board_date.equals("-0")) {
+				sql += "DATE_FORMAT(board_date, \"%Y-%m-%d\") = CURDATE()";
+			}else {
+				sql += "board_date > date_add(now(), interval " + board_date + " day)";
+			}
 			cnt++;
 		}
 		
