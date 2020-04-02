@@ -90,11 +90,9 @@ public class PointDAO {
 				usePoint = rs.getInt("point_use");
 				user_id = rs.getString("user_id");
 				if(usePoint > 0) {
-					System.out.println("hi");
 					pstmt = con.prepareStatement(sql2);
 					pstmt.setString(1, user_id);
 					rs = pstmt.executeQuery();
-					System.out.println("hi");
 					if(rs.next()) {
 						System.out.println("bye");
 						beforeFinal = rs.getInt("point_final");
@@ -229,13 +227,18 @@ public class PointDAO {
 					if(pReview > 0) {
 						pstmt2 = con.prepareStatement(sql2);
 						pstmt2.setString(1, user_id);
-						afterPoint = rs.getInt("point_final");
+						rs = pstmt2.executeQuery();
 						
-						pstmt3 = con.prepareStatement(sql3);
-						pstmt3.setInt(1,pReview);
-						pstmt3.setInt(2, afterPoint);
-						pstmt3.setString(3, user_id);
-						insertCount = pstmt3.executeUpdate();
+						if(rs.next()) {
+							afterPoint = rs.getInt("point_final");
+							
+							pstmt3 = con.prepareStatement(sql3);
+							pstmt3.setInt(1,pReview);
+							pstmt3.setInt(2, afterPoint);
+							pstmt3.setString(3, user_id);
+							insertCount = pstmt3.executeUpdate();
+						}
+						
 					}
 				}
 				
