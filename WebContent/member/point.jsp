@@ -35,19 +35,21 @@
 			<c:set var="size" value="${fn:length(myPointList) }"/>
 			<c:if test="${size > 0 }">
 				<c:forEach var="myPoint2" items="${myPointList}" varStatus="i">
-					<tr>
-						<td>
-							<fmt:parseDate value="${myPoint2.point_date}" var="date" pattern="yyyy-MM-dd HH:mm:ss"/>
-							<fmt:formatDate var="dateFmt" value="${date}" pattern="yyyy-MM-dd"/>
-							${dateFmt}
-						</td>
-						<td style="text-align:left">${myPoint2.point_reason}</td>	
-						<td style="text-align:right">
-							${myPoint2.increase }
-							<fmt:formatNumber var="point_price" value="${myPoint2.point_price}" pattern="#,###"/>
-							${point_price}원
-						</td>
-					</tr>
+					<c:if test="${myPoint2.point_reason != ''}">
+						<tr>
+							<td>
+								<fmt:parseDate value="${myPoint2.point_date}" var="date" pattern="yyyy-MM-dd HH:mm:ss"/>
+								<fmt:formatDate var="dateFmt" value="${date}" pattern="yyyy-MM-dd"/>
+								${dateFmt}
+							</td>
+							<td style="text-align:left">${myPoint2.point_reason}</td>	
+							<td style="text-align:right">
+								${myPoint2.increase }
+								<fmt:formatNumber var="point_price" value="${myPoint2.point_price}" pattern="#,###"/>
+								${point_price}원
+							</td>
+						</tr>
+					</c:if>
 				</c:forEach>
 			</c:if>
 			
