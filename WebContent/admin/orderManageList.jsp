@@ -94,6 +94,23 @@ style>th {
 								</td>
 							</tr>
 							<tr>
+                     			<th>구매금액</th>
+                     			<td>
+                        			<input type="text" id="startPrice" name="startPrice" onChange="priceComp(this);" size="5">원  ~ 
+                        			<input type="text" id="endPrice" name="endPrice" onChange="priceComp(this);" size="5">원
+                     			</td>
+                  			</tr>
+                  			<tr>
+                          		<th>주문일</th>
+                          		<td>
+                                  <!-- 시작일 -->
+                                <input type="date" name="startDate" id="startDate">
+                                <span class="demi">~</span>
+                                  <!-- 종료일 -->
+                                 <input type="date" name="endDate" id="endDate">
+                      			</td>
+                      		</tr>
+							<tr>
 								<th>주문상태</th>
 								<td><input type="checkbox" name="deliStatus" value="order_done">주문완료 &nbsp;
 									<input type="checkbox" name="deliStatus" value="check_paid">입금확인 &nbsp;
@@ -204,7 +221,8 @@ style>th {
 							[이전]&nbsp;	
 						</c:when>
 						<c:otherwise>
-							<a href="orderManageList.ad?page=${pageInfo.page-1 }&searchType=${searchType}&searchText=${searchText}&orderDate=${orderDate}&deliStatus=
+							<a href="orderManageList.ad?page=${pageInfo.page-1 }&searchType=${searchType}&searchText=${searchText}&startDate=${startDate}&endDate=${endDate}&startPrice=${startPrice}&endPrice=${endPrice}
+							&deliStatus=
 							<c:if test="${deliStatus ne null }">
 								<c:forEach items="${deliStatus }" var="deliStatus">
 								${deliStatus}
@@ -221,7 +239,8 @@ style>th {
 								[${a}]				<!-- 현재페이지는 링크 안걸어도 되니까. -->
 							</c:when>
 							<c:otherwise>
-								<a href="orderManageList.ad?page=${a}&searchType=${searchType}&searchText=${searchText}&orderDate=${orderDate}&deliStatus=
+								<a href="orderManageList.ad?page=${a}&searchType=${searchType}&searchText=${searchText}&startDate=${startDate}&endDate=${endDate}&startPrice=${startPrice}&endPrice=${endPrice}
+								&deliStatus=
 									<c:if test="${deliStatus ne null }">
 										<c:forEach items="${deliStatus }" var="deliStatus">
 										${deliStatus }
@@ -242,7 +261,8 @@ style>th {
 							&nbsp;[다음]
 						</c:when>
 						<c:otherwise>
-							<a href="orderManageList.ad?page=${pageInfo.page+1 }&searchType=${searchType}&searchText=${searchText}&orderDate=${orderDate}&deliStatus=
+							<a href="orderManageList.ad?page=${pageInfo.page+1 }&searchType=${searchType}&searchText=${searchText}&startDate=${startDate}&endDate=${endDate}&startPrice=${startPrice}&endPrice=${endPrice}
+							&deliStatus=
 							<c:if test="${deliStatus ne null }">
 								<c:forEach items="${deliStatus }" var="deliStatus">
 									${deliStatus}

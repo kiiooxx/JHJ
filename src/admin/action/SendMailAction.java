@@ -1,10 +1,17 @@
 package admin.action;
 
 
+import java.util.ArrayList;
 import java.util.Properties;
 
 import authTest.GoogleAuthentication;
+import vo.BoardBean;
+import vo.Cart;
+import vo.DeliInfo;
 import vo.MailOption;
+import vo.Order;
+import vo.OrderProView;
+import vo.PayInfo;
 
 import javax.mail.Address;
 import javax.mail.Authenticator;
@@ -38,11 +45,61 @@ public class SendMailAction {
 			
 			//메일 내용 가져오기
 			String id = request.getParameter("id");
+			//BoardBean boardBean = (BoardBean) request.getAttribute("boardBean");
+			//BoardBean boardBean_ref = (BoardBean) request.getAttribute("boardBean_ref");
 			String sender = "camillayin@gmail.com";
 			String receiver = request.getParameter("email");
 			String subject = mailForm.getTitle();
 			String content = mailForm.getContent();
-			content = content.replace("{member_id}", id);
+			if(id != null) {
+				content = content.replace("{member_id}", id);
+			}
+			
+			if(col.equals("order_info")) {
+				//주문안내메일
+				Order order = new Order();
+				order = (Order) request.getAttribute("order");
+				DeliInfo deliInfo = new DeliInfo();
+				deliInfo = (DeliInfo) request.getAttribute("deliInfo");
+				PayInfo payInfo = new PayInfo();
+				payInfo = (PayInfo) request.getAttribute("payInfo");
+				ArrayList<Cart> cart = (ArrayList<Cart>) request.getAttribute("cartList");
+				
+				
+				String user_name = request.getParameter("user_name");
+				content = content.replace("{고객성명}", user_name);
+							
+				String sel_num = order.getSel_num();
+				content = content.replace("{주문번호}", sel_num);
+				
+				//String pro_name = cart.get();
+				//content = content.replace("{주문상품}", pro_name);
+				
+				String rec_name = deliInfo.getRec_name();
+				content = content.replace("{수령인}", rec_name);
+				
+				String rec_tel = deliInfo.getRec_tel();
+				content = content.replace("{연락처}", rec_tel);
+				
+				String rec_addr = deliInfo.getDeli_addr1() + deliInfo.getDeli_addr2();
+				content = content.replace("{주소}", rec_addr);
+				
+				String pay_type = payInfo.getPay_type();
+				content = content.replace("{결제수단}", pay_type);
+				
+				String price = Integer.toString(order.getFinal_price()+order.getPoint_use()-order.getDeli_price());
+				content = content.replace("{주문금액합계}", price);
+				
+				String deli_price = Integer.toString(order.getDeli_price());
+				content = content.replace("{배송비합계}", deli_price);
+				
+				String point_use = Integer.toString(order.getPoint_use());
+				content = content.replace("{적립금사용}", point_use);
+				
+				String final_price = Integer.toString(order.getFinal_price());
+				content = content.replace("{최종결제금액}", final_price);
+			}
+			
 			
 			try {
 				Properties properties = System.getProperties();

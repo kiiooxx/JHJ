@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import action.Action;
+import admin.action.SendMailAction;
 import admin.svc.PointManageFormService;
 import point.svc.PointService;
 import product.svc.CartListService;
@@ -164,15 +165,7 @@ public class OrderProcessAction implements Action {
 		OrderProcessService orderProcessService = new OrderProcessService();
 		boolean addOrderSuccess = orderProcessService.addOrder(deliInfo, order, orderDet2, payInfo);
 
-		if(usePoint > 0) {
-			PointService pointService = new PointService();
-			boolean isUse = pointService.usePoint(sel_num);
-			if(!isUse) {
-				System.out.println("적립금 마이너스 실패");
-			}else {
-				System.out.println("적립금 마이너스 성공");
-			}
-		}
+		
 		
 		
 		if(!addOrderSuccess) {
@@ -186,6 +179,19 @@ public class OrderProcessAction implements Action {
 		}else {
 			PointManageFormService pointManageFormService = new PointManageFormService();
 			PointMan pointMan = pointManageFormService.getPointOption(1);
+			
+			if(usePoint > 0) {
+				PointService pointService = new PointService();
+				boolean isUse = pointService.usePoint(sel_num);
+				if(!isUse) {
+					System.out.println("적립금 마이너스 실패");
+				}else {
+					System.out.println("적립금 마이너스 성공");
+				}
+			}
+			
+			
+			
 			request.setAttribute("totalMoney", totalMoney);
 			request.setAttribute("deliInfo", deliInfo);
 			request.setAttribute("order", order);
@@ -198,6 +204,8 @@ public class OrderProcessAction implements Action {
 			request.setAttribute("total1", total1);
 			request.setAttribute("result2", result2);
 			
+			SendMailAction sendMailAction = new SendMailAction();
+			sendMailAction.mailling(request, response);
 			
 			request.setAttribute("pagefile", "/product/orderResult.jsp");
 			forward = new ActionForward("/template.jsp", false);

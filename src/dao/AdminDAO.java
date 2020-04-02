@@ -992,7 +992,7 @@ public class AdminDAO {
 		
 		
 		//주문관리에서 보는 주문 리스트 카운트 
-		public int selectOrderListCount(String searchType, String searchText, String orderDate, String[] deliStatus, String[] cancelReq) {
+		public int selectOrderListCount(String searchType, String searchText, String startDate, String endDate, int startPrice, int endPrice, String[] deliStatus, String[] cancelReq) {
 			
 			int listCount = 0; 
 			PreparedStatement pstmt = null;
@@ -1002,8 +1002,18 @@ public class AdminDAO {
 			
 			String sql = "SELECT COUNT(*) FROM order_manage_list WHERE " + searchType + " LIKE ?";
 			
-			if(!(orderDate == null || orderDate.trim().equals(""))) {
-				sql += " AND sel_date LIKE '" + orderDate + "%'";
+			//주문가격 입력한 경우
+			if(startPrice != 0 && endPrice == 0) {
+				sql += " AND final_price >=" + startPrice ;
+			}else if(startPrice == 0 && endPrice != 0) {
+				sql += " AND final_price <=" + endPrice ;
+			}else if(startPrice != 0 && endPrice != 0) {
+				sql += " AND final_price >=" + startPrice + " AND final_price <=" + endPrice;
+			}
+			
+			//날짜 입력한 경우
+			if(!(startDate.trim().equals("") && endDate.trim().equals(""))) {
+				sql += " AND sel_date BETWEEN '" + startDate + "' AND '" + endDate + "'";
 			}
 			
 			if(!(deliStatus == null)) {
@@ -1029,7 +1039,6 @@ public class AdminDAO {
 				}
 			}
 			
-			
 			try {
 				pstmt = con.prepareStatement(sql);
 				pstmt.setString(1, inputText);
@@ -1038,27 +1047,25 @@ public class AdminDAO {
 				if(rs.next()) {
 					listCount = rs.getInt(1);
 				}
-				
+				System.out.println("DAO listCount : " + listCount);
 			}catch(Exception e) {
 				System.out.println("selectListCount(OrderManage) error : " + e);
 			}finally {
 				close(rs);
 				close(pstmt);
 			}
-			
+			System.out.println("selectListCount(OrderManage) sql : " + sql);
 			
 			return listCount;
 			
 		}
 
 		//주문관리에서 보는 주문 리스트 
-		public ArrayList<Order> selectOrderList(String searchType, String searchText, String orderDate,
-				String deliStatus[], String[] cancelReq, int page, int limit) {
+		public ArrayList<Order> selectOrderList(String searchType, String searchText, String startDate,
+				String endDate, int startPrice, int endPrice, String deliStatus[], String[] cancelReq, int page, int limit) {
 			System.out.println("DAO =  searchType : "+searchType);
 			System.out.println("DAO =  searchText : "+searchText);
-			System.out.println("DAO =  orderDate : "+orderDate);
-			System.out.println("DAO =  cancelReq : "+cancelReq);
-			System.out.println("DAO =  deliStatus : "+deliStatus);
+			System.out.println("DAO =  startDate : "+startDate);
 			PreparedStatement pstmt = null;
 			ResultSet rs = null;
 			ArrayList<Order> orderList = new ArrayList<Order>();
@@ -1068,11 +1075,19 @@ public class AdminDAO {
 			
 			String sql = "SELECT * FROM order_manage_list WHERE " + searchType  + " LIKE ?";
 			
-			if(!(orderDate == null || orderDate.trim().equals(""))) {
-				sql += " AND sel_date LIKE '" + orderDate + "%'";
+			//주문가격 입력한 경우
+			if(startPrice != 0 && endPrice == 0) {
+				sql += " AND final_price >=" + startPrice ;
+			}else if(startPrice == 0 && endPrice != 0) {
+				sql += " AND final_price <=" + endPrice ;
+			}else if(startPrice != 0 && endPrice != 0) {
+				sql += " AND final_price >=" + startPrice + " AND final_price <=" + endPrice;
 			}
 			
-			
+			//날짜 입력한 경우
+			if(!(startDate.trim().equals("") && endDate.trim().equals(""))) {
+				sql += " AND sel_date BETWEEN '" + startDate + "' AND '" + endDate + "'";
+			}
 			
 			if(!(deliStatus == null)) {
 				if(deliStatus.length == 1) {
@@ -1158,7 +1173,6 @@ public class AdminDAO {
 					orderProView.setColor(rs.getString("color"));
 					orderProView.setPro_qnt(rs.getInt("pro_qnt"));
 					orderProView.setSel_num(sel_num);
-					
 					orderProList.add(orderProView);
 									
 				}

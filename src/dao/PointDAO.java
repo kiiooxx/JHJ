@@ -79,9 +79,9 @@ public class PointDAO {
 		int afterFinal = 0;//적립금 빼고난 후
 		String user_id = "";
 		String sql1 = "SELECT user_id, point_use FROM order_page WHERE sel_num="+sel_num;
-		String sql2 = "SELECT point_final FROM point WHERE user_id=? AND point_date=(SELECT MAX(point_date) FROM point)";
-		String sql3 = "INSERT INTO point (point_date, point_price, point_final, increase, user_id, point_reason) "
-				+"VALUES (NOW(), ?, ?, '-', ?, '주문 시 사용')";
+		String sql2 = "SELECT point_final FROM point WHERE user_id=? ORDER BY point_date DESC LIMIT 1";
+		String sql3 = "INSERT INTO point (point_date, point_price, point_final, increase, user_id, point_reason)"
+				+" VALUES (NOW(), ?, ?, '-', ?, '주문 시 사용')";
 		try {
 			pstmt = con.prepareStatement(sql1);
 			rs = pstmt.executeQuery();
@@ -94,7 +94,6 @@ public class PointDAO {
 					pstmt.setString(1, user_id);
 					rs = pstmt.executeQuery();
 					if(rs.next()) {
-						System.out.println("bye");
 						beforeFinal = rs.getInt("point_final");
 						afterFinal = beforeFinal-usePoint;
 						
@@ -103,7 +102,7 @@ public class PointDAO {
 						pstmt.setInt(2, afterFinal);
 						pstmt.setString(3, user_id);
 						insertCount = pstmt.executeUpdate();
-						
+						System.out.println("orderUsePoint insertCount in : " + insertCount);
 					}
 					
 				}
@@ -118,7 +117,7 @@ public class PointDAO {
 			close(rs);
 			close(pstmt);
 		}
-		
+		System.out.println("orderUsePoint insertCount out : " + insertCount);
 		return insertCount;
 	}
 	
@@ -228,12 +227,13 @@ public class PointDAO {
 						rs = pstmt.executeQuery();
 						
 						if(rs.next()) {
-							afterPoint = rs.getInt("point_final");
+							afterPoint = rs.getInt("point_final") + pReview;
 							pstmt = con.prepareStatement(sql3);
 							pstmt.setInt(1,pReview);
 							pstmt.setInt(2, afterPoint);
 							pstmt.setString(3, user_id);
 							insertCount = pstmt.executeUpdate();
+							System.out.println("pointDAO : insertCount in : " + insertCount);
 						}
 						
 					}
@@ -247,7 +247,7 @@ public class PointDAO {
 				close(rs);
 				close(pstmt);
 			}
-		
+		System.out.println("pointDAO : insertCount out : " + insertCount);
 			return insertCount;
 	}
 	

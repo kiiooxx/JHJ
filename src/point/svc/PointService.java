@@ -56,7 +56,6 @@ public class PointService {
 		PointDAO pointDAO = PointDAO.getInstance();
 		pointDAO.setConnection(con);
 		int insertCount = pointDAO.checkReviewOption(user_id);
-		
 		if(insertCount > 0) {
 			commit(con);
 			isPoint = true;
@@ -89,7 +88,6 @@ public class PointService {
 		PointDAO pointDAO = PointDAO.getInstance();
 		pointDAO.setConnection(con);
 		int insertCount = pointDAO.orderUsePoint(sel_num);
-		System.out.println("PointService insertCount: " + insertCount);
 		if(insertCount > 0) {
 			commit(con);
 			isUse = true;

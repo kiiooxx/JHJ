@@ -532,7 +532,9 @@ function chkForm(f){
 		<!--name=result2 orderResult.jsp 최종결제금액 -->
 		<input type="hidden" name="reviewPoint" id="reviewPoint" value="${pointMan.p_review }">
 		<input type="hidden" name="confrimPoint" id="confrimPoint" value="${applyRate }">
-	
+		<input type="hidden" name="col" value="order_info">
+		<input type="hidden" name="col_title" value="order_info_title">
+		<input type="hidden" name="col_content" value="order_info_content">
 	</div>
 	</form>
 </div>
