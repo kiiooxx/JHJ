@@ -13,6 +13,7 @@ import action.Action;
 import admin.action.SendMailAction;
 import board.svc.BoardRegistService;
 import board.svc.BoardViewService;
+import point.svc.PointService;
 import vo.ActionForward;
 import vo.BoardBean;
 
@@ -110,19 +111,30 @@ public class BoardRegistAction implements Action {
 		boolean isRegistSuccess = boardRegistService.registBoard(boardBean);
 		
 		if(isRegistSuccess) {
-			if(board_type.equals("answer")) {
+//			if(board_type.equals("answer")) {
+//				
+//				BoardViewService boardViewService = new BoardViewService();
+//				BoardBean boardBean_ref = boardViewService.getBoard(board_ref, "board_num = ?");
+//				
+//				//관련글이 문의게시판이고 이메일이 빈값이 아닌경우
+//				if(boardBean_ref.getBoard_type().equals("qna")) {
+//					SendMailAction sendMailAction = new SendMailAction();
+//					request.setAttribute("boardBean_ref", boardBean_ref);
+//					request.setAttribute("boardBean", boardBean);
+//					sendMailAction.mailling(request, response);
+//				}
+//			}
+			
+			//리뷰 작성시 
+			if(board_type.equals("review")) {
+				PointService pointService = new PointService();
+				boolean isReviewPoint = pointService.reviewPoint(boardBean.getBoard_writer());
 				
-				BoardViewService boardViewService = new BoardViewService();
-				BoardBean boardBean_ref = boardViewService.getBoard(board_ref, "board_num = ?");
-				
-				//관련글이 문의게시판일 경우
-				if(boardBean_ref.getBoard_type().equals("qna")) {
-					SendMailAction sendMailAction = new SendMailAction();
-					request.setAttribute("boardBean_ref", boardBean_ref);
-					request.setAttribute("boardBean", boardBean);
-					sendMailAction.mailling(request, response);
+				if(isReviewPoint) {
+					System.out.println("적립금 지급 완료!");
 				}
 			}
+			
 			forward = new ActionForward("boardListAction.bo?board_type="+boardBean.getBoard_type(), true);
 		}else {
 			response.setContentType("text/html;charset=UTF-8");
