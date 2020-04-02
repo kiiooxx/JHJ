@@ -94,7 +94,24 @@
 						<td>
 							<c:choose>
 							<c:when test="${orderInfo.sel_status eq 'order_confirm' }">
-								<a href="boardWriteForm.bo?board_type=review&pro_num=${orderProList.pro_num }" class="small_btn">리뷰작성</a>
+								<c:set var="review_cnt" value="0"/>
+								<c:forEach var="reviewList" items="${reviewList }" varStatus="i">
+									<c:choose>
+										<c:when test="${reviewList.sel_num == orderInfo.sel_num && reviewList.pro_num == orderProList.pro_num}">
+											<c:if test="${review_cnt == 0 }">
+												리뷰작성 완료
+												<c:set var="review_cnt" value="${review_cnt + 1 }"/>
+											</c:if>
+											
+										</c:when>
+										<c:otherwise>
+											<c:if test="${review_cnt == 0 }">
+												<a href="boardWriteForm.bo?board_type=review&pro_num=${orderProList.pro_num }&sel_num=${orderInfo.sel_num}" class="small_btn">리뷰작성</a>
+												<c:set var="review_cnt" value="${review_cnt + 1 }"/>
+											</c:if>
+										</c:otherwise>
+									</c:choose>
+								</c:forEach>
 							</c:when>
 							<c:otherwise>
 								-
