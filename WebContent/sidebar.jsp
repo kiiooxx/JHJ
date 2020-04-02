@@ -13,7 +13,7 @@
 </style>
 <!-- 메인 사진 -->
 <p class="main_photo">
-	<a href="main.pro"><img src="main2.png" class="main_img"></a>
+	<a href="main.pro"><img src="resources/img/main.png" class="main_img"></a>
 </p>
 
 <div class="wleft">

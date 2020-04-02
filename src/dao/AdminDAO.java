@@ -375,7 +375,15 @@ public class AdminDAO {
 		sql += "where " + search_type + " like '%" + search_text + "%' ";
 		
 		if(!pro_date.equals("all")) {
-			sql += "and pro_date > date_add(now(), interval ? day)";
+			if(pro_date.equals("-0")) {
+				sql += "DATE_FORMAT(board_date, \"%Y-%m-%d\") = CURDATE()";
+			}else {
+				if(pro_date.equals("-0")) {
+					sql += "DATE_FORMAT(pro_date, \"%Y-%m-%d\") = CURDATE()";
+				}else {
+					sql += "and pro_date > date_add(now(), interval ? day)";
+				}
+			}
 		}
 		
 		if(ca_ref != 0) {
@@ -415,7 +423,11 @@ public class AdminDAO {
 		sql += "where " + search_type + " like '%" + search_text + "%' ";
 		
 		if(!pro_date.equals("all")) {
-			sql += "and pro_date > date_add(now(), interval ? day)";
+			if(pro_date.equals("-0")) {
+				sql += "DATE_FORMAT(pro_date, \"%Y-%m-%d\") = CURDATE()";
+			}else {
+				sql += "and pro_date > date_add(now(), interval ? day)";
+			}
 		}
 		
 		if(ca_ref != 0) {

@@ -471,7 +471,7 @@ function chkForm(f){
 			<tbody>
 				<tr>
 					
-					<td colspan="2">
+					<td colspan="2" style="border-right:1px solid #d7d5d5;">
 						<label><input type="radio" name="payment" value="mutong" checked>무통장입금
 						<input type="radio" name="payment" value="silsi">실시간 계좌이체
 						<input type="radio" name="payment" value="credit">카드결제</label>
@@ -481,8 +481,7 @@ function chkForm(f){
 						<fmt:formatNumber var="result2" value="${totalMoney + deliPrice}" pattern="#,###"/>
 						<input type="text" id="result2" name="result2" value="${result2}" class="no-line" readonly>원<br>
 						<input type="checkbox" id="termCheck3" name="termCheck3"/>결제정보를 확인하였으며, 구매진행에 동의합니다.<br>
-						
-						<a href="javascript:chkForm(document.f);">결제하기</a>
+						<a href="javascript:chkForm(document.f);" class="order_button">결제하기</a>
 						<fmt:formatNumber var="applyRate" value="${totalMoney * (pointMan.p_rate*0.01)}" pattern="#,###"/>
 						<br>구매확정 시, 
 						

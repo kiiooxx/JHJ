@@ -820,7 +820,7 @@ input, text, select, textarea {
     line-height: 1%;
 }
 
-.order_button_area a{
+.order_button_area a, .order_button{
 	display: inline-block;
     margin: 0px 0 0 0px;
     padding: 0 50px 0 51px;
