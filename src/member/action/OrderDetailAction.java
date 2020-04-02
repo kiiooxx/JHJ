@@ -9,8 +9,10 @@ import javax.servlet.http.HttpSession;
 
 import action.Action;
 import admin.svc.OrderManageDetailService;
+import board.svc.BoardListService;
 import member.svc.OrderDetailService;
 import vo.ActionForward;
+import vo.BoardBean;
 import vo.DeliInfo;
 import vo.Order;
 import vo.OrderProView;
@@ -36,6 +38,11 @@ public class OrderDetailAction implements Action {
 		PayInfo payInfo = orderManageDetailService.getPayInfo(sel_num);
 		Order orderInfo = orderDetailService.getOrderDetailInfo(sel_num);
 	
+		//리뷰글 목록을 들고온다.
+		BoardListService boardListService = new BoardListService();
+		ArrayList<BoardBean> reviewList = boardListService.getBoardList("review", id, 0, 1, 0);
+				
+		request.setAttribute("reviewList", reviewList);
 		request.setAttribute("orderProList", orderProList);
 		request.setAttribute("deliInfo", deliInfo);
 		request.setAttribute("payInfo", payInfo);
