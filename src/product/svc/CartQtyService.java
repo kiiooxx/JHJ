@@ -13,139 +13,7 @@ import vo.Cart;
 
 public class CartQtyService {
 
-	public void upCartQty(String pro_det_num, HttpServletRequest request) {
-		// TODO Auto-generated method stub
-		HttpSession session = request.getSession();
-		String id = (String)session.getAttribute("id");	//로그인 한 아이디
-		
-		ArrayList<Cart> cartList = (ArrayList<Cart>)session.getAttribute("cartList");
-		
-		for(int i=0; i<cartList.size(); i++) {
-			if(cartList.get(i).getPro_det_num().equals(pro_det_num)) {
-				cartList.get(i).setBas_pro_qnt(cartList.get(i).getBas_pro_qnt()+1);
-				
-				if(id != null) {
-					cartQtyUpdate(cartList.get(i), id);
-				}
-			}
-		}
-		
-		
-	}
-	
-	public void downCartQty(String pro_det_num, HttpServletRequest request) {
-		// TODO Auto-generated method stub
-		HttpSession session = request.getSession();
-		String id = (String)session.getAttribute("id");	//로그인 한 아이디
-		ArrayList<Cart> cartList = (ArrayList<Cart>)session.getAttribute("cartList");
-		
-		for(int i=0; i<cartList.size(); i++) {
-			if(cartList.get(i).getPro_det_num().equals(pro_det_num)) {
-				cartList.get(i).setBas_pro_qnt(cartList.get(i).getBas_pro_qnt()-1);
-				
-				if(id != null) {
-					cartQtyUpdate(cartList.get(i), id);
-				}
-			}
-		}
-	}
-
-	public void delCartQty(String[] pro_det_num, HttpServletRequest request) {
-		// TODO Auto-generated method stub
-		HttpSession session = request.getSession();
-		String id = (String)session.getAttribute("id");	//로그인 한 아이디
-		ArrayList<Cart> cartList = (ArrayList<Cart>)session.getAttribute("cartList");
-		
-		for(int i=0; i<pro_det_num.length; i++) {
-			for(int j=0; j<cartList.size(); j++) {
-				if(cartList.get(j).getPro_det_num().equals(pro_det_num[i])) {
-					if(id != null)	{
-						cartDelete(cartList.get(j), id);
-					}
-					cartList.remove(cartList.get(j));
-				}
-			}
-		}
-	}
-	
-	//수량변경
-	public void cartQtyUpdate(Cart cart, String id) {
-		// TODO Auto-generated method stub
-		ProductDAO productDAO = ProductDAO.getInstance();
-		Connection con = getConnection();
-		productDAO.setConnection(con);
-		
-		int updateCount = 0;
-		
-		updateCount = productDAO.updateQntCart(cart, id);
-		
-		if(updateCount > 0) {
-			commit(con);
-		}else {
-			rollback(con);
-		}
-		
-		close(con);
-	}
-
-	//장바구니 삭제
-	public void cartDelete(Cart cart, String id) {
-		ProductDAO productDAO = ProductDAO.getInstance();
-		Connection con = getConnection();
-		productDAO.setConnection(con);
-		
-		int deleteCount = 0;
-		
-		deleteCount = productDAO.deleteCart(cart, id);
-		
-		if(deleteCount > 0) {
-			commit(con);
-		}else {
-			rollback(con);
-		}
-		
-		close(con);
-	}
-	
-	
 	//장바구니 추가
-	public void addCart(ArrayList<Cart> cartList, String id) {
-		// TODO Auto-generated method stub
-		ProductDAO productDAO = ProductDAO.getInstance();
-		Connection con = getConnection();
-		productDAO.setConnection(con);
-		
-		boolean isSuccess = true;
-		
-		int insertCount = 0;
-		int updateCount = 0;
-		
-		for(int i=0; i<cartList.size(); i++) {
-			//만약 같은 상품을 장바구니에 넣은경우 수량만 변경할수있도록..
-			updateCount = productDAO.updateQntCart(cartList.get(i), id);
-			
-			if(updateCount == 0) {
-				insertCount = productDAO.addCart(cartList.get(i), id);
-				
-				if(insertCount == 0) {
-					isSuccess = false;
-					rollback(con);
-				}
-			}
-			updateCount = 0;
-		}
-		
-		
-		if(isSuccess) {
-			commit(con);
-		}else {
-			rollback(con);
-		}
-		
-		close(con);
-	}
-
-	
 	public ArrayList<Cart> addCart(HttpServletRequest request) {
 		
 		String pro_det_num[] = request.getParameter("pro_det_num").split(",");
@@ -209,6 +77,141 @@ public class CartQtyService {
 		
 		return cartList;
 	}
+		
+	//장바구니 수량 업
+	public void upCartQty(String pro_det_num, HttpServletRequest request) {
+		// TODO Auto-generated method stub
+		HttpSession session = request.getSession();
+		String id = (String)session.getAttribute("id");	//로그인 한 아이디
+		
+		ArrayList<Cart> cartList = (ArrayList<Cart>)session.getAttribute("cartList");
+		
+		for(int i=0; i<cartList.size(); i++) {
+			if(cartList.get(i).getPro_det_num().equals(pro_det_num)) {
+				cartList.get(i).setBas_pro_qnt(cartList.get(i).getBas_pro_qnt()+1);
+				
+				if(id != null) {
+					cartQtyUpdate(cartList.get(i), id);
+				}
+			}
+		}
+		
+		
+	}
+	
+	//장바구니 수량 다운
+	public void downCartQty(String pro_det_num, HttpServletRequest request) {
+		// TODO Auto-generated method stub
+		HttpSession session = request.getSession();
+		String id = (String)session.getAttribute("id");	//로그인 한 아이디
+		ArrayList<Cart> cartList = (ArrayList<Cart>)session.getAttribute("cartList");
+		
+		for(int i=0; i<cartList.size(); i++) {
+			if(cartList.get(i).getPro_det_num().equals(pro_det_num)) {
+				cartList.get(i).setBas_pro_qnt(cartList.get(i).getBas_pro_qnt()-1);
+				
+				if(id != null) {
+					cartQtyUpdate(cartList.get(i), id);
+				}
+			}
+		}
+	}
+
+	//장바구니 삭제
+	public void delCartQty(String[] pro_det_num, HttpServletRequest request) {
+		// TODO Auto-generated method stub
+		HttpSession session = request.getSession();
+		String id = (String)session.getAttribute("id");	//로그인 한 아이디
+		ArrayList<Cart> cartList = (ArrayList<Cart>)session.getAttribute("cartList");
+		
+		for(int i=0; i<pro_det_num.length; i++) {
+			for(int j=0; j<cartList.size(); j++) {
+				if(cartList.get(j).getPro_det_num().equals(pro_det_num[i])) {
+					if(id != null)	{
+						cartDelete(cartList.get(j), id);
+					}
+					cartList.remove(cartList.get(j));
+				}
+			}
+		}
+	}
+	
+	//수량변경
+	public void cartQtyUpdate(Cart cart, String id) {
+		// TODO Auto-generated method stub
+		ProductDAO productDAO = ProductDAO.getInstance();
+		Connection con = getConnection();
+		productDAO.setConnection(con);
+		
+		int updateCount = 0;
+		
+		updateCount = productDAO.updateQntCart(cart, id);
+		
+		if(updateCount > 0) {
+			commit(con);
+		}else {
+			rollback(con);
+		}
+		
+		close(con);
+	}
+
+	//장바구니 삭제 DAO
+	public void cartDelete(Cart cart, String id) {
+		ProductDAO productDAO = ProductDAO.getInstance();
+		Connection con = getConnection();
+		productDAO.setConnection(con);
+		
+		int deleteCount = 0;
+		
+		deleteCount = productDAO.deleteCart(cart, id);
+		
+		if(deleteCount > 0) {
+			commit(con);
+		}else {
+			rollback(con);
+		}
+		
+		close(con);
+	}
+	
+	
+	//장바구니 추가 DAO
+	public void addCart(ArrayList<Cart> cartList, String id) {
+		// TODO Auto-generated method stub
+		ProductDAO productDAO = ProductDAO.getInstance();
+		Connection con = getConnection();
+		productDAO.setConnection(con);
+		
+		boolean isSuccess = true;
+		
+		int insertCount = 0;
+		int updateCount = 0;
+		
+		for(int i=0; i<cartList.size(); i++) {
+			//만약 같은 상품을 장바구니에 넣은경우 수량만 변경할수있도록..
+			updateCount = productDAO.updateQntCart(cartList.get(i), id);
+			
+			if(updateCount == 0) {
+				insertCount = productDAO.addCart(cartList.get(i), id);
+				
+				if(insertCount == 0) {
+					isSuccess = false;
+					rollback(con);
+				}
+			}
+			updateCount = 0;
+		}
+		
+		
+		if(isSuccess) {
+			commit(con);
+		}else {
+			rollback(con);
+		}
+		
+		close(con);
+	}
 
 	//세션에 있는 장바구니를 DB에 넣기
 	public ArrayList<Cart> addCart(ArrayList<Cart> cartList2, ArrayList<Cart> cartList, String id) {
@@ -239,4 +242,5 @@ public class CartQtyService {
 		
 		return cartList2;
 	}
+	
 }

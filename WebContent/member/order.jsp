@@ -76,7 +76,7 @@
 									<br><a href="ordercheck.mem?sel_num=${list.sel_num }" class="small_btn" onclick="">구매확정</a>
 								</c:when>
 								
-								<c:when test="${list.sel_status eq 'order_done' }">
+								<c:when test="${(list.sel_status eq 'order_done' || list.sel_status eq 'check_paid') && list.cancel_req == 'N'.charAt(0)}">
 									<br><a href="ordercancel.mem?sel_num=${list.sel_num }" class="small_btn" onclick="">주문취소</a>
 								</c:when>
 							</c:choose>

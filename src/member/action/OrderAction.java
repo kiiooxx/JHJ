@@ -36,7 +36,7 @@ public class OrderAction implements Action {
 		//회원주문내역
 		OrderManageListService orderListService = new OrderManageListService();
 		int listCount = orderListService.getOrderListCount(user_id);
-		ArrayList<Order> order = orderListService.getOrderList(user_id,page, limit);
+		ArrayList<Order> order = orderListService.getOrderList(user_id, page, limit);
 		
 		int maxPage = (int)((double)listCount/limit+0.95);
 		int startPage = (((int)((double)page/limitPage+0.9))-1)*limitPage+1;
@@ -54,7 +54,6 @@ public class OrderAction implements Action {
 		
 		request.setAttribute("order", order);
 		request.setAttribute("user_id", user_id);
-		request.setAttribute("pageInfo", pageInfo);
 		
 		request.setAttribute("pagefile", "/member/order.jsp");
 		forward = new ActionForward("/template.jsp", false);

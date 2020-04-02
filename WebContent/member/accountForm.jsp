@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <jsp:include page="/common/loginCheck.jsp"/>
 <div class="mypage_top">
@@ -18,8 +22,9 @@
 	</div>
 	<div class="user_info2">
 		<ul>
-			<li><a href="#">POINT : </a></li>
-			<li><a href="#">CART 0개(0)</a></li>
+			<fmt:formatNumber var="point_final" value="${memberPoint.point_final}" pattern="#,###"/>
+			<li><a href="#">POINT : ${point_final}원</a></li>
+			<li><a href="#">CART ${fn:length(cartList) }개</a></li>
 		</ul>
 	</div>
 </div>

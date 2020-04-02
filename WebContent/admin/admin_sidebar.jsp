@@ -37,7 +37,6 @@
         <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <a class="collapse-item" href="memberList.ad">회원관리</a>
-            <a class="collapse-item" href="utilities-other.html">회원등급관리</a>
             <a class="collapse-item" href="orderManageList.ad">주문관리</a>
             <a class="collapse-item" href="mailManageForm.ad?seq=1">자동메일발송설정</a>
             <a class="collapse-item" href="pointManagementForm.ad?seq=1">적립금설정</a>

@@ -381,7 +381,8 @@ public class ProductDAO {
 		ResultSet rs = null;
 		
 		String sql = "select * from basket a inner join pro_det b on a.pro_det_num = b.pro_det_num " +
-				 	"inner join pro_info c on b.pro_num = c.pro_num where a.user_id=? order by a.mem_bas_num desc";
+				 	"inner join pro_info c on b.pro_num = c.pro_num inner join stock d on b.pro_det_num = d.pro_det_num "
+				 	+ "where a.user_id=? and d.stock_qnt>0 order by a.mem_bas_num desc";
 		ArrayList<Cart> cartList = new ArrayList<Cart>();
 		Cart cart = null;
 

@@ -20,7 +20,6 @@ import vo.PayInfo;
 import vo.PointMan;
 import vo.ProDetBean;
 import vo.ProductBean;
-import vo.StockBean;
 
 public class AdminDAO {
 	Connection con;
@@ -1561,7 +1560,7 @@ public class AdminDAO {
 						int out_stock_qnt = 0;
 						
 						while(rs2.next()) {
-							out_stock_qnt += rs2.getInt("stock_qnt");
+							out_stock_qnt += rs2.getInt("in_out_qnt");
 						}
 						
 						proDetBean.setOut_stock_qnt(out_stock_qnt);
@@ -1579,6 +1578,8 @@ public class AdminDAO {
 			
 			return stockList;
 		}
+		
+		
 		public int updateGrade(String grade, String user_id) {
 			int updateCount = 0;
 			PreparedStatement pstmt =null;
@@ -1599,15 +1600,5 @@ public class AdminDAO {
 			
 			
 		}
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 		
 }

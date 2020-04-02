@@ -20,6 +20,7 @@ import point.action.MyPointAction;
 import member.action.OrderCancelFormAction;
 import member.action.OrderCancelProAction;
 import member.action.OrderCheckAction;
+import member.action.AccountMainAction;
 import member.action.IdCheckAction;
 import member.action.MemberJoinProAction;
 import member.action.MyBoardAction;
@@ -75,8 +76,13 @@ public class MemberController extends HttpServlet {
 		//===================마이페이지====================
 		//1. 마이페이지 홈
 		if (command.equals("/account.mem")) {
-			request.setAttribute("pagefile", "/member/accountForm.jsp");
-			forward = new ActionForward("/template.jsp", false);
+			action = new AccountMainAction();
+			try {
+				forward = action.execute(request, response);
+			} catch (Exception e) {
+				e.printStackTrace();
+				System.out.println("Controller error");
+			}
 		}
 		//===================MY INFO===================
 		//2. 내 정보 페이지

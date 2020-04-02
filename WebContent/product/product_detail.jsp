@@ -139,9 +139,9 @@ $(document).ready(function(){
 		 var photo = "${prd.pro_photo}";
 		 var pro_name = "${prd.pro_name}";
 		 var pro_price = "${prd.pro_price}";
-		 
+
 		 var size = $("input[name='pro_det_num']").length;
-		 //선택한 값이 없으면
+
 		 if(size == 0) {
 			 swal({
 				  title: "주문 실패!",
@@ -154,7 +154,7 @@ $(document).ready(function(){
 			 for(var i=0; i<size; i++){                          
 				 prodetnum[i] = $("input[name='pro_det_num']")[i].value;
 			 }
-
+			
 			 var size2 = $("input[name='qnt']").length;
 			 var qnt = new Array(size2);
 			 for(var i=0; i<size2; i++){                          
@@ -173,6 +173,16 @@ $(document).ready(function(){
 				 pro_size[i] = $("input[name='size']")[i].value;
 			 }
 
+			 for(var i=0; i<size; i++) {
+				 <c:forEach var="list" items="${prdDetList }" varStatus="i">
+				 	if(prodetnum[i] == "${list.pro_det_num}") {
+				 		if(Number("${list.stock_qnt}")-Number(qnt[i]) < 0) {
+				 			swal("재고가 부족합니다!", "다른 상품을 선택해주세요.", "warning");
+				 			return false;
+				 		}
+				 	}
+				 </c:forEach>
+			 }
 			$.ajax({
 				url : '<%=request.getContextPath()%>/cartAdd.pro',
 				type : 'POST',
@@ -243,6 +253,17 @@ $(document).ready(function(){
 			 var pro_size = new Array(size4);
 			 for(var i=0; i<size4; i++){                          
 				 pro_size[i] = $("input[name='size']")[i].value;
+			 }
+			 
+			 for(var i=0; i<size; i++) {
+				 <c:forEach var="list" items="${prdDetList }" varStatus="i">
+				 	if(prodetnum[i] == "${list.pro_det_num}") {
+				 		if(Number("${list.stock_qnt}")-Number(qnt[i]) < 0) {
+				 			swal("재고가 부족합니다!", "다른 상품을 선택해주세요.", "warning");
+				 			return false;
+				 		}
+				 	}
+				 </c:forEach>
 			 }
 			 
 			 location.href='directOrderPage.pro?' + 

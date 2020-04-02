@@ -233,18 +233,16 @@ function del() {
 					</th>
 				</tr>
 			</table>
-		</div>
-		
-		<c:if test="${board.board_type == 'answer' }">
+			
 			<div class="order_button_area">
 				<p>
 					<c:if test="${board.board_writer == id || grade == 'A'.charAt(0) }">
-						<a href="boardViewAction.bo?board_type=answer&board_num=${board.board_num }&pro_num=${prd.pro_num}&path=/admin/board_modify_form" class="b">MODIFY</a>
+						<a href="boardViewAction.bo?board_type=answer&board_num=${board_answer.board_num }&pro_num=${prd.pro_num}&path=/admin/board_modify_form" class="b">MODIFY</a>
 						<a href="#" class="b" onclick="del()">DELETE</a>
 					</c:if>
 				</p>
 			</div>
-		</c:if>
+		</div>
 	</c:if>
 </div>
 </body>

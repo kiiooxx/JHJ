@@ -162,7 +162,7 @@ public class BoardDAO {
 			
 			if(rs.next()) {
 				boardBean = new BoardBean();
-				boardBean.setBoard_num(board_num);
+				boardBean.setBoard_num(rs.getInt("board_num"));
 				boardBean.setBoard_type(rs.getString("board_type"));
 				boardBean.setBoard_title(rs.getString("board_title"));
 				boardBean.setBoard_writer(rs.getString("board_writer"));
@@ -290,63 +290,35 @@ public class BoardDAO {
 		int listCount = 0;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		String sql = "select count(*) from board ";
-		
-		int cnt = 0;
-		
-		if(!board_date.equals("all") || !board_type.equals("all") || !search_text.equals("") || !board_step.equals("all")
-				|| !board_photo.equals("all") || !board_notice.equals("all")) {
-			sql += "where ";
-		}
+		String sql = "select count(*) from board where board_num=board_ref";
 				
 		if(!board_date.equals("all")) {
 			if(board_date.equals("-0")) {
-				sql += "DATE_FORMAT(board_date, \"%Y-%m-%d\") = CURDATE()";
+				sql += " and DATE_FORMAT(board_date, \"%Y-%m-%d\") = CURDATE()";
 			}else {
-				sql += "board_date > date_add(now(), interval " + board_date + " day)";
+				sql += " and board_date > date_add(now(), interval " + board_date + " day)";
 			}
-			cnt++;
 		}
 		
 		if(!board_type.equals("all")) {
-			if(cnt > 0) {
-				sql += " and";
-			}
-			sql += " board_type = '" + board_type + "'";
-			cnt++;
+			sql += " and board_type = '" + board_type + "'";
 		}
 		
 		if(!search_text.equals("")) {
-			if(cnt > 0) {
-				sql += " and ";
-			}
-			sql += search_type + " like '%" + search_text + "%'";
-			cnt++;
+			sql += " and " + search_type + " like '%" + search_text + "%'";
 		}
 		if(!board_step.equals("all")) {
-			if(cnt > 0) {
-				sql += " and";
-			}
-			sql += " board_step = '" + board_step + "'";
-			cnt++;
+			sql += " and board_step = '" + board_step + "'";
 		}
 		if(!board_photo.equals("all")) {
-			if(cnt > 0) {
-				sql += " and";
-			}
 			if(board_photo.equals("Y")) {
-				sql += " board_photo != ''";
+				sql += " and board_photo != ''";
 			}else if(board_photo.equals("N")) {
-				sql += " board_photo = ''";
+				sql += " and board_photo = ''";
 			}
-			cnt++;
 		}
 		if(!board_notice.equals("all")) {
-			if(cnt > 0) {
-				sql += " and";
-			}
-			sql+= " board_notice = '" + board_notice + "'";
-			cnt++;
+			sql+= " and board_notice = '" + board_notice + "'";
 		}
 		
 		
@@ -378,64 +350,35 @@ public class BoardDAO {
 		BoardBean boardBean = null;
 		int startrow = (page-1)*limit;	//읽기 시작할 row 번호
 		
-		String sql = "select * from board ";
-		
-		int cnt = 0;
-		
-		if(!board_date.equals("all") || !board_type.equals("all") || !search_text.equals("") || !board_step.equals("all")
-				|| !board_photo.equals("all") || !board_notice.equals("all")) {
-			sql += "where ";
-		}
+		String sql = "select * from board where board_num=board_ref";
 				
 		if(!board_date.equals("all")) {
-			
 			if(board_date.equals("-0")) {
-				sql += "DATE_FORMAT(board_date, \"%Y-%m-%d\") = CURDATE()";
+				sql += " and DATE_FORMAT(board_date, \"%Y-%m-%d\") = CURDATE()";
 			}else {
-				sql += "board_date > date_add(now(), interval " + board_date + " day)";
+				sql += " and board_date > date_add(now(), interval " + board_date + " day)";
 			}
-			cnt++;
 		}
 		
 		if(!board_type.equals("all")) {
-			if(cnt > 0) {
-				sql += " and";
-			}
-			sql += " board_type = '" + board_type + "'";
-			cnt++;
+			sql += " and board_type = '" + board_type + "'";
 		}
 		
 		if(!search_text.equals("")) {
-			if(cnt > 0) {
-				sql += " and ";
-			}
-			sql += search_type + " like '%" + search_text + "%'";
-			cnt++;
+			sql += " and " + search_type + " like '%" + search_text + "%'";
 		}
 		if(!board_step.equals("all")) {
-			if(cnt > 0) {
-				sql += " and";
-			}
-			sql += " board_step = '" + board_step + "'";
-			cnt++;
+			sql += " and board_step = '" + board_step + "'";
 		}
 		if(!board_photo.equals("all")) {
-			if(cnt > 0) {
-				sql += " and";
-			}
 			if(board_photo.equals("Y")) {
-				sql += " board_photo != ''";
+				sql += " and board_photo != ''";
 			}else if(board_photo.equals("N")) {
-				sql += " board_photo = ''";
+				sql += " and board_photo = ''";
 			}
-			cnt++;
 		}
 		if(!board_notice.equals("all")) {
-			if(cnt > 0) {
-				sql += " and";
-			}
-			sql+= " board_notice = '" + board_notice + "'";
-			cnt++;
+			sql+= " and board_notice = '" + board_notice + "'";
 		}
 		
 		sql += " order by board_ref desc limit ?, ?";

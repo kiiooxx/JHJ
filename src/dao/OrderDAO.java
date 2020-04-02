@@ -3,6 +3,7 @@ package dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -180,6 +181,50 @@ public class OrderDAO {
 		System.out.println("DAO"+updateCount);
 		return updateCount;
 	
+	}
+
+	//주문성공하면 재고 -1
+	public int outStock(String pro_det_num, int stock_qnt) {
+		// TODO Auto-generated method stub
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int insertCount = 0;
+		int updateCount = 0;
+		int qnt = 0;
+		
+		try {
+			pstmt = con.prepareStatement("select * from stock where pro_det_num = ?");
+			pstmt.setString(1, pro_det_num);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				qnt = rs.getInt("stock_qnt");	//재고를 가져온다.
+			}
+			
+			//현재 재고보다 같거나 작게 주문했을때만 ...
+			if(qnt >= stock_qnt) {
+				//in_out_table에 out 1 추가
+				pstmt = con.prepareStatement("insert into in_out_table select ifnull(max(in_out_num)+1, 1), ?, ?, 'OUT', NOW() from in_out_table");
+				pstmt.setString(1, pro_det_num);
+				pstmt.setInt(2, stock_qnt);
+				insertCount = pstmt.executeUpdate();
+				
+				//재고 -1 업데이트
+				if(insertCount > 0) {
+					pstmt = con.prepareStatement("update stock set stock_qnt=stock_qnt-" + stock_qnt + " where pro_det_num=?");
+					pstmt.setString(1, pro_det_num);
+					
+					updateCount = pstmt.executeUpdate();
+					
+				}
+			}
+		}catch(SQLException e) {
+			System.out.println("updateStock 에러 " + e);
+		}finally {
+			close(rs);
+			close(pstmt);
+		}
+		return updateCount;
 	}
 	
 	
