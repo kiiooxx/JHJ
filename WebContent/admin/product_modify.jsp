@@ -43,7 +43,7 @@ function sendFile(file, editor) {
         processData: false,
         success: function(data) {
         	$('#summernote').summernote('insertImage', data.url, file.name);
-        	$('#summernote').summernote('pasteHTML', '<img src="' + data.url + file.name + '"/>');
+        	$('#summernote').summernote('pasteHTML', '<img src="' + data.url + file.name + '" width=100%/>');
         },
         error: function() {
         	alert('error');

@@ -44,7 +44,7 @@ function sendFile(file, editor) {
         processData: false,
         success: function(data) {
         	$('#summernote').summernote('insertImage', data.url, file.name);
-        	$('#summernote').summernote('pasteHTML', '<img src="' + data.url + file.name + '"/>');
+        	$('#summernote').summernote('pasteHTML', '<img src="' + data.url + file.name + '" width="100%"/>');
         },
         error: function() {
         	alert('error');
@@ -145,7 +145,6 @@ $(document).on("click", '[id^=del_option]', function() {
 $(document).ready(function(){
 	//옵션품목 만들기 버튼 누르면
 	$('#addTable').on('click', function(event){
-		alert(color_array);
 		if(color_array == null || color_array == '') {
 			alert("색상을 입력해주세요.");
 			return false;

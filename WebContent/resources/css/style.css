@@ -4,7 +4,7 @@ ul {
 	list-style : none;
 }
 a {
-	color : #9C93B5;
+	color : black;
 	text-decoration : none;
 }
 li {
@@ -110,7 +110,7 @@ input, text, select, textarea {
 
 .top>ul>li>a {
 	text-align : center;
-	color : #9C93B5;
+	color : black;
 }
 
 .top ul li a:hover {
@@ -143,7 +143,7 @@ input, text, select, textarea {
 	font-size : 14px;
 	letter-spacing : 2px;
 	margin : 0 0 30px;
-	color : #5B6C93;
+	color : black;
 }
 
 .category_clothes, .category_board, .category_call {
@@ -187,7 +187,7 @@ input, text, select, textarea {
     position: relative;
     display: block;
     margin: 0 auto;
-    
+    margin-bottom : 40px;
 }
 
 .prdList>div {
@@ -213,6 +213,8 @@ input, text, select, textarea {
 	width: 338px;
     height : 450px;
 }
+
+
 
 .description {
 	margin: 0;
@@ -250,6 +252,11 @@ input, text, select, textarea {
     width: 580px;
     text-align: center;
     margin: 0px 0px 50px 0px;
+}
+
+.img_Area img{
+	width: 338px;
+    height : 450px;
 }
 
 .info_Area {
@@ -411,6 +418,9 @@ input, text, select, textarea {
     font-size: 12px;
 }
 
+.cont img {
+	width : 100%;
+}
 /* 서브 카테고리 */
 .sub_category {
 	margin : 0 0 20px;

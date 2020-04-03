@@ -47,8 +47,6 @@ public class subCategoryList extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		System.out.println("들어왔니?");
-		System.out.println("ㅇㅇ" + request.getParameter("ca_ref"));
 		int ca_ref = Integer.parseInt(request.getParameter("ca_ref"));
 		
 		ArrayList<CategoryBean> categorySubList = null;
