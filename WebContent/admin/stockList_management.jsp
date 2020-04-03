@@ -184,8 +184,16 @@ $(document).ready(function() {
 			<div class="card card-default">
 				<div class="card-body">
 					<table class="table table-bordered">
-						<tr>
-							<th>No</th>
+						<colgroup>
+							<col style="width:70px;">
+							<col style="width:auto">
+							<col style="width:200px;">
+							<col style="width:150px;">
+							<col style="width:100px">
+							<col style="width:140px;">
+						</colgroup>
+						<tr style="text-align:center">
+							<th>번호</th>
 							<th>상품명</th>
 							<th>품목명</th>
 							<th>재고수량</th>
@@ -219,8 +227,8 @@ $(document).ready(function() {
 									<!-- 재고 테이블 : 상품 번호, 상세 제품 코드, 수량 -->
 									<input type="hidden" name="pro_num" value="${stock_list.pro_num }"/>
 									<input type="hidden" name="pro_det_num" value="${stock_list.pro_det_num }"/>
-									<td><input type="text" name="stock_qnt" value="${stock_list.stock_qnt }"/></td>
-									<td>
+									<td><input type="text" name="stock_qnt" value="${stock_list.stock_qnt }" style="text-align:right"/></td>
+									<td style="text-align:center;">
 										<c:choose>
 											<c:when test="${list.active == 'Y'.charAt(0)}">
 												진열함
@@ -237,7 +245,7 @@ $(document).ready(function() {
 											
 										</c:choose>
 									</td>
-									<td>${stock_list.out_stock_qnt }</td>
+									<td style="text-align:right">${stock_list.out_stock_qnt }</td>
 								</tr>
 								<tr>
 								</c:if>

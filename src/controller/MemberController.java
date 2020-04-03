@@ -40,6 +40,13 @@ public class MemberController extends HttpServlet {
 		ActionForward forward = null;
 		Action action = null;
 
+		// ===================어바웃=====================
+		if (command.equals("/about.mem")) {
+			request.setAttribute("pagefile", "/member/about.jsp");
+			forward = new ActionForward("/template.jsp", false);
+
+		}
+		
 		// ===================회원가입=====================
 		// 1. 회원가입 페이지
 		if (command.equals("/joinForm.mem")) {

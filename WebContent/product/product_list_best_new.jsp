@@ -64,7 +64,7 @@
 					<li> < </li>
 				</c:when>
 				<c:otherwise>
-					<li><a href="productList.pro?page=${pageInfo.page-1 }"> < </a></li>
+					<li><a href="productListBestNew.pro?main_nb=${main_nb }&page=${pageInfo.page-1 }"> < </a></li>
 				</c:otherwise>
 			</c:choose>
 			
@@ -75,7 +75,7 @@
 						<li>[${a}]</li>
 					</c:when>
 					<c:otherwise>
-						<li><a href="productList.pro?page=${a}">[${a}]</a></li>
+						<li><a href="productListBestNew.pro?main_nb=${main_nb }&page=${a}">[${a}]</a></li>
 					</c:otherwise>
 				</c:choose>
 			</c:forEach>
@@ -86,7 +86,7 @@
 					<li> > </li>
 				</c:when>
 				<c:otherwise>
-					<li><a href="productList.pro?page=${pageInfo.page+1 }"> > </a></li>
+					<li><a href="productListBestNew.pro?main_nb=${main_nb }&page=${pageInfo.page+1 }"> > </a></li>
 				</c:otherwise>
 			</c:choose>
 			</ol>

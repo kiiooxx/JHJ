@@ -29,10 +29,10 @@
 	<!-- 진열 순서 -->
 	<div class="pro_display_seq">
 		<ul>
-			<li><a href="productList.pro?category=${category }&cate_num=${cate_num }&orderBy=p.pro_date desc">신상품</a></li>
-			<li><a href="productList.pro?category=${category }&cate_num=${cate_num }&orderBy=p.pro_name desc">상품명</a></li>
-			<li><a href="productList.pro?category=${category }&cate_num=${cate_num }&orderBy=p.pro_price asc">낮은가격</a></li>
-			<li><a href="productList.pro?category=${category }&cate_num=${cate_num }&orderBy=p.pro_price desc">높은가격</a></li>
+			<li><a href="productList.pro?category=${category }&cate_num=${cate_num }&cate_sub_num=${cate_sub_num}&orderBy=p.pro_date desc">신상품</a></li>
+			<li><a href="productList.pro?category=${category }&cate_num=${cate_num }&cate_sub_num=${cate_sub_num}&orderBy=p.pro_name desc">상품명</a></li>
+			<li><a href="productList.pro?category=${category }&cate_num=${cate_num }&cate_sub_num=${cate_sub_num}&orderBy=p.pro_price asc">낮은가격</a></li>
+			<li><a href="productList.pro?category=${category }&cate_num=${cate_num }&cate_sub_num=${cate_sub_num}&orderBy=p.pro_price desc">높은가격</a></li>
 		</ul>
 	</div>
 
@@ -68,7 +68,7 @@
 					<li> < </li>
 				</c:when>
 				<c:otherwise>
-					<li><a href="productList.pro?page=${pageInfo.page-1 }"> < </a></li>
+					<li><a href="productList.pro?page=${pageInfo.page-1 }&category=${category }&cate_num=${cate_num }&orderBy=${orderBy}&cate_sub_num=${cate_sub_num}"> < </a></li>
 				</c:otherwise>
 			</c:choose>
 			
@@ -79,7 +79,7 @@
 						<li>[${a}]</li>
 					</c:when>
 					<c:otherwise>
-						<li><a href="productList.pro?page=${a}">[${a}]</a></li>
+						<li><a href="productList.pro?page=${a}&category=${category }&cate_num=${cate_num }&orderBy=${orderBy}&cate_sub_num=${cate_sub_num}">[${a}]</a></li>
 					</c:otherwise>
 				</c:choose>
 			</c:forEach>
@@ -90,7 +90,7 @@
 					<li> > </li>
 				</c:when>
 				<c:otherwise>
-					<li><a href="productList.pro?page=${pageInfo.page+1 }"> > </a></li>
+					<li><a href="productList.pro?page=${pageInfo.page+1 }&category=${category }&cate_num=${cate_num }&orderBy=${orderBy}&cate_sub_num=${cate_sub_num}"> > </a></li>
 				</c:otherwise>
 			</c:choose>
 			</ol>

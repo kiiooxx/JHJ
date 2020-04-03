@@ -35,7 +35,7 @@ public class ProductListAction implements Action {
 		}
 		System.out.println(orderBy);
 		int page = 1;
-		int limit = 9;	//페이지에 보여줄 목록 수
+		int limit = 6;	//페이지에 보여줄 목록 수
 		int limitPage = 3;	//페이지 수
 		int listCount = 0;
 		
@@ -44,7 +44,7 @@ public class ProductListAction implements Action {
 		}
 		
 		ProductListService prdListService = new ProductListService();
-		listCount = prdListService.getListCount(cate_num);
+		listCount = prdListService.getListCount(cate_num, cate_sub_num, orderBy, page,limit);
 		//총 리스트 수를 받아옴
 		prdList = prdListService.getPrdList(cate_num, cate_sub_num, orderBy, page,limit);
 		//리스트를 받아옴
@@ -69,6 +69,8 @@ public class ProductListAction implements Action {
 		request.setAttribute("prdList", prdList);
 		request.setAttribute("cate_num", cate_num);
 		request.setAttribute("category", category);
+		request.setAttribute("cate_sub_num", cate_sub_num);
+		request.setAttribute("orderBy", orderBy);
 		
 		request.setAttribute("pagefile", "/product/product_list.jsp");
 		ActionForward forward = new ActionForward("/template.jsp", false);

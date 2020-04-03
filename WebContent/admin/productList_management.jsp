@@ -182,29 +182,40 @@ $(document).ready(function() {
 			<div class="card card-default">
 				<div class="card-body">
 					<table class="table table-bordered">
-						<tr>
-							<th><input type="checkbox" id="checkall"/></th>
-							<th>상품명</th>
-							<th>판매가</th>
-							<th>진열상태</th>
-							<th>메인진열</th>
-							<th>상품분류</th>
-							<th>상품 등록일</th>	
+						<colgroup>
+							<col style="width:40px;">
+							<col style="width:70px;">
+							<col style="width:auto">
+							<col style="width:100px;">
+							<col style="width:100px;">
+							<col style="width:130px">
+							<col style="width:330px;">
+							<col style="width:200px;">
+						</colgroup>
+						<tr style="text-align:center; vertical-align:middle;">
+							<th scope="col"><input type="checkbox" id="checkall"/></th>
+							<th scope="col">번호</th>
+							<th scope="col">상품명</th>
+							<th scope="col">판매가</th>
+							<th scope="col">진열상태</th>
+							<th scope="col">메인진열</th>
+							<th scope="col">상품분류</th>
+							<th scope="col">상품 등록일</th>	
 						</tr>
 			
 						<!-- 상품 리스트 -->
 						<c:forEach var="list" items="${prdList }" varStatus="i">
 							<tr>
 								<td><input type="checkbox" name="chk" value="${list.pro_num }"/></td>
+								<td>${list.pro_num }</td>
 								<td><a href="javascript:void(0);" 
 										onclick="window.open('productModifyForm.ad?pro_num=${list.pro_num }','상품수정','width=1200, height=700')">
 										${list.pro_name }
 									</a>
 								</td>
-					
 								<!-- 가격 형식 -->
 								<fmt:formatNumber var="price" value="${list.pro_price}" pattern="#,###"/>
-								<td>${price }</td>
+								<td style="text-align:right;">${price }</td>
 								<td>
 									<c:choose>
 										<c:when test="${list.active == 'Y'.charAt(0)}">

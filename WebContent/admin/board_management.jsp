@@ -153,16 +153,27 @@ $(document).ready(function() {
 			<div class="card card-default">
 				<div class="card-body">
 					<table class="table table-bordered">
-						<tr>
-							<th><input type="checkbox" id="checkall"/></th>
-							<th>번호</th>
-							<th>분류</th>
-							<th>제목</th>
-							<th>답변상태</th>
-							<th>답변하기</th>
-							<th>작성자</th>
-							<th>조회수</th>
-							<th>작성일</th>
+						<colgroup>
+							<col style="width:40px;">
+							<col style="width:100px;">
+							<col style="width:120px;">
+							<col style="width:auto">
+							<col style="width:100px;">
+							<col style="width:120px;">
+							<col style="width:120px;">
+							<col style="width:100px;">
+							<col style="width:200px;">
+						</colgroup>
+						<tr style="text-align:center">
+							<th scope="col"><input type="checkbox" id="checkall"/></th>
+							<th scope="col">번호</th>
+							<th scope="col">분류</th>
+							<th scope="col">제목</th>
+							<th scope="col">답변상태</th>
+							<th scope="col">답변하기</th>
+							<th scope="col">작성자</th>
+							<th scope="col">조회수</th>
+							<th scope="col">작성일</th>
 						</tr>
 			
 						<!-- 상품 리스트 -->

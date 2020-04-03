@@ -39,18 +39,26 @@ public class ProductDAO {
 	}
 
 	//상품 리스트의 갯수 구하기
-	public int selectListCount(int cate_num) {
+	public int selectListCount(int cate_num, int cate_sub_num, String orderBy, int page, int limit) {
 		// TODO Auto-generated method stub
 		int listCount = 0;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		
 		//선택한 대분류 카테고리(cate_ref가 cate_num인 상품)에 있는 상품 and 진열 활성화가 되어 있는 상품만 select count 
-		String sql = "select count(*) from pro_info a inner join category b on a.cate_num = b.cate_num ";
-		sql += "where b.ca_ref=? and a.active='Y'";
+//		String sql = "select count(*) from pro_info a inner join category b on a.cate_num = b.cate_num ";
+//		sql += "where b.ca_ref=? and a.active='Y'";
+		
+		String sql = "select count(*) from pro_info p inner join category c on p.cate_num = c.cate_num where ";
+		if(cate_sub_num != 0) {
+			sql += "p.cate_num=" + cate_sub_num;
+		}else {
+			sql += "c.ca_ref=" + cate_num;
+		}
+		sql += " and p.active='Y' order by " + orderBy;
+				
 		try {
 			pstmt = con.prepareStatement(sql);
-			pstmt.setInt(1, cate_num);
 			rs = pstmt.executeQuery();
 			
 			if(rs.next()) {
@@ -73,12 +81,11 @@ public class ProductDAO {
 		
 		String sql = "select * from pro_info p inner join category c on p.cate_num = c.cate_num where ";
 		if(cate_sub_num != 0) {
-			sql += "p.cate_num=" + cate_sub_num + " order by ";
+			sql += "p.cate_num=" + cate_sub_num;
 		}else {
-			sql += "c.ca_ref=" + cate_num + " order by ";
+			sql += "c.ca_ref=" + cate_num;
 		}
-		
-		sql+= orderBy + " limit ?,?";
+		sql += " and p.active='Y' order by " + orderBy + " limit ?,?";
 		ArrayList<ProductBean> prdList = new ArrayList<ProductBean>();
 		ProductBean prd = null;
 		int startrow = (page-1)*limit;	//읽기 시작할 row 번호

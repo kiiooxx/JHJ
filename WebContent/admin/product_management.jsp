@@ -27,8 +27,56 @@ $(document).ready(function() {
 	        }
         }
 	});
-});
+	
+	//제목 글자수 제한
+	$('#pro_name').on('keyup', function () {
+	    var content = $(this).val();
+	    
+	    
+	    var length = 0;
+	    var len = 0;
 
+	    for (var i = 0; i < content.length; i++) {
+	    	if(len <= 98) {
+			    if (escape(content.charAt(i)).length == 6) {
+			    	len++;
+			    }
+			    	len++;
+			    	length++;
+	    	}else {
+	    		alert('문자 수를 초과했습니다!');
+	    		$(this).val(content.substring(0, length));
+	    		$('#pro_name_lengthCheck').text(100);
+	    	}
+	    }
+	    
+	    $('#pro_name_lengthCheck').text(len);    //글자수 실시간 카운팅
+	});
+	
+	$('#pro_detail').on('keyup', function () {
+	    var content = $(this).val();
+	    
+	    
+	    var length = 0;
+	    var len = 0;
+
+	    for (var i = 0; i < content.length; i++) {
+	    	if(len <= 498) {
+			    if (escape(content.charAt(i)).length == 6) {
+			    	len++;
+			    }
+			    	len++;
+			    	length++;
+	    	}else {
+	    		alert('문자 수를 초과했습니다!');
+	    		$(this).val(content.substring(0, length));
+	    		$('#pro_detail_lengthCheck').text(500);
+	    	}
+	    }
+	    
+	    $('#pro_detail_lengthCheck').text(len);    //글자수 실시간 카운팅
+	});
+});
 function sendFile(file, editor) {
       var data = new FormData();
       data.append("file", file, file.name);
@@ -315,7 +363,7 @@ table th {width : 20%; background : #F6F6F6;}
 	                <table class="table table-bordered">
 						<tr>
 							<th><label for="pro_name">상품명</label></th>
-							<td><input type="text" name="pro_name" id="pro_name" required/></td>
+							<td><input type="text" name="pro_name" id="pro_name" required/>(<span id="pro_name_lengthCheck">0</span>/100)</td>
 						</tr>
 						<tr>
 							<th><label for="pro_price">판매가</label></th>
@@ -323,7 +371,7 @@ table th {width : 20%; background : #F6F6F6;}
 						</tr>
 						<tr>
 							<th><label for="pro_detail">상품 간단 설명</label></th>
-							<td><input type="text" name="pro_detail" id="pro_detail"/></td>
+							<td><textarea name="pro_detail" id="pro_detail"></textarea>(<span id="pro_detail_lengthCheck">0</span>/500)</td>
 						</tr>
 						<tr>
 							<th><label for="pro_content">상품 상세 설명</label></th>

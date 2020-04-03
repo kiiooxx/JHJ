@@ -7,18 +7,17 @@
 <div class="top">
 	<ul>
 		<li>
-			<c:choose>
-				<c:when test="${id != null && id != '' }">
-					<a href="logout.log">LOGOUT</a>
-				</c:when>
-				<c:otherwise>
-					<a href="loginForm.log">LOGIN</a>
-				</c:otherwise>
-			</c:choose>
+			<a href="about.mem">ABOUT</a>
 		</li>
-		<li>
-			<a href="joinForm.mem">JOIN</a>
-		</li>
+		<c:choose>
+			<c:when test="${id != null && id != '' }">
+				<li><a href="logout.log">LOGOUT</a></li>
+			</c:when>
+			<c:otherwise>
+				<li><a href="loginForm.log">LOGIN</a></li>
+				<li><a href="joinForm.mem">JOIN</a></li>
+			</c:otherwise>
+		</c:choose>
 		<li>
 			<a href="account.mem">ACCOUNT</a>
 		</li>

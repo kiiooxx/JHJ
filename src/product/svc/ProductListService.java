@@ -13,13 +13,13 @@ import vo.ProductBean;
 
 public class ProductListService {
 
-	public int getListCount(int cate_num) {
+	public int getListCount(int cate_num, int cate_sub_num, String orderBy, int page, int limit) {
 		// TODO Auto-generated method stub
 		int listCount = 0;
 		Connection con = getConnection();
 		ProductDAO productDAO = ProductDAO.getInstance();
 		productDAO.setConnection(con);
-		listCount = productDAO.selectListCount(cate_num);
+		listCount = productDAO.selectListCount(cate_num, cate_sub_num, orderBy, page, limit);
 		close(con);
 		return listCount;
 	}
