@@ -92,7 +92,7 @@ function sendFile(file, editor) {
         processData: false,
         success: function(data) {
         	$('#summernote').summernote('insertImage', data.url, file.name);
-        	$('#summernote').summernote('pasteHTML', '<img src="' + data.url + file.name + '" width=100%/>');
+        	$('#summernote').summernote('pasteHTML', '<img src="' + data.url + file.name + '" width="100%"/>');
         },
         error: function() {
         	alert('error');
@@ -189,7 +189,6 @@ $(document).on("click", '[id^=del_color]', function() {
 	var num = id.replace("del_color", "");
 	
 	var txt = $('#color' + num).text();
-	alert(txt);
 	color_array.splice(color_array.indexOf(txt),1);
 	$('#color_' + num).remove();
 	$("#pro_colorㅇ"+txt).parent().remove();
@@ -201,7 +200,6 @@ $(document).on("click", '[id^=del_size]', function() {
 	var num = id.replace("del_size", "");
 	
 	var txt = $('#size' + num).text();
-	alert(txt);
 	size_array.splice(size_array.indexOf(txt),1);
 	$('#size_' + num).remove();
 	$("#pro_sizeㅇ"+txt).parent().remove();
@@ -297,7 +295,6 @@ $(document).ready(function(){
 	$(document).on("click", '[id^=del]', function() {
 		var id = $(this).attr("id")
 		var num = id.replace("del", "");
-		alert(num);
 		
 		location.href = "productOptionDel.ad?pro_det_num="+num+"&pro_num=${pro_num}";
 		

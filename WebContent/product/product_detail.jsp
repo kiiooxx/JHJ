@@ -308,7 +308,7 @@ $(document).ready(function(){
 <div id="product_detail">
 	<div class="detail_Area">
 	 	<div class="img_Area">
-			<img src="<%= request.getContextPath() %>/upload/${prd.pro_photo }">
+			<img src="<c:url value='/upload/${prd.pro_photo }'/>">
 		</div>
 		
 		<div class="info_Area">
