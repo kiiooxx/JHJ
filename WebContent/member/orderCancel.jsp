@@ -79,11 +79,11 @@ $(document).ready(function(){
 					<th>사유 선택<b class="req">*</b></th>
 					<td>
 						<select class="사유선택" name="reqselect" id="reqselect">
-							<option value="orderReqCancel"selected="selected">구매의사없음</option>
-							<option value="changeCoSi">색상 및 사이즈 변경</option>
-							<option value="wrnogChoice">다른 상품 잘못 주문</option>
-							<option value="svcInfoDissa=">서비스 정보 불만족</option>
-							<option value="wrongProInfo">상품 정보 상이</option>
+							<option value="구메의사없음"selected="selected">구매의사없음</option>
+							<option value="색상 및 사이즈 변경">색상 및 사이즈 변경</option>
+							<option value="다른 상품 잘못 주문">다른 상품 잘못 주문</option>
+							<option value="서비스 정보 불만족">서비스 정보 불만족</option>
+							<option value="상품 정보 상이">상품 정보 상이</option>
 							<option value="etc" id="id">기타 사유</option>
 						</select>	
 					</td>
