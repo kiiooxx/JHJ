@@ -1364,27 +1364,7 @@ public class AdminDAO {
 			return mailOption;
 		}
 		
-		//자동메일옵션 하나만 찾기
-		public int oneMailOption(String col) {
-			int option = 0;
-			PreparedStatement pstmt = null;
-			ResultSet rs = null;
-			
-			try {
-				pstmt = con.prepareStatement("SELECT " + col + " FROM mail_option WHERE seq=1");
-				rs = pstmt.executeQuery();
-				if(rs.next()) {
-					option = rs.getInt(col);
-				}
-			}catch(Exception e) {
-				e.printStackTrace();
-				System.out.println("AdminDAO - viewMailOption error :" + e);
-			}finally {
-				close(rs);
-				close(pstmt);
-			}
-			return option;
-		}
+		
 		
 		//자동메일옵션 설정저장
 		public int updateMailOption(int newMem, int quitMem, int newOrder, int checkPaid,
@@ -1417,14 +1397,38 @@ public class AdminDAO {
 			return updateCount;
 		}
 		
+		//(관리자) 메일옵션 - 수정할 메일 폼 select
+		public MailOption selectMailForm(String col_title, String col_content) {
+			MailOption mailOption = null;
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+			String sql = "SELECT " + col_title + ", " + col_content + " FROM mail_option WHERE seq=1";
+			try {
+				pstmt = con.prepareStatement(sql);
+				rs = pstmt.executeQuery();
+				if(rs.next()) {
+					mailOption = new MailOption();
+					mailOption.setTitle(rs.getString(col_title));
+					mailOption.setContent(rs.getString(col_content));
+				}else {
+					return null;
+				}
+			}catch(Exception e) {
+				e.printStackTrace();
+				System.out.println("AdminDAO - selectMailForm error : "+e);
+			}finally {
+				close(rs);
+				close(pstmt);
+			}
+			return mailOption;
+		}
+		
 		//자동메일 디자인,내용 저장
 		public int saveMailForm(String col_title, String col_content, String title, String content) {
 			int updateCount = 0;
 			PreparedStatement pstmt = null;
 			String sql = "UPDATE mail_option SET " + col_title + "=?, " + col_content + "=? WHERE seq=1";
-			System.out.println("col_title:"+col_title);
-			System.out.println("col_content:"+col_content);
-			System.out.println("sql: "+sql);
+			
 			try {
 				pstmt = con.prepareStatement(sql);
 				pstmt.setString(1, title);
@@ -1439,25 +1443,21 @@ public class AdminDAO {
 			
 			return updateCount;
 		}
-		//자동메일 폼 불러오기
-		public MailOption selectMailForm(String col_title, String col_content) {
-			System.out.println("col_title:"+col_title);
-			System.out.println("col_content:"+col_content);
+		//자동메일 옵션여부 확인 및 전송할 메일 폼 select
+		public MailOption selectMailForm(String col, String col_title, String col_content) {
 			MailOption mailOption = null;
 			PreparedStatement pstmt = null;
 			ResultSet rs = null;
-			String sql = "SELECT " + col_title + ", " + col_content + " FROM mail_option WHERE seq=1";
-			
+			String sql = "SELECT " + col_title + ", " + col_content + " FROM mail_option WHERE seq=1 AND " + col + "=1";
 			try {
 				pstmt = con.prepareStatement(sql);
-				
 				rs = pstmt.executeQuery();
 				if(rs.next()) {
 					mailOption = new MailOption();
 					mailOption.setTitle(rs.getString(col_title));
 					mailOption.setContent(rs.getString(col_content));
-					
-					
+				}else {
+					return null;
 				}
 			}catch(Exception e) {
 				e.printStackTrace();
@@ -1468,6 +1468,8 @@ public class AdminDAO {
 			}
 			return mailOption;
 		}
+		
+		
 		
 		//적립금 설정 페이지(설정값 불러오기)
 		public PointMan viewPointOption(int seq) {

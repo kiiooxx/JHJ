@@ -71,7 +71,6 @@ public class MailManagementAction implements Action {
 				qnaRe = 1;
 			}
 			
-
 			mailOption.setNew_mem(newMem);
 			mailOption.setQuit_mem(quitMem);
 			mailOption.setOrder_info(newOrder);
@@ -81,18 +80,7 @@ public class MailManagementAction implements Action {
 			mailOption.setDeli_fin(deliFin);
 			mailOption.setConfirm_order(confirmOrder);
 			mailOption.setAcc_cancel(accCancel);
-			mailOption.setQna_re(qnaRe);
-			System.out.println("newMem:"+newMem);
-			System.out.println("quitMem:"+quitMem);
-			System.out.println("newOrder:"+newOrder);
-			System.out.println("checkPaid:"+checkPaid);
-			System.out.println("sendPro:"+sendPro);
-			System.out.println("deliIng:"+deliIng);
-			System.out.println("deliFin:"+deliFin);
-			System.out.println("confirmOrder:"+confirmOrder);
-			System.out.println("accCancel:"+accCancel);
-			System.out.println("qnaRe:"+qnaRe);
-			
+			mailOption.setQna_re(qnaRe);			
 			
 			MailManagementService mailManagementService = new MailManagementService();
 			boolean isSettingSuccess = mailManagementService.updateMailOption(newMem, quitMem, newOrder, 
@@ -110,17 +98,10 @@ public class MailManagementAction implements Action {
 				PrintWriter out = response.getWriter();
 				out.println("<script>");
 				out.println("alert('설정이 저장되었습니다.')");
-				out.println("location.href='mailManageForm.ad?seq=1';");
+				out.println("window.close();");
 				out.println("</script>");
-				
-//				request.setAttribute("pagefile", "/admin/mailManagement.jsp");
-//				forward = new ActionForward("/admin_template.jsp", false);
-				
 			}
-			
 		}
-		
 		return forward;
 	}
-
 }

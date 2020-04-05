@@ -84,7 +84,7 @@ $(document).ready(function() {
 			
 		}
 	});
-   
+});  
 
 
 // Search Date
@@ -162,7 +162,7 @@ function checkAll(theForm){
 
 </script>
 <style>
-   th {background : #F6F6F6;}
+   th {background-color : #F6F6F6;}
    .col {margin-bottom : 40px;}
    #pageList {text-align : center;}
 </style>
@@ -231,22 +231,19 @@ function checkAll(theForm){
     <div class="col">
       <div class="card card-default">
             <div class="card-body">
-               <table class="table table-bordered">
+               <table class="table table-striped">
+                  
                   <tr>
-                     <td colspan="10"><input type="submit" value="선택삭제" name="remove" id="remove" style="align:left;"></td>
-                  </tr>
-   
-                  <tr>
-                     <td class="list_top"><input type="checkbox" name="checkall" id="checkall"></td>
-                     <td>회원가입일</td>
-                     <td>아이디</td>
-                     <td>이름</td>
-                     <td>등급</td>
-                     <td>휴대전화</td>
-                     <td>성별</td>
-                     <td>주소</td>
-                     <td>이메일</td>
-                     <td>메모</td>
+                     <th class="list_top"><input type="checkbox" name="checkall" id="checkall"></th>
+                     <th>회원가입일</th>
+                     <th>아이디</th>
+                     <th>이름</th>
+                     <th>등급</th>
+                     <th>휴대전화</th>
+                     <th>성별</th>
+                     <th>주소</th>
+                     <th>이메일</th>
+                     <th>메모</th>
                   </tr>
    
                   <!-- 여기서부터 검색결과 -->
@@ -281,9 +278,6 @@ function checkAll(theForm){
                   </c:choose>
                   <!-- 여기까지 검색결과 -->
                   
-                  <tr>
-                     <td colspan="10"><input type="submit" value="선택삭제" name="remove" id="remove" style="align:left;"></td>
-                  </tr>
                </table>
 
       <!-- 여기서부터 페이징 -->

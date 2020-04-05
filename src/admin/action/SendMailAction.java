@@ -10,6 +10,7 @@ import vo.Cart;
 import vo.DeliInfo;
 import vo.MailOption;
 import vo.Order;
+import vo.OrderDet;
 import vo.OrderProView;
 import vo.PayInfo;
 
@@ -31,29 +32,54 @@ public class SendMailAction {
 	public void mailling(HttpServletRequest request, HttpServletResponse response) throws Exception {
 	
 		String col = request.getParameter("col");
-		String col_title = request.getParameter("col_title");
-		String col_content = request.getParameter("col_content");
 		
+		
+		
+		if(col != null) {
+			col = request.getParameter("col");
+		}else {
+			col = request.getParameter("deliStatus");
+		}
+		
+		String col_title = col + "_title" ;
+		String col_content = col + "_content" ;
+		System.out.println("col : " +  col);
+		System.out.println("col_title : " +  col_title);
+		System.out.println("col_content : " +  col_content);
 		SendMailService sendMailService = new SendMailService();
 		
-		//메일 전송 옵션 사용함 상태인지 아닌지 확인
-		int option = sendMailService.oneOptionValue(col);
-		//해당 메일 폼 가져오기
-		MailOption mailForm = sendMailService.getMailForm(col_title, col_content);
+		MailOption mailForm = sendMailService.getMailForm(col, col_title, col_content);
 		
-		if(option == 1) {
+		if(mailForm != null) {
 			
 			//메일 내용 가져오기
 			String id = request.getParameter("id");
-			//BoardBean boardBean = (BoardBean) request.getAttribute("boardBean");
-			//BoardBean boardBean_ref = (BoardBean) request.getAttribute("boardBean_ref");
 			String sender = "camillayin@gmail.com";
 			String receiver = request.getParameter("email");
 			String subject = mailForm.getTitle();
 			String content = mailForm.getContent();
 			if(id != null) {
-				content = content.replace("{member_id}", id);
+				content = content.replace("{고객아이디}", id);
 			}
+//			if(col.equals("check_paid")) {
+//				Order order = new Order();
+//				order = (Order) request.getAttribute("orderInfo");
+//				PayInfo payInfo = new PayInfo();
+//				payInfo = (PayInfo) request.getAttribute("payInfo");
+//				
+//				String sel_num = order.getSel_num();
+//				content = content.replace("{주문번호}", sel_num);
+//				
+//				String pay_type = payInfo.getPay_type();
+//				if(pay_type.equals("mutong")) {
+//					content = content.replace("{결제수단}", "무통장입금");
+//				}else if(pay_type.equals("silsi")) {
+//					content = content.replace("{결제수단}", "실시간 계좌이체");
+//				}else {
+//					content = content.replace("{결제수단}", "카드결제");
+//				}
+//			}
+			
 			
 			if(col.equals("order_info")) {
 				//주문안내메일
@@ -63,17 +89,24 @@ public class SendMailAction {
 				deliInfo = (DeliInfo) request.getAttribute("deliInfo");
 				PayInfo payInfo = new PayInfo();
 				payInfo = (PayInfo) request.getAttribute("payInfo");
-				ArrayList<Cart> cart = (ArrayList<Cart>) request.getAttribute("cartList");
 				
+				String[] proPhoto = request.getParameterValues("photo");
+				String[] proName = request.getParameterValues("pro_name");
+				String[] proSize = request.getParameterValues("pro_size");
+				String[] proColor = request.getParameterValues("color");
+				String[] proQnt = request.getParameterValues("bas_pro_qnt");
+				String str = "";
+				
+				for(int i = 0; i < proName.length; i++) {
+					str += proName[i] + "[옵션 : " +proSize[i] + " / " + proColor[i] + "]  수량: " + proQnt[i] + "<br>";	
+				}
+				content = content.replace("{주문상품}", str);
 				
 				String user_name = request.getParameter("user_name");
 				content = content.replace("{고객성명}", user_name);
 							
 				String sel_num = order.getSel_num();
 				content = content.replace("{주문번호}", sel_num);
-				
-				//String pro_name = cart.get();
-				//content = content.replace("{주문상품}", pro_name);
 				
 				String rec_name = deliInfo.getRec_name();
 				content = content.replace("{수령인}", rec_name);
@@ -85,7 +118,14 @@ public class SendMailAction {
 				content = content.replace("{주소}", rec_addr);
 				
 				String pay_type = payInfo.getPay_type();
-				content = content.replace("{결제수단}", pay_type);
+				if(pay_type.equals("mutong")) {
+					content = content.replace("{결제수단}", "무통장입금");
+				}else if(pay_type.equals("silsi")) {
+					content = content.replace("{결제수단}", "실시간 계좌이체");
+				}else {
+					content = content.replace("{결제수단}", "카드결제");
+				}
+				
 				
 				String price = Integer.toString(order.getFinal_price()+order.getPoint_use()-order.getDeli_price());
 				content = content.replace("{주문금액합계}", price);
@@ -99,6 +139,7 @@ public class SendMailAction {
 				String final_price = Integer.toString(order.getFinal_price());
 				content = content.replace("{최종결제금액}", final_price);
 			}
+			
 			
 			
 			try {
