@@ -56,16 +56,6 @@ public class ProductModifyAction implements Action {
 			productBean.setCate_num(Integer.parseInt(multi.getParameter("cate_sub")));
 		}
 		
-		
-		if(!multi.getParameter("optionChk").equals("1")) {
-			response.setContentType("text/html;charset=UTF-8");
-			PrintWriter out = response.getWriter();
-			out.println("<script>");
-			out.println("alert('옵션품목 만들기 버튼을 눌러주세요!')");
-			out.println("history.back()");
-			out.println("</script>");
-		}
-		
 		//추가된 옵션 - 색상,사이즈,재고
 		String[] color = null;
 		String[] pro_size = null;
@@ -83,11 +73,13 @@ public class ProductModifyAction implements Action {
 		
 		ProductModifyService productModifyService = new ProductModifyService();
 		ArrayList<ProDetBean> proDetInfo2 = new ArrayList<>();
-		for(int i=0; i<stock2.length; i++) {
-			ProDetBean proDetBean = new ProDetBean();
-			proDetBean.setPro_det_num(pro_det_num[i]);
-			proDetBean.setStock_qnt(Integer.parseInt(stock2[i]));
-			proDetInfo2.add(proDetBean);
+		if(stock2 != null) {
+			for(int i=0; i<stock2.length; i++) {
+				ProDetBean proDetBean = new ProDetBean();
+				proDetBean.setPro_det_num(pro_det_num[i]);
+				proDetBean.setStock_qnt(Integer.parseInt(stock2[i]));
+				proDetInfo2.add(proDetBean);
+			}
 		}
 		
 		boolean isUpdateSuccess = productModifyService.updateProduct(pro_num, productBean, proDetInfo2);
@@ -104,12 +96,14 @@ public class ProductModifyAction implements Action {
 		
 		ArrayList<ProDetBean> proDetInfo = new ArrayList<>();
 		ProDetBean proDetBean = null;
-		for(int i=0; i<stock.length; i++) {
-			proDetBean = new ProDetBean();
-			proDetBean.setColor(color[i]);
-			proDetBean.setPro_size(pro_size[i]);
-			proDetBean.setStock_qnt(Integer.parseInt(stock[i]));
-			proDetInfo.add(proDetBean);
+		if(stock != null) {
+			for(int i=0; i<stock.length; i++) {
+				proDetBean = new ProDetBean();
+				proDetBean.setColor(color[i]);
+				proDetBean.setPro_size(pro_size[i]);
+				proDetBean.setStock_qnt(Integer.parseInt(stock[i]));
+				proDetInfo.add(proDetBean);
+			}
 		}
 
 		boolean isRegistSuccess = productModifyService.registProductOption(pro_num, proDetInfo);

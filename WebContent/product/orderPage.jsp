@@ -94,7 +94,7 @@ function numberFormat(inputNumber) {
 			document.getElementById('usePoint').value = 0;
 			return false;
 		}
-		if(po > ${memberPoint.point_final}){ 
+		if(po > ${memberPoint.point_final}){
 			alert('보유 적립금 이상 사용은 불가능 합니다.');
 			return false;
 		}else{
@@ -296,6 +296,7 @@ function chkForm(f){
 						<input type="hidden" name="pro_num" value="${list.pro_num }"/>
 						<input type="hidden" name="pro_name" value="${list.pro_name }"/>
 						<input type="hidden" name="pro_photo" value="${list.pro_photo }"/>
+						<input type="hidden" name="photo" value="<img src="<%=request.getContextPath() %>/upload/${list.pro_photo }">"/>
 							<td><img src="<%=request.getContextPath() %>/upload/${list.pro_photo }" class="cartImage"></td>
 							<td>${list.pro_name }<br>[옵션 : ${list.color } / ${list.pro_size }]</td>
 							<fmt:formatNumber var="price" value="${list.pro_price}" pattern="#,###"/>
@@ -314,6 +315,13 @@ function chkForm(f){
 							<%-- <td><input type="checkbox" name="chk" value="${list.pro_det_num }" /></td> --%>
 							<input type="hidden" name="directOrder" value="false"/>
 							<input type="hidden" name="pro_det_num" value="${list.pro_det_num }" />
+							<input type="hidden" name="bas_pro_qnt" value="${list.bas_pro_qnt }"/>
+							<input type="hidden" name="pro_price" value="${list.pro_price }"/>
+							<input type="hidden" name="color" value="${list.color }"/>
+							<input type="hidden" name="pro_size" value="${list.pro_size }"/>
+							<input type="hidden" name="pro_num" value="${list.pro_num }"/>
+							<input type="hidden" name="pro_name" value="${list.pro_name }"/>
+							<input type="hidden" name="pro_photo" value="${list.pro_photo }"/>
 							<td><img src="<%=request.getContextPath() %>/upload/${list.pro_photo }"  class="cartImage"></td>
 							<td>${list.pro_name }<br>[옵션 : ${list.color } / ${list.pro_size }]</td>
 							<fmt:formatNumber var="price" value="${list.pro_price}" pattern="#,###"/>
@@ -354,7 +362,7 @@ function chkForm(f){
 				<tr>
 					<th>주소<b class="req">*</b></th>
 					<td><input type="text" value="${member.postcode }" name="postcode" id="postcode" size="6" readonly /> 
-					<a href="javascript:void(0);" id="zipSearch" class="small_btn" >우편번호</a><br>
+					<br>
 						<input type="text" value="${member.addr1 }" name="addr1" id="addr1" size=50 readonly />기본주소<br>
 						<input type="text" value="${member.addr2 }" name="addr2" id="addr2" size=50 required/> 상세주소</td>
 				</tr>
@@ -459,7 +467,9 @@ function chkForm(f){
 				<td><input type="text" name="usePoint" id="usePoint" value="0" size="5" onkeypress="onlyNumber();" >원 
 				<fmt:formatNumber var="point" value="${memberPoint.point_final == null ? '0' : memberPoint.point_final }" pattern="#,###"/>
 				<a href="javascript:void(0);" onclick="inqPoint();" class="small_btn">사용하기</a>(현재 적립금:${point}원)
+				<c:if test="${pointMan.p_stand == 'no'}">
 				<br>※(적립금 포함으로 결제하실 경우, 해당 주문건은 적립금이 지급되지 않습니다.)
+				</c:if>
 				</td>
 			</tr>
 		</table>

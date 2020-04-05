@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletResponse;
 import action.Action;
 import admin.action.SendMailAction;
 import member.svc.MemberJoinService;
-import point.action.PointAction;
 import point.svc.PointService;
 import vo.ActionForward;
 import vo.Member;
@@ -19,11 +18,14 @@ public class MemberJoinProAction implements Action {
 	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		ActionForward forward = null;
 		
+		//휴대폰 번호
+		String tel = request.getParameter("tel1") + request.getParameter("tel2") + request.getParameter("tel3");
+		
 		Member member = new Member();
 		member.setUser_id(request.getParameter("id"));
 		member.setUser_pw(request.getParameter("pass"));
 		member.setUser_name(request.getParameter("name"));
-		member.setTel(request.getParameter("tel"));
+		member.setTel(tel);
 		member.setPostcode(request.getParameter("postcode"));
 		member.setAddr1(request.getParameter("addr1"));
 		member.setAddr2(request.getParameter("addr2"));
@@ -54,11 +56,16 @@ public class MemberJoinProAction implements Action {
 		}else {
 			SendMailAction sendMailAction = new SendMailAction();
 			sendMailAction.mailling(request, response);
-			PointAction pointAction = new PointAction();
-			pointAction.newMemPoint(request, response);
-			request.setAttribute("pagefile", "/main.jsp");
-			forward = new ActionForward("/main.pro", false);
+			PointService pointService = new PointService();
+			pointService.pointForNewmem(user_id);
+			response.setContentType("text/html;charset=UTF-8");
+			PrintWriter out = response.getWriter();
+			out.println("<script>");
+			out.println("alert('회원가입이 완료되었습니다!');");
+			out.println("location.href='main.pro';");
+			out.println("</script>");
 			
+		
 		}
 		
 		return forward;

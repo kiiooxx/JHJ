@@ -8,6 +8,7 @@ import vo.MailOption;
 
 public class SendMailService {
 
+	//관리자 - 자동메일관리 페이지 메일옵션 설정여부 조회
 	public MailOption checkOptionValue() {
 		MailOption mailOption = null;
 		Connection con = getConnection();
@@ -18,26 +19,14 @@ public class SendMailService {
 		
 		return mailOption;
 	}
-	
-	
-	//option 한개 항목만 가져오기
-	public int oneOptionValue(String col) {
-		int option = 0;
-		Connection con = getConnection();
-		AdminDAO adminDAO = AdminDAO.getInstance();
-		adminDAO.setConnection(con);
-		option = adminDAO.oneMailOption(col);
-		close(con);
-		
-		return option;
-	}
 
-	public MailOption getMailForm(String col_title, String col_content) {
+	//자동메일 옵션 사용여부 확인 및 메일전송
+	public MailOption getMailForm(String col, String col_title, String col_content) {
 		MailOption mailOption = null;
 		Connection con = getConnection();
 		AdminDAO adminDAO = AdminDAO.getInstance();
 		adminDAO.setConnection(con);
-		mailOption = adminDAO.selectMailForm(col_title, col_content);
+		mailOption = adminDAO.selectMailForm(col, col_title, col_content);
 		close(con);
 		
 		return mailOption;

@@ -49,7 +49,7 @@ $(function(){
 </script>
 <style>
 
-style>th {
+th {
 	background: #F6F6F6;
 }
 
@@ -70,8 +70,6 @@ style>th {
 	<!-- Content Row -->
 	<div class="row">
 		<div class="col">
-
-
 			<form action="orderManageList.ad" method="post">
 				<div class="card card-default">
 					<div class="card-body">
@@ -136,27 +134,23 @@ style>th {
 		</div>
 	</div>
 
-
-	<div class="row">
-		<div class="col">
+<div class="row">
+	<div class="col">
+		<div class="card card-default">
 			<div class="card-body">
-
-				<table class="table table-bordered">
+				<table class="table table-striped">
 					<tr>
-						<td>주문일</td>
-						<td>주문번호</td>
-						<td>주문자</td>
-						<td>상품명</td>
-						<td>결제금액</td>
-						<td>상태</td>
-						<td>취소요청</td>
+						<th>주문일</th>
+						<th>주문번호</th>
+						<th>주문자</th>
+						<th>상품명</th>
+						<th>결제금액</th>
+						<th>상태</th>
+						<th>취소요청</th>
 					</tr>
+<!-- 여기서부터 검색결과 -->
 
-					<!-- 여기서부터 검색결과 -->
-
-	
-
-					<c:choose>
+<c:choose>
 						<c:when test="${orderList ne null }">
 							<c:forEach items="${orderList }" var="order">
 								<tr>
@@ -197,10 +191,10 @@ style>th {
 									</td>
 									<td>
 									<c:if test="${fn:contains(order.cancel_req,'Y')}">
-										<span style="color:red">취소요청</span>
+										<span class="badge badge-pill badge-danger">취소요청</span>
 									</c:if>
 									<c:if test="${fn:contains(order.cancel_req,'C')}">
-										<span style="color:blue">취소완료</span>
+										<span class="badge badge-pill badge-success">취소완료</span>
 									</c:if>
 									</td>
 								</tr>
@@ -210,11 +204,12 @@ style>th {
 		 검색된 주문내역이 없습니다.
 		</c:otherwise>
 					</c:choose>
-					<!-- 여기까지 검색결과 -->
+					                  
+                  
+               </table>
+               <!-- 여기까지 검색결과 -->
 
-				</table>
-
-				<!-- 여기서부터 페이징 -->
+     	<!-- 여기서부터 페이징 -->
 				<section id="page">
 					<c:choose>
 						<c:when test="${pageInfo.page <= 1 }">
@@ -284,6 +279,10 @@ style>th {
 
 
 	<!-- 여기까지 페이징 -->
+
+
+
+			
 
 </body>
 </html>

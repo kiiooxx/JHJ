@@ -15,7 +15,9 @@
 				<c:when test="${pointMan.p_mark eq 'double'}">${confrimPoint}</c:when>
 			</c:choose>
 			원 적립예정<br>
+			<c:if test="${reviewPoint > 0 }">
 			리뷰 작성 시, ${reviewPoint }원 추가 적립
+			</c:if>
 		</h1>
 	</div>
 

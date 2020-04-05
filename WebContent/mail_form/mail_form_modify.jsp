@@ -17,72 +17,56 @@ $(document).ready(function()
 			height: 400
 		});
 
-});
-
-/* function init() {
-	   if("${param.openInit != null && param.openInit eq 'true'}") {
-		   if("${param.preview eq 'true'}"){
-			   document.getElementById('title').readOnly = true;
-			   document.getElementById('content').readOnly = true;
-			   
-		   }else{
-			   if("${param.col_title == 'new_mem_title'}"){
-				   document.getElementById("col_title").value = "${param.col_title }";
-				   document.getElementById("col_content").value = "${param.col_content }";
-			   }
-			   else if("${param.col_title == 'quit_mem_title'}"){
-				   document.getElementById("col_title").value = "${param.col_title }";
-				   document.getElementById("col_content").value = "${param.col_content }";
-			   }
-			   else if("${param.col_title == 'order_info_title'}"){
-				   document.getElementById("col_title").value = "${param.col_title }";
-				   document.getElementById("col_content").value = "${param.col_content }";
-			   }   
-		   }
-		   
-	   }
-	   
-	} */
-	
+});	
 function acceptBtn(f){
-	if(confirm("저장하시겠습니까?")==true){
-		f.submit;
+	if(confirm("저장하시겠습니까?")==false){
+		return false;
 	}else{
-		return;
+		f.submit;
 	}
 }
 </script>
 </head>
 <style>
-
+table {
+	margin: auto;
+	width: 300px;
+	text-align: center;
+}
+th{
+	height: 50px;
+}
 </style>
 
-<!-- <body onload="init()"> -->
 <body>
 <form action="mailModify.ad" method="post" name="f">
-param.col_title : ${param.col_title }<br>
-param.col_content : ${param.col_content }<br>
-param.preview : ${param.preview }
 <input type="hidden" name="col_title" id="col_title" value="${param.col_title }">
 <input type="hidden" name="col_content" id="col_content" value="${param.col_content }">
 
 <table>
 	<tr>
 		<th>메일 제목</th>
+	</tr>
+	<tr>
 		<td><input type="text" name="title" id="title" size="100" value="${mailOption.title }"/></td>
 	</tr>
 	<tr>
 		<th>메일 내용</th>
+	</tr>
+	<tr>
 		<td>
 			<textarea name="content" id="content">
 			${mailOption.content}
 			</textarea>
-			<br><input type="button" value="변수보기">
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<input type="submit" id="save" value="저장" onclick="javascript:acceptBtn(document.f);">
+			<input type="button" id="close" value="닫기" onclick="self.close();">
 		</td>
 	</tr>
 </table>
-<input type="submit" value="저장" onclick="javascript:acceptBtn(document.f);">
-<input type="button" value="취소" onclick="self.close();">
 
 </form>                
 </body>

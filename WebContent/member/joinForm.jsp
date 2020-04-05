@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script>
 
 	//생년월일
@@ -87,11 +87,24 @@ function sample6_execDaumPostcode() {
 		}
 	}).open();
 }
+
+
 	
 var chkId = false;
 var op = false; //idCheck.jsp
 var idcheck;
 function chkForm(f) {
+	
+	var re = /^[a-zA-Z0-9]{4,12}$/; // 비밀번호 유효성 검사 정규식
+	var re2 =/^[_a-zA-Z0-9]+([-+.][_a-zA-Z0-9]+)*@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/i; //이메일 유효성 검사 정규식
+	var regPhone2 = /^\d{3}|\d{4}$/g; //휴대폰번호 유효성 검사(중간번호) 
+    var regPhone3 = /^\d{4}$/g; //휴대폰번호 유효성 검사(끝번호)
+	
+	
+	var email = document.getElementById("email");
+	var pass = document.getElementById("pass");
+	
+	
 	if (!chkId || idcheck != f.id.value.trim()) {
 		alert("아이디 중복확인이 필요합니다.");
 		return false;
@@ -102,6 +115,9 @@ function chkForm(f) {
 		f.pass.focus();
 		return false;
 	}
+	if(!check(re,pass,"비밀번호는 4~12자의 영문 대소문자와 숫자로만 입력해주세요.")) {
+        return false;
+    }
 
 	if (f.pass.value.trim() != f.passChk.value.trim()) {
 		alert("비밀번호가 일치하지 않습니다.");
@@ -119,7 +135,6 @@ function chkForm(f) {
     	alert("주소를 입력해 주세요.");
     	f.postcode.focus();
     	return false;
-    	
     }
     
     if(f.addr2.value.trim() == ""){
@@ -128,15 +143,31 @@ function chkForm(f) {
     	return false;
     }
     
-    if(f.tel.value.trim() == "" ){
-    	alert("휴대전화번호를 입력하세요.");
-    	f.tel.focus();
+    if (f.tel2.value.trim() == "") {
+		alert("휴대폰 번호를 입력하세요.");
+		f.tel2.focus();
+		return false;
+	}
+    if(!check(regPhone2, tel2, "정확한 휴대폰 번호를 입력해주세요.")){
+    	return false;
+    }
+    
+    if (f.tel3.value.trim() == "") {
+		alert("휴대폰 번호를 입력하세요.");
+		f.tel3.focus();
+		return false;
+    }
+    if(!check(regPhone3, tel3, "정확한 휴대폰 번호를 입력해주세요.")){
     	return false;
     }
     
     if(f.email.value.trim() == ""){
     	alert("이메일 주소를 입력하세요.");
     	f.email.focus();
+    	return false;
+    }
+    
+    if(!check(re2, email, "적합하지 않은 이메일 형식입니다.")) {
     	return false;
     }
 
@@ -146,13 +177,20 @@ function chkForm(f) {
     	return false;
     }
 	
-	
 	f.submit();
 	
 }
-	
-	
-	
+
+function check(re, what, message) {
+    if(re.test(what.value)) {
+        return true;
+    }
+    alert(message);
+    what.value = "";
+    what.focus();
+    //return false;
+}
+
 </script>
 
 <div id="join_form">
@@ -167,21 +205,19 @@ function chkForm(f) {
 				<tbody>
 					<tr>
 						<th><label for="id">아이디</label><b class="req">*</b></th>
-						<td><input type="text" name="id" id="id" required readonly />
+						<td><input type="text" name="id" id="id" maxlength="12" required  />
 							<a href="javascript:void(0);" name="idCheck" id="idCheck"
 							class="btn"
-							onclick="window.open('idCheckForm.mem?openInit=true','','width=300, height=200')">중복확인</a>
-					
-					
+							onclick="window.open('idCheckForm.mem?openInit=true','','width=500, height=300')">중복확인</a>
 					</td>
 				</tr>
 				<tr>
 					<th><label for="pass">비밀번호</label><b class="req">*</b></th>
-					<td><input type="password" name="pass" id="pass" required /></td>
+					<td><input type="password" name="pass" id="pass" maxlength="12" required />&nbsp;4~12자의 영문 대소문자와 숫자로만 입력</td>
 				</tr>
 				<tr>
 					<th><label for="passChk">비밀번호확인</label><b class="req">*</b></th>
-					<td><input type="password" name="passChk" id="passChk"
+					<td><input type="password" name="passChk" id="passChk" maxlength="12"
 						required /></td>
 				</tr>
 				<tr>
@@ -202,12 +238,25 @@ function chkForm(f) {
 				</tr>
 				<tr>
 					<th><label for="tel">휴대전화</label><b class="req">*</b></th>
-					<td><input type="tel" name="tel" id="tel" required /></td>
+					<td>
+					<select name="tel1">
+						<option value="010" selected>010</option>
+						<option value="010">011</option>
+						<option value="010">016</option>
+						<option value="010">017</option>
+						<option value="010">018</option>
+						<option value="010">019</option>
+					</select> -
+					<input type="text" name="tel2" id="tel2" size="7" maxlength="4" required /> -
+					<input type="text" name="tel3" id="tel3" size="7" maxlength="4" required />
+					</td>
 				</tr>
 				<tr>
 					<th><label for="email">이메일 주소</label><b class="req">*</b></th>
 					<td><input type="text" name="email" id="email" required /></td>
+					
 				</tr>
+				
 			</tbody>
 		</table>
 	</div>
