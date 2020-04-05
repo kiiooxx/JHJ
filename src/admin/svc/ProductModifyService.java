@@ -77,13 +77,13 @@ public class ProductModifyService {
 		
 		// 상품상세코드 (상품 번호 + 색상 순서 )
 		String num = String.format("%04d", pro_num);
-		String color_num = adminDAO.selectProDetColorNum(pro_num);
+		
 					
-		String stock_num = adminDAO.selectStockCount();	//오늘 등록한 재고의 개수
-					
-		if(!(color_num.equals("")|| stock_num.equals(""))) {
-						
-			for(int i=0; i<proDetInfo.size(); i++) {
+		for(int i=0; i<proDetInfo.size(); i++) {
+			String color_num = adminDAO.selectProDetColorNum(pro_num);			
+			String stock_num = adminDAO.selectStockCount();	//오늘 등록한 재고의 개수
+			
+			if(!(color_num.equals("")|| stock_num.equals(""))) {
 				String pro_det_num = num + color_num + proDetInfo.get(i).getPro_size().substring(0,1);	//상품 상세 코드
 				insertCount = adminDAO.insertPro_Det(pro_num, pro_det_num, stock_num, proDetInfo.get(i).getColor(), proDetInfo.get(i).getPro_size(), proDetInfo.get(i).getStock_qnt());
 				if(insertCount == 0) {
