@@ -6,9 +6,6 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <div class="top">
 	<ul>
-		<li>
-			<a href="about.mem">ABOUT</a>
-		</li>
 		<c:choose>
 			<c:when test="${id != null && id != '' }">
 				<li><a href="logout.log">LOGOUT</a></li>
@@ -26,6 +23,9 @@
 		</li>
 		<li>
 			<a href="cartList.pro">CART(${fn:length(cartList) })</a>
+		</li>
+		<li>
+			<a href="about.mem">ABOUT</a>
 		</li>
 		<!-- 관리자일때만 admin메뉴 보이게 -->
 		<c:if test="${grade == 'A'.charAt(0) }">

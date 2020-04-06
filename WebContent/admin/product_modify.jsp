@@ -4,7 +4,8 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-
+<%@ page import="java.util.*" %>
+<%@ page import="vo.ProDetBean" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,6 +13,19 @@
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
 <jsp:include page="/resources/admin_css.jsp"/>
+
+<%
+	ArrayList<ProDetBean> arrayList = (ArrayList<ProDetBean>) request.getAttribute("proDetList"); 
+	HashSet<String> hs = new HashSet<String>();
+	
+	for(int i=0; i<arrayList.size(); i++) {
+		hs.add(arrayList.get(i).getPro_size());
+	}
+	
+	List size_list = new ArrayList(hs);
+	
+	Collections.sort(size_list);
+%>
 
 <script type="text/javascript">
 
@@ -107,7 +121,12 @@ var size_array = [];	//사이즈 저장하는 배열
 var color_array2 = [];	//추가하는 컬러 저장하는 배열
 var size_array2 = [];	//추가하는 사이즈 저장하는 배열
 var color_array3 = [];	//DB에 저장되어있는 컬러 저장하는 배열
-var size_array3 = [];	//DB에 저장되어있는 사이즈 저장하는 배열
+var size_array3 = "<%=size_list%>";	//DB에 저장되어있는 사이즈 저장하는 배열
+
+size_array3 = size_array3.substr(1, size_array3.length-2);
+size_array3 = size_array3.split(", ");
+size_array = size_array3;
+
 
 <c:forEach var="list" items="${proDetList }" varStatus="i">
 	<c:if test="${i.index == 0 || c != list.color }">
@@ -116,15 +135,6 @@ var size_array3 = [];	//DB에 저장되어있는 사이즈 저장하는 배열
 			color_array3 = color_array3.concat('${list.color}');
 	</c:if>
 </c:forEach>
-
-<c:forEach var="list" items="${proDetList }" varStatus="i">
-<c:if test="${i.index == 0 || s != list.pro_size }">
-	<c:set var="s" value="${list.pro_size }"/>
-		size_array = size_array.concat('${list.pro_size}');
-		size_array3 = size_array3.concat('${list.pro_size}');
-</c:if>
-</c:forEach>
-
 
 function keyEvent_color() {
 	var flug = true;
@@ -150,7 +160,7 @@ function keyEvent_color() {
 			color_array2 = color_array2.concat($('#color').val());
 			
 			var html = '';
-			html += '<span id="color_' + cnt + '" class="bg-warning"><a href="#" id="color' + cnt + '">' + $('#color').val() + '</a><a href="#" id="del_color'+ cnt +'">[X]</a></span>';		
+			html += '<span id="color_' + cnt + '" class="bg-warning"><a href="#" id="color' + cnt + '">' + $('#color').val() + '</a><a href="#" id="color_del'+ cnt +'">[X]</a></span> &nbsp;';		
 			$('#color_append').append(html);
 		}
 		
@@ -176,7 +186,7 @@ function keyEvent_size() {
 			size_array = size_array.concat($('#size').val());
 			size_array2 = size_array2.concat($('#size').val());
 			var html = '';
-			html += '<span id="size_' + cnt + '" class="bg-warning"><a href="#" id="size' + cnt +'">' + $('#size').val() + '</a><a href="#" id="del_size'+ cnt +'">[X]</a></span>';	
+			html += '<span id="size_' + cnt + '" class="bg-warning"><a href="#" id="size' + cnt +'">' + $('#size').val() + '</a><a href="#" id="size_del'+ cnt +'">[X]</a></span> &nbsp;';	
 			$('#size_append').append(html);
 		}
 		
@@ -184,26 +194,38 @@ function keyEvent_size() {
 	}
 }
 
-$(document).on("click", '[id^=del_color]', function() {
-	var id = $(this).attr("id")
-	var num = id.replace("del_color", "");
+//색상 삭제 버튼
+$(document).on("click", '[id^=color_del]', function() {
+	if(confirm("정말 삭제하시겠습니까?")) {
+		var id = $(this).attr("id")
+		var num = id.replace("color_del", "");
+		
+		var txt = $('#color' + num).text();
+		color_array.splice(color_array.indexOf(txt),1);
+		$('#color_' + num).remove();
+		$("#pro_colorㅇ"+txt).parent().remove();
+		
+		location.href = "productOptionDel.ad?color="+txt+"&pro_num=${pro_num}";
+	}
 	
-	var txt = $('#color' + num).text();
-	color_array.splice(color_array.indexOf(txt),1);
-	$('#color_' + num).remove();
-	$("#pro_colorㅇ"+txt).parent().remove();
+	
 	return false;
 });
 
-$(document).on("click", '[id^=del_size]', function() {
-	var id = $(this).attr("id")
-	var num = id.replace("del_size", "");
-	
-	var txt = $('#size' + num).text();
-	size_array.splice(size_array.indexOf(txt),1);
-	$('#size_' + num).remove();
-	$("#pro_sizeㅇ"+txt).parent().remove();
-	
+//사이즈 삭제 버튼
+$(document).on("click", '[id^=size_del]', function() {
+	if(confirm("정말 삭제하시겠습니까?")) {
+		var id = $(this).attr("id")
+		var num = id.replace("size_del", "");
+		
+		var txt = $('#size' + num).text();
+		alert(txt);
+		size_array.splice(size_array.indexOf(txt),1);
+		$('#size_' + num).remove();
+		$("#pro_sizeㅇ"+txt).parent().remove();
+		
+		location.href = "productOptionDel.ad?size="+txt+"&pro_num=${pro_num}";
+	}
 	return false;
 });
 
@@ -293,11 +315,12 @@ $(document).ready(function(){
 	
 	//삭제버튼 눌렀을 때
 	$(document).on("click", '[id^=del]', function() {
-		var id = $(this).attr("id")
-		var num = id.replace("del", "");
-		
-		location.href = "productOptionDel.ad?pro_det_num="+num+"&pro_num=${pro_num}";
-		
+		if(confirm("정말 삭제하시겠습니까?")) {
+			var id = $(this).attr("id")
+			var num = id.replace("del", "");
+			
+			location.href = "productOptionDel.ad?pro_det_num="+num+"&pro_num=${pro_num}";
+		}
 		return false;
 	});
 });
@@ -525,6 +548,7 @@ table th {width : 300px; background : #F6F6F6;}
 											<c:set var="c" value="${list.color }"/>
 											<span id="color_${i.index }" class="bg-warning">
 											<a href="#" id="color${i.index }">${list.color }</a>
+											<a href="#" id="color_del${i.index }">[X]</a>
 										</span>&nbsp;
 										</c:if>	
 									</c:forEach>
@@ -539,14 +563,17 @@ table th {width : 300px; background : #F6F6F6;}
 								<input type="text" name="size" id="size" onkeydown="javascript:keyEvent_size(this);"/>
 								
 								<span id="size_append">
-									<c:forEach var="list" items="${proDetList }" varStatus="i">
-										<c:if test="${i.index == 0 || s != list.pro_size }">
-											<c:set var="s" value="${list.pro_size }"/>
-											<span id="size_${i.index }" class="bg-warning">
-											<a href="#" id="size${i.index }">${list.pro_size }</a>
+									<%
+										for(int i=0; i<size_list.size(); i++) {
+									%>
+										<span id="size_<%=i %>" class="bg-warning">
+											<a href="#" id="size<%=i %>"><%=size_list.get(i) %></a>
+											<a href="#" id="size_del<%=i %>">[X]</a>
 										</span>&nbsp;
-										</c:if>	
-									</c:forEach>
+									<%
+									}
+									%>
+								
 								</span>
 								<br>(세미콜론(;),엔터,탭키로 구분)
 								<br>

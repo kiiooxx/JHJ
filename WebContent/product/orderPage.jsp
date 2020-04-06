@@ -296,7 +296,6 @@ function chkForm(f){
 						<input type="hidden" name="pro_num" value="${list.pro_num }"/>
 						<input type="hidden" name="pro_name" value="${list.pro_name }"/>
 						<input type="hidden" name="pro_photo" value="${list.pro_photo }"/>
-						<input type="hidden" name="photo" value="<img src="<%=request.getContextPath() %>/upload/${list.pro_photo }">"/>
 							<td><img src="<%=request.getContextPath() %>/upload/${list.pro_photo }" class="cartImage"></td>
 							<td>${list.pro_name }<br>[옵션 : ${list.color } / ${list.pro_size }]</td>
 							<fmt:formatNumber var="price" value="${list.pro_price}" pattern="#,###"/>
@@ -455,7 +454,7 @@ function chkForm(f){
 				</tr>
 				<tr>
 					<th>${total4 }원</th>
-					<th>-&nbsp;<input type="text" id="point" value="0" size="3" class="no-line" readonly>원</th>
+					<th>-&nbsp;<input type="text" id="point" value="0" size="5" class="no-line" readonly>원</th>
 					<fmt:formatNumber var="result" value="${totalMoney + deliPrice}" pattern="#,###"/>
 					<th>=<input type="text" id="result" name="result" value="${result}" class="no-line" readonly>원</th>
 				</tr>

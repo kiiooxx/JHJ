@@ -36,14 +36,14 @@ public class ProductDelService {
 
 	
 	//상품 옵션 삭제
-	public boolean deleteProductOption(String pro_det_num) {
+	public boolean deleteProductOption(String color, String size, String pro_num, String pro_det_num) {
 		// TODO Auto-generated method stub
 		boolean isDeleteSuccess = false;
 		Connection con = getConnection();
 		AdminDAO adminDAO = AdminDAO.getInstance();
 		adminDAO.setConnection(con);
 		
-		isDeleteSuccess = adminDAO.deleteProductOption(pro_det_num);
+		isDeleteSuccess = adminDAO.deleteProductOption(color, size, pro_num, pro_det_num);
 			
 		if(isDeleteSuccess) {
 			commit(con);

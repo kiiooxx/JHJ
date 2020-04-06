@@ -270,15 +270,17 @@ public class AdminDAO {
 		
 		// 상품상세코드 상품번호
 		String num = String.format("%04d", pro_num);
+		String pro_det_num = "";
 		
 		try {
 			//상품 상세 코드의 
-			pstmt = con.prepareStatement("SELECT count(if(pro_det_num like '" + num + "%', pro_det_num, null)) FROM pro_det");
+			pstmt = con.prepareStatement("SELECT max(if(pro_det_num like '" + num + "%', pro_det_num, null)) FROM pro_det");
 			rs = pstmt.executeQuery();
 			
 			if(rs.next()) {
-				cnt = rs.getInt(1) + 1;	//컬러 순서
-				color_num = String.format("%02d", cnt);
+				pro_det_num = rs.getString(1);
+				cnt = Integer.parseInt(pro_det_num.substring(4,6));
+				color_num = String.format("%02d", cnt+1);
 			}
 		}catch(SQLException e) {
 			System.out.println("상품 상세 코드 색상 순서 불러오기 에러  " + e);
@@ -723,17 +725,25 @@ public class AdminDAO {
 	}
 
 	//10. 상품 옵션 삭제 (pro_det, in_out_table, stock 테이블 제거)
-	public boolean deleteProductOption(String pro_det_num) {
+	public boolean deleteProductOption(String color, String size, String pro_num, String pro_det_num) {
 		// TODO Auto-generated method stub
 		PreparedStatement pstmt = null;
 		int deleteCount = 0;
 		boolean isDeleteSuccess = false;
 		String sql = "delete a, b, c from pro_det a inner join stock b on a.pro_det_num = b.pro_det_num ";
-		sql += "inner join in_out_table c on b.pro_det_num = c.pro_det_num where a.pro_det_num=?";
+		sql += "inner join in_out_table c on b.pro_det_num = c.pro_det_num where ";
+		
+		if(!color.equals("")) {
+			sql += "a.color = '" + color + "'";
+		}else if(!size.equals("")) {
+			sql += "a.pro_size = '" + size + "'";
+		}else {
+			sql += "a.pro_det_num = '" + pro_det_num + "'";
+		}
+		sql += " and a.pro_num = " + pro_num;
 		
 		try {
 			pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, pro_det_num);
 			
 			deleteCount = pstmt.executeUpdate();
 			
