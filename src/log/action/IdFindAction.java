@@ -21,18 +21,37 @@ public class IdFindAction implements Action {
 		// TODO Auto-generated method stub
 		Member member = null;
 		ActionForward forward = null;
-
+      
 		// 1. form에서 전송한 값 getParameter로 받아온다.(이름, 휴대번호...)
-		String name = request.getParameter("name");
-		String phone = request.getParameter("phone") + request.getParameter("phone1") + request.getParameter("phone2");
-		String name2 = request.getParameter("name2");
-		String email = request.getParameter("email")  + "@" + request.getParameter("e_domain");
+		String name = "";
+		if(!(request.getParameter("name") == null || request.getParameter("name").equals(""))) {
+			name = request.getParameter("name");
+		}
+		
+		String phone = "";
+		if(!(request.getParameter("phone") == null || request.getParameter("phone1") ==null || request.getParameter("phone2") == null || request.getParameter("phone").equals("") ||  request.getParameter("phone1").equals("") || request.getParameter("phone2").equals(""))) {
+			phone = request.getParameter("phone")+ request.getParameter("phone1")+ request.getParameter("phone2");
+		}
+				
+		String name2 = "";
+		if(!(request.getParameter("name2") == null || request.getParameter("name2").equals(""))) {
+			name2 = request.getParameter("name2");
+		}
+		request.getParameter("name2");
+		
+		
+		String email = "";
+		if(!(request.getParameter("email") == null || request.getParameter("e_domain") == null || request.getParameter("email").equals("") || request.getParameter("e_domain").equals(""))) {
+			email = request.getParameter("email")+ "@" + request.getParameter("e_domain");
+			
+		}
 			// 2. 서비스 생성
+      
 		IdFindService idFindService = new IdFindService();
 
-		if(request.getParameter("phone") == null) {
+		if(phone.equals("")) {
 			member = idFindService.memberSelect1(name2,email);
-			System.out.println("ㅇㅇ" + member.getUser_id());
+
 		}else {
 			member = idFindService.memberSelect(name, phone);
 		}
@@ -57,6 +76,8 @@ public class IdFindAction implements Action {
 			
 		}
 		return forward;
+		
+		
 
 	}
 
