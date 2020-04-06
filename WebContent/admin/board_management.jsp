@@ -56,6 +56,18 @@ $(document).ready(function() {
 		}
 	});
 
+	//공지 해지 버튼 눌렀을 때
+	$('#notice_del').on('click', function() {
+		if($('input[name=chk]').is(":checked") == false){
+			alert("게시글번호를 선택하세요.");
+			return false;
+		}else {
+			var items=[];
+			$('input[name=chk]:checkbox:checked').each(function(){items.push($(this).val());});
+			var tmp = items.join(',');
+			location.href='boardNoticeAction.bo?board_num='+tmp+"&board_notice=N";
+		}
+	});
 });
 </script>
 <style>
