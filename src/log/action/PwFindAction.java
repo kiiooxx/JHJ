@@ -83,10 +83,9 @@ public class PwFindAction implements Action {
 					Transport.send(message);
 					out.println("<script>");
 					out.println("alert('임시비밀번호가 발급되었습니다.')");
-					out.println("location.href='loginform.log'");
+					out.println("location.href='loginForm.log'");
 					out.println("</script>");
-					request.setAttribute("pagefile", "/member/loginForm.jsp");
-					forward = new ActionForward("/template.jsp", false);
+
 					
 				} catch (Exception e) {
 					out.println("<script>");
@@ -118,8 +117,9 @@ public class PwFindAction implements Action {
 		out.println("alert('이메일이 일치하지 않습니다.')");
 		out.println("history.back()");
 		out.println("</script>");
-		
 	}
+		
+	
 		return forward;
 	}
 }

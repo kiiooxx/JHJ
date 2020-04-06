@@ -218,7 +218,9 @@ public class MemberDAO {
 		return listCount;
 	}
 	
-	//i
+	
+	
+
 }
 	
 	

@@ -47,7 +47,14 @@ public class MyInfoModAction implements Action {
 			out.println("history.back()");
 			out.println("</script>");
 		}else {
-			forward = new ActionForward("myinfo.mem",true);
+			response.setContentType("text/html;charset=UTF-8");
+			PrintWriter out = response.getWriter();
+			out.println("<script>");
+			out.println("alert('수정 되었습니다.')");
+			out.println("history.back()");
+			out.println("location.href='myinfo.mem'");
+			out.println("</script>");
+			
 		}
 		return forward;
 	}
