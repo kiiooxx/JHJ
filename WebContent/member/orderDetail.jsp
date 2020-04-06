@@ -52,7 +52,7 @@
 								&nbsp;<a href="ordercheck.mem?sel_num=${orderInfo.sel_num }" class="small_btn">구매확정</a>
 							</c:if>
 							<c:if test="${orderInfo.sel_status eq 'order_done' }">
-								&nbsp;<a href="ordercancel.mem?sel_num=${orderInfo.sel_num }" class="small_btn" ><img src="http://img.echosting.cafe24.com/skin/base_ko_KR/myshop/btn_order_cancel.gif" alt="주문취소"/></a>
+								&nbsp;<a href="ordercancel.mem?sel_num=${orderInfo.sel_num }" class="small_btn" >주문취소</a>
 							</c:if>
 						</td>
 					</tr>

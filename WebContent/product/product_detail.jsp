@@ -142,6 +142,8 @@ $(document).ready(function(){
 
 		 var size = $("input[name='pro_det_num']").length;
 
+		
+		 
 		 if(size == 0) {
 			 swal({
 				  title: "주문 실패!",
@@ -203,6 +205,10 @@ $(document).ready(function(){
 						.then((willCart) => {
 						  if (willCart) {
 						    location.href="cartList.pro";
+						  }else {
+							  $('[class^=option_product]').remove();
+							  $('.total_price').text('0');
+							  $('.total_qnt').text('0');
 						  }
 					});
 				},
