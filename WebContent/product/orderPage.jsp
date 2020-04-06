@@ -455,7 +455,7 @@ function chkForm(f){
 				</tr>
 				<tr>
 					<th>${total4 }원</th>
-					<th>-&nbsp;<input type="text" id="point" value="0" size="3" class="no-line" readonly>원</th>
+					<th>-&nbsp;<input type="text" id="point" value="0" size="5" class="no-line" readonly>원</th>
 					<fmt:formatNumber var="result" value="${totalMoney + deliPrice}" pattern="#,###"/>
 					<th>=<input type="text" id="result" name="result" value="${result}" class="no-line" readonly>원</th>
 				</tr>
