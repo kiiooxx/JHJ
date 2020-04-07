@@ -79,43 +79,36 @@
 						<th scope="col">REVIEW</th>
 					</tr>
 
-				<c:forEach items="${orderProList }" var="orderProList">
+				<c:forEach items="${orderProList }" var="order_list">
 					<tr>
 						<td>
-							<a href="productDetail.pro?pro_num=${orderProList.pro_num }" >
-								<img src="<%=request.getContextPath() %>/upload/${orderProList.pro_photo}" class="cartImage">
+							<a href="productDetail.pro?pro_num=${order_list.pro_num }" >
+								<img src="<%=request.getContextPath() %>/upload/${order_list.pro_photo}" class="cartImage">
 							</a>
 						</td>
-						<td class="left"><strong>${orderProList.pro_name}</strong>
-							<div>[옵션: ${orderProList.color} / ${orderProList.pro_size }]</div>
-						<td>${orderProList.pro_qnt}</td>
-						<fmt:formatNumber var="pro_price" value="${orderProList.pro_price}" pattern="#,###"/>
+						<td class="left"><strong>${order_list.pro_name}</strong>
+							<div>[옵션: ${order_list.color} / ${order_list.pro_size }]</div>
+						<td>${order_list.pro_qnt}</td>
+						<fmt:formatNumber var="pro_price" value="${order_list.pro_price}" pattern="#,###"/>
 						<td><strong>${pro_price}</strong></td>		
 						<td>
 							<c:choose>
 							<c:when test="${orderInfo.sel_status eq 'order_confirm' }">
-								<c:set var="review_cnt" value="0"/>
+								<c:set var="review_boolean" value="false"/>
 								<c:choose>
 									<c:when test="${fn:length(reviewList) > 0}">
-										<c:forEach var="reviewList" items="${reviewList }" varStatus="i">
-											<c:choose>
-												<c:when test="${reviewList.sel_num == orderInfo.sel_num && reviewList.pro_num == orderProList.pro_num}">
-													<c:if test="${review_cnt == 0 }">
-														리뷰작성 완료
-														<c:set var="review_cnt" value="${review_cnt + 1 }"/>
-													</c:if>
-												</c:when>
-												<c:otherwise>
-													<c:if test="${review_cnt == 0 }">
-														<a href="boardWriteForm.bo?board_type=review&pro_num=${orderProList.pro_num }&sel_num=${orderInfo.sel_num}" class="small_btn">리뷰작성</a>
-														<c:set var="review_cnt" value="${review_cnt + 1 }"/>
-													</c:if>
-												</c:otherwise>
-											</c:choose>
+										<c:forEach var="review_list" items="${reviewList }" varStatus="i">
+											<c:if test="${review_list.sel_num == orderInfo.sel_num && review_list.pro_num == order_list.pro_num}">
+												리뷰작성 완료
+												<c:set var="review_boolean" value="true"/>
+											</c:if>
 										</c:forEach>
+										<c:if test="${review_boolean eq 'false' }">
+											<a href="boardWriteForm.bo?board_type=review&pro_num=${order_list.pro_num }&sel_num=${orderInfo.sel_num}" class="small_btn">리뷰작성</a>
+										</c:if>
 									</c:when>
 									<c:otherwise>
-										<a href="boardWriteForm.bo?board_type=review&pro_num=${orderProList.pro_num }&sel_num=${orderInfo.sel_num}" class="small_btn">리뷰작성</a>
+										<a href="boardWriteForm.bo?board_type=review&pro_num=${order_list.pro_num }&sel_num=${orderInfo.sel_num}" class="small_btn">리뷰작성</a>
 									</c:otherwise>
 								</c:choose>
 							</c:when>
