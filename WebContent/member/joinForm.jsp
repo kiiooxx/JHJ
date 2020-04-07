@@ -188,7 +188,6 @@ function check(re, what, message) {
     alert(message);
     what.value = "";
     what.focus();
-    //return false;
 }
 
 </script>

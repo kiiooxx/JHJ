@@ -22,7 +22,7 @@ $(document).ready(function(){
 function setPointDate(){
 	$("#pointDate").append("<option value='0'>즉시</option>");
 	$("#pointDate").append("<option value='1'>익일</option>");
-	for(var i = 2; i <= 14; i++){
+	for(var i = 2; i <= 10; i++){
 		$("#pointDate").append("<option value='" + i + "'>" + i +"일 후</option>");
 	}
 }

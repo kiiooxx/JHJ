@@ -2,11 +2,17 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<head>
+<script>
 
+</script>
+</head>
+
+<body>
 <div id="join_form">
 
 	<div class="orderInfo">
-	<fmt:formatNumber var="reviewPoint" value="${reviewPoint}" pattern="#,###"/>
+	<fmt:formatNumber var="reviewPoint" value="${pointMan.p_review}" pattern="#,###"/>
 		<h1>주문이 완료되었습니다!<br>
 			구매확정 시,
 			<c:choose>
@@ -15,7 +21,7 @@
 				<c:when test="${pointMan.p_mark eq 'double'}">${confrimPoint}</c:when>
 			</c:choose>
 			원 적립예정<br>
-			<c:if test="${reviewPoint > 0 }">
+			<c:if test="${pointMan.p_review > 0 }">
 			리뷰 작성 시, ${reviewPoint }원 추가 적립
 			</c:if>
 		</h1>
@@ -163,3 +169,4 @@
 	</div>
 
 </div>
+</body>

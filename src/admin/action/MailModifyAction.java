@@ -43,6 +43,7 @@ public class MailModifyAction implements Action {
 			PrintWriter out = response.getWriter();
 			out.println("<script>");
 			out.println("alert('수정사항이 저장되었습니다.')");
+			out.println("window.close()");
 			out.println("</script>");
 		}
 		

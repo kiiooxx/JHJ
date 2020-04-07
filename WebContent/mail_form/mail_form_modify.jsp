@@ -19,12 +19,14 @@ $(document).ready(function()
 
 });	
 function acceptBtn(f){
-	if(confirm("저장하시겠습니까?")==false){
-		return false;
-	}else{
+	if(confirm("저장하시겠습니까?")==true){
 		f.submit;
+	}else{
+		return false;
 	}
 }
+
+
 </script>
 </head>
 <style>
@@ -39,7 +41,7 @@ th{
 </style>
 
 <body>
-<form action="mailModify.ad" method="post" name="f">
+<form action="mailModify.ad" method="post" name="f" onsubmit="return acceptBtn(this);">
 <input type="hidden" name="col_title" id="col_title" value="${param.col_title }">
 <input type="hidden" name="col_content" id="col_content" value="${param.col_content }">
 
@@ -62,7 +64,7 @@ th{
 	</tr>
 	<tr>
 		<td>
-			<input type="submit" id="save" value="저장" onclick="javascript:acceptBtn(document.f);">
+			<input type="submit" id="save" value="저장" >
 			<input type="button" id="close" value="닫기" onclick="self.close();">
 		</td>
 	</tr>

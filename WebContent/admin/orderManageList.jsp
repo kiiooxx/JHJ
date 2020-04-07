@@ -46,6 +46,58 @@ $(function(){
 		}
 	});
 });
+
+//숫자만 입력가능
+function onlyNumber(){
+    if((event.keyCode<48)||(event.keyCode>57))
+       event.returnValue=false;
+}
+
+//주문 시작일 종료일 체크
+function inputDateComparison(obj){
+	var startDate = inputDateSplit(document.getElementById("startDate").value);
+	var endDate = inputDateSplit(document.getElementById("endDate").value);
+	
+	var objDate = inputDateSplit(obj.value);
+	
+	if(startDate == objDate && startDate > endDate){
+		alert("시작일이 종료일보다 이후일 수는 없습니다. \n 다시 선택하여 주시기 바랍니다.");
+		obj.value = document.getElementById("endDate").value;
+		obj.focus();
+	}else if(endDate == objDate && endDate < startDate){
+		alert("종료일이 시작일보다 이전일 수는 없습니다. \n 다시 선택하여 주시기 바랍니다.");
+		obj.value = document.getElementById("startDate").value;
+		obj.focus();
+	}else{
+		return false;
+	}
+}
+
+function inputDateSplit(obj){
+	var dateArray = obj.split("-");
+	return dateArray[0] + dateArray[1] + dateArray[2];
+}
+
+//주문 시작금액 종료금액 체크
+function inputPriceComparison(obj){
+	var startPrice = document.getElementById("startPrice").value;
+	var endPrice = document.getElementById("endPrice").value;
+	var objPrice = obj.value;
+	
+	if(endPrice != "" && startPrice == objPrice && startPrice > endPrice){
+		alert("시작 금액은 종료 금액보다 클 수 없습니다. \n 다시 선택하여 주시기 바랍니다.");
+		obj.value = document.getElementById("endPrice").value;
+		obj.focus();
+	}else if(endPrice == objPrice && endPrice < startPrice){
+		alert("종료 금액은 시작 금액보다 작을 수 없습니다. \n 다시 선택하여 주시기 바랍니다.");
+		obj.value = document.getElementById("startPrice").value;
+		obj.focus();
+	}else{
+		return false;
+	}	
+
+}
+
 </script>
 <style>
 
@@ -57,7 +109,7 @@ th {
 	margin-bottom: 40px;
 }
 
-#pageList {
+#page {
 	text-align: center;
 }
 </style>
@@ -86,26 +138,20 @@ th {
 								</select> <input type="text" name="searchText"></td>
 							</tr>
 							<tr>
-								<th>주문일</th>
-								<td>
-									<input type="date" name="orderDate" value="">
-								</td>
-							</tr>
-							<tr>
                      			<th>구매금액</th>
                      			<td>
-                        			<input type="text" id="startPrice" name="startPrice" onChange="priceComp(this);" size="5">원  ~ 
-                        			<input type="text" id="endPrice" name="endPrice" onChange="priceComp(this);" size="5">원
+                        			<input type="text" id="startPrice" name="startPrice" onkeypress="onlyNumber();" onChange="inputPriceComparison(this);" size="5">원  ~ 
+                        			<input type="text" id="endPrice" name="endPrice" onkeypress="onlyNumber();" onChange="inputPriceComparison(this);" size="5">원
                      			</td>
                   			</tr>
                   			<tr>
                           		<th>주문일</th>
                           		<td>
                                   <!-- 시작일 -->
-                                <input type="date" name="startDate" id="startDate">
+                                <input type="date" name="startDate" id="startDate" onChange="inputDateComparison(this);" >
                                 <span class="demi">~</span>
                                   <!-- 종료일 -->
-                                 <input type="date" name="endDate" id="endDate">
+                                 <input type="date" name="endDate" id="endDate" onChange="inputDateComparison(this);" >
                       			</td>
                       		</tr>
 							<tr>
@@ -148,9 +194,9 @@ th {
 						<th>상태</th>
 						<th>취소요청</th>
 					</tr>
-<!-- 여기서부터 검색결과 -->
+						<!-- 여기서부터 검색결과 -->
 
-<c:choose>
+						<c:choose>
 						<c:when test="${orderList ne null }">
 							<c:forEach items="${orderList }" var="order">
 								<tr>
@@ -201,12 +247,12 @@ th {
 							</c:forEach>
 						</c:when>
 						<c:otherwise>
-		 검색된 주문내역이 없습니다.
-		</c:otherwise>
+							 검색된 주문내역이 없습니다.
+						</c:otherwise>
 					</c:choose>
-					                  
-                  
+					     
                </table>
+            </div>
                <!-- 여기까지 검색결과 -->
 
      	<!-- 여기서부터 페이징 -->

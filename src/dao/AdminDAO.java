@@ -784,7 +784,7 @@ public class AdminDAO {
 			}
 			
 			if(!(startDate.trim().equals("") && endDate.trim().equals(""))) {
-				sql += " AND sel_date BETWEEN '" + startDate + "' AND '" + endDate + "'";
+				sql += " AND sel_date BETWEEN '" + startDate + " 00:00:00' AND '" + endDate + " 23:59:59'";
 			}
 			
 			
@@ -835,7 +835,7 @@ public class AdminDAO {
 			
 			//날짜 입력한 경우
 			if(!(startDate.trim().equals("") && endDate.trim().equals(""))) {
-				sql += " AND sel_date BETWEEN '" + startDate + "' AND '" + endDate + "'";
+				sql += " AND sel_date BETWEEN '" + startDate + " 00:00:00' AND '" + endDate + " 23:59:59'";
 			}
 			sql += " GROUP BY member.user_id ORDER BY joindate LIMIT ?, ?";
 			
@@ -1023,7 +1023,7 @@ public class AdminDAO {
 			
 			//날짜 입력한 경우
 			if(!(startDate.trim().equals("") && endDate.trim().equals(""))) {
-				sql += " AND sel_date BETWEEN '" + startDate + "' AND '" + endDate + "'";
+				sql += " AND sel_date BETWEEN '" + startDate + " 00:00:00' AND '" + endDate + " 23:59:59'";
 			}
 			
 			if(!(deliStatus == null)) {
@@ -1096,7 +1096,7 @@ public class AdminDAO {
 			
 			//날짜 입력한 경우
 			if(!(startDate.trim().equals("") && endDate.trim().equals(""))) {
-				sql += " AND sel_date BETWEEN '" + startDate + "' AND '" + endDate + "'";
+				sql += " AND sel_date BETWEEN '" + startDate + " 00:00:00' AND '" + endDate + " 23:59:59'";
 			}
 			
 			if(!(deliStatus == null)) {
@@ -1184,9 +1184,7 @@ public class AdminDAO {
 					orderProView.setPro_qnt(rs.getInt("pro_qnt"));
 					orderProView.setSel_num(sel_num);
 					orderProList.add(orderProView);
-									
 				}
-				
 				
 			}catch(Exception e) {
 				e.printStackTrace();

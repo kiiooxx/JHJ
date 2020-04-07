@@ -1,14 +1,11 @@
 package admin.action;
 
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 import action.Action;
 import admin.svc.OrderManageListService;
 import vo.ActionForward;
@@ -20,17 +17,9 @@ public class OrderManageListAction implements Action {
 	@Override
 	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
-		HttpSession session = request.getSession();
-		ActionForward forward = null;
 		
-		if((session.getAttribute("id")==null) || (!((String)session.getAttribute("id")).equals("admin"))) {
-			response.setContentType("text/html;charset=utf-8");
-			PrintWriter out = response.getWriter();
-			out.println("<script>");
-			out.println("alert('관리자 로그인이 필요합니다.');");
-			out.println("location.href='loginForm.log'");
-			out.println("</script>");
-		}else {
+		ActionForward forward = null;
+
 		
 		String searchType = "user_id";
 		String searchText = "";
@@ -125,7 +114,7 @@ public class OrderManageListAction implements Action {
 		
 		request.setAttribute("pagefile", "/admin/orderManageList.jsp");
 		forward = new ActionForward("/admin_template.jsp", false);
-		}
+		
 		return forward;
 	}
 

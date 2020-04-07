@@ -49,9 +49,58 @@
 <script src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script>
-
-
 <script>
+//숫자만 입력가능
+function onlyNumber(){
+    if((event.keyCode<48)||(event.keyCode>57))
+       event.returnValue=false;
+}
+
+//주문 시작일 종료일 체크
+function inputDateComparison(obj){
+	var startDate = inputDateSplit(document.getElementById("startDate").value);
+	var endDate = inputDateSplit(document.getElementById("endDate").value);
+	
+	var objDate = inputDateSplit(obj.value);
+	
+	if(startDate == objDate && startDate > endDate){
+		alert("시작일이 종료일보다 이후일 수는 없습니다. \n 다시 선택하여 주시기 바랍니다.");
+		obj.value = document.getElementById("endDate").value;
+		obj.focus();
+	}else if(endDate == objDate && endDate < startDate){
+		alert("종료일이 시작일보다 이전일 수는 없습니다. \n 다시 선택하여 주시기 바랍니다.");
+		obj.value = document.getElementById("startDate").value;
+		obj.focus();
+	}else{
+		return false;
+	}
+}
+
+function inputDateSplit(obj){
+	var dateArray = obj.split("-");
+	return dateArray[0] + dateArray[1] + dateArray[2];
+}
+
+//주문 시작금액 종료금액 체크
+function inputPriceComparison(obj){
+	var startPrice = document.getElementById("startPrice").value;
+	var endPrice = document.getElementById("endPrice").value;
+	var objPrice = obj.value;
+	
+	if(endPrice != "" && startPrice == objPrice && startPrice > endPrice){
+		alert("시작 금액은 종료 금액보다 클 수 없습니다. \n 다시 선택하여 주시기 바랍니다.");
+		obj.value = document.getElementById("endPrice").value;
+		obj.focus();
+	}else if(endPrice == objPrice && endPrice < startPrice){
+		alert("종료 금액은 시작 금액보다 작을 수 없습니다. \n 다시 선택하여 주시기 바랍니다.");
+		obj.value = document.getElementById("startPrice").value;
+		obj.focus();
+	}else{
+		return false;
+	}	
+
+}
+
 
 $(document).ready(function() {
    $('#checkall').click(function() {
@@ -87,84 +136,12 @@ $(document).ready(function() {
 });  
 
 
-// Search Date
-jQuery.fn.schDate = function(){
-    var $obj = $(this);
-    var $chk = $obj.find("input[type=radio]");
-    $chk.click(function(){                
-        $('input:not(:checked)').parent(".chkbox2").removeClass("on");
-        $('input:checked').parent(".chkbox2").addClass("on");                    
-    });
-};
-
-// DateClick
-jQuery.fn.dateclick = function(){
-    var $obj = $(this);
-    $obj.click(function(){
-        $(this).parent().find("input").focus();
-    });
-}    
-
-
-function setSearchDate(start){
-
-    var num = start.substring(0,1);
-    var str = start.substring(1,2);
-
-    var today = new Date();
-
-    //var year = today.getFullYear();
-    //var month = today.getMonth() + 1;
-    //var day = today.getDate();
-    
-    var endDate = $.datepicker.formatDate('yy-mm-dd', today);
-    $('#searchEndDate').val(endDate);
-    
-    if(str == 'd'){
-        today.setDate(today.getDate() - num);
-    }else if (str == 'w'){
-        today.setDate(today.getDate() - (num*7));
-    }else if (str == 'm'){
-        today.setMonth(today.getMonth() - num);
-        today.setDate(today.getDate() + 1);
-    }
-
-    var startDate = $.datepicker.formatDate('yy-mm-dd', today);
-    $('#startDate').val(startDate);
-            
-    // 종료일은 시작일 이전 날짜 선택하지 못하도록 비활성화
-    $("#endDate").datepicker( "option", "minDate", startDate );
-    
-    // 시작일은 종료일 이후 날짜 선택하지 못하도록 비활성화
-    $("#startDate").datepicker( "option", "maxDate", endDate );
-    
-    
-
-}
-
-function checkAll(theForm){
-   if(theForm.remove.length == undefined){ //체크박스에 선택된 항목이 없을 때 전체선택
-      theForm.remove.checked = theForm.allCheck.checked;  //오른쪽에 체크된 항목을 왼쪽에 넣음.
-   }else{
-      for(var i = 0; i < theForm.remove.length; i++){
-         theForm.remove[i].checked = theForm.allCheck.checked;
-      }      
-   }   
-}
-   
-   
-
-
-/* function inputPrice(obj){
-   var priceTmp = 
-   return 
-} */
 
 </script>
 <style>
    th {background-color : #F6F6F6;}
    .col {margin-bottom : 40px;}
-   #pageList {text-align : center;}
+   #page {text-align : center;}
 </style>
 </head>
 <body>
@@ -205,18 +182,18 @@ function checkAll(theForm){
                   <tr>
                      <th>구매금액</th>
                      <td>
-                        <input type="text" id="startPrice" name="startPrice" onChange="priceComp(this);" size="5">원  ~ 
-                        <input type="text" id="endPrice" name="endPrice" onChange="priceComp(this);" size="5">원
+                        <input type="text" id="startPrice" name="startPrice" onkeypress="onlyNumber();" onChange="inputPriceComparison(this);" size="5">원  ~ 
+                        <input type="text" id="endPrice" name="endPrice" onkeypress="onlyNumber();" onChange="inputPriceComparison(this);" size="5">원
                      </td>
                   </tr>
                   <tr>
                           <th>주문일</th>
                           <td>
                                   <!-- 시작일 -->
-                                      <input type="date" name="startDate" id="startDate">
+                                      <input type="date" name="startDate" id="startDate" onChange="inputDateComparison(this);">
                                   <span class="demi">~</span>
                                   <!-- 종료일 -->
-                                      <input type="date" name="endDate" id="endDate">
+                                      <input type="date" name="endDate" id="endDate" onChange="inputDateComparison(this);">
                           </td>
                       </tr>   
                </table>
@@ -318,19 +295,38 @@ function checkAll(theForm){
 
 <!-- 여기까지 페이징 -->
 
-<!-- 회원등급 관리 -->
-       <h2>회원등급관리</h2>
-
-		<table border="1" summary="">
-			<tr>
-	                            선택된 회원을
-	                            <select id="membergrade" name="membergrade">
-	                            	<option value="none" selected disabled hidden>선택</option>
-	                            	<option value="N">일반회원(N)</option>
-	                            	<option value="A">관리자(A)</option>
-	                            </select>
-	         	 으로 <input type="button" id="gradebtn" value="등급변경"> 합니다.</td>
-			</tr>	
-			</table>	
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+	<h1 class="h3 mb-0 text-gray-800">회원 등급관리</h1>
+</div>
+ <!-- Content Row -->
+<div class="row">
+	<div class="col">
+		<form action="memberList.ad" method="post">
+			<div class="card card-default">
+				<div class="card-body">
+               		<table class="table table-bordered">
+                    	<tr>
+                     		<td>
+                     			선택된 회원을
+	                    		<select id="membergrade" name="membergrade">
+		                    		<option value="none" selected disabled hidden>선택</option>
+		                    		<option value="N">일반회원(N)</option>
+		                    		<option value="A">관리자(A)</option>
+	                    		</select>으로
+	                    		
+	         					<a href="#" id="gradebtn" class="btn btn-light btn-icon-split">
+                    				<span class="icon text-gray-600">
+                      					<i class="fas fa-arrow-right"></i>
+                    				</span>
+                    				<span class="text">등급변경</span>
+               					</a>합니다.
+	         	  			</td>
+						</tr>
+               		</table>
+            	</div>
+         	</div>
+      </form>
+   </div>
+</div>
 </body>
 </html>
