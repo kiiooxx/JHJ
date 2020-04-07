@@ -56,9 +56,9 @@ function openPostcode(){
 function numberFormat(inputNumber) {
 	   return inputNumber.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 	}
-	
- function inqPoint(){
-	 
+
+
+ function inqPoint(){	 
 	 
 	if(${memberPoint.point_final} != null){
 		
@@ -131,8 +131,12 @@ function numberFormat(inputNumber) {
 			}
 			/* 적립금 사용 시 - 적립안할 경우 */
 			else if(${pointMan.p_stand == 'no'}){
-				$("#r3").text(totalNo+"원");
-				$("#confrimPoint").val(totalNo+"원");
+				if( $("#usePoint").val() == 0){
+					return false;
+				}else{
+					$("#r3").text(totalNo+"원");
+					$("#confrimPoint").val(totalNo+"원");
+				}
 				
 			}
 					
@@ -465,7 +469,7 @@ function chkForm(f){
 				<th>적립금 사용</th>
 				<td><input type="text" name="usePoint" id="usePoint" value="0" size="5" onkeypress="onlyNumber();" >원 
 				<fmt:formatNumber var="point" value="${memberPoint.point_final == null ? '0' : memberPoint.point_final }" pattern="#,###"/>
-				<a href="javascript:void(0);" onclick="inqPoint();" class="small_btn">사용하기</a>(현재 적립금:${point}원)
+				<a href="javascript:void(0);" onclick="inqPoint();" class="small_btn" id="pointBtn">사용하기</a>(현재 적립금:${point}원)
 				<c:if test="${pointMan.p_stand == 'no'}">
 				<br>※(적립금 포함으로 결제하실 경우, 해당 주문건은 적립금이 지급되지 않습니다.)
 				</c:if>
