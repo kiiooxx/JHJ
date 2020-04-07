@@ -232,7 +232,7 @@
 						<li> < </li>
 					</c:when>
 					<c:otherwise>
-						<li><a href="boardListAction.bo?board_type=notice&page=${pageInfo.page-1 }"> < </a></li>
+						<li><a href="boardListAction.bo?board_type=${board_type }&page=${pageInfo.page-1 }"> < </a></li>
 					</c:otherwise>
 				</c:choose>
 				
@@ -243,7 +243,7 @@
 							<li>[${a}]</li>
 						</c:when>
 						<c:otherwise>
-							<li><a href="boardListAction.bo?board_type=notice&page=${a}">[${a}]</a></li>
+							<li><a href="boardListAction.bo?board_type=${board_type }&page=${a}">[${a}]</a></li>
 						</c:otherwise>
 					</c:choose>
 				</c:forEach>
@@ -254,7 +254,7 @@
 						<li> > </li>
 					</c:when>
 					<c:otherwise>
-						<li><a href="boardListAction.bo?board_type=notice&page=${pageInfo.page+1 }"> > </a></li>
+						<li><a href="boardListAction.bo?board_type=${board_type }&page=${pageInfo.page+1 }"> > </a></li>
 					</c:otherwise>
 				</c:choose>
 				</ol>
