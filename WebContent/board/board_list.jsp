@@ -31,13 +31,23 @@
 					<td scope="col">DATE</td>
 				</tr>
 				
-				<c:forEach var="list" items="${boardList }" varStatus="i">
-					<c:if test="${list.board_notice == 'Y' }">
-						<c:set var="cnt" value="${cnt + 1 }"/>
-					</c:if>
-					
+				<c:forEach var="list" items="${noticeList }" varStatus="i">
 					<tr>
-						<td>${list.board_notice == 'Y' ? '공지' : size}</td>
+						<td>공지</td>
+						<td style="text-align:left;">
+							<a href="boardViewAction.bo?&board_num=${list.board_num}&pro_num=${list.pro_num}&path=/board/board_detail">${list.board_title}</a>
+						</td>
+						<td>관리자</td>
+						<!-- 날짜 형식 바꿔주기 (yyyy-MM-dd) -->
+						<fmt:parseDate value="${list.board_date}" var="board_date" pattern="yyyy-MM-dd HH:mm:ss"/>
+						<fmt:formatDate var="dateFmt" value="${board_date}" pattern="yyyy-MM-dd"/>
+						<td>${dateFmt }</td>
+					</tr>
+				</c:forEach>
+					
+				<c:forEach var="list" items="${boardList }" varStatus="i">
+					<tr>
+						<td>${size}</td>
 						<td style="text-align:left;">
 							<a href="boardViewAction.bo?&board_num=${list.board_num}&page=${pageInfo.page}&path=/board/board_detail">
 								${list.board_title }
@@ -49,7 +59,6 @@
 						<fmt:formatDate var="dateFmt" value="${board_date}" pattern="yyyy-MM-dd"/>
 						<td>${dateFmt }</td>
 					</tr>
-					
 					<c:set var="size" value="${size - 1 }"/>
 				</c:forEach>
 			</table>
@@ -83,27 +92,38 @@
 						<th scope="col">writer</th>
 						<th scope="col">date</th>
 					</tr>
-					<c:forEach var="list" items="${boardList }" varStatus="i">
-						<c:if test="${list.board_notice == 'Y' }">
-							<c:set var="cnt" value="${cnt + 1 }"/>
-						</c:if>
-						
+					
+					<c:forEach var="list" items="${noticeList }" varStatus="i">
 						<tr>
-							<td>${list.board_notice == 'Y' ? '공지' : size}</td>
+							<td>공지</td>
+							<td></td>
+							<td style="text-align:left;">
+								<a href="boardViewAction.bo?&board_num=${list.board_num}&pro_num=${list.pro_num}&path=/board/board_detail">${list.board_title}</a>
+							</td>
+							<td></td>
+							<td>관리자</td>
+							<!-- 날짜 형식 바꿔주기 (yyyy-MM-dd) -->
+							<fmt:parseDate value="${list.board_date}" var="board_date" pattern="yyyy-MM-dd HH:mm:ss"/>
+							<fmt:formatDate var="dateFmt" value="${board_date}" pattern="yyyy-MM-dd"/>
+							<td>${dateFmt }</td>
+						</tr>
+					</c:forEach>
+					
+					<c:forEach var="list" items="${boardList }" varStatus="i">
+						<tr>
+							<td>${size}</td>
 							<td>
-								<c:if test="${list.board_notice == 'N' }">
-									<c:choose>
-										<c:when test="${list.qna_type == 'product_qna'}">
-											[상품문의]
-										</c:when>
-										<c:when test="${list.qna_type == 'delivery_qna' }">
-											[배송문의]
-										</c:when>
-										<c:when test="${list.qna_type == 'etc_qna' }">
-											[기타문의]
-										</c:when>
-									</c:choose>
-								</c:if>
+								<c:choose>
+									<c:when test="${list.qna_type == 'product_qna'}">
+										[상품문의]
+									</c:when>
+									<c:when test="${list.qna_type == 'delivery_qna' }">
+										[배송문의]
+									</c:when>
+									<c:when test="${list.qna_type == 'etc_qna' }">
+										[기타문의]
+									</c:when>
+								</c:choose>
 							</td>
 							<td style="text-align:left;">
 								<c:choose>
@@ -121,19 +141,14 @@
 									<img src="<%= request.getContextPath() %>/layout_image/lock_icon.png"/>
 								</c:if>
 							</td>
-							<td>
-								<c:if test="${list.board_notice == 'N' }">
-									${list.board_step }
-								</c:if>
-							</td>
+							<td>${list.board_step }</td>
 							<td>${list.board_writer }</td>
 							<!-- 날짜 형식 바꿔주기 (yyyy-MM-dd) -->
 							<fmt:parseDate value="${list.board_date}" var="board_date" pattern="yyyy-MM-dd HH:mm:ss"/>
 							<fmt:formatDate var="dateFmt" value="${board_date}" pattern="yyyy-MM-dd"/>
 							<td>${dateFmt }</td>
-					</tr>
-					
-					<c:set var="size" value="${size - 1 }"/>
+						</tr>
+						<c:set var="size" value="${size - 1 }"/>
 					</c:forEach>
 				</table>
 				<div class="order_button_area">
@@ -165,19 +180,30 @@
 						<th scope="col">writer</th>
 						<th scope="col">date</th>
 					</tr>
-					<c:forEach var="list" items="${boardList }" varStatus="i">
-						<c:if test="${list.board_notice == 'Y' }">
-							<c:set var="cnt" value="${cnt + 1 }"/>
-						</c:if>
-						
+					
+					<c:forEach var="list" items="${noticeList }" varStatus="i">
 						<tr>
-							<td>${list.board_notice == 'Y' ? '공지' : size}</td>
+							<td>공지</td>
+							<td></td>
+							<td style="text-align:left;">
+								<a href="boardViewAction.bo?&board_num=${list.board_num}&pro_num=${list.pro_num}&path=/board/board_detail">${list.board_title}</a>
+							</td>
+							<td></td>
+							<td>관리자</td>
+							<!-- 날짜 형식 바꿔주기 (yyyy-MM-dd) -->
+							<fmt:parseDate value="${list.board_date}" var="board_date" pattern="yyyy-MM-dd HH:mm:ss"/>
+							<fmt:formatDate var="dateFmt" value="${board_date}" pattern="yyyy-MM-dd"/>
+							<td>${dateFmt }</td>
+						</tr>
+					</c:forEach>
+					
+					<c:forEach var="list" items="${boardList }" varStatus="i">
+						<tr>
+							<td>${size}</td>
 							<td>
-								<c:if test="${list.board_notice == 'N' }">						
-									<a href="productDetail.pro?pro_num=${list.pro_num }">
-										<img src="<%= request.getContextPath() %>/upload/${prdList[i.index].pro_photo }" class="rev_thumb"/>
-									</a>
-								</c:if>
+								<a href="productDetail.pro?pro_num=${list.pro_num }">
+									<img src="<%= request.getContextPath() %>/upload/${prdList[i.index].pro_photo }" class="rev_thumb"/>
+								</a>
 							</td>
 							<td style="text-align:left;">
 								<a href="boardViewAction.bo?&board_num=${list.board_num}&pro_num=${list.pro_num}&page=${pageInfo.page}&path=/board/board_detail">
@@ -194,15 +220,13 @@
 								</c:if>
 							</td>
 							<td>
-								<c:if test="${list.board_notice == 'N' }">
-									<div class="starRev">
-									  <span class="starR ${list.review_score >= 1 ? 'on' : ''}">1</span>
-									  <span class="starR ${list.review_score >= 2 ? 'on' : ''}">2</span>
-									  <span class="starR ${list.review_score >= 3 ? 'on' : ''}">3</span>
-									  <span class="starR ${list.review_score >= 4 ? 'on' : ''}">4</span>
-									  <span class="starR ${list.review_score >= 5 ? 'on' : ''}">5</span>
-									</div>
-								</c:if>
+								<div class="starRev">
+								  <span class="starR ${list.review_score >= 1 ? 'on' : ''}">1</span>
+								  <span class="starR ${list.review_score >= 2 ? 'on' : ''}">2</span>
+								  <span class="starR ${list.review_score >= 3 ? 'on' : ''}">3</span>
+								  <span class="starR ${list.review_score >= 4 ? 'on' : ''}">4</span>
+								  <span class="starR ${list.review_score >= 5 ? 'on' : ''}">5</span>
+								</div>
 							</td>
 							<td>${list.board_writer }</td>
 							<!-- 날짜 형식 바꿔주기 (yyyy-MM-dd) -->

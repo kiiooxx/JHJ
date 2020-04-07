@@ -73,10 +73,14 @@ public class BoardListAction implements Action {
 			}
 		}
 		
+		ArrayList<BoardBean> noticeList = null;
+		noticeList = boardListService.getNoticeListCount(board_type);
+		
 		request.setAttribute("prdList", prdList);
 		request.setAttribute("pageInfo", pageInfo);
 		request.setAttribute("boardList", boardList);
 		request.setAttribute("board_type", board_type);
+		request.setAttribute("noticeList", noticeList);
 		//경로
 
 		request.setAttribute("pagefile", "/board/board_list.jsp");

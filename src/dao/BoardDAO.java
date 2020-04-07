@@ -205,6 +205,7 @@ public class BoardDAO {
 		if(pro_num != 0) {
 			sql += " and pro_num = " + pro_num;
 		}
+		sql+= " and board_notice='N'";
 		
 		try {
 			//전체 리뷰 구하기.
@@ -240,7 +241,8 @@ public class BoardDAO {
 		if(pro_num != 0) {
 			sql += " and pro_num = " + pro_num;
 		}
-		sql += " order by board_notice='Y' desc, board_num desc ";
+		sql+= " and board_notice='N'";
+		sql += " order by board_num desc ";
 		
 		if(limit != 0) {
 			sql += "limit " + startrow + "," + limit;
@@ -501,4 +503,53 @@ public class BoardDAO {
 		return isUpdateSuccess;
 	}
 	
+	//공지사항 불러오기
+	public ArrayList<BoardBean> selectNoticeList(String board_type) {
+		// TODO Auto-generated method stub
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		ArrayList<BoardBean> boardList = new ArrayList<>();
+		BoardBean boardBean = null;
+	
+		String sql = "select * from board where board_type=?";
+		
+		sql+= " and board_notice='Y'";
+		sql += " order by board_num desc ";
+		
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, board_type);
+
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				boardBean = new BoardBean();
+				boardBean.setBoard_num(rs.getInt("board_num"));
+				boardBean.setBoard_type(rs.getString("board_type"));
+				boardBean.setBoard_title(rs.getString("board_title"));
+				boardBean.setBoard_writer(rs.getString("board_writer"));
+				boardBean.setBoard_content(rs.getString("board_content"));
+				boardBean.setBoard_date(rs.getString("board_date"));
+				boardBean.setBoard_photo(rs.getString("board_photo"));
+				boardBean.setPro_num(rs.getInt("pro_num"));
+				boardBean.setSel_num(rs.getString("sel_num"));
+				boardBean.setBoard_step(rs.getString("board_step"));
+				boardBean.setQna_email(rs.getString("qna_email"));
+				boardBean.setQna_type(rs.getString("qna_type"));
+				boardBean.setQna_open(rs.getString("qna_open"));
+				boardBean.setReview_score(rs.getInt("review_score"));
+				boardBean.setBoard_ref(rs.getInt("board_ref"));
+				boardBean.setBoard_hits(rs.getInt("board_hits"));
+				boardBean.setBoard_notice(rs.getString("board_notice"));
+				boardList.add(boardBean);
+			}
+		}catch(Exception e) {
+			System.out.println("selectNoticeList 에러 : " + e);
+		}finally {
+			close(rs);
+			close(pstmt);
+		}
+		
+		return boardList;
+	}
 }

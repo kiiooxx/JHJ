@@ -60,4 +60,16 @@ public class BoardListService {
 		return boardList;
 	}
 
+	//공지 등록한거 불러오기
+	public ArrayList<BoardBean> getNoticeListCount(String board_type) {
+		// TODO Auto-generated method stub
+		ArrayList<BoardBean> boardList = null;
+		Connection con = getConnection();
+		BoardDAO boardDAO = BoardDAO.getInstance();
+		boardDAO.setConnection(con);
+		boardList = boardDAO.selectNoticeList(board_type);
+		close(con);
+		return boardList;
+	}
+
 }
