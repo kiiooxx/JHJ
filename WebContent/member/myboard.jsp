@@ -7,6 +7,10 @@
 
 <!-- 리뷰 게시판 -->
 	<div id="prdReview">
+	
+		<!-- 번호 역순으로 매기기위해  -->
+		<c:set var="size" value="5"/>
+		
 		<div class="board">
 			<h3>review</h3>
 			<div>
@@ -29,7 +33,7 @@
 					</tr>
 					<c:forEach var="list" items="${reviewList }" varStatus="i">
 					<tr>
-						<td>${i.count }</td>
+						<td>${review_listCount - ((reviewPageInfo.page * 5) - size)}</td>
 						<td>
 							<c:if test="${list.pro_num != 0 }">
 								<a href="productDetail.pro?pro_num=${list.pro_num }">
@@ -61,6 +65,7 @@
 						<fmt:formatDate var="dateFmt" value="${rev_date}" pattern="yyyy-MM-dd"/>
 						<td>${dateFmt }</td>
 					</tr>
+					<c:set var="size" value="${size - 1 }"/>
 					</c:forEach>
 				</table>
 			</div>
@@ -107,6 +112,9 @@
 	</div>
 	
 	<div id="prdQnA">
+	<!-- 번호 역순으로 매기기위해  -->
+		<c:set var="size" value="5"/>
+		
 		<div class="board">
 			<h3>QnA</h3>
 			<div>
@@ -127,10 +135,9 @@
 						<th scope="col">writer</th>
 						<th scope="col">date</th>
 					</tr>
-					<c:set var="size" value="${fn:length(qnaList) }"/>
 					<c:forEach var="qna_list" items="${qnaList }" varStatus="i">
 					<tr>
-						<td>${i.count }</td>
+						<td>${qna_listCount - ((qnaPageInfo.page * 5) - size)}</td>
 						<td>
 							<c:choose>
 								<c:when test="${qna_list.qna_type == 'product_qna'}">
@@ -163,6 +170,7 @@
 						<fmt:formatDate var="dateFmt" value="${qna_date}" pattern="yyyy-MM-dd"/>
 						<td>${dateFmt }</td>
 					</tr>
+					<c:set var="size" value="${size - 1 }"/>
 					</c:forEach>
 				</table>
 			</div>

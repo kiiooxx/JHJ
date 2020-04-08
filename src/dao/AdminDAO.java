@@ -266,7 +266,7 @@ public class AdminDAO {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		int cnt = 0;
-		String color_num = "";
+		String color_num = "01";
 		
 		// 상품상세코드 상품번호
 		String num = String.format("%04d", pro_num);
@@ -279,8 +279,11 @@ public class AdminDAO {
 			
 			if(rs.next()) {
 				pro_det_num = rs.getString(1);
-				cnt = Integer.parseInt(pro_det_num.substring(4,6));
-				color_num = String.format("%02d", cnt+1);
+				System.out.println("상세코드 " + pro_det_num);
+				if(!(pro_det_num == null || pro_det_num.equals(""))) {
+					cnt = Integer.parseInt(pro_det_num.substring(4,6));
+					color_num = String.format("%02d", cnt+1);
+				}
 			}
 		}catch(SQLException e) {
 			System.out.println("상품 상세 코드 색상 순서 불러오기 에러  " + e);
