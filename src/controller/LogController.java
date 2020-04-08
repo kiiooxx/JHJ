@@ -24,13 +24,13 @@ import vo.Member;
  * Servlet implementation class LogControllerServlet
  */
 @WebServlet("*.log")
-public class LogControllerServlet extends HttpServlet {
+public class LogController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public LogControllerServlet() {
+    public LogController() {
         super();
         // TODO Auto-generated constructor stub
     }
