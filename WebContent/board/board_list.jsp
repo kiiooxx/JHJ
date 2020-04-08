@@ -10,7 +10,7 @@
 	<div class="board">
 		
 		<!-- 번호 역순으로 매기기위해  -->
-		<c:set var="size" value="${fn:length(boardList) }"/>
+		<c:set var="size" value="10"/>
 		
 		<!-- 공지사항 -->
 		<c:if test="${board_type == 'notice' }">
@@ -47,7 +47,7 @@
 					
 				<c:forEach var="list" items="${boardList }" varStatus="i">
 					<tr>
-						<td>${size}</td>
+						<td>${listCount - ((pageInfo.page * 10) - size)}</td>
 						<td style="text-align:left;">
 							<a href="boardViewAction.bo?&board_num=${list.board_num}&page=${pageInfo.page}&path=/board/board_detail">
 								${list.board_title }
@@ -111,7 +111,7 @@
 					
 					<c:forEach var="list" items="${boardList }" varStatus="i">
 						<tr>
-							<td>${size}</td>
+							<td>${listCount - ((pageInfo.page * 10) - size)}</td>
 							<td>
 								<c:choose>
 									<c:when test="${list.qna_type == 'product_qna'}">
@@ -199,7 +199,7 @@
 					
 					<c:forEach var="list" items="${boardList }" varStatus="i">
 						<tr>
-							<td>${size}</td>
+							<td>${listCount - ((pageInfo.page * 10) - size)}</td>
 							<td>
 								<a href="productDetail.pro?pro_num=${list.pro_num }">
 									<img src="<%= request.getContextPath() %>/upload/${prdList[i.index].pro_photo }" class="rev_thumb"/>
