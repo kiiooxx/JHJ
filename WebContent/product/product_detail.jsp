@@ -615,7 +615,7 @@ $(document).ready(function(){
 						</td>
 						<td style="text-align:left;">
 							<c:choose>
-								<c:when test="${qna_list.qna_open != 'N' || grade=='A'}">
+								<c:when test="${qna_list.qna_open != 'N' || grade=='A'.charAt(0)}">
 									<a href="boardViewAction.bo?&board_num=${qna_list.board_num}&pro_num=${qna_list.pro_num}&path=/board/board_detail">
 										${qna_list.board_title}
 									</a>
