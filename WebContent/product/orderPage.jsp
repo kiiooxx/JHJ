@@ -131,12 +131,13 @@ function numberFormat(inputNumber) {
 			}
 			/* 적립금 사용 시 - 적립안할 경우 */
 			else if(${pointMan.p_stand == 'no'}){
-				if( $("#usePoint").val() == 0){
-					return false;
+				if($("#usePoint").val() == 0){
+					return true;
 				}else{
 					$("#r3").text(totalNo+"원");
-					$("#confrimPoint").val(totalNo+"원");
+					$("#confrimPoint").val(totalNo+"원");	
 				}
+				
 				
 			}
 					
@@ -264,6 +265,16 @@ function chkForm(f){
 }
 
 </script>
+<head></head>
+<style>
+#point, #result, #result2 {
+	border: none;
+	text-align: right;
+}
+
+</style>
+<body></body>
+
 <jsp:include page="/common/loginCheck.jsp"/>
 <div class="cartPage">
 	<form action="payProcess.pro" name="f" method="post">
@@ -458,7 +469,7 @@ function chkForm(f){
 				</tr>
 				<tr>
 					<th>${total4 }원</th>
-					<th>-&nbsp;<input type="text" id="point" value="0" size="5" class="no-line" readonly>원</th>
+					<th>-&nbsp;<input type="text" id="point" name="point" value="0" size="5" class="no-line" readonly>원</th>
 					<fmt:formatNumber var="result" value="${totalMoney + deliPrice}" pattern="#,###"/>
 					<th>=<input type="text" id="result" name="result" value="${result}" class="no-line" readonly>원</th>
 				</tr>
