@@ -99,7 +99,9 @@ public class OrderProcessAction implements Action {
 		
 		int totalMoney = 0;//총 결제금액
 		int money = 0;//낱개금액
-		int point = Integer.parseInt(request.getParameter("point"));//사용포인트
+		String str = request.getParameter("point");
+		str = str.replaceAll(",", "");
+		int usePoint = Integer.parseInt(str);//사용포인트
 		int deliPrice = 0;
 		
 		for(int i = 0; i < cartList.size(); i++) {
@@ -110,10 +112,10 @@ public class OrderProcessAction implements Action {
 		
 		if(totalMoney < 50000) {
 			deliPrice = 2500;
-			totalMoney = totalMoney + deliPrice - point;
+			totalMoney = totalMoney + deliPrice - usePoint;
 			
 		}else if(totalMoney >= 50000) {
-			totalMoney = totalMoney - point;
+			totalMoney = totalMoney - usePoint;
 		}
 		
 		//배송정보 db에 넣을 내용
@@ -135,7 +137,7 @@ public class OrderProcessAction implements Action {
 		order.setDeli_num("D"+sel_num); 
 		order.setSel_status("order_done");
 		order.setDeli_price(deliPrice);
-		order.setPoint_use(Integer.parseInt(request.getParameter("point")));
+		order.setPoint_use(usePoint);
 		order.setFinal_price(totalMoney);
 		
 		//주문 상세 db에 넣을 내용 
@@ -180,7 +182,7 @@ public class OrderProcessAction implements Action {
 			PointManageFormService pointManageFormService = new PointManageFormService();
 			PointMan pointMan = pointManageFormService.getPointOption(1);
 			
-			if(point > 0) {
+			if(usePoint > 0) {
 				PointService pointService = new PointService();
 				boolean isUse = pointService.usePoint(sel_num);
 				if(!isUse) {
