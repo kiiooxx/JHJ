@@ -23,8 +23,8 @@
 	<div class="user_info2">
 		<ul>
 			<fmt:formatNumber var="point_final" value="${memberPoint.point_final}" pattern="#,###"/>
-			<li><a href="#">POINT : ${point_final}원</a></li>
-			<li><a href="#">CART ${fn:length(cartList) }개</a></li>
+			<li><a href="mypoint.mem">POINT : ${point_final}원</a></li>
+			<li><a href="cartList.pro">CART ${fn:length(cartList) }개</a></li>
 		</ul>
 	</div>
 </div>

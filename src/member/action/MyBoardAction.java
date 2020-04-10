@@ -80,6 +80,8 @@ public class MyBoardAction implements Action {
 			}
 		}
 		
+		request.setAttribute("review_listCount", review_listCount);
+		request.setAttribute("qna_listCount", qna_listCount);
 		request.setAttribute("prdList", prdList);
 		request.setAttribute("reviewPageInfo", review_pageInfo);
 		request.setAttribute("reviewList", reviewList);

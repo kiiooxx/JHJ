@@ -453,10 +453,10 @@ $(document).ready(function(){
 						<th scope="col">writer</th>
 						<th scope="col">date</th>
 					</tr>
-					<c:set var="size" value="${fn:length(reviewList) }"/>
+					<c:set var="size" value="5"/>
 					<c:forEach var="review_list" items="${reviewList }" varStatus="i">
 						<tr>
-							<td>${size }</td>
+							<td>${review_listCount - ((reviewPageInfo.page * 5) - size)}</td>
 							<td style="text-align:left;">
 								<a href="#" id="rev_subject${i.count }">
 									${review_list.board_title }
@@ -485,6 +485,7 @@ $(document).ready(function(){
 							<fmt:parseDate value="${review_list.board_date}" var="board_date" pattern="yyyy-MM-dd HH:mm:ss"/>
 							<fmt:formatDate var="dateFmt" value="${board_date}" pattern="yyyy-MM-dd"/>
 							<td>${dateFmt }</td>
+							<c:set var="size" value="${size - 1 }"/>
 						</tr>
 						<tr class="editor" id="rev_content${i.count }">
 							<th colspan="5">
@@ -523,7 +524,7 @@ $(document).ready(function(){
 							</th>
 						</tr>
 						
-						<c:set var="size" value="${size-1 }"/>
+						
 					</c:forEach>
 				</table>
 			</div>
@@ -595,10 +596,10 @@ $(document).ready(function(){
 						<th scope="col">writer</th>
 						<th scope="col">date</th>
 					</tr>
-					<c:set var="size" value="${fn:length(qnaList) }"/>
+					<c:set var="size" value="5"/>
 					<c:forEach var="qna_list" items="${qnaList }" varStatus="i">
 					<tr>
-						<td>${i.count }</td>
+						<td>${qna_listCount - ((qnaPageInfo.page * 5) - size)}</td>
 						<td>
 							<c:choose>
 								<c:when test="${qna_list.qna_type == 'product_qna'}">
@@ -636,6 +637,7 @@ $(document).ready(function(){
 						<fmt:parseDate value="${qna_list.board_date}" var="board_date" pattern="yyyy-MM-dd HH:mm:ss"/>
 						<fmt:formatDate var="dateFmt" value="${board_date}" pattern="yyyy-MM-dd"/>
 						<td>${dateFmt }</td>
+						<c:set var="size" value="${size - 1 }"/>
 					</tr>
 					</c:forEach>
 				</table>

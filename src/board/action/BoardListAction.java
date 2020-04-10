@@ -81,7 +81,7 @@ public class BoardListAction implements Action {
 		request.setAttribute("boardList", boardList);
 		request.setAttribute("board_type", board_type);
 		request.setAttribute("noticeList", noticeList);
-		//경로
+		request.setAttribute("listCount", listCount);
 
 		request.setAttribute("pagefile", "/board/board_list.jsp");
 		ActionForward forward = new ActionForward("/template.jsp", false);
