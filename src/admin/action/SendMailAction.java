@@ -23,6 +23,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import admin.svc.SendMailService;
 
@@ -31,9 +32,8 @@ public class SendMailAction {
 
 	public void mailling(HttpServletRequest request, HttpServletResponse response) throws Exception {
 	
+		HttpSession session = request.getSession();
 		String col = request.getParameter("col");
-		
-		
 		
 		if(col != null) {
 			col = request.getParameter("col");
@@ -43,6 +43,7 @@ public class SendMailAction {
 		
 		String col_title = col + "_title" ;
 		String col_content = col + "_content" ;
+		
 		System.out.println("col : " +  col);
 		System.out.println("col_title : " +  col_title);
 		System.out.println("col_content : " +  col_content);
@@ -53,14 +54,24 @@ public class SendMailAction {
 		if(mailForm != null) {
 			
 			//메일 내용 가져오기
-			String id = request.getParameter("id");
+			String id = "";
 			String sender = "camillayin@gmail.com";
 			String receiver = request.getParameter("email");
 			String subject = mailForm.getTitle();
 			String content = mailForm.getContent();
-			if(id != null) {
+			if(col.equals("new_mem")) {
+				id = request.getParameter("id");	
 				content = content.replace("{고객아이디}", id);
 			}
+			if(col.equals("quit_mem")) {
+				id = (String) session.getAttribute("id");
+				System.out.println("id : "+id);
+				content = content.replace("{고객아이디}", id);
+			}
+			
+//			if(id != null) {
+//				content = content.replace("{고객아이디}", id);
+//			}
 //			if(col.equals("check_paid")) {
 //				Order order = new Order();
 //				order = (Order) request.getAttribute("orderInfo");
@@ -172,3 +183,5 @@ public class SendMailAction {
 	}
 
 }
+
+

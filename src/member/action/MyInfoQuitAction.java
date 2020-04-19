@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import action.Action;
+import admin.action.SendMailAction;
 import member.svc.MemberQuitService;
 import vo.ActionForward;
 
@@ -32,6 +33,8 @@ public class MyInfoQuitAction implements Action {
 			out.println("</script>");
 			out.close();
 		}else {
+			SendMailAction sendMailAction = new SendMailAction();
+			sendMailAction.mailling(request, response);
 			response.setContentType("text/html;charset=UTF-8");
 			PrintWriter out = response.getWriter();
 			out.println("<script>");

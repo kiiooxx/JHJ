@@ -127,6 +127,7 @@ public class PointDAO {
 		int insertCount = 0;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
+		int date = 0;//적립금 지급시점
 		String standard = "";//적립금 사용해서 결제 시 적립기준
 		float rate = 0;//적립율
 		int deliPrice = 0;//배송비
@@ -134,7 +135,7 @@ public class PointDAO {
 		int finalPrice = 0;//최종결제액(배송비 포함, 사용적립금 미포함)
 		int applyRate = 0; //적립율 적용한 적립예정액
 		int pointFinal = 0;//적립금을 더해줄 가장 최근 적립금
-		String sql1 = "SELECT p_stand, p_rate FROM point_man WHERE p_seq";
+		String sql1 = "SELECT p_date, p_stand, p_rate FROM point_man WHERE p_seq=1";
 		String sql2 = "SELECT deli_price, point_use, final_price FROM order_page WHERE sel_num=?";
 		String sql3 = "SELECT point_final FROM point WHERE user_id=? AND point_date=(SELECT MAX(point_date) FROM point)";
 		String sql4 = "INSERT INTO point (point_date, point_price, point_final, increase, user_id, point_reason) "
@@ -145,6 +146,7 @@ public class PointDAO {
 			rs = pstmt.executeQuery(); 
 			
 			if(rs.next()) {
+				date = rs.getInt("p_date");//적립금 지급일
 				standard = rs.getString("p_stand");//적립기준
 				rate = (float) (rs.getFloat("p_rate")*0.01);//적립율
 				
@@ -159,8 +161,10 @@ public class PointDAO {
 				
 					if(standard.equals("as") || pointUse == 0) {//사용적립금 포함해서 적립율 계산 || 적립금 미사용 주문 시
 						applyRate = (int) ((finalPrice - deliPrice + pointUse)*rate);
+						System.out.println("as - applyRate: " + applyRate);
 					}else if(standard.equals("act")) {//사용적립금 제외하고 적립율 계산
 						applyRate = (int) ((finalPrice - deliPrice)*rate);
+						System.out.println("act - applyRate: " + applyRate);
 					}
 					
 					pstmt = con.prepareStatement(sql3);
@@ -169,7 +173,6 @@ public class PointDAO {
 					
 					if(rs.next()) {
 						pointFinal += rs.getInt("point_final")+applyRate;
-						
 						pstmt = con.prepareStatement(sql4);
 						pstmt.setInt(1, applyRate);
 						pstmt.setInt(2, pointFinal);

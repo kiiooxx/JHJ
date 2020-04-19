@@ -10,7 +10,9 @@
 		<c:set var="deliPrice" value="0"/>
 	</c:otherwise>
 </c:choose>
-
+<!DOCTYPE html>
+<html>
+<head>
 <script>
 function openPostcode(){
 	new daum.Postcode({
@@ -65,13 +67,12 @@ function numberFormat(inputNumber) {
 		var priceLimit = ${pointMan.p_pricelimit };/* 적립금 사용가능 최소상품 구매 합계액 */
 		var pointLimit = ${pointMan.p_pointlimit };/* 적립금 사용가능 최소누적 적립금액 */
 		
-		var po = document.getElementById('usePoint').value; /* 적립금 사용자입력 */
+		var po = document.getElementById('usePoint').value; /* 사용자입력 적립금 */
 		var memPoint = ${memberPoint.point_final}; /* 사용자의 보유 적립금액 */
 		var total = ${totalMoney + deliPrice} - po;	/* 총액+배송비-적립금 //최종걸제액 */
 		
 		var totalAct = ${totalMoney - deliPrice} - po;	/* 실결제액기준 적립계산과정 (총액 - 배송비 - 적립금) */
 		var totalAs = ${totalMoney - deliPrice}; /* 적립금포함 계산금액기준 적립계산과정(총액 - 배송비) */
-		
 		var totalNo = 0; /* 적립금사용시 적립안함 옵션 */
 		
 		var rate = ${pointMan.p_rate }; /* 적립비율 */
@@ -129,10 +130,23 @@ function numberFormat(inputNumber) {
 				}
 				
 			}
-			/* 적립금 사용 시 - 적립안할 경우 */
+			/* 적립금 사용 시 - 적립안할 경우 */ 
 			else if(${pointMan.p_stand == 'no'}){
 				if($("#usePoint").val() == 0){
-					return true;
+					//여기에 코드 추가
+					
+					if(${pointMan.p_mark == 'won'}){
+						$("#r3").text(totalAct_point+"원");
+						$("#confirmPoint").val(totalAct_point+"원");
+					}else if(${pointMan.p_mark == 'per'}){
+						$("#r3").text("구매금액의 "+rate+"%");
+						$("#confirmPoint").val("구매금액의 "+rate+"%");
+					}else if(${pointMan.p_mark == 'double'}){
+						$("#r3").text(totalAct_point + "원(" + rate +  "%)");
+						$("#confirmPoint").val(totalAct_point + "원(" + rate +  "%)");
+					}
+					
+					return false;
 				}else{
 					$("#r3").text(totalNo+"원");
 					$("#confrimPoint").val(totalNo+"원");	
@@ -264,8 +278,9 @@ function chkForm(f){
 	
 }
 
+
 </script>
-<head></head>
+</head>
 <style>
 #point, #result, #result2 {
 	border: none;
@@ -273,7 +288,7 @@ function chkForm(f){
 }
 
 </style>
-<body></body>
+<body>
 
 <jsp:include page="/common/loginCheck.jsp"/>
 <div class="cartPage">
@@ -562,3 +577,5 @@ function chkForm(f){
 	</div>
 	</form>
 </div>
+</body>
+</html>

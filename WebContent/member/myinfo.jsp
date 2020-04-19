@@ -29,7 +29,7 @@ $(document).ready(function() {
  
 	$('#memberdelbtn').on('click', function(){
 		if(confirm('정말 탈퇴하시겠습니까?')) {
-			location.href='myinfoquit.mem';
+			location.href='myinfoquit.mem?col=quit_mem&email=${member.email}';
 		}else{
 			return false;
 		}
