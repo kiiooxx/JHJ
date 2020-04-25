@@ -24,6 +24,12 @@ table{
 th, td{
    border: 1px solid;
 }
+#noData{
+	text-align:center;
+}
+#pageList{
+	text-align:center;
+}
 </style>
 <body>
 <form action="memberInfo.ad" method="post" name="b">
@@ -65,11 +71,11 @@ th, td{
 				   <th>성별</th>
 				   <td>
 				   <c:choose>
-				      <c:when test="${member.sex eq null || member.sex eq ''} ">
-				         체크안함
+				      <c:when test="${member.sex ne ''} ">
+				         ${member.sex }
 				      </c:when>
 				      <c:otherwise>
-				         ${member.sex }
+				         미입력
 				      </c:otherwise>
 				   </c:choose>
 				   </td>
@@ -78,11 +84,11 @@ th, td{
 				   <th>생년월일</th>
 				   <td>
 				   <c:choose>
-				      <c:when test="${member.birth eq null || member.birth eq ''} ">
-				         기입안함
+				      <c:when test="${member.birth ne ''} ">
+				        ${member.birth }
 				      </c:when>
 				      <c:otherwise>
-				         ${member.birth }
+				         미입력
 				      </c:otherwise>
 				   </c:choose>
 				   </td>
@@ -143,7 +149,7 @@ th, td{
 			      </c:when>
 				<c:otherwise>
          		<tr>
-	            	<td colspan="6">
+	            	<td id="noData" colspan="6">
 	             		주문 내역이 없습니다.
 	            	</td>
          		</tr>

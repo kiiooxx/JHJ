@@ -45,7 +45,7 @@
 
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script type="text/javascript" src="//code.jquery.com/jquery-2.1.1.min.js"></script>
-
+<script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
 <script src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script>
@@ -141,7 +141,7 @@ $(document).ready(function() {
 <style>
    th {background-color : #F6F6F6;}
    .col {margin-bottom : 40px;}
-   #page {text-align : center;}
+   #pageList {text-align : center;}
 </style>
 </head>
 <body>
@@ -220,7 +220,6 @@ $(document).ready(function() {
                      <th>성별</th>
                      <th>주소</th>
                      <th>이메일</th>
-                     <th>메모</th>
                   </tr>
    
                   <!-- 여기서부터 검색결과 -->
@@ -239,7 +238,6 @@ $(document).ready(function() {
                               <td><a href="memberInfo.ad?user_id=${member.user_id }">${member.sex }</a></td>
                               <td><a href="memberInfo.ad?user_id=${member.user_id }">${member.addr1 }</a></td>
                               <td><a href="memberInfo.ad?user_id=${member.user_id }">${member.email}</a></td>
-                              <td>메모</td>
                            </tr>      
                         </c:forEach>
                   
@@ -258,13 +256,13 @@ $(document).ready(function() {
                </table>
 
       <!-- 여기서부터 페이징 -->
-         <section id="page">
+         <section id="pageList">
                <c:choose>
                   <c:when test="${pageInfo.page <= 1 }">
-                     [이전]&nbsp;   
+                     <ion-icon name="chevron-back-outline"></ion-icon>  
                   </c:when>
                   <c:otherwise>
-                     <a href="memberList.ad?page=${pageInfo.page-1 }&searchType=${searchType}&searchText=${searchText}&searchGrade=${searchGrade}&startPrice=${startPrice}&endPrice=${endPrice}&startDate=${startDate}&endDate=${endDate}">[이전]</a>&nbsp;   
+                     <a href="memberList.ad?page=${pageInfo.page-1 }&searchType=${searchType}&searchText=${searchText}&searchGrade=${searchGrade}&startPrice=${startPrice}&endPrice=${endPrice}&startDate=${startDate}&endDate=${endDate}"><ion-icon name="chevron-back-outline"></ion-icon></a>  
                   </c:otherwise>
                </c:choose>
          
@@ -281,10 +279,10 @@ $(document).ready(function() {
                </c:forEach>
                <c:choose>
                   <c:when test="${pageInfo.page >= pageInfo.maxPage }">
-                     &nbsp;[다음]
+                     <ion-icon name="chevron-forward-outline"></ion-icon>
                   </c:when>
                   <c:otherwise>
-                     <a href="memberList.ad?page=${pageInfo.page+1 }&searchType=${searchType}&searchText=${searchText}&searchGrade=${searchGrade}&startPrice=${startPrice}&endPrice=${endPrice}&startDate=${startDate}&endDate=${endDate}">[다음]</a>   
+                     <a href="memberList.ad?page=${pageInfo.page+1 }&searchType=${searchType}&searchText=${searchText}&searchGrade=${searchGrade}&startPrice=${startPrice}&endPrice=${endPrice}&startDate=${startDate}&endDate=${endDate}"><ion-icon name="chevron-forward-outline"></ion-icon></a>   
                   </c:otherwise>
                </c:choose>
             </section>

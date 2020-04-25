@@ -35,6 +35,7 @@
 <title>Insert title here</title>
 <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
 <script>
 $(function(){
 	$("#exceptCancel").change(function(){
@@ -109,7 +110,7 @@ th {
 	margin-bottom: 40px;
 }
 
-#page {
+#pageList {
 	text-align: center;
 }
 </style>
@@ -256,10 +257,10 @@ th {
                <!-- 여기까지 검색결과 -->
 
      	<!-- 여기서부터 페이징 -->
-				<section id="page">
+				<section id="pageList">
 					<c:choose>
 						<c:when test="${pageInfo.page <= 1 }">
-							[이전]&nbsp;	
+							<ion-icon name="chevron-back-outline"></ion-icon>	
 						</c:when>
 						<c:otherwise>
 							<a href="orderManageList.ad?page=${pageInfo.page-1 }&searchType=${searchType}&searchText=${searchText}&startDate=${startDate}&endDate=${endDate}&startPrice=${startPrice}&endPrice=${endPrice}
@@ -269,7 +270,7 @@ th {
 								${deliStatus}
 								</c:forEach>
 							</c:if>
-							&cancel_req=${cancel_req}">[이전]</a>&nbsp;	
+							&cancel_req=${cancel_req}"><ion-icon name="chevron-back-outline"></ion-icon></a>	
 						</c:otherwise>
 					</c:choose>
 
@@ -299,7 +300,7 @@ th {
 					</c:forEach>
 					<c:choose>
 						<c:when test="${pageInfo.page >= pageInfo.maxPage }">
-							&nbsp;[다음]
+							<ion-icon name="chevron-forward-outline"></ion-icon>
 						</c:when>
 						<c:otherwise>
 							<a href="orderManageList.ad?page=${pageInfo.page+1 }&searchType=${searchType}&searchText=${searchText}&startDate=${startDate}&endDate=${endDate}&startPrice=${startPrice}&endPrice=${endPrice}
@@ -315,7 +316,7 @@ th {
 										${cancelReq }
 										</c:forEach>
 									</c:if>
-							">[다음]</a>
+							"><ion-icon name="chevron-forward-outline"></ion-icon></a>
 						</c:otherwise>
 					</c:choose>
 				</section>
