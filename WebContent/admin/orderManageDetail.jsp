@@ -29,6 +29,15 @@ img{
 #progressCard{
 	text-align: center;
 }
+
+ul,ol,li{list-style: none;}
+h1{border-bottom:1px solid #ccc; padding-bottom:20px; margin-bottom: 20px; text-align: center;}
+.box{padding:40px; width:80%; border:1px solid #ccc; border-radius: 20px; margin:0 auto;}
+.progress_bar{width:100%; overflow: hidden;}
+.progress_bar ul{width:100%; overflow: hidden; padding:0;}
+.progress_bar ul li{width:16.666%; float:left; padding-top:20px; text-align: center;}
+
+
 </style>
 <script>
 
@@ -231,17 +240,20 @@ $(function(){
 			<h6 class="m-0 font-weight-bold text-primary">배송상태</h6>
         </div>
         <div id="progressCard" class="card-body">
-        <div class="mb-1 big" id="progress">
-			<span id="a">주문완료</span>
-            <span id="b">결제확인</span>
-            <span id="c">상품발송</span>
-            <span id="d">배송중</span>
-            <span id="e">배송완료</span>
-            <span id="f">구매확정</span>
-            </div>
-            <div class="progress mb-4">
-            <div class="progress-bar" id="progress-bar" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-            </div>
+        
+       <div class="progress_bar">
+           <ul>
+                <li><span id="a">주문완료</span><div></div></li>
+                <li><span id="b">결제확인</span> <div></div></li>
+                <li><span id="c">상품발송</span> <div></div></li>
+                <li><span id="d">배송중</span> <div></div></li>
+                <li><span id="e">배송완료</span><div></div></li>
+                <li><span id="f">구매확정</span><div></div></li>
+            </ul>
+       </div>       
+        <div class="progress mb-4">
+        <div class="progress-bar" id="progress-bar" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
 				<input type="hidden" name="id" value="${orderInfo.user_id }">                  
             	<input type="radio" id="deliStatus" name="deliStatus" value="order_done">주문완료 
 				<input type="radio" id="deliStatus" name="deliStatus" value="check_paid">결제확인
